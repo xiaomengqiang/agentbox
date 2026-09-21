@@ -1,0 +1,71 @@
+@import url('../Button/index.css');
+
+/* Inherit Button's variants, heights, typography, shapes and states. */
+.dropdown-btn.btn--large {
+  --dropdown-btn-padding-end: 12px;
+}
+
+.dropdown-btn.btn--small {
+  --dropdown-btn-padding-end: 8px;
+}
+
+.dropdown-btn.btn--xs {
+  --btn-height: 28px;
+  --btn-padding-inline: 8px;
+  --dropdown-btn-padding-end: 8px;
+  --btn-font-size: var(--font-size-sm); /* 12px */
+  --btn-icon-size: 16px;
+  --btn-icon-gap: 4px;
+}
+
+.dropdown-btn {
+  padding-inline-end: var(--dropdown-btn-padding-end);
+}
+
+/* Dropdown Plain uses neutral content and the same state fills as Tertiary. */
+.dropdown-btn.btn--text {
+  --btn-label: var(--btn-main-color);
+  --btn-label-hover: var(--btn-label);
+  --btn-label-pressed: var(--btn-label);
+  --btn-state-layer-hover: var(--color-interactive-hover);
+  --btn-state-layer-pressed: var(--color-interactive-pressed);
+}
+
+/* Compact square trigger: a dedicated exception for outlined + small. */
+.dropdown-btn.btn--outlined.btn--small.btn--square {
+  --btn-height: 32px;
+  padding-inline-start: 8px;
+  padding-inline-end: 4px;
+}
+
+/* XS Outlined is always the 8px-radius square version. */
+.dropdown-btn.btn--outlined.btn--xs {
+  --btn-radius: var(--radius-lg);
+}
+
+.dropdown-btn__asset {
+  display: block;
+  flex: 0 0 auto;
+  width: var(--btn-icon-size);
+  height: var(--btn-icon-size);
+  object-fit: contain;
+}
+
+/* The uploaded SVG is a mask so its silhouette follows the label color. */
+.dropdown-btn__indicator {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: var(--btn-icon-size);
+  height: var(--btn-icon-size);
+  background-color: currentColor;
+  mask: var(--dropdown-btn-icon) center / contain no-repeat;
+  -webkit-mask: var(--dropdown-btn-icon) center / contain no-repeat;
+}
+
+.dropdown-btn__indicator--caret-down-filled {
+  --dropdown-btn-icon: url('../../assets/uploads/icon/dropdown/caret-down-filled.svg');
+}
+
+.dropdown-btn__indicator--chevron-down {
+  --dropdown-btn-icon: url('../../assets/uploads/icon/dropdown/chevron-down.svg');
+}
