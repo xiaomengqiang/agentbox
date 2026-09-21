@@ -1,0 +1,201 @@
+.input-root {
+  width: 432px;
+}
+
+.input-label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 0; /* 标题与输入框间距 0 */
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-regular);
+  line-height: 19px; /* 标题行高 19px */
+  color: var(--color-font-primary);
+}
+
+/* 必填星号：绝对定位悬挂在标题文本左侧，使标题文本与输入框左对齐 */
+.input-required {
+  position: absolute;
+  right: 100%;
+  margin-right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  font: var(--font-body-md);
+  line-height: inherit;
+  color: var(--error);
+}
+
+.input-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  border-radius: 24px;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.input-control {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  font: var(--font-body-lg);
+  color: var(--color-font-primary);
+}
+
+.input-control::placeholder {
+  color: var(--color-font-tertiary);
+}
+
+.input-control:disabled {
+  color: var(--color-font-fourth);
+  cursor: not-allowed;
+}
+
+/* 光标容器：包住输入框，用于叠加光标与测量层 */
+.input-caret-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.input-caret-wrap .input-control {
+  width: 100%;
+}
+
+/* 隐藏测量层：与输入框同字体，宽度即「光标前文字」宽度 */
+.input-caret-measure {
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+  white-space: pre;
+  font: var(--font-body-lg);
+  pointer-events: none;
+}
+
+/* 蓝色光标（输入中） */
+.input-caret {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--brand);
+  pointer-events: none;
+  line-height: 0;
+}
+
+/* 密码隐藏：隐藏原生掩码文字与光标，改用自定义点 */
+.input-control-dotted {
+  color: transparent;
+  caret-color: transparent;
+}
+
+/* 密码点容器（每个点 8×8px、间距 2px） */
+.input-dots {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+}
+
+.input-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-font-primary);
+}
+
+/* 尾部图标 */
+.input-hint-icon {
+  flex-shrink: 0;
+  margin-right: -12px; /* 距右边框 4px（16px 内边距 - 12px） */
+  color: var(--color-icon-primary);
+}
+
+.input-close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-right: -12px; /* 距右边框 4px（16px 内边距 - 12px） */
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-icon-primary);
+}
+
+.input-eye {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-right: -12px; /* 距右边框 4px（16px 内边距 - 12px） */
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-icon-primary);
+}
+
+/* 提示 / 错误信息 */
+.input-message {
+  margin-top: 8px; /* 输入框与提示信息间距 8px */
+  font: var(--font-caption-lg);
+  line-height: 1.5;
+}
+
+.input-helper-text {
+  color: var(--color-font-secondary);
+}
+
+.input-error-text {
+  margin-left: 12px; /* 左边留出 12px 间距 */
+  color: #e84026;
+  font-size: var(--font-size-sm); /* 12px */
+  font-weight: var(--font-weight-medium); /* medium */
+  line-height: 1.5;
+}
+
+/* ===== 描边样式（outlined）===== */
+.input-outlined .input-field {
+  border: 1px solid var(--container-20);
+  background-color: var(--surface-bright);
+}
+
+.input-outlined.input-state-error .input-field {
+  border-color: var(--error);
+}
+
+/* ===== 无描边样式（filled）===== */
+.input-filled .input-field {
+  border: none;
+  background-color: var(--surface-bright);
+}
+
+/* 禁用 */
+.input-disabled .input-field {
+  pointer-events: none;
+}
+
+.input-disabled .input-control {
+  color: var(--color-font-fourth);
+}

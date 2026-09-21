@@ -1,0 +1,297 @@
+/* ==========================================================================
+   Button · Material 3（消费 HarmonyOS 语义色彩规范）
+   --------------------------------------------------------------------------
+   变体 Variant（M3 规范命名 / 别名）
+     .btn--filled    M3 Filled button        高强调 · 品牌实心   （primary）
+     .btn--tonal     M3 Filled tonal button  中强调 · 品牌淡底   （secondary）
+     .btn--outlined  M3 Outlined button      中强调 · 描边       （tertiary）
+     .btn--text      M3 Text button          低强调 · 纯文字     （plain）
+
+   尺寸 Size             高     字号   图标   左右内边距  图标间距
+     .btn--large        40px   16px   20px     16px        8px
+     .btn--small        28px   14px   16px     12px        4px
+
+   形状 Shape（几何轴，与 variant / size 正交）
+     .btn--round        跑道圆  --radius-full（默认，历史外观）
+     .btn--square       方圆角  --radius-lg（8px，规范上只用于 outlined × small）
+
+   状态 State（纯 CSS，组件无内部 state）
+     default → :hover → :focus-visible → :active(pressed) → :disabled
+     data-state="hover|focus|pressed" 为文档/走查用的静态强制态。
+
+   --------------------------------------------------------------------------
+   色彩映射：main color = --btn-main-color → --color-icon-primary（主色，不是 brand）
+
+   variant     背景 background                     描边 border             文字 text
+   filled      --btn-main-color                   —                     --color-font-on-primary
+   tonal       --color-comp-background-tertiary   —                     --btn-main-color
+   outlined    透明                               --color-comp-border    --btn-main-color
+   text        透明（任何状态都无背景）              —                     --color-font-emphasize
+
+   variant     hover                          pressed                        disabled
+   filled      叠 --on-primary-10             叠 --on-primary-15              沿用静止态 + 50% 透明度
+   tonal       叠 --color-interactive-hover    叠 --color-interactive-pressed  沿用静止态 + 50% 透明度
+   outlined    叠 --color-interactive-hover    叠 --color-interactive-pressed  沿用静止态（含描边）+ 50% 透明度
+   text        字 --primary-hover              字 --primary-active             沿用静止态 + 50% 透明度
+
+   disabled 统一模型：四个变体都保留静止态的底 / 字 / 描边，仅整体 opacity: 0.5。
+   即 --btn-container-disabled / --btn-label-disabled / --btn-border-color-disabled
+   默认就指向静止态变量，变体无需再各自声明。
+
+   text 的文字态色（无叠加层，直接换字色，取 design_system 里 primary 的专用态色）：
+     静止 --color-font-emphasize（brand-font）→ hover --primary-hover（brand 80%）
+     → pressed --primary-active（brand 实色）；三档互不相同，按下有明确纵深。
+
+   叠加层分两种模型（取决于静止底是浅色还是实心主色）：
+   ① tonal / outlined —— 静止底是浅色 / 透明，叠中性交互层
+      --color-interactive-hover / -pressed（= container-05 / container-10，暗色各加深一档），
+      即「不变静止底，只叠交互层」，与 design_system.md 的「Hover/pressed on surfaces」一致。
+     tonal    hover → container-05 叠 container-05 ≈ container-10 = --color-comp-background-secondary ✓
+              pressed → container-10 叠 container-05 ≈ container-15 ✓
+     outlined hover → container-05 = --color-comp-background-tertiary ✓
+              pressed → container-10 = --color-comp-background-secondary ✓
+   ② filled —— 静止底是 --btn-main-color（默认近黑 / 近白实心），中性层叠在其上对比度极低
+      （视觉上接近无变化），所以改用「主色上的颜色」--on-primary-10 / -15 作叠加层。
+      M3 Filled button 的 state layer 规范即为 on-primary，因此这不是特例而是对齐规范。
+      该令牌明色为白基、暗色为黑基，自带翻转，一个值覆盖两个模式且方向都正确：
+        Light：rgba(0,0,0,.9) 上叠白 10% → 合成后明度约从 10% 灰升到 19% 灰，比黑色浅一点 ✓
+        Dark ：rgba(255,255,255,.9) 上叠黑 10% → 变深一档，反馈同样可见 ✓
+      把 --btn-main-color 换成品牌色等彩色后依然成立（叠加层仍是「主色上的颜色」）。
+
+   聚焦环：--btn-focus-ring = --black（纯黑 1px + --outline-offset-gap 间隙）。
+     text 变体无容器，focus 不画描边环（--btn-focus-ring: transparent）。
+
+   Dark Mode（html.dark）：
+     filled 的底 = --color-icon-primary，暗色下翻为近白；文字跟随翻黑（见 .dark .btn--filled）。
+     其叠加层 --on-primary-10 / -15 在暗色下翻为黑基，叠加方向自动变成「变深」，无需额外规则。
+     其余变体的底 / 字都引用了自带翻转的语义 token，无需额外规则。
+
+   所有 --btn-* 都是可覆盖契约，单实例定制：
+     <Button className="my-btn" />  +  .my-btn { --btn-padding-inline: 32px; }
+   ========================================================================== */
+
+.btn {
+  /* ── 尺寸契约（由 .btn--large / .btn--small 覆写）── */
+  --btn-height: 40px;
+  --btn-padding-inline: 16px;
+  --btn-font-size: 16px;
+  --btn-icon-size: 20px;
+  --btn-icon-gap: 8px;
+
+  /* ── 形状契约（由 .btn--round / .btn--square 覆写）── */
+  --btn-radius: var(--radius-full); /* 默认 = round，跑道圆 */
+
+  /* ── 颜色契约（由变体类覆写）── */
+  --btn-main-color: var(--color-icon-primary); /* 本套按钮主色：换主色只改这一处 */
+  --btn-container: transparent; /* 静止态填充 */
+  --btn-label: var(--on-surface); /* 文字色，图标 currentColor 跟随 */
+  --btn-label-hover: var(--btn-label); /* hover 文字色（默认不变） */
+  --btn-label-pressed: var(--btn-label); /* pressed 文字色（默认不变） */
+  --btn-state-layer-hover: transparent; /* 悬停叠加层（叠在静止态填充之上） */
+  --btn-state-layer-pressed: transparent; /* 按下叠加层 */
+  --btn-container-disabled: var(--btn-container); /* 禁用态填充：沿用静止态 */
+  --btn-label-disabled: var(--btn-label); /* 禁用态文字：沿用静止态 */
+  --btn-disabled-opacity: 0.5; /* 禁用态整体透明度 */
+  --btn-border-width: var(--border-width-none);
+  --btn-border-color: transparent;
+  --btn-border-color-disabled: var(--btn-border-color); /* 禁用态描边：沿用静止态 */
+  --btn-focus-ring: var(--black); /* 聚焦描边环：纯黑（明暗通用） */
+
+  position: relative;
+  isolation: isolate; /* 让负 z-index 的叠加层留在按钮内部 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btn-icon-gap);
+  box-sizing: border-box;
+  height: var(--btn-height);
+  padding: 0 var(--btn-padding-inline);
+  border: var(--btn-border-width) solid var(--btn-border-color);
+  border-radius: var(--btn-radius);
+  background-color: var(--btn-container);
+  color: var(--btn-label);
+  font-family: var(--font-family);
+  font-size: var(--btn-font-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-none);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    opacity var(--duration-fast) var(--ease-standard);
+}
+
+/* ── 状态叠加层：M3 state layer，叠在静止态填充之上 ── */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+/* ── hover：叠加层 + 文字色（文字色默认与静止态一致）── */
+.btn:hover:not(:disabled)::before,
+.btn[data-state="hover"]::before {
+  background-color: var(--btn-state-layer-hover);
+  opacity: 1;
+}
+
+/* data-state 静态强制态与真实伪类必须成对：否则矩阵里 hover 只出叠加层、不出字色变化 */
+.btn:hover:not(:disabled),
+.btn[data-state="hover"] {
+  color: var(--btn-label-hover);
+}
+
+/* ── pressed：规则放在 hover 之后，按下时覆盖悬停层 ── */
+.btn:active:not(:disabled)::before,
+.btn[data-state="pressed"]::before {
+  background-color: var(--btn-state-layer-pressed);
+  opacity: 1;
+}
+
+.btn:active:not(:disabled),
+.btn[data-state="pressed"] {
+  color: var(--btn-label-pressed);
+}
+
+/* ── 键盘聚焦：1px 纯黑描边环 + 2px 间隙（不影响布局）；text 变体不画环 ── */
+.btn:focus-visible,
+.btn[data-state="focus"] {
+  outline: var(--outline-width-focus) solid var(--btn-focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+/* 鼠标点击产生的非键盘焦点不画环；但 data-state="focus" 的静态强制态要保住 */
+.btn:focus:not(:focus-visible):not([data-state="focus"]) {
+  outline: none;
+}
+
+.btn[data-state="focus"]::before {
+  background-color: var(--btn-state-layer-hover);
+  opacity: 1;
+}
+
+/* ── 禁用：四个变体都沿用静止态的底 / 字 / 描边，仅整体降透明度（默认 50%）── */
+.btn:disabled {
+  background-color: var(--btn-container-disabled);
+  color: var(--btn-label-disabled);
+  border-color: var(--btn-border-color-disabled);
+  opacity: var(--btn-disabled-opacity);
+  cursor: not-allowed;
+  outline: none;
+}
+
+/* ── 尺寸 ───────────────────────────────────────────── */
+.btn--large {
+  --btn-height: 40px;
+  --btn-padding-inline: 16px;
+  --btn-font-size: var(--font-size-md); /* 16px */
+  --btn-icon-size: 20px;
+  --btn-icon-gap: 8px;
+}
+
+.btn--small {
+  --btn-height: 28px;
+  --btn-padding-inline: 12px;
+  --btn-font-size: var(--font-size-base); /* 14px */
+  --btn-icon-size: 16px;
+  --btn-icon-gap: 4px;
+}
+
+/* ── 形状 Shape：与 variant / size 正交的第三个轴 ────────
+   形状不并入变体名：variant 表达强调层级，shape 表达几何，
+   两者相乘会让命名膨胀（filled-round / filled-square / tonal-round…）并使别名失效。 */
+
+/* Round：跑道圆（默认外观，与历史版本一致，向后兼容） */
+.btn--round {
+  --btn-radius: var(--radius-full);
+}
+
+/* Square：方圆角 8px（--radius-lg）。
+   design system 里只用于 outlined × small 这一个组合；组件不做静默降级，
+   其它组合传了 square 也照常渲染，合规性由调用方（presets.isShapeSupported）判断。 */
+.btn--square {
+  --btn-radius: var(--radius-lg);
+}
+
+/* ── 变体：颜色契约 ─────────────────────────────────── */
+
+/* Filled：main color 实心 + 纯白文字。
+   hover / pressed 用「主色上的颜色」--on-primary-10 / -15 作叠加层（M3 Filled button 的
+   state layer 规范即为 on-primary）：该令牌明色为白基、暗色为黑基，自带翻转，
+   所以浅色下近黑实心变浅、暗色下近白实心变深，两个模式方向都对。
+   disabled：沿用静止态（实心底 + 纯白文字）整体 50% 透明度。 */
+.btn--filled {
+  --btn-container: var(--btn-main-color);
+  --btn-label: var(--color-font-on-primary);
+  --btn-state-layer-hover: var(--on-primary-10);
+  --btn-state-layer-pressed: var(--on-primary-15);
+}
+
+/* Filled · Dark Mode：主色实心在暗色下翻为近白（--primary-90 → rgba(255,255,255,.9)），
+   文字必须随之翻成黑色，否则白底白字不可读。
+   注意：style 层的 --on-primary 被 theme.css 的 :root 固定为 --white（与 base.css 的
+   .dark 同权重且更晚加载，导致暗色下不翻转），所以只能按 html.dark 约定在组件内覆盖。
+   只覆盖文字色，底 / 叠加层 / disabled 继续沿用上面的契约（叠加层 --on-primary-* 自带翻转）。 */
+.dark .btn--filled {
+  --btn-label: var(--black);
+}
+
+/* Tonal：静止 comp_background_tertiary，叠加 --color-interactive-* 得到
+   hover ≈ comp_background_secondary（container-10）、pressed ≈ container-15
+   （叠层规则见 design_system「Hover/pressed on surfaces」）。
+   disabled：沿用静止态配色，整体 50% 透明度。 */
+.btn--tonal {
+  --btn-container: var(--color-comp-background-tertiary);
+  --btn-label: var(--btn-main-color);
+  --btn-state-layer-hover: var(--color-interactive-hover);
+  --btn-state-layer-pressed: var(--color-interactive-pressed);
+}
+
+/* Outlined：透明底 + 1px 中性描边 + 主色文字；描边不随状态变化
+   hover = comp_background_tertiary（container-05）、pressed = comp_background_secondary（container-10）
+   disabled：沿用静止态配色（含描边），整体 50% 透明度。 */
+.btn--outlined {
+  --btn-label: var(--btn-main-color);
+  --btn-border-width: var(--border-width-thin);
+  --btn-border-color: var(--color-comp-border);
+  --btn-state-layer-hover: var(--color-interactive-hover);
+  --btn-state-layer-pressed: var(--color-interactive-pressed);
+}
+
+/* Text：brand 主题蓝文字，任何状态都不出现背景色
+   hover / pressed 用 design_system 里 primary 的专用态色：--primary-hover（brand 80%）
+   → --primary-active（brand 实色），静止态 --color-font-emphasize 与两者都不同，按下有明确纵深。
+   focus：无容器，不画聚焦描边环
+   disabled：沿用静止态文字色，整体 50% 透明度。 */
+.btn--text {
+  --btn-label: var(--color-font-emphasize);
+  --btn-label-hover: var(--primary-hover);
+  --btn-label-pressed: var(--primary-active);
+  --btn-state-layer-hover: transparent;
+  --btn-state-layer-pressed: transparent;
+  --btn-focus-ring: transparent;
+}
+
+/* ── 内容 ───────────────────────────────────────────── */
+.btn__icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--btn-icon-size);
+  height: var(--btn-icon-size);
+}
+
+.btn__label {
+  display: inline-block;
+}
