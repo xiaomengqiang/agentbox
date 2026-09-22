@@ -44,7 +44,7 @@
 ## Usage
 
 ```jsx
-import SegmentedButton from "./SegmentedButton/index.jsx";
+import SegmentedButton from "./assets/SegmentedButton/index.jsx";
 
 // 1. 文本类按钮：2 个子按钮，总宽固定 514px，内部等分自适应
 <SegmentedButton variant="text" count={2} defaultActiveKey="s0" />

@@ -75,7 +75,7 @@
 ## Usage
 
 ```jsx
-import Input from "./InputBox/index.jsx";
+import Input from "./assets/InputBox/index.jsx";
 
 <Input
   variant="outlined"

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SearchBar from "./components/SearchBar/index.jsx";
 import "./demo.css";
-
+//
 const SIZES = [{value:"large",label:"Large · Filled"},{value:"small",label:"Small · Unfilled"}];
 const STATES = ["Default", "Hover", "Focus", "Pressed", "Disabled"];
 function Section({title,description,children}) {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Icon } from "../../assets/shared/icons.js";
+import { Icon } from "../shared/icons.js";
 import "./index.css";
 
 /**
