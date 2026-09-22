@@ -1,6 +1,34 @@
 # Button
 
-通用操作按钮，支持视觉变体、尺寸、形状、图标和交互状态。
+## Overview
+
+#### 作用
+
+用于触发操作，例如保存、新建或确认。
+
+#### 视觉样式
+
+支持四种视觉样式，根据操作在当前区域中的重要程度选择：
+
+- `filled`：用于主操作，如保存。
+- `tonal`：用于需要强调的辅助操作，如预览。
+- `outlined`：用于需要明确边界的次要操作，如取消。
+- `text`：用于上下文中的轻量操作，如编辑。
+
+同一操作区域通常只保留一个高强调的主操作；相同操作可根据场景选择不同视觉样式。
+
+#### 尺寸与形状
+
+- 两种尺寸：`large`、`small`。
+- 两种形状：`round`、`square`；按设计规范，`square` 仅适用于 `outlined + small`。
+
+#### 图标
+
+支持前置或后置图标，也可仅显示图标。
+
+#### 使用原则
+
+标签保持简短，使用明确的动作词；英文使用 sentence case（句首字母大写，专有名词保留原有大小写）。
 
 ## Props
 
@@ -57,7 +85,7 @@ import Button from "./components/Button/index.jsx";
 
 <Button
   variant="text"
-  iconSrc="./assets/uploads/icon/prompt input/agent.svg"
+  iconSrc="../assets/icons/custom/prompt input/agent.svg"
   disabled
 >
   Agent

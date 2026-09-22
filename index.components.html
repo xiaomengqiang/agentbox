@@ -6268,8 +6268,22 @@ code {
   color: var(--color-font-fourth);
 }
 
-.input-demo-live { min-width: 0; overflow: hidden; }
-.input-demo-preview-width { width: min(100%, 520px); }
+.input-demo-live {
+  min-width: 0;
+  padding: 32px;
+  box-sizing: border-box;
+  overflow: visible;
+}
+.input-demo-preview-width {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-inline: auto;
+}
+.input-demo-preview-width .input-root { max-width: 100%; }
+.input-demo-preview-width .input-label,
+.input-demo-preview-width .input-message { overflow-wrap: anywhere; }
+@media (max-width: 480px) { .input-demo-live { padding: 24px; } }
 .input-demo-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .input-demo-card { display: flex; min-width: 0; flex-direction: column; gap: 14px; padding: 24px; border-radius: var(--radius-xl); background: var(--surface-container-lowest); box-shadow: var(--shadow-card); }
 .input-demo-card h3 { margin: 0 0 6px; font: var(--font-subtitle-sm); color: var(--on-surface); }
@@ -6282,6 +6296,126 @@ code {
 }
 </style>
 <!-- END_COMPONENT_PREVIEW_STYLE:input-box -->
+
+<!-- COMPONENT_TABLE_REFINEMENT -->
+<style>
+/* Shared table system: quiet horizontal rhythm and one boundary between tone regions. */
+[role="tabpanel"] .btn-table-wrap {
+  --table-divider: var(--divider);
+  --table-divider: color-mix(in srgb, var(--divider) 56%, transparent);
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  box-shadow: inset 0 0 0 1px var(--table-divider), var(--shadow-card);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-comp-border) var(--surface-container-low);
+}
+
+[role="tabpanel"] .btn-table-wrap::-webkit-scrollbar {
+  height: 10px;
+}
+
+[role="tabpanel"] .btn-table-wrap::-webkit-scrollbar-track {
+  background: var(--surface-container-low);
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+}
+
+[role="tabpanel"] .btn-table-wrap::-webkit-scrollbar-thumb {
+  background: var(--color-comp-border);
+  border: 2px solid var(--surface-container-low);
+  border-radius: var(--radius-full);
+}
+
+[role="tabpanel"] .btn-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 0;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+  background: var(--surface-container-lowest);
+}
+
+[role="tabpanel"] .btn-table th,
+[role="tabpanel"] .btn-table td {
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--table-divider);
+  background: var(--surface-container-lowest);
+  color: var(--text-secondary);
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.5;
+  text-align: left;
+  vertical-align: top;
+}
+
+[role="tabpanel"] .btn-table thead th {
+  background: var(--surface-container-low);
+  color: var(--on-surface);
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.5;
+  vertical-align: middle;
+}
+
+[role="tabpanel"] .btn-table tbody > tr > th,
+[role="tabpanel"] .btn-table tbody > tr > td:first-child:not(.btn-color-state) {
+  background: var(--surface-container-low);
+  color: var(--on-surface);
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+/* Keep a vertical boundary only where the shaded hierarchy column meets white content. */
+[role="tabpanel"] .btn-table tbody > tr > th:first-child,
+[role="tabpanel"] .btn-table tbody > tr > td:first-child:not(.btn-color-state),
+[role="tabpanel"] .btn-table .btn-color-variant {
+  border-right: 1px solid var(--table-divider);
+}
+
+[role="tabpanel"] .btn-table .btn-color-variant {
+  background: var(--surface-container-low);
+  color: var(--on-surface);
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.5;
+  vertical-align: top;
+}
+
+[role="tabpanel"] .btn-table .btn-color-state {
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+  vertical-align: top;
+}
+
+[role="tabpanel"] .btn-table .btn-table-strong {
+  display: table-cell;
+  color: var(--on-surface);
+  font: inherit;
+  font-weight: var(--font-weight-medium);
+}
+
+[role="tabpanel"] .btn-table .btn-table-src,
+[role="tabpanel"] .btn-table .btn-color-state small {
+  margin-top: 4px;
+  color: var(--text-placeholder);
+  font: var(--font-caption-md);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.5;
+}
+
+[role="tabpanel"] .btn-color-group-start > th,
+[role="tabpanel"] .btn-color-group-start > td,
+[role="tabpanel"] .btn-table .btn-color-variant {
+  border-top: 0;
+}
+</style>
+<!-- END_COMPONENT_TABLE_REFINEMENT -->
 
 </head>
 <body>
@@ -6591,7 +6725,7 @@ function Demo(){
  const [notice,setNotice]=useState('');
  function changeSize(next){setSize(next);setClearable(next==='large');}
  return <div className="demo-page">
- <header className="demo-header"><p className="demo-subtitle">SearchBar · Large / Small · 输入、清空与搜索 · 5 状态</p></header>
+ <header className="demo-header"><p className="demo-subtitle">SearchBar 搜索框 · Large / Small · Filled / Unfilled · 可配置清空按钮及位置 · 输入状态预览</p></header>
  <Section title="Configurator" description="实时输入体验交互；Small 默认无清空按钮，可显式开启。焦点描边仅在 Large 使用 Tab 聚焦时出现。">
  <div className="button-configurator"><div className="button-controls">
  <Select label="Size" value={size} onChange={changeSize} options={SIZES}/>
@@ -7093,9 +7227,7 @@ function Demo() {
           <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYWkiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjN0MzQUVEIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzA2QjZENCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBhdGggZD0iTTIyIDggUTIzLjUgMTguNSAzNCAyMCBRMjMuNSAyMS41IDIyIDMyIFEyMC41IDIxLjUgMTAgMjAgUTIwLjUgMTguNSAyMiA4IFoiIGZpbGw9InVybCgjYWkpIi8+CiAgPHBhdGggZD0iTTM2IDMwIFEzNi44IDM1LjIgNDIgMzYgUTM2LjggMzYuOCAzNiA0MiBRMzUuMiAzNi44IDMwIDM2IFEzNS4yIDM1LjIgMzYgMzAgWiIgZmlsbD0idXJsKCNhaSkiIG9wYWNpdHk9IjAuODUiLz4KICA8Y2lyY2xlIGN4PSIzNyIgY3k9IjEwIiByPSIyLjYiIGZpbGw9IiMwNkI2RDQiLz4KICA8Y2lyY2xlIGN4PSIxMCIgY3k9IjM1IiByPSIyIiBmaWxsPSIjN0MzQUVEIiBvcGFjaXR5PSIwLjciLz4KPC9zdmc+Cg==" alt="logo" style={{ width: 28, height: 28 }} />
           <span>组件预览</span>
         </div>
-        <p className="demo-subtitle">
-          Button · Material 3 命名规范 · 4 变体 × 2 尺寸 × 2 形状 × 5 状态
-        </p>
+        <p className="demo-subtitle">Button 按钮 · Filled / Tonal / Outlined / Text · Large / Small · Round / Square · 5 states</p>
         
       </header>
 
@@ -8036,9 +8168,7 @@ function Demo() {
           <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYWkiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjN0MzQUVEIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzA2QjZENCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBhdGggZD0iTTIyIDggUTIzLjUgMTguNSAzNCAyMCBRMjMuNSAyMS41IDIyIDMyIFEyMC41IDIxLjUgMTAgMjAgUTIwLjUgMTguNSAyMiA4IFoiIGZpbGw9InVybCgjYWkpIi8+CiAgPHBhdGggZD0iTTM2IDMwIFEzNi44IDM1LjIgNDIgMzYgUTM2LjggMzYuOCAzNiA0MiBRMzUuMiAzNi44IDMwIDM2IFEzNS4yIDM1LjIgMzYgMzAgWiIgZmlsbD0idXJsKCNhaSkiIG9wYWNpdHk9IjAuODUiLz4KICA8Y2lyY2xlIGN4PSIzNyIgY3k9IjEwIiByPSIyLjYiIGZpbGw9IiMwNkI2RDQiLz4KICA8Y2lyY2xlIGN4PSIxMCIgY3k9IjM1IiByPSIyIiBmaWxsPSIjN0MzQUVEIiBvcGFjaXR5PSIwLjciLz4KPC9zdmc+Cg==" alt="logo" style={{ width: 28, height: 28 }} />
           <span>组件预览</span>
         </div>
-        <p className="demo-subtitle">
-          Dropdown Button · Material 3 命名规范 · Large / Small / XS · 可配置图标 · 5 状态
-        </p>
+        <p className="demo-subtitle">Dropdown Button 下拉按钮 · Filled / Tonal / Outlined / Text · Large / Small / XS · Round / Square · 可配置前后图标及下拉图标 · 5 states</p>
         
       </header>
 
@@ -8821,7 +8951,7 @@ function Demo() {
   return (
     <div className="demo-page">
       <header className="demo-header">
-        <p className="demo-subtitle">Segmented Button · Text / Icon · 2–5 segments · 24px / 8px radius · 5 states</p>
+        <p className="demo-subtitle">Segmented Button 分段按钮 · Text / Icon · 2–5 segments · 24px / 8px radius · 5 states</p>
       </header>
 
       <Section title="Configurator" description="配置真实组件 props；选中段可通过点击预览或 Active segment 调整。">
@@ -9335,7 +9465,7 @@ function Demo() {
   return (
     <div className="demo-page">
       <header className="demo-header">
-        <p className="demo-subtitle">Input Box · Outlined / Filled · Text / Password · 5 controlled states + Disabled</p>
+        <p className="demo-subtitle">Input Box 输入框 · Outlined / Filled · Text / Password · 可配置宽度 · 6 states</p>
       </header>
 
       <Section title="Configurator" description="配置现有 InputBox props；State 可固定视觉状态，输入内容仍由真实 input 处理。">
@@ -9359,7 +9489,7 @@ function Demo() {
           </div>
           <div className="button-configurator-preview input-demo-live">
             <span className="btn-lab-slotlabel">LIVE PREVIEW</span>
-            <div className="input-demo-preview-width">
+            <div className="input-demo-preview-width" style={{ width }}>
               <InputBox
                 variant={variant}
                 state={state}
