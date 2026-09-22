@@ -1,42 +1,67 @@
 # TextTabs
 
-纯文字标签导航组件，用于页面内的视图切换。只有选中与未选中两种状态，无背景、无下划线。
+## Overview
 
-## Features
+#### 作用
 
-- 纯文字标签：未选中 `rgba(0,0,0,.4)` / Regular，选中 `#000000` / Bold，字号均为 18px
-- 标签间距默认 24px，通过 `gap` 可调
-- 支持受控（`activeId`）与非受控（`defaultActiveId`）两种用法
-- 横向溢出时自动滚动，并保证选中项始终可见（隐藏滚动条）
-- 键盘导航：`←` `→` 循环切换，`Home` / `End` 跳首尾
-- 未选中态预留 Bold 宽度，切换时文字不抖动
-- 深色模式下选中态自动反相为纯白
+TextTabs 用于同一页面区域内的并列视图切换。组件只呈现文字标签，没有背景和下划线。
+
+#### 视觉样式
+
+- 未选中：用于可切换但当前未展示的视图，使用较弱文字色和 Regular 字重。
+- 选中：表示当前视图，使用高对比文字色和 Bold 字重。
+
+#### 尺寸
+
+- 文字固定为 18px；标签间距默认 24px，可用 `gap` 调整。
+- 标签始终单行显示；内容超出容器时列表横向滚动并隐藏滚动条。
+
+#### 行为模式
+
+- 支持 `activeId` 受控模式和 `defaultActiveId` 非受控模式。
+- 支持左右方向键循环切换，`Home` / `End` 跳到首尾。
+- 选中项会自动滚动到可见区域。
+
+#### 使用原则
+
+- 标签使用短名词，描述视图内容，如“图片”“视频”。
+- 各标签应处于同一信息层级，不用于触发一次性动作。
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `items` | `Array<{ id: string \| number, label: string }>` | — (required) | 标签数据 |
-| `activeId` | `string \| number` | — | 受控选中项 id |
-| `defaultActiveId` | `string \| number` | 第一项 | 非受控初始选中项 id |
-| `onChange` | `(item) => void` | — | 选中项变化回调，返回被选中项 |
-| `gap` | `number` | `24` | 标签之间的间距（px） |
+| `items` | `Array<{ id: string \| number, label: string }>` | `[]` | 标签数据；空数组不渲染组件。 |
+| `activeId` | `string \| number` | — | 受控选中项 id。 |
+| `defaultActiveId` | `string \| number` | 第一项 id | 非受控初始选中项。 |
+| `onChange` | `(item) => void` | — | 选择变化回调，返回完整 item。 |
+| `gap` | `number` | `24` | 标签间距，单位 px。 |
+
+## Color Spec
+
+| Element / State | Background | Outline | Text |
+|-----------------|------------|---------|------|
+| Unselected | transparent | 无 | `--text-placeholder`，Regular |
+| Hover | transparent | 无 | `--text-secondary` |
+| Selected · Light | transparent | 无 | `#000000`，Bold |
+| Selected · Dark | transparent | 无 | `--white`，Bold |
+| Focus visible | transparent | `--focus-ring` | 按当前选中状态 |
 
 ## Usage
 
 ```jsx
+import { useState } from "react";
 import TextTabs from "./components/TextTabs/index.jsx";
 
-const tabs = [
+const items = [
   { id: "all", label: "全部" },
   { id: "photo", label: "图片" },
   { id: "video", label: "视频" },
 ];
 
-// 非受控
-<TextTabs items={tabs} defaultActiveId="photo" onChange={(item) => console.log(item.id)} />
+<TextTabs items={items} defaultActiveId="photo" />;
 
-// 受控
-const [active, setActive] = useState("all");
-<TextTabs items={tabs} activeId={active} onChange={(item) => setActive(item.id)} />
+const [activeId, setActiveId] = useState("all");
+<TextTabs items={items} activeId={activeId} onChange={(item) => setActiveId(item.id)} />;
 ```
+

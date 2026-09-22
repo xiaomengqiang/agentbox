@@ -54,6 +54,7 @@
   background-color: var(--container-05);
   color: var(--color-font-primary);
   font: var(--font-caption-lg); /* 12px / 1.5 */
+  line-height: 16px;
 }
 
 .tag--icon .tag__icon {

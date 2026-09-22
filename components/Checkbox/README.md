@@ -1,50 +1,59 @@
 # Checkbox
 
-勾选组件，容器 24×24、方框实际边长 20px，支持方形（4px 圆角）与圆形两种形状，覆盖选中 / 未选中、可用 / 禁用组合形态。
+## Overview
 
-## Features
+#### 作用
 
-- 容器 24×24（命中区域），实际方框 20×20（1px 描边含在内）
-- 方形 4px 圆角、圆形整圆
-- 选中底色 `Light/comp_background_emphasize`（#0A59F7 100%），勾为白色 `comp_background_primary_contrary`
-- 勾自带**内部** 1px 描边（#000000 5%）与投影阴影效果
-- 未选中：描边 `icon-tertiary`，填充 `fg_color_unchecked`
-- 禁用态直接复用可用态并整体降到 40% 不透明度
-- 支持受控（`checked` + `onChange`）与非受控（`defaultChecked`）两种用法
-- 键盘可达：`Space` / `Enter` 切换，`:focus-visible` 显示品牌色聚焦环
+Checkbox 用于切换独立的布尔选项，或在一组选项中进行多选。它支持受控与非受控状态。
+
+#### 视觉样式
+
+- `square`：用于常规设置、协议确认和多选列表。
+- `circle`：用于产品规范要求圆形选择标记的场景；行为仍是 checkbox，不表示单选。
+
+#### 尺寸与形状
+
+- 命中容器为 24 × 24px，实际选择框为 20 × 20px。
+- 方形使用 4px 圆角；圆形使用全圆角。
+
+#### 使用原则
+
+- 标签应描述选中后成立的状态，例如“接收消息通知”。
+- 多个互斥选项不应使用 Checkbox。
+- 禁用状态保留当前选中外观，并将整个组件降至 40% 不透明度。
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `checked` | `boolean` | — | 受控选中态；传入即进入受控模式 |
-| `defaultChecked` | `boolean` | `false` | 非受控模式的初始选中态 |
-| `onChange` | `(checked: boolean) => void` | — | 切换回调，参数为下一次的选中态 |
-| `shape` | `"square" \| "circle"` | `"square"` | 形状 |
-| `disabled` | `boolean` | `false` | 禁用态，整体 40% 不透明度 |
-| `label` | `string` | — | 右侧文字标签，缺省为纯控件 |
+| `checked` | `boolean` | — | 受控选中状态；非 `null` 时进入受控模式。 |
+| `defaultChecked` | `boolean` | `false` | 非受控模式的初始选中状态。 |
+| `onChange` | `(checked: boolean) => void` | — | 状态切换回调，参数为下一状态。 |
+| `shape` | `"square" \| "circle"` | `"square"` | 选择框形状。 |
+| `disabled` | `boolean` | `false` | 禁止鼠标和键盘切换，并移出 Tab 顺序。 |
+| `label` | `string` | — | 右侧标签；缺省时只显示选择框。 |
+
+## Color Spec
+
+| Element / State | Background | Border / Outline | Text / Mark |
+|-----------------|------------|------------------|-------------|
+| Unchecked | `--color-fg-unchecked` | `--color-icon-tertiary` | `--on-surface` |
+| Unchecked hover | `--color-comp-background-secondary` | `--color-icon-secondary` | 同 Default |
+| Checked | `--color-comp-background-emphasize` | 同背景 | 白色勾；内部描边 `--container-05` |
+| Checked hover | `--primary-hover` | `--primary-hover` | 同 Checked |
+| Focus visible | 同当前状态 | `--focus-ring` | 同当前状态 |
+| Disabled | 同当前状态，整体 opacity 40% | 同当前状态 | 同当前状态 |
 
 ## Usage
 
 ```jsx
+import { useState } from "react";
 import Checkbox from "./components/Checkbox/index.jsx";
 
-// 非受控
 <Checkbox defaultChecked label="自动同步" />
-<Checkbox shape="circle" label="圆形 · 未选中" />
+<Checkbox shape="circle" label="加入体验计划" />
 
-// 禁用
-<Checkbox checked disabled label="不可修改" />
-
-// 受控
-const [agree, setAgree] = useState(false);
-<Checkbox checked={agree} onChange={setAgree} label="我已阅读并同意服务协议" />
+const [agreed, setAgreed] = useState(false);
+<Checkbox checked={agreed} onChange={setAgreed} label="我已阅读并同意服务协议" />
 ```
 
-## Notes
-
-- 结构：`.cbx-control`（24×24 容器，居中）→ `.cbx-box`（20×20 方框，1px 描边含在内）→ 勾。
-- 勾的内部描边由两层同形勾叠放实现：底层勾全宽（屏上 4px），白色勾居中覆盖（屏上 2px），外露的 1px 即为描边——描边位于勾的内侧，宽度恒为 1px。勾图标 15px，白色勾线宽 2×UNIT、底层 4×UNIT（UNIT = 24/15）。
-- 勾阴影 `drop-shadow(0 1.4px 1.3px var(--container-10))`，只作用于勾，不影响方框。
-- 勾整体 `translateY(0.5px)`：Lucide `check` 的墨迹在 24 viewBox 内中心为 y=11.5（15px 下偏上 0.31px），设计稿勾中心却在方框中心下 0.21px，合计补偿 0.5px（2x 屏上即 1 设备像素）。方形与圆形共用该偏移。
-- 颜色全部走主题 token（`--color-comp-background-emphasize` / `--color-icon-tertiary` / `--color-fg-unchecked`），深浅色模式自动翻转。

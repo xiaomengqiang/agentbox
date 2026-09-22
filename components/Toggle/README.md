@@ -1,40 +1,62 @@
 # Toggle
 
-开关组件，用于在「开 / 关」两种互斥状态之间切换，固定尺寸 36 × 20，支持受控与非受控用法。
+## Overview
 
-## Features
+#### 作用
 
-- 四态齐全：开 / 关 × 可用 / 禁用（禁用＝整体 opacity 50%）
-- 开态轨道 `Light/Brand #0A59F7`，关态轨道 `comp_background_secondary`（黑 10%）
-- 圆形滑块 `comp_background_primary_contrary`（白色）；关态滑块带 `comp_background_tertiary` 1px 外描边
-- 可选右侧文案，点击文字同样可切换
-- hover / 按下叠加层、键盘 `Space` 切换、`:focus-visible` 焦点环
-- 深色模式自动适配（滑块恒为白色）
+Toggle 用于立即切换开 / 关状态，例如通知、同步或显示设置。它适合即时生效的布尔设置，不用于需要提交确认的选择。
+
+#### 视觉样式
+
+- Off：表示功能关闭，使用低强调轨道。
+- On：表示功能开启，使用品牌色轨道。
+- Disabled：保留 On / Off 状态，并以 50% 不透明度表示不可修改。
+
+#### 尺寸与形状
+
+- 轨道固定为 36 × 20px，滑块为 16px，四周留 2px。
+- 轨道与滑块均使用全圆角。
+
+#### 使用原则
+
+- 标签描述被控制的设置，如“消息通知”，不要写“开启/关闭”。
+- 点击开关或标签均会切换；禁用时两者都不可交互。
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `checked` | `boolean` | — | 受控选中态；传入即受控 |
-| `defaultChecked` | `boolean` | `false` | 非受控初始选中态 |
-| `disabled` | `boolean` | `false` | 禁用，整体透明度 50%，不响应交互 |
-| `label` | `string` | — | 开关右侧文案，同时作为可访问名称 |
-| `onChange` | `(next: boolean, e) => void` | — | 状态切换回调 |
-| `className` | `string` | — | 追加到根节点 |
+| `checked` | `boolean` | — | 受控开关状态；非 `null` 时进入受控模式。 |
+| `defaultChecked` | `boolean` | `false` | 非受控模式的初始状态。 |
+| `disabled` | `boolean` | `false` | 禁止切换并将整体透明度设为 50%。 |
+| `label` | `string` | — | 右侧标签，同时参与可点击区域。 |
+| `onChange` | `(next: boolean, event) => void` | — | 状态切换回调。 |
+| `className` | `string` | `""` | 追加到根 `label` 的类名。 |
+
+## Color Spec
+
+| Element / State | Track | Knob / Outline | Label |
+|-----------------|-------|----------------|-------|
+| Off | `--color-comp-background-secondary` | `--color-comp-background-primary`；外描边 `--color-comp-background-tertiary` | `--on-surface` |
+| On | `--color-comp-background-emphasize` | `--color-comp-background-primary` | `--on-surface` |
+| Hover | 当前轨道上叠加 `--color-interactive-hover` | 同当前状态 | 同当前状态 |
+| Pressed | 当前轨道上叠加 `--color-interactive-pressed` | 同当前状态 | 同当前状态 |
+| Focus visible | 同当前状态 | `--focus-ring` | 同当前状态 |
+| Disabled | 同当前状态，整体 opacity 50% | 同当前状态 | 同当前状态 |
+
+Dark 模式下滑块固定使用 `--white`。
 
 ## Usage
 
 ```jsx
+import { useState } from "react";
 import Toggle from "./components/Toggle/index.jsx";
 
-// 非受控
-<Toggle defaultChecked label="消息通知" onChange={(next) => console.log(next)} />
+<Toggle defaultChecked label="消息通知" />
 
-// 受控
-const [on, setOn] = useState(true);
-<Toggle checked={on} onChange={setOn} label="深色模式" />
+const [enabled, setEnabled] = useState(true);
+<Toggle checked={enabled} onChange={setEnabled} label="自动同步" />;
 
-// 禁用
-<Toggle checked label="已锁定（开·禁用）" disabled />
-<Toggle label="已锁定（关·禁用）" disabled />
+<Toggle checked disabled label="组织策略已开启" />
 ```
+
