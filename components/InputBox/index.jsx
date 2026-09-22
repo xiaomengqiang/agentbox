@@ -8,7 +8,7 @@ import "./index.css";
  * - 六种状态：默认 default / 激活 active / 输入中 typing / 输入完成 complete / 报错 error / 隐藏 hidden（密码）
  * - 状态可受控（state prop）或自动派生（由 focus + value + error 推导）
  */
-export default function InputBox(props) {
+export default function Input(props) {
   const {
     variant = "outlined", // "outlined" | "filled"
     width = "432px", // 输入框宽度（默认 432px）
@@ -24,6 +24,8 @@ export default function InputBox(props) {
     helperText,
     clearable = false,
     icon = true, // 是否显示尾部图标 / 按钮（键盘提示、关闭、密码切换）
+    iconName = "auto", // 自动选择，或指定 keyboard / close / eye / eye-off
+    caret = true, // 蓝色光标（输入线条）开关
     disabled = false,
     onChange,
     onFocus,
@@ -34,9 +36,6 @@ export default function InputBox(props) {
   const [value, setValue] = useState(defaultValue);
   const [focused, setFocused] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [caretPos, setCaretPos] = useState(() =>
-    isControlled ? (valueProp || "").length : (defaultValue || "").length
-  );
   const [caretOffset, setCaretOffset] = useState(0);
 
   const measureRef = useRef(null);
@@ -60,33 +59,29 @@ export default function InputBox(props) {
   const inputType = isPassword ? (passwordVisible ? "text" : "password") : type;
 
   const isDotted = isPassword && !passwordVisible;
-  const showCaret = !disabled;
+  const displayedIcon = iconName === "auto"
+    ? isPassword ? (passwordVisible ? "eye-off" : "eye") : state === "default" ? "keyboard" : "close"
+    : iconName;
+  const showCaret = caret && !disabled && (state === "active" || state === "typing");
   // 光标左偏移：密码隐藏时按圆点宽度（每点 8px + 间距 2px）计算，其余按文字宽度
   const caretLeft = isDotted
     ? Math.max(currentValue.length * 10 - 2, 0)
     : caretOffset;
 
-  // 测量光标位置：用与输入框同字体的隐藏 span 量出“光标前的文字”宽度
+  // 测量完整文字宽度，使蓝色竖线始终位于输入文字之后
   useLayoutEffect(() => {
     if (measureRef.current) {
       const w = measureRef.current.offsetWidth;
       if (w !== caretOffset) setCaretOffset(w);
     }
-  }, [currentValue, caretPos, caretOffset]);
-
-  const syncCaret = (e) => {
-    const pos = e?.target?.selectionStart;
-    if (typeof pos === "number") setCaretPos(pos);
-  };
+  }, [currentValue, caretOffset]);
 
   const handleChange = (e) => {
     if (!isControlled) setValue(e.target.value);
-    syncCaret(e);
     if (onChange) onChange(e);
   };
   const handleFocus = (e) => {
     setFocused(true);
-    syncCaret(e);
     if (onFocus) onFocus(e);
   };
   const handleBlur = (e) => {
@@ -95,7 +90,6 @@ export default function InputBox(props) {
   };
   const handleClear = () => {
     if (!isControlled) setValue("");
-    setCaretPos(0);
     if (onChange) onChange({ target: { value: "" } });
   };
 
@@ -131,19 +125,16 @@ export default function InputBox(props) {
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            onSelect={syncCaret}
-            onKeyUp={syncCaret}
-            onClick={syncCaret}
           />
-          {/* 隐藏测量层：宽度 = 光标前文字宽度 */}
+          {/* 隐藏测量层：宽度 = 完整输入文字宽度 */}
           <span
             ref={measureRef}
             className="input-caret-measure"
             aria-hidden="true"
           >
-            {currentValue.slice(0, caretPos)}
+            {currentValue}
           </span>
-          {/* 蓝色光标：所有状态均显示，随文字（或密码点）移动 */}
+          {/* 蓝色竖线：仅 Active / Typing 显示，始终位于文字末尾 */}
           {showCaret && (
             <span
               className="input-caret"
@@ -164,13 +155,11 @@ export default function InputBox(props) {
           )}
         </div>
 
-        {/* 默认状态：输入提示图标 */}
-        {icon && state === "default" && !isPassword && !disabled && (
+        {/* 尾部图标：自动模式随状态变化，也可用 iconName 指定 */}
+        {icon && !disabled && displayedIcon === "keyboard" && (
           <Icon name="keyboard" size={32} className="input-hint-icon" />
         )}
-
-        {/* 非默认状态：统一关闭按钮 */}
-        {icon && state !== "default" && !isPassword && !disabled && (
+        {icon && !disabled && displayedIcon === "close" && (
           <button
             type="button"
             className="input-close"
@@ -182,17 +171,18 @@ export default function InputBox(props) {
           </button>
         )}
 
-        {/* 密码可见性切换（隐藏 / 显示） */}
-        {icon && isPassword && (
-          <button
-            type="button"
-            className="input-eye"
-            onClick={() => setPasswordVisible((v) => !v)}
-            aria-label={passwordVisible ? "隐藏密码" : "显示密码"}
-            tabIndex={-1}
-          >
-            <Icon name={passwordVisible ? "eye-off" : "eye"} size={32} />
-          </button>
+        {icon && !disabled && (displayedIcon === "eye" || displayedIcon === "eye-off") && (
+          isPassword ? (
+            <button
+              type="button"
+              className="input-eye"
+              onClick={() => setPasswordVisible((v) => !v)}
+              aria-label={passwordVisible ? "隐藏密码" : "显示密码"}
+              tabIndex={-1}
+            >
+              <Icon name={displayedIcon} size={32} />
+            </button>
+          ) : <Icon name={displayedIcon} size={32} className="input-hint-icon" />
         )}
       </div>
 

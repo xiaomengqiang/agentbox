@@ -1,4 +1,4 @@
-# Segmented Button
+# SegmentedButton
 
 - 分段按钮：胶囊轨道上并排多段可点击区域，选中段悬浮白底、未选中段透明。
 - 两种类型：**文本类**（`variant="text"`，默认）与**纯图标类**（`variant="icon"`）。
@@ -17,7 +17,7 @@
 ## Features
 
 - 文本类按钮总宽固定 514px、高 44px，内部子按钮按数量等分自适应
-- 纯图标类按钮 76×32、圆角 8，图标在子按钮内居中
+- 纯图标类按钮高 32px、圆角 8px，宽度随内容自适应（图标 16px + 两侧各 10px 内边距），图标在子按钮内居中
 - 支持受控（`activeKey`）/ 非受控（`defaultActiveKey`）两种选中管理
 - 完整交互态：默认 / 悬停 / 按压 / 键盘聚焦 / 禁用（整组或单段）
 - 文本类：文字 14px；带图标时文字 regular、纯文本时 medium；图标 16px、与文本间距 8px、组合居中
@@ -58,7 +58,7 @@ import SegmentedButton from "./SegmentedButton/index.jsx";
   defaultActiveKey="s0"
 />
 
-// 3. 纯图标类按钮：76×32，2 个子按钮各一个图标
+// 3. 纯图标类按钮：宽度自适应、高 32px，2 个子按钮各一个图标
 <SegmentedButton
   variant="icon"
   count={2}

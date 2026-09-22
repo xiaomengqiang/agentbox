@@ -11,9 +11,9 @@
   box-sizing: border-box;
 }
 
-/* 纯图标紧凑尺寸：76×32、圆角 8、内边距 2（对应参考 SVG） */
+/* 纯图标紧凑尺寸：高 32、圆角 8、内边距 2，宽度随内容自适应 */
 .sb-root.sb-size-sm {
-  width: 76px;
+  width: auto;
   height: 32px;
   padding: 2px;
   border-radius: 8px;
@@ -50,9 +50,11 @@
     color var(--duration-fast) var(--ease-standard);
 }
 
-/* 纯图标尺寸下的子按钮：去掉横向内边距，圆角 6（外圆角 8 − 内边距 2） */
+/* 纯图标尺寸下的子按钮：图标 16px + 两侧各 10px 内边距，圆角 6 */
 .sb-root.sb-size-sm .sb-segment {
-  padding: 0;
+  flex: 0 0 auto;
+  padding: 0 10px;
+  gap: 0;
   border-radius: 6px;
 }
 

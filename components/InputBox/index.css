@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-bottom: 0; /* 标题与输入框间距 0 */
+  margin-bottom: 8px; /* 标题与输入框固定间距 8px */
   font: var(--font-body-md);
   font-weight: var(--font-weight-regular);
   line-height: 19px; /* 标题行高 19px */
@@ -48,6 +48,7 @@
   padding: 0;
   font: var(--font-body-lg);
   color: var(--color-font-primary);
+  caret-color: transparent; /* 使用状态控制的自绘蓝色竖线 */
 }
 
 .input-control::placeholder {
@@ -159,6 +160,7 @@
 /* 提示 / 错误信息 */
 .input-message {
   margin-top: 8px; /* 输入框与提示信息间距 8px */
+  margin-left: 12px; /* Helper text 与 Error 文本左侧对齐 */
   font: var(--font-caption-lg);
   line-height: 1.5;
 }
@@ -168,7 +170,6 @@
 }
 
 .input-error-text {
-  margin-left: 12px; /* 左边留出 12px 间距 */
   color: #e84026;
   font-size: var(--font-size-sm); /* 12px */
   font-weight: var(--font-weight-medium); /* medium */

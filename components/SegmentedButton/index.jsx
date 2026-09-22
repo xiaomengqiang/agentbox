@@ -6,7 +6,7 @@ import "./index.css";
  * SegmentedButton — 分段按钮
  *
  * variant="text"（默认）：文本类按钮，总宽固定 514px，子按钮按数量等分自适应；
- * variant="icon"：纯图标类按钮，76×32 紧凑尺寸、圆角 8。
+ * variant="icon"：纯图标类按钮，高 32px、宽度自适应、圆角 8。
  * 文本类按钮通过 showIcon 开关图标、count 控制子按钮数量、labels 自定义文本。
  *
  * 状态覆盖：默认、悬停、按压、键盘聚焦、禁用（整组或单段）。
@@ -74,7 +74,7 @@ export default function SegmentedButton({
     .join(" ");
 
   return (
-    <div className={rootClass} role="group" aria-label="Segmented Button">
+    <div className={rootClass} role="group" aria-label="SegmentedButton">
       {resolvedSegments.map((seg, idx) => {
         const key = seg.key ?? idx;
         const isActive = key === active;
