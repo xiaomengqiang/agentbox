@@ -1,0 +1,122 @@
+/* Checkbox —— 方形 / 圆形勾选组件
+   容器 24×24，实际方框边长 20px
+   未选中：描边 icon-tertiary + 填充 fg_color_unchecked
+   选中：底色 comp_background_emphasize，勾为白色（内部 1px 描边 + 阴影）
+   禁用：可用态整体 40% 不透明度 */
+
+.cbx {
+  --cbx-unchecked-border: var(--color-icon-tertiary);
+  --cbx-unchecked-fill: var(--color-fg-unchecked);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  width: auto;
+  font: var(--font-body-md);
+  color: var(--on-surface);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+}
+
+/* 容器：24×24 命中区域 */
+.cbx-control {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+/* 实际方框：20×20 */
+.cbx-box {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: var(--border-width-thin) solid var(--cbx-unchecked-border);
+  border-radius: var(--radius-sm); /* 方形：4px 圆角 */
+  background-color: var(--cbx-unchecked-fill);
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+/* 圆形：整圆 */
+.cbx-circle .cbx-box {
+  border-radius: var(--radius-full);
+}
+
+/* ── 选中：底色 comp_background_emphasize（Light #0A59F7） ── */
+.cbx.is-checked .cbx-box {
+  border-color: var(--color-comp-background-emphasize);
+  background-color: var(--color-comp-background-emphasize);
+}
+
+/* ── 勾：白色 + 内部 1px 描边 + 阴影 ── */
+.cbx-check {
+  position: relative;
+  display: inline-flex;
+  opacity: 0;
+  transform: scale(0.55);
+  filter: drop-shadow(0 1.4px 1.3px var(--container-10));
+  /* 视觉补偿：Lucide check 的墨迹在 24 viewBox 内中心为 y=11.5（偏上 0.5 单位，
+     15px 下即 0.31px），而设计稿勾中心在方框中心下 0.21px，合计下移 0.5px；
+     在 2x 屏上正好是 1 个设备像素。两个形状共用同一偏移。 */
+  transform: translateY(0.5px) scale(0.55);
+  transition: opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.cbx.is-checked .cbx-check {
+  opacity: 1;
+  transform: translateY(0.5px) scale(1);
+}
+
+/* 底层：全宽勾，仅白色勾之外 1px 可见 → 内部描边（5% 黑 / Dark 5% 白） */
+.cbx-check-outline {
+  position: relative;
+  color: var(--container-05);
+}
+
+/* 上层：白色勾 */
+.cbx-check-mark {
+  position: absolute;
+  inset: 0;
+  color: var(--white);
+}
+
+.cbx-label {
+  min-width: 0;
+}
+
+/* ── 悬停（仅可用态） ── */
+.cbx.is-enabled:hover .cbx-box {
+  border-color: var(--color-icon-secondary);
+  background-color: var(--color-comp-background-secondary);
+}
+
+.cbx.is-enabled.is-checked:hover .cbx-box {
+  border-color: var(--primary-hover);
+  background-color: var(--primary-hover);
+}
+
+/* ── 键盘焦点 ── */
+.cbx:focus {
+  outline: none;
+}
+
+.cbx:focus-visible .cbx-box {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+/* ── 禁用：可用态整体 40% ── */
+.cbx.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

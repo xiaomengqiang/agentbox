@@ -1,0 +1,62 @@
+/* ActionChip 操作块 —— 图标 14×14 + 文字 12/20，间距 4px，高 24px，左右边距 8px，底色 Brand10 */
+
+.ac-chip {
+  /* 宽度变量：默认 auto（由内容撑开），可通过 width 属性或外部 --ac-chip-width 覆盖 */
+  --ac-chip-width: auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;                              /* 图文间距 */
+  width: var(--ac-chip-width);
+  height: 24px;                          /* 固定高度 */
+  padding: 0 8px;                        /* 左右边距 8，垂直居中由固定高度决定 */
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-radius: var(--radius-full);
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);        /* 12px */
+  line-height: 20px;                     /* 行高 20 */
+  font-weight: var(--font-weight-medium);
+  color: var(--color-icon-emphasize);    /* Light/icon_emphasize #0A59F7 */
+  background-color: var(--brand-10);     /* Light/Brand10 #0A59F7 10% */
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-image var(--duration-fast) var(--ease-standard);
+}
+
+.ac-chip-icon {
+  flex: 0 0 auto;
+  color: var(--color-icon-emphasize);
+}
+
+.ac-chip-label {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--color-font-emphasize);
+}
+
+/* 交互反馈：静止底色不变，叠加交互色（Design Rule 3） */
+.ac-chip:hover {
+  background-image: linear-gradient(
+    var(--color-interactive-hover),
+    var(--color-interactive-hover)
+  );
+}
+
+.ac-chip:active {
+  background-image: linear-gradient(
+    var(--color-interactive-pressed),
+    var(--color-interactive-pressed)
+  );
+}
+
+.ac-chip:focus-visible {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}

@@ -1140,6 +1140,117 @@ body {
 
 </style>
 <style>
+@scope (.preview-action-chip) {
+  .ac-chip { --ac-chip-width:auto; display:inline-flex; align-items:center; justify-content:center; gap:4px; width:var(--ac-chip-width); height:24px; padding:0 8px; min-width:0; max-width:100%; box-sizing:border-box; border:0; border-radius:var(--radius-full); font-family:var(--font-family); font-size:var(--font-size-sm); line-height:20px; font-weight:var(--font-weight-medium); color:var(--color-icon-emphasize); background-color:var(--brand-10); cursor:pointer; user-select:none; transition:background-image var(--duration-fast) var(--ease-standard); }
+  .ac-chip-icon { flex:0 0 auto; color:var(--color-icon-emphasize); }
+  .ac-chip-label { min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color:var(--color-font-emphasize); }
+  .ac-chip:hover { background-image:linear-gradient(var(--color-interactive-hover),var(--color-interactive-hover)); }
+  .ac-chip:active { background-image:linear-gradient(var(--color-interactive-pressed),var(--color-interactive-pressed)); }
+  .ac-chip:focus-visible { outline:var(--outline-width-focus) solid var(--focus-ring); outline-offset:var(--outline-offset-gap); }
+  .demo-chip-row { display:flex; flex-wrap:wrap; align-items:center; gap:12px; }
+  .demo-chip-row-fixed { max-width:300px; }
+  .demo-chip-row-top { margin-top:20px; }
+  .demo-chip-frame { max-width:320px; margin-top:20px; padding:16px; border-radius:var(--radius-lg); background-color:var(--surface-container-lowest); box-shadow:var(--shadow-card); }
+  .demo-stack { margin-top:48px; }
+}
+</style>
+<style>
+@scope (.preview-tag) {
+  .tag { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; width:auto; white-space:nowrap; font-family:var(--font-family); transition:background-color var(--duration-fast) var(--ease-standard),color var(--duration-fast) var(--ease-standard); }
+  .tag__icon { flex-shrink:0; }
+  .tag--diff-add,.tag--diff-remove { padding:0 4px; border-radius:var(--radius-full); font:var(--font-caption-lg); line-height:18px; }
+  .tag--diff-add { background:#D5F2DC; color:#01802B; }
+  .tag--diff-remove { background:#FCE3E0; color:#BF0A1C; }
+  .tag-diff-pair { display:inline-flex; align-items:center; width:auto; }
+  .tag--icon { gap:4px; padding:4px 8px; border-radius:var(--radius-badge); background:var(--container-05); color:var(--color-font-primary); font:var(--font-caption-lg); }
+  .tag--icon .tag__icon { color:var(--color-icon-primary); }
+  .tag--tab { --tag-tab-bg:var(--color-comp-background-tertiary); --tag-tab-bg-hover:var(--container-10); --tag-tab-bg-selected:var(--container-90); --tag-tab-bg-selected-hover:var(--container-80); gap:6px; padding:8px 16px; border:0; border-radius:var(--radius-3xl); background:var(--tag-tab-bg); color:var(--color-font-secondary); font:var(--font-body-lg); line-height:20px; font-weight:var(--font-weight-regular); cursor:pointer; }
+  .tag--tab .tag__icon { color:var(--container-60); }
+  .tag--tab:hover:not(.tag--disabled):not(.tag--static) { background:var(--tag-tab-bg-hover); }
+  .tag--tab:focus-visible { outline:var(--outline-width-focus) solid var(--focus-ring); outline-offset:var(--outline-offset-gap); }
+  .tag--tab.tag--disabled,.tag--tab.tag--disabled .tag__icon { color:var(--text-disabled); cursor:not-allowed; }
+  .tag--tab.tag--selected { background:var(--tag-tab-bg-selected); color:var(--color-font-on-primary); font-weight:var(--font-weight-medium); }
+  .tag--tab.tag--selected .tag__icon { color:var(--color-icon-on-primary); }
+  .tag--tab.tag--selected:hover:not(.tag--disabled):not(.tag--static) { background:var(--tag-tab-bg-selected-hover); }
+  .tag--tab.tag--static { cursor:default; }
+  .tag-group { width:100%; display:flex; flex-wrap:wrap; align-items:center; }
+  .tag-demo-list { display:flex; flex-direction:column; gap:12px; }
+  .tag-demo-row,.tag-demo-split { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+  .tag-demo-row { justify-content:space-between; max-width:360px; }
+  .tag-demo-file { font:var(--font-body-sm); color:var(--color-font-secondary); }
+}
+.dark .preview-tag .tag--tab { --tag-tab-bg-hover:var(--container-15); --tag-tab-bg-selected:var(--gray-02); --tag-tab-bg-selected-hover:var(--gray-03); }
+</style>
+<style>
+@scope (.preview-text-tabs) {
+  .tt-root { width:100%; min-width:0; }
+  .tt-list { display:flex; align-items:center; gap:24px; width:100%; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; -ms-overflow-style:none; }
+  .tt-list::-webkit-scrollbar { display:none; }
+  .tt-tab { flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; margin:0; padding:0; border:0; background:none; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .tt-label { display:inline-block; font:var(--font-subtitle-lg); font-weight:var(--font-weight-regular); color:var(--text-placeholder); white-space:nowrap; transition:color var(--duration-fast) var(--ease-standard); }
+  .tt-label::before { content:attr(data-label); display:block; height:0; overflow:hidden; visibility:hidden; font-weight:var(--font-weight-bold); }
+  .tt-tab:hover .tt-label { color:var(--text-secondary); }
+  .tt-tab-active .tt-label { color:#000000; font-weight:var(--font-weight-bold); }
+  .tt-tab:focus-visible { outline:var(--outline-width-focus) solid var(--focus-ring); outline-offset:var(--outline-offset-gap); border-radius:var(--radius-xs); }
+  .tt-demo-empty { display:flex; flex-direction:column; gap:8px; padding:16px; border:1px dashed var(--color-comp-border); border-radius:var(--radius-container); }
+  .tt-demo-empty-text { font:var(--font-caption-lg); color:var(--text-disabled); }
+  .tt-demo-panel { padding:20px 20px 24px; background:var(--surface-container-lowest); border-radius:var(--radius-container); box-shadow:var(--shadow-card); }
+  .tt-demo-panel-body { font:var(--font-body-md); color:var(--text-secondary); margin:12px 0 0; }
+}
+.dark .preview-text-tabs .tt-tab-active .tt-label { color:var(--white); }
+</style>
+<style>
+@scope (.preview-toggle) {
+  .tg-root { --tg-track-w:36px; --tg-track-h:20px; --tg-knob-size:16px; --tg-pad:2px; --tg-travel:calc(var(--tg-track-w) - var(--tg-knob-size) - var(--tg-pad) * 2); display:inline-flex; align-items:center; gap:8px; width:auto; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; }
+  .tg-switch { position:relative; flex:0 0 auto; box-sizing:border-box; width:var(--tg-track-w); height:var(--tg-track-h); padding:0; border:0; border-radius:var(--radius-full); appearance:none; cursor:inherit; outline:none; background:var(--color-comp-background-secondary); transition:background-color var(--duration-fast) var(--ease-standard); }
+  .tg-switch-on { background:var(--color-comp-background-emphasize); }
+  .tg-switch::after { content:""; position:absolute; inset:0; border-radius:var(--radius-full); pointer-events:none; opacity:0; background:var(--color-interactive-hover); transition:opacity var(--duration-fast) var(--ease-standard); }
+  .tg-root:not(.tg-root-disabled) .tg-switch:hover::after { opacity:1; }
+  .tg-root:not(.tg-root-disabled) .tg-switch:active::after { opacity:1; background:var(--color-interactive-pressed); }
+  .tg-switch:focus-visible { outline:var(--outline-width-focus) solid var(--focus-ring); outline-offset:var(--outline-offset-gap); }
+  .tg-knob { position:absolute; z-index:1; top:50%; left:var(--tg-pad); box-sizing:border-box; width:var(--tg-knob-size); height:var(--tg-knob-size); border-radius:var(--radius-full); background:var(--color-comp-background-primary); transform:translate(0,-50%); outline:var(--border-width-thin) solid transparent; outline-offset:0; transition:transform var(--duration-medium) var(--ease-standard),outline-color var(--duration-fast) var(--ease-standard); }
+  .tg-switch-on .tg-knob { transform:translate(var(--tg-travel),-50%); }
+  .tg-switch-off .tg-knob { outline-color:var(--color-comp-background-tertiary); }
+  .tg-label { font:var(--font-body-md); color:var(--on-surface); }
+  .tg-root-disabled { opacity:.5; cursor:not-allowed; }
+  .tg-demo-matrix { display:flex; flex-wrap:wrap; gap:16px; }
+  .tg-demo-cell { display:flex; flex-direction:column; align-items:center; gap:12px; padding:16px 22px; background:var(--surface-container-low); border-radius:var(--radius-lg); }
+  .tg-demo-cap { font:var(--font-caption-lg); color:var(--text-secondary); white-space:nowrap; }
+  .tg-demo-stack { display:flex; flex-direction:column; align-items:flex-start; gap:16px; }
+}
+.dark .preview-toggle .tg-knob { background:var(--white); }
+</style>
+<style>
+@scope (.preview-checkbox) {
+  .cbx { --cbx-unchecked-border:var(--color-icon-tertiary); --cbx-unchecked-fill:var(--color-fg-unchecked); display:inline-flex; align-items:center; gap:var(--spacing-2); width:auto; font:var(--font-body-md); color:var(--on-surface); cursor:pointer; user-select:none; vertical-align:middle; }
+  .cbx-control { flex:none; display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; }
+  .cbx-box { position:relative; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border:var(--border-width-thin) solid var(--cbx-unchecked-border); border-radius:var(--radius-sm); background:var(--cbx-unchecked-fill); transition:background-color var(--duration-fast) var(--ease-standard),border-color var(--duration-fast) var(--ease-standard); }
+  .cbx-circle .cbx-box { border-radius:var(--radius-full); }
+  .cbx.is-checked .cbx-box { border-color:var(--color-comp-background-emphasize); background:var(--color-comp-background-emphasize); }
+  .cbx-check { position:relative; display:inline-flex; opacity:0; filter:drop-shadow(0 1.4px 1.3px var(--container-10)); transform:translateY(.5px) scale(.55); transition:opacity var(--duration-fast) var(--ease-out),transform var(--duration-fast) var(--ease-out); }
+  .cbx.is-checked .cbx-check { opacity:1; transform:translateY(.5px) scale(1); }
+  .cbx-check-outline { position:relative; color:var(--container-05); }
+  .cbx-check-mark { position:absolute; inset:0; color:var(--white); }
+  .cbx-label { min-width:0; }
+  .cbx.is-enabled:hover .cbx-box { border-color:var(--color-icon-secondary); background:var(--color-comp-background-secondary); }
+  .cbx.is-enabled.is-checked:hover .cbx-box { border-color:var(--primary-hover); background:var(--primary-hover); }
+  .cbx:focus { outline:none; }
+  .cbx:focus-visible .cbx-box { outline:var(--outline-width-focus) solid var(--focus-ring); outline-offset:var(--outline-offset-gap); }
+  .cbx.is-disabled { opacity:.4; cursor:not-allowed; }
+  .cbx-demo-matrix { display:grid; grid-template-columns:104px repeat(4,minmax(0,1fr)); gap:1px; background:var(--color-comp-divider); border-radius:var(--radius-container); overflow:hidden; }
+  .cbx-demo-cell { display:flex; align-items:center; justify-content:center; min-height:88px; padding:16px 12px; background:var(--surface-container-lowest); }
+  .cbx-demo-head { min-height:0; padding:12px; font:var(--font-caption-lg); font-weight:var(--font-weight-bold); color:var(--text-secondary); background:var(--surface-container-low); }
+  .cbx-demo-rowhead { justify-content:flex-start; color:var(--on-surface); }
+  .cbx-demo-stack,.cbx-demo-list { display:flex; flex-direction:column; gap:18px; }
+  .cbx-demo-card-head { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:16px; border-bottom:1px solid var(--color-comp-divider); }
+  .cbx-demo-counter { font:var(--font-caption-lg); font-weight:var(--font-weight-bold); color:var(--primary); background:var(--primary-container); padding:2px 10px; border-radius:var(--radius-full); }
+  .cbx-demo-list-item { padding:14px 0; border-bottom:1px solid var(--color-comp-divider); }
+  .cbx-demo-list-item:last-child { border-bottom:0; }
+  .cbx-demo-list-desc { font:var(--font-caption-lg); color:var(--text-secondary); margin:4px 0 0 32px; }
+  @media (max-width:760px) { .cbx-demo-matrix { grid-template-columns:78px repeat(4,minmax(74px,1fr)); overflow-x:auto; } }
+}
+</style>
+<style>
 @scope (.preview-button) {
 .demo-page {
   max-width: 1400px;
@@ -9782,8 +9893,138 @@ window.PreviewDemos["input-box"] = __export.Demo;
 })();
 /* END_COMPONENT_PREVIEW:input-box */
 
+/* ===== components/Checkbox/index.jsx + demo.jsx ===== */
+(function(){
+ const { Fragment,useState }=React;
+ const { Icon }=window.ComponentIcons;
+ const ICON_SIZE=15,CHECK_STROKE=2*(24/15),CHECK_STROKE_OUTLINE=4*(24/15);
+ function Checkbox(props){
+  const shape=props.shape||'square',disabled=props.disabled===true,controlled=props.checked!=null;const [innerChecked,setInnerChecked]=useState(props.defaultChecked===true);const checked=controlled?props.checked===true:innerChecked;
+  const toggle=()=>{if(disabled)return;if(!controlled)setInnerChecked(!checked);props.onChange?.(!checked);};
+  const keydown=event=>{if(event.key===' '||event.key==='Enter'){event.preventDefault();toggle();}};
+  const className=['cbx','cbx-'+shape,checked?'is-checked':'is-unchecked',disabled?'is-disabled':'is-enabled'].join(' ');
+  return <span className={className} role="checkbox" aria-checked={checked} aria-disabled={disabled} tabIndex={disabled?-1:0} onClick={toggle} onKeyDown={keydown}><span className="cbx-control"><span className="cbx-box"><span className="cbx-check" aria-hidden="true"><Icon name="check" size={ICON_SIZE} strokeWidth={CHECK_STROKE_OUTLINE} className="cbx-check-outline"/><Icon name="check" size={ICON_SIZE} strokeWidth={CHECK_STROKE} className="cbx-check-mark"/></span></span></span>{props.label?<span className="cbx-label">{props.label}</span>:null}</span>;
+ }
+ const states=[{key:'unchecked',label:'未选中',checked:false},{key:'checked',label:'选中',checked:true},{key:'disabled-off',label:'禁用 · 未选中',checked:false,disabled:true},{key:'disabled-on',label:'禁用 · 选中',checked:true,disabled:true}];
+ const permissions=[{id:'backup',label:'自动同步云端备份',desc:'每天 02:00 执行增量同步'},{id:'notify',label:'系统通知提醒',desc:'重要事件推送到通知中心'},{id:'beta',label:'加入 Beta 体验计划',desc:'优先获取新版本与灰度能力'},{id:'analytics',label:'匿名使用数据统计',desc:'由组织策略统一管控，不可修改',disabled:true}];
+ function Demo(){
+  const [selected,setSelected]=useState(['backup','beta']);const selectable=permissions.filter(item=>!item.disabled).map(item=>item.id);const allChecked=selectable.every(id=>selected.includes(id));
+  const change=id=>next=>setSelected(prev=>next?[...new Set([...prev,id])]:prev.filter(value=>value!==id));
+  return <div className="demo-page"><header className="demo-header"><h1 className="demo-title">Checkbox 勾选组件</h1><p className="demo-subtitle">方形与圆形两种形状，覆盖选中、未选中、可用和禁用状态。</p></header>
+   <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">形状 × 状态矩阵</h2><span className="demo-section-tag"><Icon name="square-check-big" size={12}/>8 种组合</span></div><p className="demo-section-desc">容器 24×24，实际方框 20×20；禁用态在对应状态基础上整体 40% 不透明度。</p><div className="cbx-demo-matrix"><div className="cbx-demo-cell cbx-demo-head"/>{states.map(state=><div className="cbx-demo-cell cbx-demo-head" key={state.key}>{state.label}</div>)}{['square','circle'].map(shape=><Fragment key={shape}><div className="cbx-demo-cell cbx-demo-head cbx-demo-rowhead">{shape==='square'?'方形':'圆形'}</div>{states.map(state=><div className="cbx-demo-cell" key={shape+state.key}><Checkbox shape={shape} checked={state.checked} disabled={state.disabled} onChange={()=>{}}/></div>)}</Fragment>)}</div><p className="demo-note">矩阵使用受控展示态；键盘焦点与可交互示例见下方。</p></section>
+   <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">受控多选</h2><span className="demo-section-tag"><Icon name="mouse-pointer-click" size={12}/>交互</span></div><p className="demo-section-desc">checked + onChange 完全受控；禁用项不参与全选统计。</p><div className="demo-card"><div className="cbx-demo-card-head"><Checkbox checked={allChecked} onChange={next=>setSelected(next?selectable:[])} label="全选可用项"/><span className="cbx-demo-counter">{selected.length} / {selectable.length}</span></div><div className="cbx-demo-list">{permissions.map(item=><div className="cbx-demo-list-item" key={item.id}><Checkbox checked={selected.includes(item.id)} disabled={item.disabled} onChange={change(item.id)} label={item.label}/><p className="cbx-demo-list-desc">{item.desc}</p></div>)}</div></div></section>
+   <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">非受控与边界情况</h2><span className="demo-section-tag"><Icon name="list-checks" size={12}/>用法</span></div><div className="demo-grid demo-grid-2"><div className="demo-card"><h3 className="demo-card-title">非受控</h3><div className="cbx-demo-stack"><Checkbox defaultChecked label="默认选中，点击可切换"/><Checkbox label="默认未选中，点击可切换"/><Checkbox shape="circle" defaultChecked label="圆形 · 默认选中"/><Checkbox defaultChecked disabled label="禁用 · 不可交互"/></div></div><div className="demo-card"><h3 className="demo-card-title">无标签与长文本</h3><div className="cbx-demo-stack"><Checkbox defaultChecked/><Checkbox/><Checkbox defaultChecked label="我已阅读并同意《服务协议》《隐私政策》以及关于跨境数据传输的补充条款"/><Checkbox label="未选中态的长文本标签同样支持折行"/></div></div></div></section>
+  </div>;
+ }
+ window.PreviewDemos.checkbox=Demo;
+})();
+
+/* ===== components/Toggle/index.jsx + demo.jsx ===== */
+(function(){
+ const { useState }=React;
+ const { Icon }=window.ComponentIcons;
+ function Toggle(props){
+  const disabled=!!props.disabled;const controlled=props.checked!==undefined&&props.checked!==null;const [innerChecked,setInnerChecked]=useState(!!props.defaultChecked);const checked=controlled?!!props.checked:innerChecked;
+  const change=event=>{if(disabled)return;const next=!checked;if(!controlled)setInnerChecked(next);props.onChange?.(next,event);};
+  const rootClass='tg-root'+(disabled?' tg-root-disabled':'')+(props.className?' '+props.className:'');
+  return <label className={rootClass}><button type="button" role="switch" aria-checked={checked} disabled={disabled} className={'tg-switch '+(checked?'tg-switch-on':'tg-switch-off')} onClick={change}><span className="tg-knob"/></button>{props.label?<span className="tg-label">{props.label}</span>:null}</label>;
+ }
+ function ControlledToggle(){const [checked,setChecked]=useState(false);return <div className="tg-demo-stack"><Toggle checked={checked} onChange={setChecked} label={checked?'受控状态：开':'受控状态：关'}/><span className="tg-demo-cap">checked = {String(checked)}</span></div>;}
+ function Demo(){return <div className="demo-page"><header className="demo-header"><h1 className="demo-title">组件预览</h1><p className="demo-subtitle">罗列 Toggle 的状态与使用方式。</p></header><section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">Toggle</h2><span className="demo-section-tag"><Icon name="toggle-right" size={12}/>表单控件</span></div><p className="demo-section-desc">固定尺寸 36 × 20，支持开/关、可用/禁用四态，以及受控和非受控两种用法。</p><div className="demo-grid demo-grid-2">
+  <div className="demo-item"><h3 className="demo-item-title">四态矩阵（无文案）</h3><div className="tg-demo-matrix"><div className="tg-demo-cell"><Toggle defaultChecked/><span className="tg-demo-cap">On / Enabled</span></div><div className="tg-demo-cell"><Toggle/><span className="tg-demo-cap">Off / Enabled</span></div><div className="tg-demo-cell"><Toggle checked disabled/><span className="tg-demo-cap">On / Disabled</span></div><div className="tg-demo-cell"><Toggle disabled/><span className="tg-demo-cap">Off / Disabled</span></div></div><p className="demo-note">禁用态整体 50% 透明度，并保留开 / 关底色。</p></div>
+  <div className="demo-item"><h3 className="demo-item-title">带文案</h3><div className="tg-demo-stack"><Toggle defaultChecked label="Wi-Fi"/><Toggle label="蓝牙"/></div><p className="demo-note">点击开关或右侧文字都可切换。</p></div>
+  <div className="demo-item"><h3 className="demo-item-title">受控开关</h3><ControlledToggle/><p className="demo-note">通过 checked + onChange 由外部 state 驱动。</p></div>
+  <div className="demo-item"><h3 className="demo-item-title">非受控 + 长文案</h3><div className="tg-demo-stack"><Toggle defaultChecked label="接收营销推送（可在设置中随时关闭）"/><Toggle label="仅在使用期间允许访问位置信息"/></div><p className="demo-note">仅传 defaultChecked，内部自行维护状态。</p></div>
+ </div></section></div>;}
+ window.PreviewDemos.toggle=Demo;
+})();
+
+/* ===== components/TextTabs/index.jsx + demo.jsx ===== */
+(function(){
+ const { useRef,useState }=React;
+ const { Icon }=window.ComponentIcons;
+ function TextTabs(props){
+  const items=props.items||[];const gap=props.gap??24;const controlled=props.activeId!=null;
+  const [internalId,setInternalId]=useState(props.defaultActiveId??items[0]?.id??null);const activeId=controlled?props.activeId:internalId;const listRef=useRef(null);
+  const nodeFor=id=>listRef.current?.querySelector('[data-tab-id="'+id+'"]')||null;
+  const select=item=>{if(!controlled)setInternalId(item.id);props.onChange?.(item);nodeFor(item.id)?.scrollIntoView?.({block:'nearest',inline:'nearest'});};
+  const keydown=event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)||!items.length)return;event.preventDefault();const current=items.findIndex(item=>item.id===activeId);let next=current<0?0:current;if(event.key==='ArrowLeft')next=current<=0?items.length-1:current-1;if(event.key==='ArrowRight')next=current>=items.length-1?0:current+1;if(event.key==='Home')next=0;if(event.key==='End')next=items.length-1;select(items[next]);nodeFor(items[next].id)?.focus?.();};
+  if(!items.length)return null;
+  return <div className="tt-root"><div className="tt-list" role="tablist" ref={listRef} onKeyDown={keydown} style={{gap:gap+'px'}}>{items.map(item=>{const active=item.id===activeId;return <button key={item.id} type="button" role="tab" data-tab-id={item.id} aria-selected={active} tabIndex={active?0:-1} className={active?'tt-tab tt-tab-active':'tt-tab'} onClick={()=>select(item)}><span className="tt-label" data-label={item.label}>{item.label}</span></button>;})}</div></div>;
+ }
+ const basicTabs=[{id:'all',label:'全部'},{id:'photo',label:'图片'},{id:'video',label:'视频'},{id:'doc',label:'文档'}];
+ const longTabs=[{id:'a',label:'推荐给你'},{id:'b',label:'最近浏览过的内容'},{id:'c',label:'我的收藏与下载'}];
+ const manyTabs=[{id:'m1',label:'推荐'},{id:'m2',label:'关注'},{id:'m3',label:'热门榜单'},{id:'m4',label:'视频'},{id:'m5',label:'直播'},{id:'m6',label:'同城'},{id:'m7',label:'音乐'},{id:'m8',label:'科技数码'},{id:'m9',label:'汽车'},{id:'m10',label:'影视'}];
+ function ControlledDemo(){const [active,setActive]=useState('photo');return <div><TextTabs items={basicTabs} activeId={active} onChange={item=>setActive(item.id)}/><p className="demo-note">受控用法：当前选中 {active}，由外部 state 驱动。</p></div>;}
+ function ContentDemo(){const [active,setActive]=useState('m2');const current=manyTabs.find(item=>item.id===active);return <div className="tt-demo-panel"><TextTabs items={manyTabs.slice(0,5)} activeId={active} onChange={item=>setActive(item.id)}/><p className="tt-demo-panel-body">当前视图内容：{current?.label||''}</p></div>;}
+ function Demo(){return <div className="demo-page"><header className="demo-header"><h1 className="demo-title">组件预览</h1><p className="demo-subtitle">罗列 TextTabs 的多种形态与交互方式。</p></header><section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">TextTabs</h2><span className="demo-section-tag"><Icon name="layout-panel-top" size={12}/>导航</span></div><p className="demo-section-desc">纯文字标签导航。未选中为 40% / Regular，选中为 100% / Bold，字号 18px，默认间距 24px。</p><div className="demo-grid demo-grid-2">
+  <div className="demo-item"><h3 className="demo-item-title">非受控 · 默认第一项</h3><TextTabs items={basicTabs}/><p className="demo-note">组件内部维护选中态，点击或使用方向键切换。</p></div>
+  <div className="demo-item"><h3 className="demo-item-title">非受控 · 指定默认项</h3><TextTabs items={basicTabs} defaultActiveId="video"/><p className="demo-note">defaultActiveId="video"：初始高亮第三项。</p></div>
+  <div className="demo-item"><h3 className="demo-item-title">受控用法</h3><ControlledDemo/></div>
+  <div className="demo-item"><h3 className="demo-item-title">长文案</h3><TextTabs items={longTabs} defaultActiveId="b"/><p className="demo-note">预留 Bold 宽度，切换时文字不抖动。</p></div>
+  <div className="demo-item"><h3 className="demo-item-title">超长列表 · 横向滚动</h3><TextTabs items={manyTabs} defaultActiveId="m8"/><p className="demo-note">横向溢出时隐藏滚动条，选中项自动滚动到可见区域。</p></div>
+  <div className="demo-item"><h3 className="demo-item-title">自定义间距 gap = 40</h3><TextTabs items={basicTabs} gap={40}/><p className="demo-note">通过 gap 调整标签间隔。</p></div>
+  <div className="demo-item"><h3 className="demo-item-title">空数据</h3><div className="tt-demo-empty"><TextTabs items={[]}/><span className="tt-demo-empty-text">items 为空数组时不渲染任何内容</span></div></div>
+  <div className="demo-item"><h3 className="demo-item-title">组合场景</h3><ContentDemo/><p className="demo-note">标签与内容区联动切换。</p></div>
+ </div></section></div>;}
+ window.PreviewDemos['text-tabs']=Demo;
+})();
+
+/* ===== components/Tag/index.jsx + demo.jsx ===== */
+(function(){
+ const { useState }=React;
+ const { Icon }=window.ComponentIcons;
+ const VARIANT_CLASS={'diff-add':'tag--diff-add','diff-remove':'tag--diff-remove',icon:'tag--icon',tab:'tag--tab'};
+ const DEFAULT_ICON_SIZE={icon:14,tab:16};
+ function formatDiffValue(value,sign){const text=String(value);const signed=/^[+-]/.test(text)?text:sign+text;return signed.replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+ function Tag(props){
+  const variant=props.variant||'diff-add';
+  const isTab=variant==='tab';
+  const interactive=props.interactive!=null?props.interactive:isTab;
+  const selected=isTab&&!!props.selected;
+  const className=['tag',VARIANT_CLASS[variant]||VARIANT_CLASS['diff-add'],selected?'tag--selected':'',props.disabled?'tag--disabled':'',isTab&&!interactive?'tag--static':'',props.className||''].filter(Boolean).join(' ');
+  const content=<>{props.icon?<Icon name={props.icon} size={props.iconSize??DEFAULT_ICON_SIZE[variant]??14} className="tag__icon"/>:null}<span className="tag__label">{props.children}</span></>;
+  return isTab&&interactive?<button type="button" className={className} disabled={props.disabled} aria-pressed={selected} onClick={props.onClick}>{content}</button>:<span className={className} title={props.title}>{content}</span>;
+ }
+ function DiffTags({added,removed,gap=4,className=''}){const hasAdded=added!=null;const hasRemoved=removed!=null;if(!hasAdded&&!hasRemoved)return null;return <span className={'tag-diff-pair'+(className?' '+className:'')} style={{gap}}>{hasAdded?<Tag variant="diff-add">{formatDiffValue(added,'+')}</Tag>:null}{hasRemoved?<Tag variant="diff-remove">{formatDiffValue(removed,'-')}</Tag>:null}</span>;}
+ function TagGroup(props){
+  const items=props.items||[];const variant=props.variant||'tab';const multiple=!!props.multiple;const selectable=props.selectable!=null?props.selectable:variant==='tab';const controlled=props.value!==undefined;
+  const [innerValue,setInnerValue]=useState(()=>props.defaultValue!==undefined?props.defaultValue:(multiple?[]:(items[0]?.id??null)));
+  const value=controlled?props.value:innerValue;const selected=id=>multiple?(value||[]).includes(id):value===id;
+  const choose=item=>{if(!selectable||item.disabled)return;const next=multiple?(selected(item.id)?(value||[]).filter(id=>id!==item.id):[...(value||[]),item.id]):item.id;if(!controlled)setInnerValue(next);props.onChange?.(next,item);};
+  return <div className="tag-group" style={{gap:props.gap??(variant==='tab'?8:4)}} role={variant==='tab'?'tablist':undefined}>{items.map(item=><Tag key={item.id} variant={variant} icon={item.icon} disabled={item.disabled} title={item.title||item.label} selected={selected(item.id)} interactive={selectable} onClick={()=>choose(item)}>{item.label}</Tag>)}</div>;
+ }
+ function Demo(){
+  const viewTabs=[{id:'grid',label:'网格',icon:'layout-grid'},{id:'list',label:'列表',icon:'list'},{id:'chart',label:'图表',icon:'chart-column'},{id:'setting',label:'设置',icon:'settings'}];
+  const memberTabs=[{id:'users',label:'成员',icon:'users'},{id:'star',label:'收藏',icon:'star'},{id:'files',label:'文件',icon:'folder'},{id:'alert',label:'通知',icon:'bell'},{id:'off',label:'已归档',icon:'bookmark',disabled:true}];
+  const iconTags=[{id:'code',label:'代码编辑',icon:'code'},{id:'hash',label:'标签',icon:'hash'},{id:'terminal',label:'命令行',icon:'terminal'},{id:'branch',label:'分支',icon:'git-branch'},{id:'file',label:'文件',icon:'file-code'}];
+  const files=[{id:'f1',name:'index.jsx',added:1280,removed:64},{id:'f2',name:'theme.css',added:86,removed:412},{id:'f3',name:'README.md',added:24,removed:0}];
+  const [controlled,setControlled]=useState('chart');const [multiple,setMultiple]=useState(['users','files']);
+  return <div className="demo-page"><header className="demo-header"><h1 className="demo-title">Tag 标签组件</h1><p className="demo-subtitle">三种形态：代码增删标签、图标 + 文字标签、多个可选中圆角标签。</p></header>
+   <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">1. 代码增删标签</h2><span className="demo-section-tag">diff-add / diff-remove</span></div><p className="demo-section-desc">增删标签固定成对展示，自动补正负号与千分位；也支持单独使用。</p><div className="demo-grid demo-grid-2"><div className="demo-item"><h3 className="demo-item-title">增删混排</h3><DiffTags added={128} removed={64}/><p className="demo-note">固定间距 4px，高度 18px。</p></div><div className="demo-item"><h3 className="demo-item-title">多行数据</h3><div className="tag-demo-list">{files.map(file=><div className="tag-demo-row" key={file.id}><span className="tag-demo-file">{file.name}</span><DiffTags added={file.added} removed={file.removed}/></div>)}</div></div><div className="demo-item"><h3 className="demo-item-title">单侧与空数据</h3><div className="tag-demo-split"><DiffTags added={12}/><DiffTags removed={8}/><DiffTags added={0} removed={0}/><DiffTags/></div></div></div></section>
+   <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">2. 图标 + 文字标签</h2><span className="demo-section-tag">icon</span></div><p className="demo-section-desc">14px 图标 + 12px 文字，container5 底色，支持无图标和长文案。</p><div className="demo-grid demo-grid-2"><div className="demo-item"><h3 className="demo-item-title">单个标签</h3><Tag variant="icon" icon="code">代码编辑</Tag></div><div className="demo-item"><h3 className="demo-item-title">多个标签</h3><TagGroup items={iconTags} variant="icon"/></div><div className="demo-item"><h3 className="demo-item-title">长文本 / 无图标</h3><div className="tag-demo-split"><Tag variant="icon" icon="tag">这是一个很长的标签文案</Tag><Tag variant="icon">仅文字</Tag></div></div></div></section>
+   <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">3. 可选中圆角标签</h2><span className="demo-section-tag">tab</span></div><p className="demo-section-desc">支持非受控单选、受控单选、多选、禁用以及静态展示。</p><div className="demo-grid demo-grid-2"><div className="demo-item"><h3 className="demo-item-title">默认单选</h3><TagGroup items={viewTabs}/></div><div className="demo-item"><h3 className="demo-item-title">受控单选</h3><TagGroup items={viewTabs} value={controlled} onChange={setControlled}/><p className="demo-note">value = {controlled}</p></div><div className="demo-item"><h3 className="demo-item-title">多选</h3><TagGroup items={memberTabs} multiple value={multiple} onChange={setMultiple}/><p className="demo-note">已选：{multiple.join(' / ')||'无'}</p></div><div className="demo-item"><h3 className="demo-item-title">静态状态对照</h3><div className="tag-demo-split"><Tag variant="tab" icon="layout-grid" interactive={false}>未选中</Tag><Tag variant="tab" icon="layout-grid" interactive={false} selected>已选中</Tag><Tag variant="tab" icon="layout-grid" interactive={false} disabled>禁用</Tag></div></div></div></section>
+  </div>;
+ }
+ window.PreviewDemos.tag=Demo;
+})();
+
+/* ===== components/ActionChip/index.jsx + demo.jsx ===== */
+(function(){
+ const { Icon } = window.ComponentIcons;
+ function ActionChip({label, icon, onClick, width, className=''}) {
+  const style = width == null ? undefined : {'--ac-chip-width': typeof width === 'number' ? width+'px' : width};
+  return <button type="button" className={'ac-chip'+(className?' '+className:'')} style={style} onClick={onClick}>{icon ? <Icon name={icon} size={14} className="ac-chip-icon"/> : null}<span className="ac-chip-label">{label}</span></button>;
+ }
+ function Demo(){
+  const actions=[{id:'edit',icon:'square-pen',label:'编辑'},{id:'share',icon:'share-2',label:'分享'},{id:'copy',icon:'copy',label:'复制'},{id:'download',icon:'download',label:'下载'}];
+  return <div className="demo-page"><header className="demo-header"><h1 className="demo-title">组件预览</h1><p className="demo-subtitle">ActionChip 操作块 —— 图标 + 文字，仅一个默认状态。</p></header><section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">ActionChip</h2><span className="demo-section-tag"><Icon name="zap" size={12}/>操作</span></div><p className="demo-section-desc">图标 14×14、文字 12px/行高 20、图文间距 4px、左右边距 8px、固定高度 24px；宽度为变量，默认自适应内容。</p><div className="demo-grid demo-grid-2"><div className="demo-item"><h3 className="demo-item-title">默认状态</h3><div className="demo-chip-row">{actions.map(a=><ActionChip key={a.id} icon={a.icon} label={a.label}/>)}</div><p className="demo-note">唯一状态：品牌 10% 底 + 品牌色图文，高度固定 24px。</p></div><div className="demo-item"><h3 className="demo-item-title">宽度变量</h3><div className="demo-chip-row"><ActionChip icon="copy" label="复制"/><ActionChip icon="share-2" label="分享到工作群"/></div><p className="demo-note">width 缺省 → auto，随文案变化。</p><div className="demo-chip-row demo-chip-row-top"><ActionChip icon="download" label="导出" width={96}/><ActionChip icon="cloud-upload" label="上传到云端" width={96}/><ActionChip icon="settings" label="配置" width={96}/></div><p className="demo-note">固定宽度组内等宽，超长文案自动省略号截断。</p><div className="demo-chip-frame"><ActionChip icon="external-link" label="打开详情面板" width="100%"/></div></div><div className="demo-item"><h3 className="demo-item-title">长文本截断 / 无图标</h3><div className="demo-chip-row demo-chip-row-fixed"><ActionChip icon="file-text" label="一键导出全部检测报告并同步到云端空间"/><ActionChip icon="cloud-upload" label="同步"/><ActionChip label="仅文字"/></div><p className="demo-note">容器限宽时文字自动省略号截断；不传 icon 时退化为纯文字操作块。</p></div></div><div className="demo-card demo-card-wide demo-stack"><h3 className="demo-card-title">实际使用：卡片操作条</h3><div className="demo-chip-row">{actions.map(a=><ActionChip key={a.id} icon={a.icon} label={a.label}/>)}<ActionChip icon="external-link" label="打开详情"/><ActionChip icon="star" label="收藏"/></div></div></section></div>;
+ }
+ window.PreviewDemos['action-chip']=Demo;
+})();
+
 // Add future components to this registry; navigation and panels are generated together.
-const COMPONENT_PREVIEWS = [{id:'button',label:'Button'}, {id:'dropdown-button',label:'Dropdown Button'}, {id:'segmented-button',label:'SegmentedButton'}, {id:'input-box',label:'Input Box'}, {id:'searchbar',label:'SearchBar'}];
+const COMPONENT_PREVIEWS = [{id:'button',label:'Button'}, {id:'dropdown-button',label:'Dropdown Button'}, {id:'segmented-button',label:'SegmentedButton'}, {id:'input-box',label:'Input Box'}, {id:'searchbar',label:'SearchBar'}, {id:'action-chip',label:'ActionChip'}, {id:'tag',label:'Tag'}, {id:'text-tabs',label:'TextTabs'}, {id:'toggle',label:'Toggle'}, {id:'checkbox',label:'Checkbox'}];
 function ComponentGallery() {
  const tabs = COMPONENT_PREVIEWS;
  const ThemeIcon = window.ComponentIcons.Icon;

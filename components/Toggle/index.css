@@ -1,0 +1,109 @@
+/* ── 固定尺寸：轨道 36 × 20，滑块 16，四周内边距 2 ── */
+.tg-root {
+  --tg-track-w: 36px;
+  --tg-track-h: 20px;
+  --tg-knob-size: 16px;
+  --tg-pad: 2px;
+  --tg-travel: calc(var(--tg-track-w) - var(--tg-knob-size) - var(--tg-pad) * 2);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── 轨道（button 本体）── */
+.tg-switch {
+  position: relative;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  width: var(--tg-track-w);
+  height: var(--tg-track-h);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: inherit;
+  outline: none;
+  background-color: var(--color-comp-background-secondary); /* 关：黑 10% */
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.tg-switch-on {
+  background-color: var(--color-comp-background-emphasize); /* 开：Light/Brand #0A59F7 */
+}
+
+/* 交互叠加层：hover / 按下（不改变静息底色）*/
+.tg-switch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-full);
+  pointer-events: none;
+  opacity: 0;
+  background-color: var(--color-interactive-hover);
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.tg-root:not(.tg-root-disabled) .tg-switch:hover::after {
+  opacity: 1;
+}
+
+.tg-root:not(.tg-root-disabled) .tg-switch:active::after {
+  opacity: 1;
+  background-color: var(--color-interactive-pressed);
+}
+
+.tg-switch:focus-visible {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+/* ── 圆形滑块 ── */
+.tg-knob {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: var(--tg-pad);
+  box-sizing: border-box;
+  width: var(--tg-knob-size);
+  height: var(--tg-knob-size);
+  border-radius: var(--radius-full);
+  background-color: var(--color-comp-background-primary); /* contrary：白色 */
+  transform: translate(0, -50%);
+  outline: var(--border-width-thin) solid transparent;
+  outline-offset: 0;
+  transition:
+    transform var(--duration-medium) var(--ease-standard),
+    outline-color var(--duration-fast) var(--ease-standard);
+}
+
+.tg-switch-on .tg-knob {
+  transform: translate(var(--tg-travel), -50%);
+}
+
+/* 未选中：滑块外部 1px 描边 comp_background_tertiary（黑 5%）*/
+.tg-switch-off .tg-knob {
+  outline-color: var(--color-comp-background-tertiary);
+}
+
+/* 深色模式下滑块恒为白色，保证在深色轨道上始终对比可见 */
+.dark .tg-root .tg-knob {
+  background-color: var(--white);
+}
+
+/* ── 文案 ── */
+.tg-label {
+  font: var(--font-body-md);
+  color: var(--on-surface);
+}
+
+/* ── 禁用：整体透明度 50% ── */
+.tg-root-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
