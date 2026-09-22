@@ -1,247 +1,71 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import SearchBar from "./components/SearchBar/index.jsx";
 import "./demo.css";
 
-/** 状态用到的 token（色块用 token 变量实时取色，深色主题自动跟随） */
-const T = {
-  bg: { token: "comp_background_tertiary", cssVar: "--color-comp-background-tertiary", value: "#000000 5%" },
-  hover: { token: "interactive_hover", cssVar: "--color-interactive-hover", value: "#000000 5%" },
-  pressed: { token: "interactive_pressed", cssVar: "--color-interactive-pressed", value: "#000000 10%" },
-  focus: { token: "interactive_focus", cssVar: "--color-comp-border-focus", value: "#0A59F7" },
-  emphasize: { token: "font_emphasize", cssVar: "--color-font-emphasize", value: "#0A59F7" },
-  container90: { token: "container90", cssVar: "--container-90", value: "#000000 90%" },
-  primary: { token: "font_primary", cssVar: "--color-font-primary", value: "#000000 90%" },
-  secondary: { token: "font_secondary", cssVar: "--color-font-secondary", value: "#000000 60%" },
-  tertiary: { token: "font_tertiary", cssVar: "--color-font-tertiary", value: "#000000 40%" },
-  none: { token: "无填充（transparent）", none: true, value: "transparent" },
-};
-
-/** 每个状态的背景色 / 文字色；null = 该尺寸没有这个状态 */
-const COLOR_ROWS = [
-  {
-    state: "默认",
-    large: { bg: [T.bg], text: [{ ...T.secondary, use: "图标 / 占位文字" }] },
-    small: { bg: [T.none], text: [{ ...T.secondary, use: "图标" }, { ...T.tertiary, use: "占位文字" }] },
-  },
-  {
-    state: "hover",
-    large: { bg: [{ ...T.bg }, { ...T.hover, use: "叠加" }], text: [{ ...T.secondary, use: "同默认" }] },
-    small: null,
-  },
-  {
-    state: "press",
-    large: { bg: [{ ...T.bg }, { ...T.pressed, use: "叠加" }], text: [{ ...T.secondary, use: "同默认" }] },
-    small: null,
-  },
-  {
-    state: "focus",
-    large: { bg: [T.bg], ring: [{ ...T.focus, use: "内部描边 2px" }], text: [{ ...T.secondary, use: "同默认" }] },
-    small: null,
-  },
-  {
-    state: "激活",
-    large: { bg: [T.bg], text: [{ ...T.secondary, use: "占位文字" }, { ...T.emphasize, use: "光标" }] },
-    small: { bg: [T.none], text: [{ ...T.secondary, use: "图标" }, { ...T.tertiary, use: "占位文字" }, { ...T.container90, use: "光标" }] },
-  },
-  {
-    state: "输入中",
-    large: {
-      bg: [T.bg],
-      text: [{ ...T.primary, use: "文字" }, { ...T.emphasize, use: "光标" }, { ...T.secondary, use: "关闭图标" }],
-    },
-    small: { bg: [T.none], text: [{ ...T.primary, use: "文字" }, { ...T.container90, use: "光标" }] },
-  },
-  {
-    state: "输入完成",
-    large: { bg: [T.bg], text: [{ ...T.primary, use: "文字" }, { ...T.secondary, use: "关闭图标" }] },
-    small: { bg: [T.none], text: [{ ...T.primary, use: "文字" }] },
-  },
-];
-
-function ColorLine({ label, items }) {
-  return (
-    <div className="demo-color-line">
-      <span className="demo-color-key">{label}</span>
-      <span className="demo-color-items">
-        {items.map((it, i) => (
-          <span className="demo-color-chip" key={i}>
-            <i
-              className={it.none ? "demo-swatch demo-swatch-none" : "demo-swatch"}
-              style={it.none ? undefined : { background: `var(${it.cssVar})` }}
-            />
-            <span className="demo-color-token">{it.token}</span>
-            <span className="demo-color-value">{it.value}</span>
-            {it.use ? <span className="demo-color-use">{it.use}</span> : null}
-          </span>
-        ))}
-      </span>
-    </div>
-  );
+const SIZES = [{value:"large",label:"Large · Filled"},{value:"small",label:"Small · Unfilled"}];
+const STATES = ["Default", "Hover", "Focus", "Pressed", "Disabled"];
+function Section({title,description,children}) {
+ return <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">{title}</h2></div><p className="demo-section-desc">{description}</p>{children}</section>;
 }
-
-function ColorCell({ data }) {
-  if (!data) return <span className="demo-color-empty">—（无此状态）</span>;
-  return (
-    <div className="demo-color-cell">
-      <ColorLine label="背景" items={data.bg} />
-      {data.ring ? <ColorLine label="描边" items={data.ring} /> : null}
-      <ColorLine label="文字" items={data.text} />
-    </div>
-  );
+function Select({label,value,onChange,options}) {
+ return <label className="button-control"><span>{label}</span><span className="button-select-wrap"><select value={value} onChange={e=>onChange(e.target.value)}>{options.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select></span></label>;
 }
-
-/**
- * 只展示规格中提到的状态，大号 / 小号按行对齐
- * 默认 · hover · press · focus · 激活 · 输入中 · 输入完成
- */
-export default function Demo() {
-  const [liveLarge, setLiveLarge] = useState("");
-  const [liveSmall, setLiveSmall] = useState("");
-  const [typing, setTyping] = useState("HarmonyOS 设计组件");
-  const [done, setDone] = useState("搜索框状态演示");
-  const liveRef = useRef(null);
-  const [metrics, setMetrics] = useState("");
-
-  // 实测大号 / 小号盒子尺寸与文字行高，便于核对内边距
-  useEffect(() => {
-    const root = liveRef.current;
-    if (!root) return;
-
-    const measure = (el, label) => {
-      if (!el) return "";
-      const cs = getComputedStyle(el);
-      const box = Math.round(el.getBoundingClientRect().height);
-      const input = el.querySelector(".sb-input");
-      // 行高设在 .sb-input 上，需读输入框自身的计算值
-      const lineHeight = input ? getComputedStyle(input).lineHeight : cs.lineHeight;
-      return `${label}：高 ${box}px，上下内边距 ${cs.paddingTop}/${cs.paddingBottom}，文字行高 ${lineHeight}，左右内边距 ${cs.paddingLeft}/${cs.paddingRight}`;
-    };
-
-    setMetrics(
-      [
-        measure(root.querySelector(".sb-large"), "实测大号"),
-        measure(root.querySelector(".sb-small"), "实测小号"),
-      ]
-        .filter(Boolean)
-        .join(" ｜ ")
-    );
-  }, []);
-
-  return (
-    <div className="demo-page">
-      <header className="demo-header">
-        <div className="demo-title">
-          <img src="./assets/uploads/logo.svg" alt="logo" style={{ width: 28, height: 28 }} />
-          <span>SearchBar</span>
-        </div>
-        <p className="demo-subtitle">
-          大号：16px、填充 comp_background_tertiary（Light #000000 5%）、上下 9px / 左右 12px、圆角 24px；
-          小号：12px、无填充、圆角 6px。逐状态左右对照。
-        </p>
-      </header>
-
-      {/* 顶部：可交互搜索框 */}
-      <section className="demo-section">
-        <div className="demo-section-header">
-          <h2 className="demo-section-name">可交互</h2>
-        </div>
-        <p className="demo-section-desc">
-          可直接输入，实时查看 hover / press / focus / 激活 / 输入中 / 输入完成。
-        </p>
-        <div className="demo-live" ref={liveRef}>
-          <SearchBar value={liveLarge} onChange={setLiveLarge} />
-          <SearchBar size="small" value={liveSmall} onChange={setLiveSmall} />
-        </div>
-        <p className="demo-note">{metrics}</p>
-      </section>
-
-      <section className="demo-section">
-        <div className="demo-state-table">
-          <span className="demo-col-title" />
-          <span className="demo-col-title">大号 · 填充</span>
-          <span className="demo-col-title">小号 · 无填充</span>
-
-          {/* 默认 */}
-          <span className="demo-state-name">默认</span>
-          <SearchBar />
-          <SearchBar size="small" />
-
-          {/* hover（小号无此状态） */}
-          <span className="demo-state-name">hover</span>
-          <div className="demo-force-hover">
-            <SearchBar />
-          </div>
-          <span />
-
-          {/* press（小号无此状态） */}
-          <span className="demo-state-name">press</span>
-          <div className="demo-force-press">
-            <SearchBar />
-          </div>
-          <span />
-
-          {/* focus（小号无此状态） */}
-          <span className="demo-state-name">focus</span>
-          <div className="demo-force-focus">
-            <SearchBar />
-          </div>
-          <span />
-
-          {/* 激活 */}
-          <span className="demo-state-name">激活</span>
-          <div className="demo-force-active">
-            <SearchBar />
-          </div>
-          <div className="demo-force-caret">
-            <SearchBar size="small" />
-          </div>
-
-          {/* 输入中（有文字 + 原生光标；无描边） */}
-          <span className="demo-state-name">输入中</span>
-          <SearchBar value={typing} onChange={setTyping} />
-          <SearchBar size="small" value={typing} onChange={setTyping} />
-
-          {/* 输入完成 */}
-          <span className="demo-state-name">输入完成</span>
-          <SearchBar value={done} onChange={setDone} />
-          <SearchBar size="small" value={done} onChange={setDone} />
-        </div>
-
-        <p className="demo-note">
-          hover / press / focus 与关闭图标只有大号有，小号对应单元格留空。静态展示为常驻样式；
-          蓝色描边只在<strong>键盘聚焦（Tab）</strong>时出现，鼠标点击进入的「激活」「输入中」无描边；
-          光标由组件自绘（1.5×24），激活时贴文字起点、输入时跟在插入点之后，点击输入框即可看到。
-        </p>
-      </section>
-
-      {/* 状态色板：逐状态列出背景色 / 文字色 */}
-      <section className="demo-section">
-        <div className="demo-section-header">
-          <h2 className="demo-section-name">状态色板</h2>
-        </div>
-        <p className="demo-section-desc">
-          逐状态列出背景色与文字色（token + Light 值）。色块直接取 token 变量，切到深色主题会一起变化。
-        </p>
-
-        <div className="demo-color-table">
-          <span className="demo-col-title" />
-          <span className="demo-col-title">大号 · 填充</span>
-          <span className="demo-col-title">小号 · 无填充</span>
-
-          {COLOR_ROWS.map((row) => (
-            <Fragment key={row.state}>
-              <span className="demo-state-name">{row.state}</span>
-              <ColorCell data={row.large} />
-              <ColorCell data={row.small} />
-            </Fragment>
-          ))}
-        </div>
-
-        <p className="demo-note">
-          叠加说明：hover / press 是「底色不变 + 叠加交互浮层」（黑 5% / 黑 10%），不是替换底色；
-          focus 描边为内部 2px，只在键盘聚焦时出现；关闭图标颜色与搜索图标一致（font_secondary）。
-        </p>
-      </section>
-    </div>
-  );
+function Toggle({label,value,onChange,children}) {
+ return <div className="button-control"><span>{label}</span><div className="button-toggle-line"><span>{value?"开启":"关闭"}</span><label className="button-switch"><input type="checkbox" checked={value} onChange={e=>onChange(e.target.checked)} aria-label={label}/><span className="button-switch-track"/></label></div>{children}</div>;
+}
+function Color({token,detail,kind}) {
+ return <><span className="btn-color-token"><i aria-hidden="true" className={'btn-color-swatch'+(kind?' btn-color-swatch--'+kind:'')} style={kind?undefined:{backgroundColor:`var(${token})`}}/><code>{token}</code></span><span className="btn-table-src">{detail}</span></>;
+}
+function Same(){return <span className="btn-color-same">同 Default</span>;}
+function ColorRows({size}) {
+ const large=size==='large';
+ return STATES.map((state,i)=><tr key={state} className={i===0?'btn-color-group-start':undefined}>
+ {i===0?<th rowSpan={5} scope="rowgroup" className="btn-color-variant">{large?'Large · Filled':'Small · Unfilled'}</th>:null}
+ <td className="btn-color-state">{state}{!large&&['Hover','Focus','Pressed'].includes(state)?<small>无专属外观</small>:null}</td>
+ <td>{state==='Default'?(large?<Color token="--surface-container" detail="→ comp-background-tertiary · 浅色黑 5% / 深色白 5%"/>:<Color token="transparent" detail="透明，无填充" kind="transparent"/>):large&&['Hover','Pressed'].includes(state)?<Color token={state==='Hover'?'--color-interactive-hover':'--color-interactive-pressed'} detail={'叠加于 Default 底色 · 浅色黑 / 深色白 '+(state==='Hover'?'5%':'10%')}/>:<Same/>}</td>
+ <td>{state==='Default'?<Color token="—" detail="无描边" kind="none"/>:large&&state==='Focus'?<Color token="--focus-ring" detail="内部 2px · 跟随主题蓝色 · 仅键盘聚焦"/>:<Same/>}</td>
+ <td>{state==='Default'?<><Color token={large?'--text-secondary':'--color-font-tertiary'} detail={large?'占位文字 · 浅色黑 60% / 深色白 60%':'占位文字 · 浅色黑 40% / 深色白 40%'}/><Color token="--on-surface" detail="输入文字 · 浅色黑 90% / 深色白 90%"/><Color token="--text-secondary" detail="搜索 / 清空图标 · 浅色黑 60% / 深色白 60%"/></>:state==='Disabled'?<><Color token="--text-disabled" detail="占位 / 输入文字 · 浅色黑 20% / 深色白 20%"/><Color token="--color-icon-fourth" detail="搜索图标 · 浅色黑 20% / 深色白 20%；隐藏清空按钮"/></>:<Same/>}</td>
+ </tr>);
+}
+export default function Demo(){
+ const [size,setSize]=useState('large');
+ const [disabled,setDisabled]=useState(false);
+ const [value,setValue]=useState('');
+ const [placeholder,setPlaceholder]=useState('请输入搜索内容');
+ const [clearable,setClearable]=useState(true);
+ const [position,setPosition]=useState('right');
+ const [mode,setMode]=useState('controlled');
+ const [initial,setInitial]=useState('');
+ const [revision,setRevision]=useState(0);
+ const [notice,setNotice]=useState('');
+ function changeSize(next){setSize(next);setClearable(next==='large');}
+ return <div className="demo-page">
+ <header className="demo-header"><p className="demo-subtitle">SearchBar · Large / Small · 输入、清空与搜索 · 5 状态</p></header>
+ <Section title="Configurator" description="实时输入体验交互；Small 默认无清空按钮，可显式开启。焦点描边仅在 Large 使用 Tab 聚焦时出现。">
+ <div className="button-configurator"><div className="button-controls">
+ <Select label="Size" value={size} onChange={changeSize} options={SIZES}/>
+ <Select label="State" value={disabled?'disabled':'enabled'} onChange={v=>setDisabled(v==='disabled')} options={[{value:'enabled',label:'Enabled'},{value:'disabled',label:'Disabled'}]}/>
+ <Select label="Value mode" value={mode} onChange={v=>{setMode(v);setNotice('');}} options={[{value:'controlled',label:'受控 · value'},{value:'uncontrolled',label:'非受控 · defaultValue'}]}/>
+ <label className="button-control"><span>Placeholder</span><input value={placeholder} onChange={e=>setPlaceholder(e.target.value)} placeholder="请输入搜索内容"/></label>
+ {mode==='controlled'?<label className="button-control"><span>Value</span><input value={value} onChange={e=>setValue(e.target.value)} placeholder="输入预览内容"/></label>:<div className="button-control"><label>Default value<input value={initial} onChange={e=>setInitial(e.target.value)}/></label><button className="search-demo-reset" onClick={()=>{setRevision(v=>v+1);setNotice('');}}>应用初始值</button><small>defaultValue 仅在初始化时生效。</small></div>}
+ <Toggle label="清空按钮" value={clearable} onChange={setClearable}>{clearable?<Select label="Clear position" value={position} onChange={setPosition} options={[{value:'right',label:'Right · 右侧'},{value:'left',label:'Left · 左侧'}]}/>:null}</Toggle>
+ </div><div className="button-configurator-preview search-demo-live"><span className="btn-lab-slotlabel">LIVE PREVIEW</span>
+ <SearchBar key={mode+revision} size={size} disabled={disabled} placeholder={placeholder} clearable={clearable} clearPosition={position} {...(mode==='controlled'?{value,onChange:setValue}:{defaultValue:initial})} onSearch={v=>setNotice(v?'搜索：'+v:'请输入搜索内容')} onClear={()=>setNotice('已清空')}/>
+ <span className="search-demo-notice" role="status">{notice||'输入关键词，按 Enter 搜索'}</span>
+ </div></div></Section>
+ <Section title="SearchBar" description="按尺寸比较 Enabled / Disabled。宽度由父容器决定，Size 同时决定填充与圆角。">
+ <div className="search-demo-gallery">{SIZES.map(s=><div key={s.value} className="search-demo-specimen"><h3>{s.label}</h3><span className="btn-lab-slotlabel">Enabled</span><SearchBar size={s.value}/><span className="btn-lab-slotlabel">Disabled</span><SearchBar size={s.value} disabled/></div>)}</div></Section>
+ <Section title="State matrix" description="静态标本不响应鼠标与键盘；Small 无 Hover / Focus / Pressed 专属外观。真实交互请使用 Configurator。">
+ <div className="btn-table-wrap"><table className="btn-table search-demo-matrix"><thead><tr><th>Size / Variant</th>{STATES.map(s=><th key={s}>{s}</th>)}</tr></thead><tbody>{SIZES.map(s=><tr key={s.value}><th scope="row">{s.label}</th>{STATES.map(state=><td key={state}>{s.value==='small'&&['Hover','Focus','Pressed'].includes(state)?<span className="btn-color-same">— 无专属外观</span>:<div inert="" className={'search-demo-static search-demo-'+state.toLowerCase()}><SearchBar size={s.value} disabled={state==='Disabled'}/></div>}</td>)}</tr>)}</tbody></table></div></Section>
+ <Section title="Input states" description="激活时保留占位文字；输入后文字使用 font-primary。Large 默认显示清空按钮，Small 默认隐藏。">
+ <div className="btn-table-wrap"><table className="btn-table search-demo-input-states"><thead><tr><th>Size</th><th>激活 · 空值</th><th>输入中</th><th>输入完成</th></tr></thead><tbody>{SIZES.map(s=><tr key={s.value}><th>{s.label}</th>{['active','typing','done'].map(state=><td key={state}><div inert="" className={'search-demo-static search-demo-'+state}><SearchBar size={s.value} value={state==='active'?'':'搜索内容'}/></div></td>)}</tr>)}</tbody></table></div></Section>
+ <Section title="Color spec" description="Variant → State → Background / Outline / Text。未变化项标记为“同 Default”；禁用时单独改变文字与图标颜色。">
+ <div className="btn-table-wrap"><table className="btn-table btn-table--color"><thead><tr>{['Variant','State','Background','Outline','Text'].map(t=><th key={t}>{t}</th>)}</tr></thead><tbody>{SIZES.map(s=><ColorRows key={s.value} size={s.value}/>)}</tbody></table></div>
+ <p className="demo-section-desc search-demo-footnote">光标：Large 使用 <code>--color-font-emphasize</code>，Small 使用 <code>--container-90</code>；输入完成后隐藏。Hover / Pressed 在默认底色上叠加。</p></Section>
+ <Section title="Token contract" description="尺寸关联外观，不提供独立 Variant 或 Shape 属性。两种尺寸的图标均为 16px，间距 8px。">
+ <div className="btn-table-wrap"><table className="btn-table btn-table--roomy"><thead><tr>{['Size','Height','Font / line-height','Padding','Icon / gap','Radius','Background'].map(t=><th key={t}>{t}</th>)}</tr></thead><tbody><tr><th>Large</th><td>40px</td><td>16px / 22px</td><td>9px / 12px</td><td>16px / 8px</td><td>24px</td><td><code>--surface-container</code></td></tr><tr><th>Small</th><td>36px</td><td>12px / 16px</td><td>9px / 12px</td><td>16px / 8px</td><td><code>--radius-md</code> · 6px</td><td>transparent</td></tr></tbody></table></div>
+ <p className="demo-section-desc search-demo-footnote">宽度为父容器的 100%；支持通过 <code>className</code> / <code>style</code> 调整布局。自绘光标为 1.5 × 24px，圆角 0.75px。</p></Section>
+ <Section title="API contract" description="输入、清空与回车均由真实组件处理。图标为固定资源，不提供替换属性。">
+ <div className="btn-table-wrap"><table className="btn-table btn-table--roomy"><thead><tr><th>Props</th><th>契约</th></tr></thead><tbody><tr><th>value / onChange</th><td>受控值；输入和清空通过 onChange(value) 更新。</td></tr><tr><th>defaultValue</th><td>非受控初始值，不与 value 同时传入。</td></tr><tr><th>onSearch / onClear</th><td>Enter 返回当前值；清空后触发 onClear。</td></tr><tr><th>clearable / clearPosition</th><td>大小号均支持；有内容且未禁用时显示清空按钮。默认 Large 开启，Small 关闭。</td></tr><tr><th>disabled / placeholder</th><td>禁用输入与清空；空 placeholder 回退到组件默认文案。</td></tr><tr><th>className / style</th><td>宿主布局扩展，不作为视觉变体。</td></tr></tbody></table></div></Section>
+ </div>;
 }
