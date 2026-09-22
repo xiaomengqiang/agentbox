@@ -6730,6 +6730,252 @@ code {
 }
 </style>
 <!-- END_COMPONENT_PREVIEW_STYLE:input-box -->
+<!-- COMPONENT_PREVIEW_STYLE:iconstate -->
+<style>
+@scope (.preview-iconstate) {
+.demo-page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 48px 24px 96px;
+}
+
+.demo-header { margin-bottom: 48px; }
+.demo-title {
+  font: var(--font-title-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0 0 8px;
+}
+.demo-subtitle, .demo-section-desc {
+  font: var(--font-body-md);
+  color: var(--text-secondary);
+}
+.demo-subtitle { margin: 0; }
+.demo-section { margin-bottom: 64px; }
+.demo-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.demo-section-name {
+  font: var(--font-title-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0;
+}
+.demo-section-tag {
+  display: inline-flex;
+  align-items: center;
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary);
+  background-color: var(--primary-container);
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+}
+.demo-section-desc { margin: 0 0 28px; }
+
+.iconstate-configurator {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, .8fr);
+  gap: 24px;
+  padding: 24px;
+  border-radius: var(--radius-xl);
+  background: var(--surface-container-lowest);
+  box-shadow: var(--shadow-card);
+}
+.iconstate-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
+  gap: 18px 20px;
+  align-content: start;
+}
+.iconstate-control {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--text-secondary);
+  font: var(--font-body-md);
+}
+.iconstate-control select,
+.iconstate-control input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  border: 1px solid var(--color-comp-border);
+  border-radius: var(--radius-container);
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+  font: var(--font-body-md);
+  padding: 0 12px;
+}
+.iconstate-control select { cursor: pointer; }
+.iconstate-control input[type="color"] { padding: 4px; cursor: pointer; }
+.iconstate-control input[type="file"] { height: auto; min-height: 40px; padding: 7px 8px; cursor: pointer; }
+.iconstate-control input:focus-visible,
+.iconstate-control select:focus-visible {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+.iconstate-control small {
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+.iconstate-live {
+  display: flex;
+  min-width: 0;
+  min-height: 180px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  box-sizing: border-box;
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-container-low);
+}
+.iconstate-live-label {
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+  letter-spacing: .08em;
+}
+.iconstate-live code {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-align: center;
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+}
+.iconstate-gallery-title {
+  font: var(--font-subtitle-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 32px 0 16px;
+}
+.iconstate-state-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.iconstate-state-card {
+  display: flex;
+  min-height: 112px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-container-lowest);
+  box-shadow: var(--shadow-card);
+}
+.iconstate-state-card span {
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+}
+@media (max-width: 980px) {
+  .iconstate-configurator { grid-template-columns: 1fr; }
+  .iconstate-live { min-height: 132px; }
+}
+@media (max-width: 760px) {
+  .iconstate-controls { grid-template-columns: 1fr; }
+  .iconstate-state-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .demo-page { padding: 32px 16px 64px; }
+}
+
+.is-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-md); /* 6px 圆角正方形 */
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard);
+}
+
+/* 圆形框（对话框 icon）：正圆形 */
+.is-btn--circle {
+  border-radius: 50%;
+}
+
+/* 用覆盖层显示状态，圆形框的 frameColor 仍保持可见。 */
+.is-btn::before {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  content: "";
+  pointer-events: none;
+}
+
+.is-btn:not(.is-btn--circle):not(.is-btn--forced):not(:disabled):hover::before,
+.is-btn:not(.is-btn--circle).is-btn--hover::before,
+.is-btn:not(.is-btn--circle):not(.is-btn--forced):not(:disabled):active::before,
+.is-btn:not(.is-btn--circle).is-btn--active::before {
+  background-color: var(--container-05);
+}
+
+/* 灰色对话框默认透明，悬浮和激活使用 5% 中性色覆盖层。 */
+.is-btn--frame-gray:not(.is-btn--forced):not(:disabled):hover::before,
+.is-btn--frame-gray.is-btn--hover::before,
+.is-btn--frame-gray:not(.is-btn--forced):not(:disabled):active::before,
+.is-btn--frame-gray.is-btn--active::before {
+  background-color: var(--container-05);
+}
+
+/* 黑色对话框在默认、悬浮、激活时都保持纯黑。 */
+.is-btn--frame-black:not(.is-btn--forced):not(:disabled):hover::before,
+.is-btn--frame-black.is-btn--hover::before,
+.is-btn--frame-black:not(.is-btn--forced):not(:disabled):active::before,
+.is-btn--frame-black.is-btn--active::before {
+  background-color: transparent;
+}
+
+/* 保留自定义深色框的可见交互反馈。 */
+.is-btn--frame-custom.is-btn--frame-dark:not(.is-btn--forced):not(:disabled):hover::before,
+.is-btn--frame-custom.is-btn--frame-dark.is-btn--hover::before,
+.is-btn--frame-custom.is-btn--frame-dark:not(.is-btn--forced):not(:disabled):active::before,
+.is-btn--frame-custom.is-btn--frame-dark.is-btn--active::before {
+  background-color: var(--on-primary-10);
+}
+
+/* 禁用：整体 50% 透明度 */
+.is-btn:disabled,
+.is-btn--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.is-btn:focus-visible {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+.is-icon {
+  display: inline-block;
+}
+
+.is-icon--mask {
+  flex: none;
+  background-color: currentColor;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+}
+</style>
+<!-- END_COMPONENT_PREVIEW_STYLE:iconstate -->
 
 </head>
 <body>
@@ -10082,8 +10328,202 @@ window.PreviewDemos["input-box"] = __export.Demo;
  window.PreviewDemos.tag=TagDemo; window.PreviewDemos['text-tabs']=TextTabsDemo; window.PreviewDemos.toggle=ToggleDemo;
 })();
 
+/* COMPONENT_PREVIEW:iconstate */
+(function () {
+  const { Icon } = window.ComponentIcons;
+  const { useState } = React;
+
+
+// 内置图标变量：icon prop 可选值 → 对应 SVG 资源。
+// 新增图标时，只需在此处追加一行映射即可。
+const ICON_SRC = {
+  // 栏目 icon（方形框）
+  search: "./components/IconState/assets/uploads/icon-search.svg",
+  menu: "./components/IconState/assets/uploads/icon-menu.svg",
+  columns: "./components/IconState/assets/uploads/icon-columns.svg",
+  fullscreen: "./components/IconState/assets/uploads/icon-fullscreen.svg",
+  sidebar: "./components/IconState/assets/uploads/icon-sidebar.svg",
+  // 对话框 icon 使用透明背景的 glyph，框颜色由 frameColor 控制。
+  "dialog-glyph": "./components/IconState/assets/uploads/icon-dialog-glyph.svg",
+  "dialog-pause": "./components/IconState/assets/uploads/icon-dialog-pause.svg",
+  "dialog-add": "./components/IconState/assets/uploads/icon-dialog-add.svg",
+  "dialog-add-active": "./components/IconState/assets/uploads/icon-dialog-add-active.svg",
+};
+const DIALOG_ICON_NAMES = new Set(["dialog-glyph", "dialog-pause", "dialog-add"]);
+
+// 圆形框预设颜色
+const FRAME_COLORS = {
+  black: "#000000",
+  gray: "transparent",
+};
+
+// 图标状态组件：默认 / 悬浮 / 激活 / 禁用 四种状态。
+// variant 控制外形：square（方形框，默认）/ circle（圆形框）。
+function IconState({
+  size = 32,
+  iconSize,
+  icon,
+  src,
+  variant = "square",
+  frameColor,
+  iconColor,
+  disabled = false,
+  active = false,
+  state,
+  onClick,
+  ariaLabel = "icon",
+}) {
+  // 对话框只支持发送、暂停和加号；栏目 icon 支持内置图标和自定义 SVG。
+  const isCircle = variant === "circle";
+  const selectedIcon = isCircle
+    ? (DIALOG_ICON_NAMES.has(icon) ? icon : "dialog-glyph")
+    : icon || "search";
+  const baseIconSrc = (!isCircle && src) || ICON_SRC[selectedIcon] || ICON_SRC.search;
+
+  // 视觉状态优先级：显式 state > disabled/active 布尔 > default
+  const visualState =
+    state || (disabled ? "disabled" : active ? "active" : "default");
+  const isDisabled = visualState === "disabled";
+  const isActiveAdd = isCircle && selectedIcon === "dialog-add" && visualState === "active";
+  const iconSrc = isActiveAdd ? ICON_SRC["dialog-add-active"] : baseIconSrc;
+  const renderedIconSize = iconSize ?? (isCircle ? (isActiveAdd ? 23 : 32) : 20);
+
+  // gray 默认透明；black 为纯黑；也支持任意 CSS 色值（如 "#0A59F7"）。
+  const selectedFrameColor = frameColor || "gray";
+  const bgColor = isCircle ? FRAME_COLORS[selectedFrameColor] || selectedFrameColor : undefined;
+  const foreground = iconColor || (selectedFrameColor === "gray" ? "var(--color-icon-primary)" : "#FFFFFF");
+
+  return (
+    <button
+      type="button"
+      className={`is-btn is-btn--${variant} is-btn--${visualState}${state ? " is-btn--forced" : ""}${isCircle ? ` is-btn--frame-${selectedFrameColor === "gray" || selectedFrameColor === "black" ? selectedFrameColor : "custom"}` : ""}${isCircle && selectedFrameColor !== "gray" ? " is-btn--frame-dark" : ""}`}
+      style={{
+        width: size,
+        height: size,
+        backgroundColor: bgColor,
+      }}
+      disabled={isDisabled}
+      onClick={onClick}
+      aria-label={ariaLabel}
+      aria-disabled={isDisabled}
+    >
+      {isCircle ? (
+        <span
+          className="is-icon is-icon--mask"
+          style={{
+            width: renderedIconSize,
+            height: renderedIconSize,
+            color: foreground,
+            WebkitMaskImage: `url("${iconSrc}")`,
+            maskImage: `url("${iconSrc}")`,
+          }}
+          aria-hidden="true"
+        />
+      ) : (
+        <Icon src={iconSrc} size={renderedIconSize} className="is-icon" />
+      )}
+    </button>
+  );
+}
+
+
+const STATES = [
+  { value: "default", label: "默认" },
+  { value: "hover", label: "悬浮" },
+  { value: "active", label: "点击 / 激活" },
+  { value: "disabled", label: "禁用" },
+];
+const COLUMN_ICONS = ["search", "menu", "columns", "fullscreen", "sidebar"];
+const DIALOG_ICONS = [
+  { value: "dialog-glyph", label: "发送" },
+  { value: "dialog-pause", label: "暂停" },
+  { value: "dialog-add", label: "加号" },
+];
+
+function Select({ label, value, onChange, options }) {
+  return <label className="iconstate-control"><span>{label}</span><select value={value} onChange={event => onChange(event.target.value)}>{options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>;
+}
+
+function uploadSvg(event, onLoaded, onError) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  event.target.value = "";
+  if (file.type !== "image/svg+xml" && !/\.svg$/i.test(file.name)) {
+    onError("请选择 SVG 文件。");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => onLoaded({ name: file.name, src: String(reader.result) });
+  reader.onerror = () => onError("读取 SVG 失败，请重试。");
+  reader.readAsDataURL(file);
+}
+
+function UploadControl({ label, uploaded, onLoaded, error, onError }) {
+  return <label className="iconstate-control iconstate-upload"><span>{label}</span><input type="file" accept=".svg,image/svg+xml" onChange={event => uploadSvg(event, onLoaded, onError)} /><small>{error || (uploaded ? `已载入 ${uploaded.name}` : "选择 SVG 后自动切换为自定义图标")}</small></label>;
+}
+
+function StateGallery({ variant, icon, src, iconSize, frameColor, iconColor }) {
+  return <div className="iconstate-state-grid">{STATES.map(item => <div className="iconstate-state-card" key={item.value} inert=""><IconState variant={variant} icon={icon} src={src} iconSize={iconSize} frameColor={frameColor} iconColor={iconColor} state={item.value} ariaLabel={`${variant} ${item.label}`} /><span>{item.label}</span></div>)}</div>;
+}
+
+function Demo() {
+  const [columnIcon, setColumnIcon] = useState("search");
+  const [columnSize, setColumnSize] = useState(20);
+  const [columnState, setColumnState] = useState("default");
+  const [columnUpload, setColumnUpload] = useState(null);
+  const [columnError, setColumnError] = useState("");
+  const [dialogIcon, setDialogIcon] = useState("dialog-glyph");
+  const [dialogState, setDialogState] = useState("default");
+  const [frameMode, setFrameMode] = useState("gray");
+  const [customColor, setCustomColor] = useState("#0A59F7");
+  const frameColor = frameMode === "custom" ? customColor : frameMode;
+  const columnSrc = columnIcon === "custom" ? columnUpload?.src : undefined;
+  const columnOptions = [...COLUMN_ICONS.map(icon => ({ value: icon, label: icon })), ...(columnUpload ? [{ value: "custom", label: `上传 · ${columnUpload.name}` }] : [])];
+
+  return <div className="demo-page">
+    <header className="demo-header"><h1 className="demo-title">IconState 图标状态</h1><p className="demo-subtitle">两类图标分别配置；选择项直接传给 IconState 的 props。</p></header>
+
+    <section className="demo-section">
+      <div className="demo-section-header"><h2 className="demo-section-name">栏目 icon</h2><span className="demo-section-tag">Square · 32px</span></div>
+      <p className="demo-section-desc">选择状态、20px / 16px 图标尺寸和内置图标，也可以上传自己的 SVG。</p>
+      <div className="iconstate-configurator">
+        <div className="iconstate-controls">
+          <Select label="State · 状态" value={columnState} onChange={setColumnState} options={STATES} />
+          <Select label="Icon size · 图标大小" value={String(columnSize)} onChange={value => setColumnSize(Number(value))} options={[{ value: "20", label: "20px" }, { value: "16", label: "16px" }]} />
+          <Select label="Icon · 图标" value={columnIcon} onChange={setColumnIcon} options={columnOptions} />
+          <UploadControl label="Upload SVG · 上传图标" uploaded={columnUpload} error={columnError} onError={setColumnError} onLoaded={file => { setColumnUpload(file); setColumnIcon("custom"); setColumnError(""); }} />
+        </div>
+        <div className="iconstate-live"><span className="iconstate-live-label">LIVE PREVIEW</span><IconState variant="square" icon={columnIcon} src={columnSrc} iconSize={columnSize} state={columnState} ariaLabel={`栏目 ${columnIcon} ${columnState}`} /><code>variant="square" · iconSize={'{'}{columnSize}{'}'} · state="{columnState}"</code></div>
+      </div>
+      <h3 className="iconstate-gallery-title">State matrix · {columnIcon === "custom" ? columnUpload?.name : columnIcon}</h3>
+      <StateGallery variant="square" icon={columnIcon} src={columnSrc} iconSize={columnSize} />
+    </section>
+
+    <section className="demo-section">
+      <div className="demo-section-header"><h2 className="demo-section-name">对话框 icon</h2><span className="demo-section-tag">Circle · 32px</span></div>
+      <p className="demo-section-desc">圆形框颜色、状态和图标可选择。灰色默认透明，悬浮和激活使用 5% 黑色背景。</p>
+      <div className="iconstate-configurator">
+        <div className="iconstate-controls">
+          <Select label="Frame color · 框颜色" value={frameMode} onChange={setFrameMode} options={[{ value: "gray", label: "灰色" }, { value: "black", label: "黑色" }, { value: "custom", label: "自定义颜色" }]} />
+          {frameMode === "custom" ? <label className="iconstate-control"><span>Custom color · 自定义色值</span><input type="color" value={customColor} onChange={event => setCustomColor(event.target.value)} /></label> : null}
+          <Select label="State · 状态" value={dialogState} onChange={setDialogState} options={STATES} />
+          <Select label="Icon · 图标" value={dialogIcon} onChange={setDialogIcon} options={DIALOG_ICONS} />
+        </div>
+        <div className="iconstate-live"><span className="iconstate-live-label">LIVE PREVIEW</span><IconState variant="circle" icon={dialogIcon} frameColor={frameColor} state={dialogState} ariaLabel={`对话框 ${DIALOG_ICONS.find(item => item.value === dialogIcon)?.label} ${dialogState}`} /><code>variant="circle" · icon="{dialogIcon}" · frameColor="{frameColor}" · state="{dialogState}"</code></div>
+      </div>
+      <h3 className="iconstate-gallery-title">State matrix · {DIALOG_ICONS.find(item => item.value === dialogIcon)?.label}</h3>
+      <StateGallery variant="circle" icon={dialogIcon} frameColor={frameColor} />
+    </section>
+  </div>;
+}
+
+
+  window.PreviewDemos.iconstate = Demo;
+})();
+/* END_COMPONENT_PREVIEW:iconstate */
+
 // Add future components to this registry; navigation and panels are generated together.
-const COMPONENT_PREVIEWS = [{id:'button',label:'Button'}, {id:'dropdown-button',label:'Dropdown Button'}, {id:'segmented-button',label:'SegmentedButton'}, {id:'input-box',label:'Input Box'}, {id:'searchbar',label:'SearchBar'}, {id:'action-chip',label:'ActionChip'}, {id:'tag',label:'Tag'}, {id:'text-tabs',label:'TextTabs'}, {id:'toggle',label:'Toggle'}, {id:'checkbox',label:'Checkbox'}];
+const COMPONENT_PREVIEWS = [{id:'button',label:'Button'}, {id:'dropdown-button',label:'Dropdown Button'}, {id:'segmented-button',label:'SegmentedButton'}, {id:'input-box',label:'Input Box'}, {id:'searchbar',label:'SearchBar'}, {id:'action-chip',label:'ActionChip'}, {id:'tag',label:'Tag'}, {id:'text-tabs',label:'TextTabs'}, {id:'toggle',label:'Toggle'}, {id:'checkbox',label:'Checkbox'}, {id:'iconstate',label:'IconState'}];
 function ComponentGallery() {
  const tabs = COMPONENT_PREVIEWS;
  const ThemeIcon = window.ComponentIcons.Icon;
