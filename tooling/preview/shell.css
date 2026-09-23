@@ -1,0 +1,22 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; min-width: 320px; }
+body { background: var(--surface); color: var(--on-surface); font-family: var(--font-family); }
+[hidden] { display: none !important; }
+.preview-toolbar { max-width: 1400px; margin: 0 auto; padding: 32px 24px 0; }
+.preview-heading { display: flex; align-items: center; gap: 14px; }
+.preview-heading h1 { margin: 0; font: var(--font-title-lg); }
+.gallery-library-label { margin-left: auto; color: var(--text-secondary); font: var(--font-body-md); }
+/* Shared by standalone previews and both component galleries. */
+.preview-theme { position: relative; flex: 0 0 auto; width: 68px; height: 36px; padding: 3px; border: 1px solid var(--divider); border-radius: 999px; display: inline-flex; align-items: center; justify-content: space-around; color: var(--text-secondary); background: var(--surface-container); cursor: pointer; }
+.preview-theme::before { content: ""; position: absolute; left: 3px; top: 3px; width: 28px; height: 28px; border-radius: 50%; background: var(--surface-container-lowest); box-shadow: var(--shadow-sm); transition: transform 160ms ease; }
+.preview-theme[aria-checked="true"]::before { transform: translateX(32px); }
+.preview-theme > span { position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; }
+.preview-theme[aria-checked="false"] .theme-sun, .preview-theme[aria-checked="true"] .theme-moon { color: var(--on-surface); }
+@media (prefers-reduced-motion: reduce) { .preview-theme::before { transition: none; } }
+
+.preview-tabs { display: flex; gap: 24px; margin-top: 24px; overflow-x: auto; border-bottom: 1px solid var(--divider); }
+.preview-tab { flex-shrink: 0; padding: 12px 0; border: 0; border-bottom: 2px solid transparent; color: var(--text-secondary); background: none; font: var(--font-body-md); cursor: pointer; }
+.preview-tab[aria-selected="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+.preview-panel-title { margin: 0 0 12px; font: var(--font-title-md); }
+.preview-theme:focus-visible, .preview-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+@media (max-width: 600px) { .preview-toolbar { padding: 24px 16px 0; } .gallery-library-label { font-size: 12px; } }

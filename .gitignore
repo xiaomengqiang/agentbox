@@ -1,5 +1,34 @@
-# Locally installed skills
-/.agents/skills/
-
-# macOS Finder metadata
+# OS and editor-local files
 .DS_Store
+Thumbs.db
+.history/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Dependencies, caches and temporary build output
+node_modules/
+__pycache__/
+*.py[cod]
+.cache/
+coverage/
+*.log
+*.tmp
+
+# Local secrets and configuration
+.env
+.env.*
+!.env.example
+/.codex/
+
+# Share only the three project workflow skills, not unrelated local skills.
+/.agents/*
+!/.agents/skills/
+/.agents/skills/*
+!/.agents/skills/agentbox-component/
+!/.agents/skills/component-preview-html/
+!/.agents/skills/component-readme/
+
+# Legacy skill scaffolds are local tooling; this project uses root scripts/.
+/.agents/skills/*/scripts/

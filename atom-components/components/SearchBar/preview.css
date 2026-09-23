@@ -1,0 +1,100 @@
+@import url("../../../tooling/preview/documentation.css");
+
+.search-demo-live {
+min-width:0; padding:32px; box-sizing:border-box;
+}
+
+.search-demo-notice {
+font:var(--font-caption-lg); color:var(--text-secondary); min-height:20px; overflow-wrap:anywhere;
+}
+
+.search-demo-gallery {
+display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px;
+}
+
+.search-demo-specimen {
+display:flex; flex-direction:column; gap:16px; padding:24px; border-radius:var(--radius-xl); background:var(--surface-container-lowest); box-shadow:var(--shadow-card);
+}
+
+.search-demo-specimen h3 {
+margin:0; font:var(--font-title-sm); color:var(--on-surface);
+}
+
+/* 两张标本表使用相同列宽，方便逐行比较尺寸和状态。 */
+.btn-table-wrap .search-demo-matrix,
+.btn-table-wrap .search-demo-input-states {
+  min-width: 960px;
+  table-layout: fixed;
+}
+.search-demo-size-column { width: 180px; }
+.search-demo-matrix tbody td,
+.search-demo-input-states tbody td {
+  vertical-align: middle;
+  padding: 20px 16px;
+}
+.btn-table-wrap .search-demo-api {
+  min-width: 560px;
+}
+.search-demo-api th:first-child { width: 180px; }
+.search-demo-api tbody th,
+.search-demo-api tbody td { vertical-align: top; }
+.btn-table--color tbody td { vertical-align: top; }
+.btn-table--color .btn-table-src + .btn-color-token { margin-top: 12px; }
+.btn-table tbody .btn-color-group-start > th,
+.btn-table tbody .btn-color-group-start > td {
+  border-top: 2px solid var(--color-comp-border);
+}
+
+.search-demo-static {
+pointer-events:none;
+}
+
+.search-demo-hover .sb-large {
+background-image:linear-gradient(var(--color-interactive-hover),var(--color-interactive-hover));
+}
+
+.search-demo-active .sb-caret, .search-demo-typing .sb-caret {
+display:block;
+}
+
+.search-demo-typing .sb-large .sb-caret {
+left:calc(4 * var(--font-size-base) + 0.5px) !important;
+}
+
+.search-demo-typing .sb-small .sb-caret {
+left:calc(4 * var(--font-size-sm) + 0.5px) !important;
+}
+
+.search-demo-footnote {
+margin-top:20px;
+}
+
+@media(max-width:760px) {
+.search-demo-live { padding:24px; }
+.search-demo-gallery {
+grid-template-columns:minmax(0,1fr);
+}
+
+}
+
+.btn-table tbody th {
+font: var(--font-body-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--on-surface);
+  text-align: left;
+  padding: 12px 16px;
+  background: transparent;
+  border-top: 1px solid var(--divider);
+}
+
+.btn-table tbody .btn-color-variant {
+font: var(--font-body-lg);
+  font-weight: var(--font-weight-bold);
+  background: var(--surface-container-low);
+  vertical-align: top;
+}
+
+.btn-table tbody .btn-color-group-start > th {
+border-top: 2px solid var(--color-comp-border);
+}
+

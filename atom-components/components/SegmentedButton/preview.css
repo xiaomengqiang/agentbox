@@ -1,0 +1,99 @@
+@import url("../../../tooling/preview/documentation.css");
+
+.seg-demo-live {
+min-width: 0; overflow: auto;
+}
+
+.seg-demo-gallery {
+display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;
+}
+
+.seg-demo-card {
+min-width: 0; overflow: auto; padding: 24px; border-radius: var(--radius-xl); background: var(--surface-container-lowest); box-shadow: var(--shadow-card);
+}
+
+.seg-demo-card h3 {
+margin: 0 0 20px; font: var(--font-subtitle-sm); color: var(--on-surface);
+}
+
+.seg-demo-static {
+pointer-events: none;
+}
+
+.seg-demo-matrix {
+min-width: 1280px !important;
+}
+
+.seg-demo-matrix td {
+min-width: 210px;
+}
+
+.seg-demo-matrix .sb-root {
+transform-origin: left center;
+}
+
+.seg-demo-force-hover .sb-segment:nth-child(2) {
+background-color: var(--color-interactive-hover);
+}
+
+.seg-demo-force-pressed .sb-segment:nth-child(2) {
+background-color: var(--color-interactive-pressed);
+}
+
+@media (max-width: 760px) {
+.seg-demo-gallery {
+grid-template-columns: minmax(0, 1fr);
+}
+
+}
+
+/* Panel-only documentation refinements. */
+.preview-segmented-button .seg-demo-live {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+.preview-segmented-button .seg-demo-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.preview-segmented-button .seg-demo-card { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.preview-segmented-button .seg-demo-card h3 { align-self: flex-start; margin: 0; }
+.preview-segmented-button .btn-table thead th {
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-secondary);
+  background: var(--surface-container-low);
+  padding: 12px 16px;
+}
+.preview-segmented-button .btn-table tbody td,
+.preview-segmented-button .btn-table tbody th {
+  font: var(--font-body-md);
+  padding: 12px 16px;
+  vertical-align: top;
+  border-right: 0;
+}
+.preview-segmented-button .btn-table tbody th:not(.btn-color-variant),
+.preview-segmented-button .btn-table tbody td:first-child:not(.btn-color-state) {
+  background: transparent;
+  color: var(--on-surface);
+  font-weight: var(--font-weight-medium);
+}
+.preview-segmented-button .btn-table tbody .btn-color-variant {
+  font: var(--font-body-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  background: var(--surface-container-low);
+  min-width: 150px;
+}
+.preview-segmented-button .btn-table .btn-color-state { font-weight: var(--font-weight-medium); }
+.preview-segmented-button .btn-table .btn-table-src { font: var(--font-caption-md); color: var(--text-placeholder); }
+.preview-segmented-button .seg-demo-matrix { min-width: 1280px; }
+@media (max-width: 760px) {
+  .preview-segmented-button .seg-demo-gallery { grid-template-columns: minmax(0, 1fr); }
+  .preview-segmented-button .seg-demo-live { padding: 24px; }
+}
+
+.preview-segmented-button .seg-gallery-heading { margin: 28px 0 16px; font: var(--font-subtitle-sm); color: var(--on-surface); }

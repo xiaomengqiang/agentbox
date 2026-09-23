@@ -1,0 +1,25 @@
+@import url("../../../tooling/preview/documentation.css");
+.icon-preview-gallery { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; }
+.icon-preview-sample { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 32px 24px; border: none; background: var(--surface-container-lowest); box-shadow: var(--shadow-card); border-radius: var(--radius-xl); }
+.icon-preview-sample small { color: var(--text-secondary); }
+.icon-preview-static { display: inline-flex; padding: 8px; pointer-events: none; }
+@media(max-width: 800px) { .icon-preview-gallery { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width: 480px) { .icon-preview-gallery { grid-template-columns: 1fr; } }
+
+/* Preview section spacing and consistent table dividers. */
+.demo-section > .demo-section-name + .btn-table-wrap,
+.demo-section > .demo-section-name + .button-configurator,
+.demo-section > .demo-section-name + .icon-preview-gallery { margin-top: 24px; }
+.btn-table tbody th,
+.btn-table tbody td { border-top: 1px solid var(--divider); }
+.btn-table tbody th:not(.btn-color-variant) {
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--on-surface);
+  background: transparent;
+}
+.btn-table--color .btn-color-group-start > th,
+.btn-table--color .btn-color-group-start > td { border-top: 1px solid var(--divider); }
+
+.btn-color-token { flex-wrap: wrap; }
+.icon-token-reference { color: var(--text-placeholder); font: var(--font-caption-md); overflow-wrap: anywhere; }

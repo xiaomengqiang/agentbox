@@ -1,7 +1,8 @@
-import { Icon } from "../../assets/shared/icons.js";
+import React from "react";
+import { Icon } from "../../../assets/shared/large-icons.js";
 // 原子组件从共享原子库消费（单一事实来源）：开关与标签复用现有实现，不在卡片里重造。
-import Tag from "../../../components/Tag/index.jsx";
-import Toggle from "../../../components/Toggle/index.jsx";
+import Tag from "../../../atom-components/components/Tag/index.jsx";
+import Toggle from "../../../atom-components/components/Toggle/index.jsx";
 import "./index.css";
 
 /* 图标取自 Lucide，构建期按下面的字面量扫描并注入图标节点：

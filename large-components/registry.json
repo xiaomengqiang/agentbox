@@ -1,0 +1,14 @@
+[
+  {
+    "id": "artifact-summary",
+    "name": "ArtifactSummary"
+  },
+  {
+    "id": "task-template-card",
+    "name": "TaskTemplateCard"
+  },
+  {
+    "id": "task-card",
+    "name": "TaskCard"
+  }
+]

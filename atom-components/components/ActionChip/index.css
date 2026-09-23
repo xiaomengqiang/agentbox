@@ -1,0 +1,48 @@
+.ac-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: auto;
+  height: 24px;
+  padding: 0 8px;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-radius: var(--radius-full);
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  line-height: 20px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-icon-emphasize);
+  background-color: var(--color-comp-emphasize-tertiary);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ac-chip-icon { position: relative; width: 14px; height: 14px; flex: 0 0 14px; }
+.ac-chip-glyph {
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  mask: center / contain no-repeat;
+  -webkit-mask: center / contain no-repeat;
+}
+.ac-chip-glyph-close {
+  mask-image: url("../../../assets/uploads/icon/function/close.svg");
+  -webkit-mask-image: url("../../../assets/uploads/icon/function/close.svg");
+  opacity: 0;
+}
+.ac-chip-label {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--color-font-emphasize);
+}
+.ac-chip:hover { background-image: linear-gradient(var(--color-interactive-hover), var(--color-interactive-hover)); }
+.ac-chip:hover .ac-chip-glyph-default { opacity: 0; }
+.ac-chip:hover .ac-chip-glyph-close { opacity: 1; }
+/* Keyboard navigation retains an accessible focus indicator, not a separate visual variant. */
+.ac-chip:focus-visible { outline: var(--outline-width-focus) solid var(--focus-ring); outline-offset: var(--outline-offset-gap); }

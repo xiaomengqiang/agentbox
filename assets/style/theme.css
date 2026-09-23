@@ -53,7 +53,10 @@
   --info-container: var(--color-info-container);
   --on-info-container: var(--color-font-primary);
 
+  --text-primary: var(--color-font-primary);
   --text-secondary: var(--color-font-secondary);
+  --text-tertiary: var(--color-font-tertiary);
+  --text-error: var(--color-error);
   --text-placeholder: var(--color-font-tertiary);
   --text-disabled: var(--color-font-fourth);
   --text-inverse-disabled: var(--color-font-on-fourth);

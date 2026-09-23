@@ -1,8 +1,9 @@
-import { Icon } from "../../assets/shared/icons.js";
+import React from "react";
+import { Icon } from "../../../assets/shared/large-icons.js";
 // Atoms are consumed from the shared atomic component library (single source of truth).
-import Button from "../../../components/Button/index.jsx";
-import DropdownButton from "../../../components/DropdownButton/index.jsx";
-import { DiffTags } from "../../../components/Tag/index.jsx";
+import Button from "../../../atom-components/components/Button/index.jsx";
+import DropdownButton from "../../../atom-components/components/DropdownButton/index.jsx";
+import { DiffTags } from "../../../atom-components/components/Tag/index.jsx";
 import "./index.css";
 
 const FILE_TYPE_ICONS = {

@@ -1,0 +1,37 @@
+@import url("../../../tooling/preview/compact.css");
+.ac-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.ac-gallery .demo-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 24px;
+  box-sizing: border-box;
+  background: var(--surface-container-lowest);
+  border: none;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+.ac-gallery .demo-item-title {
+  margin: 0 0 24px;
+  color: var(--on-surface);
+  font: var(--font-subtitle-sm);
+  font-weight: var(--font-weight-bold);
+}
+.ac-gallery-specimen {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 80px;
+}
+.preview-live { min-width: 0; padding: 32px; box-sizing: border-box; }
+.ac-static .ac-chip { pointer-events: none; }
+.ac-force-hover .ac-chip { background-image: linear-gradient(var(--color-interactive-hover), var(--color-interactive-hover)); }
+.ac-force-hover .ac-chip-glyph-default { opacity: 0; }
+.ac-force-hover .ac-chip-glyph-close { opacity: 1; }
+.ac-token { display: flex; align-items: center; gap: 8px; }
+.ac-token + .ac-token { margin-top: 8px; }
+.ac-token i { flex: 0 0 18px; height: 18px; border: 1px solid var(--color-comp-border); border-radius: 4px; }
+.ac-token-note { display: block; margin-top: 4px; color: var(--text-placeholder); font: var(--font-caption-md); }
+@media (max-width: 640px) { .ac-gallery { grid-template-columns: 1fr; } .preview-live { padding: 24px; } }

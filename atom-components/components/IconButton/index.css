@@ -1,0 +1,64 @@
+.icon-button {
+  --icon-color: var(--color-icon-primary);
+  --icon-bg: transparent;
+  --icon-hover: var(--color-interactive-hover);
+  --icon-pressed: var(--color-interactive-pressed);
+  --icon-color-hover: var(--icon-color);
+  --icon-color-pressed: var(--icon-color);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: var(--icon-bg);
+  color: var(--icon-color);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard);
+}
+.icon-button--small { --icon-color: var(--color-icon-secondary); }
+.icon-button--primary {
+  --icon-bg: var(--color-icon-primary);
+  --icon-color: var(--color-font-on-primary);
+  --icon-hover: var(--on-primary-10);
+  --icon-pressed: var(--on-primary-15);
+}
+.dark .icon-button--primary { --icon-color: var(--black); }
+.icon-button--secondary {
+  --icon-color: var(--color-icon-primary);
+  --icon-hover: var(--color-interactive-hover);
+  --icon-pressed: var(--color-interactive-pressed);
+}
+.icon-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.icon-button:not([data-state]):not(:disabled):hover,
+.icon-button[data-state="hover"] { color: var(--icon-color-hover); }
+.icon-button:not([data-state]):not(:disabled):hover::before,
+.icon-button[data-state="hover"]::before { background: var(--icon-hover); }
+.icon-button:not([data-state]):not(:disabled):active,
+.icon-button[data-state="pressed"] { color: var(--icon-color-pressed); }
+.icon-button:not([data-state]):not(:disabled):active::before,
+.icon-button[data-state="pressed"]::before { background: var(--icon-pressed); }
+.icon-button:focus { outline: none; }
+.icon-button:disabled { opacity: .5; cursor: not-allowed; outline: none; }
+.icon-button__glyph {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  background: currentColor;
+  mask: no-repeat center / contain;
+  -webkit-mask: no-repeat center / contain;
+}
+.icon-button--small .icon-button__glyph,
+.icon-button--dialog .icon-button__glyph { width: 16px; height: 16px; }

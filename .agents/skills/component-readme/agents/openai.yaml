@@ -1,0 +1,4 @@
+interface:
+  display_name: "Component README"
+  short_description: "统一组件 README 结构、Overview 分组与视觉样式的 UX 使用说明"
+  default_prompt: "使用 $component-readme 为指定组件编写或整理 README，核对实现，并按约定组织 Overview、Props、Color Spec 和 Usage。"

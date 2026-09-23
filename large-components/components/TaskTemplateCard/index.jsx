@@ -1,4 +1,5 @@
-import { Icon } from "../../assets/shared/icons.js";
+import React from "react";
+import { Icon } from "../../../assets/shared/large-icons.js";
 import "./index.css";
 
 /**

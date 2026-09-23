@@ -1,0 +1,141 @@
+/* 分割按钮根轨道：胶囊形、浅色容器底色（comp_background_tertiary） */
+.sb-root {
+  display: inline-flex;
+  align-items: center;
+  width: 514px;
+  max-width: 100%;
+  height: 44px;
+  padding: 4px;
+  background-color: var(--color-comp-background-tertiary);
+  border-radius: 24px;
+  box-sizing: border-box;
+}
+
+/* 圆角可选：8px（默认 24px） */
+.sb-root.sb-radius-8 {
+  height: 36px;
+  padding: 2px;
+  border-radius: 8px;
+}
+
+.sb-root.sb-radius-8 .sb-segment {
+  border-radius: 6px;
+}
+
+/* 单段按钮：等宽、胶囊、字号 14px */
+.sb-segment {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 24px;
+  background-color: transparent;
+  font: var(--font-body-md); /* 14px/1.5 + family */
+  line-height: 19px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-font-secondary);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+/* Icon：32px 轨道、2px 内边距、36 × 28px 按钮、14px 居中图标。 */
+.sb-root.sb-size-sm {
+  width: max-content;
+  height: 32px;
+  padding: 2px;
+  border-radius: 8px;
+}
+.sb-root.sb-size-sm .sb-segment {
+  box-sizing: border-box;
+  flex: 0 0 36px;
+  width: 36px;
+  padding: 0;
+  gap: 0;
+}
+
+.sb-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 带图标的分段：文字使用 regular 粗细（400） */
+.sb-segment.sb-has-icon {
+  font-weight: var(--font-weight-regular);
+}
+
+.sb-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 选中段：悬浮白底 + 主文字（对应 SVG 的 white fill + black @ 0.9） */
+.sb-segment.sb-active {
+  background-color: var(--surface-container-lowest);
+  color: var(--color-font-primary);
+}
+
+/* 悬停：在静止底色上叠加交互层（Design Rule 3） */
+.sb-segment:not(.sb-active).sb-hover {
+  background-color: var(--color-interactive-hover);
+}
+
+.sb-segment.sb-active.sb-hover {
+  background-color: var(--surface-container-lowest);
+}
+
+/* 按压态 */
+.sb-segment:not(.sb-active).sb-pressed {
+  background-color: var(--color-interactive-pressed);
+}
+
+.sb-segment.sb-active.sb-pressed {
+  background-color: var(--surface-container-lowest);
+}
+
+/* 无独立 Focus 视觉态，保留原生键盘激活。 */
+.sb-segment:focus {
+  outline: none;
+}
+
+/* 禁用态：整组置灰、禁用文字、禁止交互 */
+.sb-disabled .sb-segment {
+  cursor: not-allowed;
+}
+
+.sb-disabled .sb-segment.sb-active {
+  background-color: var(--surface-container-lowest);
+  color: var(--text-disabled);
+}
+
+.sb-disabled .sb-segment:not(.sb-active) {
+  color: var(--text-disabled);
+}
+
+/* 单段禁用 */
+.sb-segment:disabled {
+  cursor: not-allowed;
+  color: var(--text-disabled);
+}
+
+.sb-segment:disabled.sb-active {
+  background-color: var(--surface-container-lowest);
+  color: var(--text-disabled);
+}
+
+/* 图标与文字独立使用各自的语义色，不依赖当前色值恰好相同。 */
+.sb-icon { color: var(--color-icon-secondary); }
+.sb-active .sb-icon { color: var(--color-icon-primary); }
+.sb-size-sm .sb-segment { color: var(--color-icon-secondary); }
+.sb-size-sm .sb-segment.sb-active { color: var(--color-icon-primary); }
+.sb-size-sm .sb-icon, .sb-size-sm .sb-icon > svg { width: 14px; height: 14px; }
+.sb-segment:disabled, .sb-segment:disabled .sb-icon { color: var(--text-disabled); }
+.sb-segment:disabled { pointer-events: none; }

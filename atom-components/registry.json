@@ -1,0 +1,50 @@
+[
+  {
+    "id": "button",
+    "name": "Button"
+  },
+  {
+    "id": "dropdown-button",
+    "name": "DropdownButton"
+  },
+  {
+    "id": "segmented-button",
+    "name": "SegmentedButton"
+  },
+  {
+    "id": "text-fields",
+    "name": "TextFields"
+  },
+  {
+    "id": "searchbar",
+    "name": "SearchBar"
+  },
+  {
+    "id": "action-chip",
+    "name": "ActionChip"
+  },
+  {
+    "id": "tag",
+    "name": "Tag"
+  },
+  {
+    "id": "text-tabs",
+    "name": "TextTabs"
+  },
+  {
+    "id": "toggle",
+    "name": "Toggle"
+  },
+  {
+    "id": "checkbox",
+    "name": "Checkbox"
+  },
+  {
+    "id": "icon-button",
+    "name": "IconButton"
+  },
+  {
+    "id": "menuitem",
+    "name": "MenuItem"
+  }
+]

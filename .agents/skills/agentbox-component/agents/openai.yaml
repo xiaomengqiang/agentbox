@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agentbox Components"
+  short_description: "维护双层组件库，按组件精修和独立预览，按需汇总并同步规范文档"
+  default_prompt: "使用 $agentbox-component 精修指定组件，按需采用 HTML 与 README 专项规范，独立构建验证，汇总时再更新总览。"

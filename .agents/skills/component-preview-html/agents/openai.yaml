@@ -1,0 +1,4 @@
+interface:
+  display_name: "Component Preview HTML"
+  short_description: "维护组件级交互预览与配置器，独立生成 HTML，并按需汇总总览"
+  default_prompt: "使用 $component-preview-html 精修指定组件的 preview.jsx 和 preview.css，生成并检查它的独立 preview.html。"

@@ -1,0 +1,207 @@
+@import url("../../../tooling/preview/documentation.css");
+
+.dropdown-theme-toggle {
+margin-top: 16px;
+}
+
+.dropdown-configurator {
+display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.8fr);
+  gap: 24px;
+  margin-top: 24px;
+  padding: 24px;
+  border-radius: var(--radius-xl);
+  background: var(--surface-container-lowest);
+  box-shadow: var(--shadow-card);
+}
+
+.dropdown-controls {
+display: grid;
+  grid-template-columns: repeat(2, minmax(160px, 1fr));
+  gap: 18px 20px;
+  align-content: start;
+}
+
+.dropdown-control {
+display: flex;
+  gap: 8px;
+  color: var(--text-secondary);
+  font: var(--font-body-md);
+}
+
+.dropdown-control {
+flex-direction: column;
+}
+
+.dropdown-select-wrap {
+position: relative;
+  display: block;
+}
+
+.dropdown-select-wrap::after {
+content: "";
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid var(--color-icon-primary);
+  border-bottom: 1.5px solid var(--color-icon-primary);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.dropdown-control select {
+width: 100%;
+  height: 40px;
+  padding: 0 40px 0 12px;
+  border: 1px solid var(--color-comp-border);
+  border-radius: var(--radius-container);
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+  font: var(--font-body-md);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.dropdown-control select:hover {
+background: var(--surface-container-low);
+  border-color: var(--color-comp-border-hover);
+}
+
+.dropdown-control select:focus-visible {
+outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+.dropdown-icon-options {
+grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.dropdown-icon-options--two {
+grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dropdown-icon-option {
+min-width: 0;
+  align-self: start;
+}
+
+.dropdown-icon-option-head {
+display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 40px;
+  gap: 16px;
+}
+
+.dropdown-icon-option-head > div {
+display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dropdown-icon-option-head strong {
+color: var(--on-surface);
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-bold);
+}
+
+.dropdown-icon-option-head span {
+color: var(--text-placeholder);
+  font: var(--font-caption-lg);
+}
+
+.dropdown-switch {
+position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.dropdown-switch input {
+position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dropdown-switch-track {
+position: relative;
+  display: block;
+  width: 36px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: var(--color-comp-background-secondary);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.dropdown-switch-track::after {
+content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--surface-container-lowest);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.dropdown-switch input:checked + .dropdown-switch-track {
+background: var(--brand);
+}
+
+.dropdown-switch input:checked + .dropdown-switch-track::after {
+transform: translateX(16px);
+}
+
+.dropdown-switch input:focus-visible + .dropdown-switch-track {
+outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+.dropdown-icon-select {
+margin-top: 0;
+}
+
+.dropdown-configurator-preview {
+display: flex;
+  min-height: 132px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-container-low);
+}
+
+@media (max-width: 760px) {
+.dropdown-configurator {
+grid-template-columns: 1fr;
+}
+
+.dropdown-controls {
+grid-template-columns: 1fr 1fr;
+}
+
+}
+
+@media (max-width: 480px) {
+.dropdown-controls, .dropdown-icon-options, .dropdown-icon-options--two {
+grid-template-columns: minmax(0, 1fr);
+}
+
+.dropdown-configurator {
+padding: 16px;
+}
+
+}
+
