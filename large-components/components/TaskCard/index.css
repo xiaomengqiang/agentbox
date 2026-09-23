@@ -1,0 +1,219 @@
+/* ===== TaskCard · 定时任务卡片 =====
+   两种形态共用同一套内容与文字规格，只有排布容器不同：
+   - short（默认，窄卡）：标题行（标题 + 右侧开关）→12px→ 标签 →20px→ 描述 →20px→ 底部信息行。
+   - long（宽卡）：首行「标题 / 标签 / 开关」并列（标题 ↔ 标签 12px，开关靠最右）
+     →12px→ 描述 →20px→ 底部信息行（两段行距不同，故不用统一 gap，见 .task-card--long）。
+   底部信息行两形态完全一致：左「时间周期」、右「下次执行」，14px regular、container30 弱化色。
+   卡片：白底、无描边、24px 圆角、内边距上下 20px / 左右 24px（与 TaskTemplateCard 同族），
+   底色带液态玻璃材质（顶部 1px 内高光 + 背景折射，来自 Pixso 导出，规格同设计系统 glass-xs）。
+   卡片默认是静态容器，卡内唯一可交互元素是右侧开关；传入 onClick 时整卡可点击，
+   悬浮只抬起一层阴影（取值与 TaskTemplateCard 一致），填充色与描边保持不变。 */
+
+.task-card {
+  /* 液态玻璃基材（Pixso 导出：innerShadow y 1 / 白 / blur 1，外加 stdDeviation 4 的背景模糊）：
+     - 内高光：inset 0 1px 1px 白，贴顶部内边缘的一道高光；底色不透明时只在深色下可见。
+     - 背景折射：blur(4px) 为通用回退；blur(4px) + url(#glass-xs) 是 Chromium 下的折射滤镜
+       （#glass-xs…xl 由 build.mjs 预埋在 HTML 里，blur 档位与设计系统 glass-xs 一致）。
+       注意：backdrop-filter 作用在卡片「背后」的内容上，底色不透明时不可见；
+       若后期改成半透明玻璃底，这两行会立刻生效。 */
+  --task-card-glass-highlight: inset 0 1px 1px rgba(255, 255, 255, 1);
+  --task-card-glass-blur: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5); /* 20px：标题组 ↔ 描述 ↔ 底部信息行 */
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: var(--spacing-5) var(--spacing-6); /* 上下 20px / 左右 24px */
+  border-radius: 24px;
+  background-color: var(--surface-container-lowest);
+  box-shadow: var(--task-card-glass-highlight);
+  backdrop-filter: blur(var(--task-card-glass-blur));
+  backdrop-filter: blur(var(--task-card-glass-blur)) url(#glass-xs);
+}
+
+/* 可点击（传入 onClick）× 悬浮：只抬起一层阴影，填充色、描边与静止态完全一致（不做交互色叠加），
+   与 TaskTemplateCard 同规格 —— 模糊 24px / X 0 / Y 8px / 黑 8%；
+   外阴影与玻璃内高光叠加，避免悬浮时把顶部高光覆盖掉；
+   未传 onClick 的静态卡没有悬浮态。 */
+.task-card--clickable {
+  --task-card-hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.task-card--clickable:hover {
+  box-shadow: var(--task-card-hover-shadow), var(--task-card-glass-highlight);
+}
+
+.task-card--clickable:focus-visible {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+/* ── 短卡：标题行与标签上下叠放 ── */
+.task-card__top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 标签按内容宽度，不拉伸 */
+  gap: var(--spacing-3); /* 12px：标题行 ↔ 标签 */
+  min-width: 0;
+}
+
+/* 标题行：标题占满剩余宽度，开关固定在最右 */
+.task-card__head {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4); /* 16px：标题 ↔ 开关 */
+  width: 100%;
+  min-width: 0;
+}
+
+/* ── 长卡：标题 / 标签 / 开关 并列成一行 ── */
+.task-card__row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3); /* 12px：标题 ↔ 标签 */
+  width: 100%;
+  min-width: 0;
+}
+
+/* 标题：20px medium、颜色 container 100%（最实的文字层），行高随 --font-title-sm（1.375），
+   单行超出省略（与 TaskTemplateCard 同规格） */
+.task-card__title {
+  flex: 1 1 auto;
+  overflow: hidden;
+  margin: 0;
+  min-width: 0;
+  color: var(--container);
+  font: var(--font-title-sm); /* 20px / 1.375 */
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* 标签：形态由原子 Tag 决定（icon 形态 = 14px 图标 + 12px 文字） */
+.task-card__label {
+  flex: 0 0 auto;
+}
+
+/* 开关：不参与拉伸，尺寸由原子 Toggle 自带（36 × 20） */
+.task-card__switch {
+  flex: 0 0 auto;
+}
+
+/* 长卡：标题按内容宽度紧贴标签，多余空间全部让给最右侧的开关；
+   标题过长时先于标签收缩并显示省略号 */
+.task-card--long .task-card__title {
+  flex: 0 1 auto;
+}
+
+.task-card--long .task-card__switch {
+  margin-left: auto;
+}
+
+/* 描述：14px medium / 行高 24px（单行 24px、两行 48px），最多两行，超出省略（与 TaskTemplateCard 同规格） */
+.task-card__desc {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: var(--container-50); /* Light: #000 50% / Dark: #fff 50% */
+  font: var(--font-body-md); /* 14px / 1.5 */
+  font-weight: var(--font-weight-medium);
+  line-height: 24px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* 底部信息行：左右分布，整行统一 14px regular / 行高 snug（1.375）+ container30 弱化色（图标随文字同色） */
+.task-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4); /* 16px */
+  min-width: 0;
+  color: var(--container-30); /* Light: #000 30% / Dark: #fff 30% */
+  font: var(--font-body-md); /* 14px / 1.5 */
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-snug); /* 单行元信息收紧行高 */
+}
+
+/* 时间周期：时间图标 + 文案，两者垂直居中对齐（与原子 Tag 的 icon 形态同一做法） */
+.task-card__schedule {
+  display: inline-flex;
+  align-items: center; /* 图标 ↔ 文案，垂直居中 */
+  gap: var(--spacing-1); /* 4px：图标 ↔ 文字 */
+  min-width: 0;
+}
+
+/* 时间图标：自有的固定 14px 盒子，内部图标精确居中。
+   图标本体有两种形态（Lucide 直接返回 <svg>；icon-plus 返回 <span> + 内联 <svg>），
+   Icon 的根元素形态不固定，所以盒子由本组件自己提供，不依赖 Icon 的根节点：
+   - flex 居中 → 不参与行内基线排布，内联 svg 不会被 19.25px 的 strut 行盒压低；
+   - svg 锁死 14px → 内联 svg 自带 width/height 或未定尺寸时也不会溢出偏位。
+   图标盒中线因此落在信息行中线（19.25 / 2）上，作为整行的几何基准。 */
+.task-card__time-icon {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 14px;
+  height: 14px;
+  line-height: 0;
+}
+
+.task-card__time-icon svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+}
+
+/* 时间文案过长时单行省略，保证右侧「下次执行」始终可见 */
+.task-card__schedule-text {
+  overflow: hidden;
+  min-width: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.task-card__next {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* 光学对齐：HarmonyOS Sans SC（unitsPerEm 1000 / win 度量 928-244）在 14px、行高 1.375
+   下，内容区 16.41px、边界 1.42px，基线落在 14.41px；内容区中心在基线之上 0.342em，
+   而 CJK 字身中心约在基线之上 0.38em —— 字面天然比行盒中线高约 0.04em，
+   所以光靠 flex 居中会看到「文字在行内偏高」。
+   把信息行两处文字一起下移 0.04em（随字号缩放，不是固定 px）：文字字面在行内视觉居中，
+   同时与落在行中线的 14px 图标对齐。
+   用 transform 而非 margin：不动行高、不改两侧基线，只做视觉位移。 */
+.task-card__schedule-text,
+.task-card__next {
+  transform: translateY(0.04em);
+}
+
+/* 长卡：两段行距不同 —— 标题行 ↔ 描述 12px，描述 ↔ 底部信息行 20px。
+   两个值不一样，所以不用统一 gap，改为各段 margin 明写（flex 子项不会发生外边距折叠）。 */
+.task-card--long {
+  gap: 0;
+}
+
+.task-card--long .task-card__desc {
+  margin-top: var(--spacing-3); /* 12px：标题行 ↔ 描述 */
+}
+
+.task-card--long .task-card__footer {
+  margin-top: var(--spacing-5); /* 20px：描述 ↔ 底部信息行 */
+}
+
+/* 短卡组：横向排列 + 自动换行，卡片间距 16px（与 TaskTemplateCardGroup 同规格）；
+   min() 让窄容器下降为两列，保证「一行最少两张」。 */
+.task-card-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, calc(50% - 8px)), 1fr));
+  gap: var(--spacing-4); /* 16px */
+  width: 100%;
+}

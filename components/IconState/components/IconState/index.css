@@ -1,0 +1,93 @@
+.is-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-md); /* 6px 圆角正方形 */
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard);
+}
+
+/* 圆形框（对话框 icon）：正圆形 */
+.is-btn--circle {
+  border-radius: 50%;
+}
+
+/* 用覆盖层显示状态，圆形框的 frameColor 仍保持可见。 */
+.is-btn::before {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  content: "";
+  pointer-events: none;
+}
+
+.is-btn:not(.is-btn--circle):not(.is-btn--forced):not(:disabled):hover::before,
+.is-btn:not(.is-btn--circle).is-btn--hover::before,
+.is-btn:not(.is-btn--circle):not(.is-btn--forced):not(:disabled):active::before,
+.is-btn:not(.is-btn--circle).is-btn--active::before {
+  background-color: var(--container-05);
+}
+
+/* 灰色对话框默认透明，悬浮和激活使用 5% 中性色覆盖层。 */
+.is-btn--frame-gray:not(.is-btn--forced):not(:disabled):hover::before,
+.is-btn--frame-gray.is-btn--hover::before,
+.is-btn--frame-gray:not(.is-btn--forced):not(:disabled):active::before,
+.is-btn--frame-gray.is-btn--active::before {
+  background-color: var(--container-05);
+}
+
+/* 黑色对话框在默认、悬浮、激活时都保持纯黑。 */
+.is-btn--frame-black:not(.is-btn--forced):not(:disabled):hover::before,
+.is-btn--frame-black.is-btn--hover::before,
+.is-btn--frame-black:not(.is-btn--forced):not(:disabled):active::before,
+.is-btn--frame-black.is-btn--active::before {
+  background-color: transparent;
+}
+
+/* 保留自定义深色框的可见交互反馈。 */
+.is-btn--frame-custom.is-btn--frame-dark:not(.is-btn--forced):not(:disabled):hover::before,
+.is-btn--frame-custom.is-btn--frame-dark.is-btn--hover::before,
+.is-btn--frame-custom.is-btn--frame-dark:not(.is-btn--forced):not(:disabled):active::before,
+.is-btn--frame-custom.is-btn--frame-dark.is-btn--active::before {
+  background-color: var(--on-primary-10);
+}
+
+/* 禁用：整体 50% 透明度 */
+.is-btn:disabled,
+.is-btn--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 暂停禁用态使用资源内置的 #E5E5EA 色值，不再叠加通用 50% 透明度。 */
+.is-btn.is-btn--pause-disabled {
+  opacity: 1;
+}
+
+.is-btn:focus-visible {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+.is-icon {
+  display: inline-block;
+}
+
+.is-icon--asset {
+  object-fit: contain;
+}
+
+.is-icon--mask {
+  flex: none;
+  background-color: currentColor;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}

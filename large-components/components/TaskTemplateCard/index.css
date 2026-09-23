@@ -1,0 +1,88 @@
+/* ===== TaskTemplateCard · 定时任务模版卡片 =====
+   单卡：icon(32 线性) / 标题(20 medium，单行省略) / 描述(14 medium，双行省略)
+   垂直排布、间距 20px；白底、无描边、圆角 24px、内边距 20px 24px。
+   底色带液态玻璃材质（顶部 1px 内高光 + 背景折射，来自 Pixso 导出，规格同设计系统 glass-xs）。
+   结构仅「图标 + 文字」，不承载其他原子组件。
+   唯一的状态是悬浮：可点击卡片悬浮时只抬起一层阴影，填充色与描边都保持不变。 */
+
+.task-template-card {
+  /* 液态玻璃基材（Pixso 导出：innerShadow y 1 / 白 / blur 1，外加 stdDeviation 4 的背景模糊）：
+     - 内高光：inset 0 1px 1px 白，贴顶部内边缘的一道高光；底色不透明时只在深色下可见。
+     - 背景折射：blur(4px) 为通用回退；blur(4px) + url(#glass-xs) 是 Chromium 下的折射滤镜
+       （#glass-xs…xl 由 build.mjs 预埋在 HTML 里，blur 档位与设计系统 glass-xs 一致）。
+       注意：backdrop-filter 作用在卡片「背后」的内容上，底色不透明时不可见。 */
+  --task-template-card-glass-highlight: inset 0 1px 1px rgba(255, 255, 255, 1);
+  --task-template-card-glass-blur: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5); /* 20px */
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: var(--spacing-5) var(--spacing-6); /* 上下 20px / 左右 24px */
+  border-radius: 24px;
+  background-color: var(--surface-container-lowest);
+  box-shadow: var(--task-template-card-glass-highlight);
+  backdrop-filter: blur(var(--task-template-card-glass-blur));
+  backdrop-filter: blur(var(--task-template-card-glass-blur)) url(#glass-xs);
+}
+
+/* 可点击：hover 只抬起一层阴影，填充色、描边与静止态完全一致（不做交互色叠加）；
+   外阴影与玻璃内高光叠加，避免悬浮时把顶部高光覆盖掉 */
+.task-template-card--clickable {
+  /* 悬浮阴影取自设计稿 Pixso 效果：模糊 24px / X 0 / Y 8px / 黑 8%
+     （SVG 里 Pixso 导出的 feGaussianBlur stdDeviation=8 是它的渲染中间量，不作为 CSS 模糊值） */
+  --task-template-card-hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+/* 悬浮抬起：只有可点击卡片参与；未传 onClick 的静态卡没有悬浮态 */
+.task-template-card--clickable:hover {
+  box-shadow: var(--task-template-card-hover-shadow), var(--task-template-card-glass-highlight);
+}
+
+.task-template-card--clickable:focus-visible {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+/* 第一行：32px 线性图标，灰色 tertiary */
+.task-template-card__icon {
+  flex: 0 0 auto;
+  color: var(--color-icon-tertiary);
+}
+
+/* 第二行：标题，20px medium、颜色 container 100%，单行超出省略 */
+.task-template-card__title {
+  overflow: hidden;
+  margin: 0;
+  color: var(--container);
+  font: var(--font-title-sm); /* 20px / 1.375 */
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* 第三行：描述，14px / 行高 24px，最多两行，超出省略 */
+.task-template-card__desc {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: var(--container-50); /* Light: #000 50% / Dark: #fff 50% */
+  font: var(--font-body-md); /* 14px / 1.5 */
+  font-weight: var(--font-weight-medium);
+  line-height: 24px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* 卡片组：水平排布 + 自动换行，卡间距 16px；
+   min() 让窄容器下降为两列，保证「一行最少两张」。 */
+.task-template-card-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, calc(50% - 8px)), 1fr));
+  gap: var(--spacing-4); /* 16px */
+  width: 100%;
+}

@@ -1,0 +1,144 @@
+/* ===== Tag =====
+   三种形态：diff 增删标签 / icon 图标文字标签 / tab 可选中圆角标签 */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: auto;
+  white-space: nowrap;
+  font-family: var(--font-family);
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.tag__icon {
+  flex-shrink: 0;
+}
+
+/* ── 1. 代码增删标签：12px 文字 / 18px 行高，左右内边距 4px、上下 0，全圆角（999px）──
+   上下内边距为 0，标签高度即行高 18px；行高显式写死 18px，
+   避免日后调整字号时被 font 简写的比例行高带偏。 */
+.tag--diff-add,
+.tag--diff-remove {
+  padding: 0 4px;
+  border-radius: var(--radius-full); /* 999px */
+  font: var(--font-caption-lg); /* 12px / 1.5 */
+  line-height: 18px;
+}
+
+/* 用户指定色：绿底绿字 / 红底红字 */
+.tag--diff-add {
+  background-color: #D5F2DC;
+  color: #01802B;
+}
+
+.tag--diff-remove {
+  background-color: #FCE3E0;
+  color: #BF0A1C;
+}
+
+/* 增删一体容器：绿 + 红两个标签固定成对，间距 4px */
+.tag-diff-pair {
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+}
+
+/* ── 2. 图标 + 文字标签：14px 图标 + 12px 文字，间距 4px，container5 底色，8/4 内边距 ── */
+.tag--icon {
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: var(--radius-badge);
+  background-color: var(--container-05);
+  color: var(--color-font-primary);
+  font: var(--font-caption-lg); /* 12px / 1.5 */
+  line-height: 16px;
+}
+
+.tag--icon .tag__icon {
+  color: var(--color-icon-primary);
+}
+
+/* ── 3. 可选中圆角标签：16px 图标 + 16px 文字 / 20px 行高，间距 6px，16/8 内边距 ──
+   行高按规格固定 20px（非 16×1.5），标签高度 = 20 + 8×2 = 36px。 */
+.tag--tab {
+  --tag-tab-bg: var(--color-comp-background-tertiary);
+  --tag-tab-bg-hover: var(--container-10);
+  --tag-tab-bg-selected: var(--container-90);
+  --tag-tab-bg-selected-hover: var(--container-80);
+
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius-3xl); /* 20px */
+  background-color: var(--tag-tab-bg);
+  color: var(--color-font-secondary);
+  font: var(--font-body-lg); /* 16px / 1.5 */
+  line-height: 20px; /* 规格：行高 20px */
+  font-weight: var(--font-weight-regular);
+  cursor: pointer;
+}
+
+.tag--tab .tag__icon {
+  color: var(--container-60);
+}
+
+.tag--tab:hover:not(.tag--disabled):not(.tag--static) {
+  background-color: var(--tag-tab-bg-hover);
+}
+
+.tag--tab:focus-visible {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+/* 禁用态：静态形态（span）与交互形态（button）表现一致 */
+.tag--tab.tag--disabled {
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+.tag--tab.tag--disabled .tag__icon {
+  color: var(--text-disabled);
+}
+
+/* 选中态：container90 底 + font_on_primary 文字 + Medium 字重 */
+.tag--tab.tag--selected {
+  background-color: var(--tag-tab-bg-selected);
+  color: var(--color-font-on-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.tag--tab.tag--selected .tag__icon {
+  color: var(--color-icon-on-primary);
+}
+
+.tag--tab.tag--selected:hover:not(.tag--disabled):not(.tag--static) {
+  background-color: var(--tag-tab-bg-selected-hover);
+}
+
+/* 静态形态：仅展示，不响应 hover、不显示手型 */
+.tag--tab.tag--static {
+  cursor: default;
+}
+
+.tag--tab.tag--static.tag--disabled {
+  cursor: not-allowed;
+}
+
+/* dark 模式下 container90 会翻转为浅色，与白色文字冲突 —— 改用深灰底保持对比 */
+.dark .tag--tab {
+  --tag-tab-bg-hover: var(--container-15);
+  --tag-tab-bg-selected: var(--gray-02);
+  --tag-tab-bg-selected-hover: var(--gray-03);
+}
+
+/* ── 标签行容器 ── */
+.tag-group {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
