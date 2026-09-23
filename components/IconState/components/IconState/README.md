@@ -20,7 +20,7 @@
 #### 图标
 
 - 栏目 icon 可选 `search`、`menu`、`columns`、`fullscreen`、`sidebar`，也可通过 `src` 传入自定义 SVG 或 data URL。
-- 对话框 icon 仅支持 `dialog-glyph`（发送）、`dialog-pause`（暂停）和 `dialog-add`（加号）；圆形样式会忽略 `src`。
+- 对话框 icon 仅支持 `dialog-glyph`（发送）、`dialog-pause`（暂停）和 `dialog-add`（加号）；圆形样式会忽略 `src`。暂停图标没有灰色或自定义框色，启用时固定使用黑色 SVG，禁用时切换为 `#E5E5EA` 浅灰 SVG。
 - 未知的栏目 `icon` 会回退到 `search`；未知的对话框 `icon` 会回退到 `dialog-glyph`。
 
 #### 使用原则
@@ -38,7 +38,7 @@
 | `iconSize` | `number` | 方形 `20`；圆形 `32` | 图标渲染尺寸；圆形“加号”在激活态未传入该值时为 `23`。 |
 | `icon` | `string` | 方形 `"search"`；圆形 `"dialog-glyph"` | 方形使用内置图标；圆形仅接受发送、暂停和加号三项。 |
 | `src` | `string` | — | 仅用于方形自定义 SVG 路径或 data URL，优先于 `icon`。 |
-| `frameColor` | `"gray" \| "black" \| string` | 圆形 `"gray"` | 圆形框颜色；支持预设或任意 CSS 色值。 |
+| `frameColor` | `"gray" \| "black" \| string` | 圆形 `"gray"` | 圆形框颜色；支持预设或任意 CSS 色值。`dialog-pause` 会忽略此值并固定为黑色。 |
 | `iconColor` | `string` | 灰色框为 `var(--color-icon-primary)`；其余为白色 | 圆形图标颜色，适用于需要调整自定义框对比度的场景。 |
 | `state` | `"default" \| "hover" \| "active" \| "disabled"` | — | 显式指定视觉状态，优先级最高。 |
 | `disabled` | `boolean` | `false` | 未传 `state` 时禁用按钮。 |
@@ -55,9 +55,11 @@
 | `circle` + `gray` 默认 | 透明 | `--color-icon-primary` | 用于低强调的对话框操作。 |
 | `circle` + `gray` 悬浮 / 激活 | `--container-05` | `--color-icon-primary` | 使用 5% 中性色背景提示可操作性。 |
 | `circle` + `black` 默认 / 悬浮 / 激活 | `#000000` | 白色 | 三种状态保持相同的纯黑容器。 |
+| `circle` + `dialog-pause` 默认 / 悬浮 / 激活 | SVG 内置黑色 | 白色停止方块 | 暂停图标没有灰色状态，三种启用状态保持相同。 |
+| `circle` + `dialog-pause` 禁用 | SVG 内置 `#E5E5EA` | 透明停止方块 | 使用专属禁用 SVG，不叠加通用 50% 透明度。 |
 | `circle` + 自定义颜色 默认 | `frameColor` 的值 | 白色，或 `iconColor` | 用于业务需要的强调色容器。 |
 | `circle` + 自定义颜色 悬浮 / 激活 | `frameColor` 加 `--on-primary-10` 覆盖层 | 白色，或 `iconColor` | 保留深色自定义框的交互反馈。 |
-| 任意禁用态 | 当前状态样式，整体 `opacity: 0.5` | 同当前状态 | `state="disabled"` 同时设置原生 `disabled`。 |
+| 其他禁用态 | 当前状态样式，整体 `opacity: 0.5` | 同当前状态 | `state="disabled"` 同时设置原生 `disabled`。 |
 | 键盘焦点 | 保持当前背景 | 保持当前图标 | 使用 `--focus-ring` 与 `--outline-offset-gap` 显示焦点轮廓。 |
 
 ## Usage
@@ -76,7 +78,7 @@ import IconState from "./components/IconState/index.jsx";
 // 栏目 icon：自定义 SVG
 <IconState
   variant="square"
-  src="./assets/uploads/my-icon.svg"
+  src="./assets/uploads/icon/iconstate/icon-search.svg"
   iconSize={16}
   state="hover"
   ariaLabel="自定义操作"

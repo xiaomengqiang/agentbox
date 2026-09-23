@@ -5,16 +5,17 @@ import "./index.css";
 // 新增图标时，只需在此处追加一行映射即可。
 const ICON_SRC = {
   // 栏目 icon（方形框）
-  search: "./assets/uploads/icon-search.svg",
-  menu: "./assets/uploads/icon-menu.svg",
-  columns: "./assets/uploads/icon-columns.svg",
-  fullscreen: "./assets/uploads/icon-fullscreen.svg",
-  sidebar: "./assets/uploads/icon-sidebar.svg",
+  search: "./assets/uploads/icon/iconstate/icon-search.svg",
+  menu: "./assets/uploads/icon/iconstate/icon-menu.svg",
+  columns: "./assets/uploads/icon/iconstate/icon-columns.svg",
+  fullscreen: "./assets/uploads/icon/iconstate/icon-fullscreen.svg",
+  sidebar: "./assets/uploads/icon/iconstate/icon-sidebar.svg",
   // 对话框 icon 使用透明背景的 glyph，框颜色由 frameColor 控制。
-  "dialog-glyph": "./assets/uploads/icon-dialog-glyph.svg",
-  "dialog-pause": "./assets/uploads/icon-dialog-pause.svg",
-  "dialog-add": "./assets/uploads/icon-dialog-add.svg",
-  "dialog-add-active": "./assets/uploads/icon-dialog-add-active.svg",
+  "dialog-glyph": "./assets/uploads/icon/iconstate/icon-dialog-glyph.svg",
+  "dialog-pause": "./assets/uploads/icon/iconstate/icon-dialog-pause.svg",
+  "dialog-pause-disabled": "./assets/uploads/icon/iconstate/icon-dialog-pause-disabled.svg",
+  "dialog-add": "./assets/uploads/icon/iconstate/icon-dialog-add.svg",
+  "dialog-add-active": "./assets/uploads/icon/iconstate/icon-dialog-add-active.svg",
 };
 const DIALOG_ICON_NAMES = new Set(["dialog-glyph", "dialog-pause", "dialog-add"]);
 
@@ -52,19 +53,30 @@ export default function IconState({
   const visualState =
     state || (disabled ? "disabled" : active ? "active" : "default");
   const isDisabled = visualState === "disabled";
+  const isPause = isCircle && selectedIcon === "dialog-pause";
+  const isDisabledPause = isPause && isDisabled;
   const isActiveAdd = isCircle && selectedIcon === "dialog-add" && visualState === "active";
-  const iconSrc = isActiveAdd ? ICON_SRC["dialog-add-active"] : baseIconSrc;
+  const iconSrc = isDisabledPause
+    ? ICON_SRC["dialog-pause-disabled"]
+    : isActiveAdd
+      ? ICON_SRC["dialog-add-active"]
+      : baseIconSrc;
   const renderedIconSize = iconSize ?? (isCircle ? (isActiveAdd ? 23 : 32) : 20);
 
-  // gray 默认透明；black 为纯黑；也支持任意 CSS 色值（如 "#0A59F7"）。
-  const selectedFrameColor = frameColor || "gray";
-  const bgColor = isCircle ? FRAME_COLORS[selectedFrameColor] || selectedFrameColor : undefined;
+  // 暂停图标只有黑色与禁用两种外观，不提供 gray / custom 框色。
+  // 其他圆形图标：gray 默认透明；black 为纯黑；也支持任意 CSS 色值。
+  const selectedFrameColor = isPause ? "black" : frameColor || "gray";
+  const bgColor = isCircle
+    ? isPause
+      ? "transparent"
+      : FRAME_COLORS[selectedFrameColor] || selectedFrameColor
+    : undefined;
   const foreground = iconColor || (selectedFrameColor === "gray" ? "var(--color-icon-primary)" : "var(--on-primary)");
 
   return (
     <button
       type="button"
-      className={`is-btn is-btn--${variant} is-btn--${visualState}${state ? " is-btn--forced" : ""}${isCircle ? ` is-btn--frame-${selectedFrameColor === "gray" || selectedFrameColor === "black" ? selectedFrameColor : "custom"}` : ""}${isCircle && selectedFrameColor !== "gray" ? " is-btn--frame-dark" : ""}`}
+      className={`is-btn is-btn--${variant} is-btn--${visualState}${state ? " is-btn--forced" : ""}${isCircle ? ` is-btn--frame-${selectedFrameColor === "gray" || selectedFrameColor === "black" ? selectedFrameColor : "custom"}` : ""}${isCircle && selectedFrameColor !== "gray" ? " is-btn--frame-dark" : ""}${isPause ? " is-btn--pause" : ""}${isDisabledPause ? " is-btn--pause-disabled" : ""}`}
       style={{
         width: size,
         height: size,
@@ -75,7 +87,9 @@ export default function IconState({
       aria-label={ariaLabel}
       aria-disabled={isDisabled}
     >
-      {isCircle ? (
+      {isPause ? (
+        <Icon src={iconSrc} size={renderedIconSize} className="is-icon is-icon--asset" />
+      ) : isCircle ? (
         <span
           className="is-icon is-icon--mask"
           style={{

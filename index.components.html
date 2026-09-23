@@ -10756,10 +10756,10 @@ window.PreviewDemos["input-box"] = __export.Demo;
  * 使用组件资源中的 SVG，保持状态图形与设计稿一致。
  */
 const STATUS_ICON = {
-  generating: { src: "./assets/uploads/menuitem-history-generating.svg", size: 21 },
-  completed: { src: "./assets/uploads/menuitem-history-completed.svg", size: 20 },
-  fault: { src: "./assets/uploads/menuitem-history-fault.svg", size: 16 },
-  "pending-auth": { src: "./assets/uploads/menuitem-history-pending-auth.svg", size: 70 },
+  generating: { src: "./assets/uploads/icon/menuitem/menuitem-history-generating.svg", size: 21 },
+  completed: { src: "./assets/uploads/icon/menuitem/menuitem-history-completed.svg", size: 20 },
+  fault: { src: "./assets/uploads/icon/menuitem/menuitem-history-fault.svg", size: 16 },
+  "pending-auth": { src: "./assets/uploads/icon/menuitem/menuitem-history-pending-auth.svg", size: 70 },
 };
 
 /**
@@ -10904,7 +10904,7 @@ function MenuItem({
             ) : null}
             <span className="mi-label">{item.label}</span>
             {isDropdownMd && isSelected ? (
-              <Icon src="./assets/uploads/menuitem-dropdown-selected.svg" size={14} className="mi-check" />
+              <Icon src="./assets/uploads/icon/menuitem/menuitem-dropdown-selected.svg" size={14} className="mi-check" />
             ) : null}
           </button>
         );
@@ -11072,10 +11072,10 @@ function FileIcon({ size = 16, className }) {
 const LEFT_FORMS = [{ value: "nav", label: "导航条目" }, { value: "history", label: "历史对话" }];
 const NAV_STATES = [{ value: "default", label: "默认" }, { value: "hover", label: "悬浮" }, { value: "selected", label: "选中" }];
 const NAV_ICONS = [
-  { value: "./assets/uploads/menuitem-nav-new.svg", label: "新建对话" },
-  { value: "./assets/uploads/menuitem-nav-schedule.svg", label: "定时任务" },
-  { value: "./assets/uploads/menuitem-nav-plugin.svg", label: "插件" },
-  { value: "./assets/uploads/menuitem-nav-more.svg", label: "更多" },
+  { value: "./assets/uploads/icon/menuitem/menuitem-nav-new.svg", label: "新建对话" },
+  { value: "./assets/uploads/icon/menuitem/menuitem-nav-schedule.svg", label: "定时任务" },
+  { value: "./assets/uploads/icon/menuitem/menuitem-nav-plugin.svg", label: "插件" },
+  { value: "./assets/uploads/icon/menuitem/menuitem-nav-more.svg", label: "更多" },
 ];
 const HISTORY_STATES = [
   { value: "default", label: "默认" },
@@ -11088,8 +11088,8 @@ const HISTORY_STATES = [
 const SMALL_DROPDOWN_STATES = [{ value: "default", label: "默认" }, { value: "hover", label: "悬浮" }, { value: "disabled", label: "禁用" }];
 const MEDIUM_DROPDOWN_STATES = [{ value: "default", label: "默认" }, { value: "hover", label: "悬浮" }, { value: "selected", label: "选中" }, { value: "disabled", label: "禁用" }];
 const MEDIUM_DROPDOWN_ICONS = [
-  { value: "./assets/uploads/menuitem-dropdown-add.svg", label: "添加" },
-  { value: "./assets/uploads/menuitem-dropdown-branch.svg", label: "分支" },
+  { value: "./assets/uploads/icon/menuitem/menuitem-dropdown-add.svg", label: "添加" },
+  { value: "./assets/uploads/icon/menuitem/menuitem-dropdown-branch.svg", label: "分支" },
 ];
 const RIGHT_VARIANTS = [{ value: "folder", label: "文件夹" }, { value: "file-level-1", label: "一级文件" }, { value: "file-level-2", label: "二级文件" }];
 const FILE_STATES = [{ value: "default", label: "默认" }, { value: "hover", label: "悬浮" }, { value: "rename", label: "重命名" }, { value: "renaming", label: "重命名输入中" }, { value: "disabled", label: "禁用" }];
@@ -11183,10 +11183,10 @@ function Demo() {
           {dropdownSize === "md" && <><Select label="Icon · 前置图标" value={dropdownIconSrc} onChange={value => { setDropdownIconSrc(value); if (value === MEDIUM_DROPDOWN_ICONS[1].value) setDropdownLabel("feature/project-dashboard"); }} options={dropdownIconOptions} /><UploadIcon label="iconSrc · 上传 SVG" onLoaded={setDropdownIconSrc} /></>}
           <TextInput label="Label · 文本" value={dropdownLabel} onChange={setDropdownLabel} />
         </div>
-        <Preview align="left" code={`variant="dropdown" · size="${dropdownSize}" · state="${safeDropdownState}"`}><MenuItem variant="dropdown" size={dropdownSize} items={[{ id: "dropdown", label: isDanger ? "卸载" : dropdownLabel, iconSrc: dropdownSize === "md" ? dropdownIconSrc : isDanger ? "./assets/uploads/menuitem-dropdown-danger.svg" : "./assets/uploads/menuitem-dropdown-small-general.svg", rawIcon: dropdownSize === "sm", danger: isDanger, disabled: safeDropdownState === "disabled", state: ["default", "disabled"].includes(safeDropdownState) ? undefined : safeDropdownState }]} defaultSelectedId={safeDropdownState === "selected" ? "dropdown" : undefined} /></Preview>
+        <Preview align="left" code={`variant="dropdown" · size="${dropdownSize}" · state="${safeDropdownState}"`}><MenuItem variant="dropdown" size={dropdownSize} items={[{ id: "dropdown", label: isDanger ? "卸载" : dropdownLabel, iconSrc: dropdownSize === "md" ? dropdownIconSrc : isDanger ? "./assets/uploads/icon/menuitem/menuitem-dropdown-danger.svg" : "./assets/uploads/icon/menuitem/menuitem-dropdown-small-general.svg", rawIcon: dropdownSize === "sm", danger: isDanger, disabled: safeDropdownState === "disabled", state: ["default", "disabled"].includes(safeDropdownState) ? undefined : safeDropdownState }]} defaultSelectedId={safeDropdownState === "selected" ? "dropdown" : undefined} /></Preview>
       </div>
-      <div className="menuitem-state-group"><h3>小尺寸 · 一般</h3><div className="menuitem-state-matrix">{SMALL_DROPDOWN_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="dropdown" items={[{ id: option.value, label: "新建对话", iconSrc: "./assets/uploads/menuitem-dropdown-small-general.svg", rawIcon: true, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : undefined }]} /></div>)}</div></div>
-      <div className="menuitem-state-group"><h3>小尺寸 · 警告</h3><div className="menuitem-state-matrix">{SMALL_DROPDOWN_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="dropdown" items={[{ id: option.value, label: "卸载", iconSrc: "./assets/uploads/menuitem-dropdown-danger.svg", rawIcon: true, danger: true, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : undefined }]} /></div>)}</div></div>
+      <div className="menuitem-state-group"><h3>小尺寸 · 一般</h3><div className="menuitem-state-matrix">{SMALL_DROPDOWN_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="dropdown" items={[{ id: option.value, label: "新建对话", iconSrc: "./assets/uploads/icon/menuitem/menuitem-dropdown-small-general.svg", rawIcon: true, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : undefined }]} /></div>)}</div></div>
+      <div className="menuitem-state-group"><h3>小尺寸 · 警告</h3><div className="menuitem-state-matrix">{SMALL_DROPDOWN_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="dropdown" items={[{ id: option.value, label: "卸载", iconSrc: "./assets/uploads/icon/menuitem/menuitem-dropdown-danger.svg", rawIcon: true, danger: true, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : undefined }]} /></div>)}</div></div>
       <div className="menuitem-state-group"><h3>中尺寸</h3><div className="menuitem-state-matrix">{MEDIUM_DROPDOWN_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="dropdown" size="md" items={[{ id: option.value, label: "添加到工作区", iconSrc: MEDIUM_DROPDOWN_ICONS[0].value, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : option.value === "selected" ? "selected" : undefined }]} defaultSelectedId={option.value === "selected" ? option.value : undefined} /></div>)}</div></div>
     </section>
 
@@ -11220,16 +11220,16 @@ window.PreviewDemos.menuitem=Demo;})();
 // 新增图标时，只需在此处追加一行映射即可。
 const ICON_SRC = {
   // 栏目 icon（方形框）
-  search: "./assets/uploads/icon-search.svg",
-  menu: "./assets/uploads/icon-menu.svg",
-  columns: "./assets/uploads/icon-columns.svg",
-  fullscreen: "./assets/uploads/icon-fullscreen.svg",
-  sidebar: "./assets/uploads/icon-sidebar.svg",
+  search: "./assets/uploads/icon/iconstate/icon-search.svg",
+  menu: "./assets/uploads/icon/iconstate/icon-menu.svg",
+  columns: "./assets/uploads/icon/iconstate/icon-columns.svg",
+  fullscreen: "./assets/uploads/icon/iconstate/icon-fullscreen.svg",
+  sidebar: "./assets/uploads/icon/iconstate/icon-sidebar.svg",
   // 对话框 icon 使用透明背景的 glyph，框颜色由 frameColor 控制。
-  "dialog-glyph": "./assets/uploads/icon-dialog-glyph.svg",
-  "dialog-pause": "./assets/uploads/icon-dialog-pause.svg",
-  "dialog-add": "./assets/uploads/icon-dialog-add.svg",
-  "dialog-add-active": "./assets/uploads/icon-dialog-add-active.svg",
+  "dialog-glyph": "./assets/uploads/icon/iconstate/icon-dialog-glyph.svg",
+  "dialog-pause": "./assets/uploads/icon/iconstate/icon-dialog-pause.svg",
+  "dialog-add": "./assets/uploads/icon/iconstate/icon-dialog-add.svg",
+  "dialog-add-active": "./assets/uploads/icon/iconstate/icon-dialog-add-active.svg",
 };
 const DIALOG_ICON_NAMES = new Set(["dialog-glyph", "dialog-pause", "dialog-add"]);
 

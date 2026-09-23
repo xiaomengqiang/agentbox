@@ -7,10 +7,10 @@ import "./index.css";
  * 使用组件资源中的 SVG，保持状态图形与设计稿一致。
  */
 const STATUS_ICON = {
-  generating: { src: "./assets/uploads/menuitem-history-generating.svg", size: 21 },
-  completed: { src: "./assets/uploads/menuitem-history-completed.svg", size: 20 },
-  fault: { src: "./assets/uploads/menuitem-history-fault.svg", size: 16 },
-  "pending-auth": { src: "./assets/uploads/menuitem-history-pending-auth.svg", size: 70 },
+  generating: { src: "./assets/uploads/icon/menuitem/menuitem-history-generating.svg", size: 21 },
+  completed: { src: "./assets/uploads/icon/menuitem/menuitem-history-completed.svg", size: 20 },
+  fault: { src: "./assets/uploads/icon/menuitem/menuitem-history-fault.svg", size: 16 },
+  "pending-auth": { src: "./assets/uploads/icon/menuitem/menuitem-history-pending-auth.svg", size: 70 },
 };
 
 /**
@@ -155,7 +155,7 @@ export default function MenuItem({
             ) : null}
             <span className="mi-label">{item.label}</span>
             {isDropdownMd && isSelected ? (
-              <Icon src="./assets/uploads/menuitem-dropdown-selected.svg" size={14} className="mi-check" />
+              <Icon src="./assets/uploads/icon/menuitem/menuitem-dropdown-selected.svg" size={14} className="mi-check" />
             ) : null}
           </button>
         );

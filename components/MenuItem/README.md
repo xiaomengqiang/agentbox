@@ -117,7 +117,7 @@ import MenuItem from "./MenuItem/index.jsx";
 
 // 导航内容列表
 <MenuItem variant="nav" items={[
-  { id: "new", label: "新建对话", iconSrc: "./assets/uploads/menu-new-conversation.svg" },
+  { id: "new", label: "新建对话", iconSrc: "./assets/uploads/icon/menuitem/menuitem-nav-new.svg" },
 ]} />
 
 // 历史对话列表
@@ -133,7 +133,7 @@ import MenuItem from "./MenuItem/index.jsx";
 
 // 下拉列表（中尺寸，选中态 + 自定义图标）
 <MenuItem variant="dropdown" size="md" items={[
-  { id: "workflow", label: "工作流", iconSrc: "./assets/uploads/menu-workflow.svg", state: "selected" },
+  { id: "workflow", label: "工作流", iconSrc: "./assets/uploads/icon/menuitem/menuitem-dropdown-branch.svg", state: "selected" },
 ]} />
 
 // 文件夹列表（默认，非受控展开）

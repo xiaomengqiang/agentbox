@@ -63,6 +63,11 @@
   cursor: not-allowed;
 }
 
+/* 暂停禁用态使用资源内置的 #E5E5EA 色值，不再叠加通用 50% 透明度。 */
+.is-btn.is-btn--pause-disabled {
+  opacity: 1;
+}
+
 .is-btn:focus-visible {
   outline: var(--outline-width-focus) solid var(--focus-ring);
   outline-offset: var(--outline-offset-gap);
@@ -70,6 +75,10 @@
 
 .is-icon {
   display: inline-block;
+}
+
+.is-icon--asset {
+  object-fit: contain;
 }
 
 .is-icon--mask {

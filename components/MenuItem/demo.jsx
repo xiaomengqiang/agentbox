@@ -5,10 +5,10 @@ import MenuItem from "./index.jsx";
 const LEFT_FORMS = [{ value: "nav", label: "导航条目" }, { value: "history", label: "历史对话" }];
 const NAV_STATES = [{ value: "default", label: "默认" }, { value: "hover", label: "悬浮" }, { value: "selected", label: "选中" }];
 const NAV_ICONS = [
-  { value: "./assets/uploads/menuitem-nav-new.svg", label: "新建对话" },
-  { value: "./assets/uploads/menuitem-nav-schedule.svg", label: "定时任务" },
-  { value: "./assets/uploads/menuitem-nav-plugin.svg", label: "插件" },
-  { value: "./assets/uploads/menuitem-nav-more.svg", label: "更多" },
+  { value: "./assets/uploads/icon/menuitem/menuitem-nav-new.svg", label: "新建对话" },
+  { value: "./assets/uploads/icon/menuitem/menuitem-nav-schedule.svg", label: "定时任务" },
+  { value: "./assets/uploads/icon/menuitem/menuitem-nav-plugin.svg", label: "插件" },
+  { value: "./assets/uploads/icon/menuitem/menuitem-nav-more.svg", label: "更多" },
 ];
 const HISTORY_STATES = [
   { value: "default", label: "默认" },
@@ -21,8 +21,8 @@ const HISTORY_STATES = [
 const SMALL_DROPDOWN_STATES = [{ value: "default", label: "默认" }, { value: "hover", label: "悬浮" }, { value: "disabled", label: "禁用" }];
 const MEDIUM_DROPDOWN_STATES = [{ value: "default", label: "默认" }, { value: "hover", label: "悬浮" }, { value: "selected", label: "选中" }, { value: "disabled", label: "禁用" }];
 const MEDIUM_DROPDOWN_ICONS = [
-  { value: "./assets/uploads/menuitem-dropdown-add.svg", label: "添加" },
-  { value: "./assets/uploads/menuitem-dropdown-branch.svg", label: "分支" },
+  { value: "./assets/uploads/icon/menuitem/menuitem-dropdown-add.svg", label: "添加" },
+  { value: "./assets/uploads/icon/menuitem/menuitem-dropdown-branch.svg", label: "分支" },
 ];
 const RIGHT_VARIANTS = [{ value: "folder", label: "文件夹" }, { value: "file-level-1", label: "一级文件" }, { value: "file-level-2", label: "二级文件" }];
 const FILE_STATES = [{ value: "default", label: "默认" }, { value: "hover", label: "悬浮" }, { value: "rename", label: "重命名" }, { value: "renaming", label: "重命名输入中" }, { value: "disabled", label: "禁用" }];
@@ -116,10 +116,10 @@ export default function Demo() {
           {dropdownSize === "md" && <><Select label="Icon · 前置图标" value={dropdownIconSrc} onChange={value => { setDropdownIconSrc(value); if (value === MEDIUM_DROPDOWN_ICONS[1].value) setDropdownLabel("feature/project-dashboard"); }} options={dropdownIconOptions} /><UploadIcon label="iconSrc · 上传 SVG" onLoaded={setDropdownIconSrc} /></>}
           <TextInput label="Label · 文本" value={dropdownLabel} onChange={setDropdownLabel} />
         </div>
-        <Preview align="left" code={`variant="dropdown" · size="${dropdownSize}" · state="${safeDropdownState}"`}><MenuItem variant="dropdown" size={dropdownSize} items={[{ id: "dropdown", label: isDanger ? "卸载" : dropdownLabel, iconSrc: dropdownSize === "md" ? dropdownIconSrc : isDanger ? "./assets/uploads/menuitem-dropdown-danger.svg" : "./assets/uploads/menuitem-dropdown-small-general.svg", rawIcon: dropdownSize === "sm", danger: isDanger, disabled: safeDropdownState === "disabled", state: ["default", "disabled"].includes(safeDropdownState) ? undefined : safeDropdownState }]} defaultSelectedId={safeDropdownState === "selected" ? "dropdown" : undefined} /></Preview>
+        <Preview align="left" code={`variant="dropdown" · size="${dropdownSize}" · state="${safeDropdownState}"`}><MenuItem variant="dropdown" size={dropdownSize} items={[{ id: "dropdown", label: isDanger ? "卸载" : dropdownLabel, iconSrc: dropdownSize === "md" ? dropdownIconSrc : isDanger ? "./assets/uploads/icon/menuitem/menuitem-dropdown-danger.svg" : "./assets/uploads/icon/menuitem/menuitem-dropdown-small-general.svg", rawIcon: dropdownSize === "sm", danger: isDanger, disabled: safeDropdownState === "disabled", state: ["default", "disabled"].includes(safeDropdownState) ? undefined : safeDropdownState }]} defaultSelectedId={safeDropdownState === "selected" ? "dropdown" : undefined} /></Preview>
       </div>
-      <div className="menuitem-state-group"><h3>小尺寸 · 一般</h3><div className="menuitem-state-matrix">{SMALL_DROPDOWN_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="dropdown" items={[{ id: option.value, label: "新建对话", iconSrc: "./assets/uploads/menuitem-dropdown-small-general.svg", rawIcon: true, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : undefined }]} /></div>)}</div></div>
-      <div className="menuitem-state-group"><h3>小尺寸 · 警告</h3><div className="menuitem-state-matrix">{SMALL_DROPDOWN_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="dropdown" items={[{ id: option.value, label: "卸载", iconSrc: "./assets/uploads/menuitem-dropdown-danger.svg", rawIcon: true, danger: true, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : undefined }]} /></div>)}</div></div>
+      <div className="menuitem-state-group"><h3>小尺寸 · 一般</h3><div className="menuitem-state-matrix">{SMALL_DROPDOWN_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="dropdown" items={[{ id: option.value, label: "新建对话", iconSrc: "./assets/uploads/icon/menuitem/menuitem-dropdown-small-general.svg", rawIcon: true, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : undefined }]} /></div>)}</div></div>
+      <div className="menuitem-state-group"><h3>小尺寸 · 警告</h3><div className="menuitem-state-matrix">{SMALL_DROPDOWN_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="dropdown" items={[{ id: option.value, label: "卸载", iconSrc: "./assets/uploads/icon/menuitem/menuitem-dropdown-danger.svg", rawIcon: true, danger: true, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : undefined }]} /></div>)}</div></div>
       <div className="menuitem-state-group"><h3>中尺寸</h3><div className="menuitem-state-matrix">{MEDIUM_DROPDOWN_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="dropdown" size="md" items={[{ id: option.value, label: "添加到工作区", iconSrc: MEDIUM_DROPDOWN_ICONS[0].value, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : option.value === "selected" ? "selected" : undefined }]} defaultSelectedId={option.value === "selected" ? option.value : undefined} /></div>)}</div></div>
     </section>
 

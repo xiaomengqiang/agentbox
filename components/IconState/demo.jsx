@@ -14,6 +14,8 @@ const DIALOG_ICONS = [
   { value: "dialog-pause", label: "暂停" },
   { value: "dialog-add", label: "加号" },
 ];
+const DIALOG_FRAME_OPTIONS = [{ value: "gray", label: "灰色" }, { value: "black", label: "黑色" }, { value: "custom", label: "自定义颜色" }];
+const PAUSE_FRAME_OPTIONS = [{ value: "black", label: "黑色" }];
 
 function Select({ label, value, onChange, options }) {
   return <label className="iconstate-control"><span>{label}</span><select value={value} onChange={event => onChange(event.target.value)}>{options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>;
@@ -45,7 +47,8 @@ function TokenPanel() {
   const colorRows = [
     ["栏目 icon", "Default", "transparent", "--color-icon-primary"], ["栏目 icon", "Hover / Active", "--container-05", "--color-icon-primary"], ["栏目 icon", "Disabled", "同 Default", "opacity: 0.5"],
     ["对话框 · 灰色", "Default", "transparent", "--color-icon-primary"], ["对话框 · 灰色", "Hover / Active", "--container-05", "--color-icon-primary"],
-    ["对话框 · 黑色", "Default / Hover / Active", "--black", "--on-primary"], ["对话框", "Disabled", "同 Default", "opacity: 0.5"],
+    ["对话框 · 黑色", "Default / Hover / Active", "--black", "--on-primary"], ["对话框 · 暂停", "Default / Hover / Active", "黑色 SVG", "白色停止方块"],
+    ["对话框 · 暂停", "Disabled", "#E5E5EA SVG", "透明停止方块"], ["其他形态", "Disabled", "同 Default", "opacity: 0.5"],
   ];
   const contracts = [["square", "32px", "20px / 16px", "--radius-md", "default / hover / active / disabled"], ["circle", "32px", "32px；加号激活 23px", "50%", "default / hover / active / disabled"]];
   return <div className="iconstate-contract">
@@ -64,7 +67,10 @@ export default function Demo() {
   const [dialogState, setDialogState] = useState("default");
   const [frameMode, setFrameMode] = useState("gray");
   const [customColor, setCustomColor] = useState("#0A59F7");
-  const frameColor = frameMode === "custom" ? customColor : frameMode;
+  const isPause = dialogIcon === "dialog-pause";
+  const safeFrameMode = isPause ? "black" : frameMode;
+  const frameColor = safeFrameMode === "custom" ? customColor : safeFrameMode;
+  const frameOptions = isPause ? PAUSE_FRAME_OPTIONS : DIALOG_FRAME_OPTIONS;
   const columnSrc = columnIcon === "custom" ? columnUpload?.src : undefined;
   const columnOptions = [...COLUMN_ICONS.map(icon => ({ value: icon, label: icon })), ...(columnUpload ? [{ value: "custom", label: `上传 · ${columnUpload.name}` }] : [])];
 
@@ -89,13 +95,13 @@ export default function Demo() {
 
     <section className="demo-section">
       <div className="demo-section-header"><h2 className="demo-section-name">对话框 icon</h2><span className="demo-section-tag">Circle · 32px</span></div>
-      <p className="demo-section-desc">圆形框颜色、状态和图标可选择。灰色默认透明，悬浮和激活使用 5% 黑色背景。</p>
+      <p className="demo-section-desc">圆形框颜色、状态和图标可选择。暂停图标固定为黑色，禁用时使用浅灰 SVG；其他图标的灰色默认透明，悬浮和激活使用 5% 黑色背景。</p>
       <div className="iconstate-configurator">
         <div className="iconstate-controls">
-          <Select label="Frame color · 框颜色" value={frameMode} onChange={setFrameMode} options={[{ value: "gray", label: "灰色" }, { value: "black", label: "黑色" }, { value: "custom", label: "自定义颜色" }]} />
-          {frameMode === "custom" ? <label className="iconstate-control"><span>Custom color · 自定义色值</span><input type="color" value={customColor} onChange={event => setCustomColor(event.target.value)} /></label> : null}
+          <Select label="Frame color · 框颜色" value={safeFrameMode} onChange={setFrameMode} options={frameOptions} />
+          {safeFrameMode === "custom" ? <label className="iconstate-control"><span>Custom color · 自定义色值</span><input type="color" value={customColor} onChange={event => setCustomColor(event.target.value)} /></label> : null}
           <Select label="State · 状态" value={dialogState} onChange={setDialogState} options={STATES} />
-          <Select label="Icon · 图标" value={dialogIcon} onChange={setDialogIcon} options={DIALOG_ICONS} />
+          <Select label="Icon · 图标" value={dialogIcon} onChange={value => { setDialogIcon(value); if (value === "dialog-pause") setFrameMode("black"); }} options={DIALOG_ICONS} />
         </div>
         <div className="iconstate-live"><span className="iconstate-live-label">LIVE PREVIEW</span><IconState variant="circle" icon={dialogIcon} frameColor={frameColor} state={dialogState} ariaLabel={`对话框 ${DIALOG_ICONS.find(item => item.value === dialogIcon)?.label} ${dialogState}`} /><code>variant="circle" · icon="{dialogIcon}" · frameColor="{frameColor}" · state="{dialogState}"</code></div>
       </div>
