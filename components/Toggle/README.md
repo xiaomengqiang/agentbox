@@ -39,7 +39,7 @@ Toggle 用于立即切换开 / 关状态，例如通知、同步或显示设置�
 |-----------------|-------|----------------|-------|
 | Off | `--color-comp-background-secondary` | `--color-comp-background-primary`；外描边 `--color-comp-background-tertiary` | `--on-surface` |
 | On | `--color-comp-background-emphasize` | `--color-comp-background-primary` | `--on-surface` |
-| Hover | 当前轨道上叠加 `--color-interactive-hover` | 同当前状态 | 同当前状态 |
+| Hover | 同当前状态，无悬浮态变化 | 同当前状态 | 同当前状态 |
 | Pressed | 当前轨道上叠加 `--color-interactive-pressed` | 同当前状态 | 同当前状态 |
 | Focus visible | 同当前状态 | `--focus-ring` | 同当前状态 |
 | Disabled | 同当前状态，整体 opacity 50% | 同当前状态 | 同当前状态 |

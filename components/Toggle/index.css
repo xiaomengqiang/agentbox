@@ -37,7 +37,7 @@
   background-color: var(--color-comp-background-emphasize); /* 开：Light/Brand #0A59F7 */
 }
 
-/* 交互叠加层：hover / 按下（不改变静息底色）*/
+/* 按下叠加层（不改变静息底色）*/
 .tg-switch::after {
   content: "";
   position: absolute;
@@ -45,17 +45,12 @@
   border-radius: var(--radius-full);
   pointer-events: none;
   opacity: 0;
-  background-color: var(--color-interactive-hover);
+  background-color: var(--color-interactive-pressed);
   transition: opacity var(--duration-fast) var(--ease-standard);
-}
-
-.tg-root:not(.tg-root-disabled) .tg-switch:hover::after {
-  opacity: 1;
 }
 
 .tg-root:not(.tg-root-disabled) .tg-switch:active::after {
   opacity: 1;
-  background-color: var(--color-interactive-pressed);
 }
 
 .tg-switch:focus-visible {

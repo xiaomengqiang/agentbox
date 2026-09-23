@@ -94,17 +94,6 @@
   min-width: 0;
 }
 
-/* ── 悬停（仅可用态） ── */
-.cbx.is-enabled:hover .cbx-box {
-  border-color: var(--color-icon-secondary);
-  background-color: var(--color-comp-background-secondary);
-}
-
-.cbx.is-enabled.is-checked:hover .cbx-box {
-  border-color: var(--primary-hover);
-  background-color: var(--primary-hover);
-}
-
 /* ── 键盘焦点 ── */
 .cbx:focus {
   outline: none;

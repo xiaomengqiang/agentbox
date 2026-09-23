@@ -38,9 +38,7 @@ Checkbox 用于切换独立的布尔选项，或在一组选项中进行多选�
 | Element / State | Background | Border / Outline | Text / Mark |
 |-----------------|------------|------------------|-------------|
 | Unchecked | `--color-fg-unchecked` | `--color-icon-tertiary` | `--on-surface` |
-| Unchecked hover | `--color-comp-background-secondary` | `--color-icon-secondary` | 同 Default |
 | Checked | `--color-comp-background-emphasize` | 同背景 | 白色勾；内部描边 `--container-05` |
-| Checked hover | `--primary-hover` | `--primary-hover` | 同 Checked |
 | Focus visible | 同当前状态 | `--focus-ring` | 同当前状态 |
 | Disabled | 同当前状态，整体 opacity 40% | 同当前状态 | 同当前状态 |
 

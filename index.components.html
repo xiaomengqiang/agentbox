@@ -1204,9 +1204,8 @@ body {
   .tg-root { --tg-track-w:36px; --tg-track-h:20px; --tg-knob-size:16px; --tg-pad:2px; --tg-travel:calc(var(--tg-track-w) - var(--tg-knob-size) - var(--tg-pad) * 2); display:inline-flex; align-items:center; gap:8px; width:auto; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; }
   .tg-switch { position:relative; flex:0 0 auto; box-sizing:border-box; width:var(--tg-track-w); height:var(--tg-track-h); padding:0; border:0; border-radius:var(--radius-full); appearance:none; cursor:inherit; outline:none; background:var(--color-comp-background-secondary); transition:background-color var(--duration-fast) var(--ease-standard); }
   .tg-switch-on { background:var(--color-comp-background-emphasize); }
-  .tg-switch::after { content:""; position:absolute; inset:0; border-radius:var(--radius-full); pointer-events:none; opacity:0; background:var(--color-interactive-hover); transition:opacity var(--duration-fast) var(--ease-standard); }
-  .tg-root:not(.tg-root-disabled) .tg-switch:hover::after { opacity:1; }
-  .tg-root:not(.tg-root-disabled) .tg-switch:active::after { opacity:1; background:var(--color-interactive-pressed); }
+  .tg-switch::after { content:""; position:absolute; inset:0; border-radius:var(--radius-full); pointer-events:none; opacity:0; background:var(--color-interactive-pressed); transition:opacity var(--duration-fast) var(--ease-standard); }
+  .tg-root:not(.tg-root-disabled) .tg-switch:active::after { opacity:1; }
   .tg-switch:focus-visible { outline:var(--outline-width-focus) solid var(--focus-ring); outline-offset:var(--outline-offset-gap); }
   .tg-knob { position:absolute; z-index:1; top:50%; left:var(--tg-pad); box-sizing:border-box; width:var(--tg-knob-size); height:var(--tg-knob-size); border-radius:var(--radius-full); background:var(--color-comp-background-primary); transform:translate(0,-50%); outline:var(--border-width-thin) solid transparent; outline-offset:0; transition:transform var(--duration-medium) var(--ease-standard),outline-color var(--duration-fast) var(--ease-standard); }
   .tg-switch-on .tg-knob { transform:translate(var(--tg-travel),-50%); }
@@ -1232,8 +1231,6 @@ body {
   .cbx-check-outline { position:relative; color:var(--container-05); }
   .cbx-check-mark { position:absolute; inset:0; color:var(--white); }
   .cbx-label { min-width:0; }
-  .cbx.is-enabled:hover .cbx-box { border-color:var(--color-icon-secondary); background:var(--color-comp-background-secondary); }
-  .cbx.is-enabled.is-checked:hover .cbx-box { border-color:var(--primary-hover); background:var(--primary-hover); }
   .cbx:focus { outline:none; }
   .cbx:focus-visible .cbx-box { outline:var(--outline-width-focus) solid var(--focus-ring); outline-offset:var(--outline-offset-gap); }
   .cbx.is-disabled { opacity:.4; cursor:not-allowed; }
@@ -6716,8 +6713,22 @@ code {
   color: var(--color-font-fourth);
 }
 
-.input-demo-live { min-width: 0; overflow: hidden; }
-.input-demo-preview-width { width: min(100%, 520px); }
+.input-demo-live {
+  min-width: 0;
+  padding: 32px;
+  box-sizing: border-box;
+  overflow: visible;
+}
+.input-demo-preview-width {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-inline: auto;
+}
+.input-demo-preview-width .input-root { max-width: 100%; }
+.input-demo-preview-width .input-label,
+.input-demo-preview-width .input-message { overflow-wrap: anywhere; }
+@media (max-width: 480px) { .input-demo-live { padding: 24px; } }
 .input-demo-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .input-demo-card { display: flex; min-width: 0; flex-direction: column; gap: 14px; padding: 24px; border-radius: var(--radius-xl); background: var(--surface-container-lowest); box-shadow: var(--shadow-card); }
 .input-demo-card h3 { margin: 0 0 6px; font: var(--font-subtitle-sm); color: var(--on-surface); }
@@ -6730,100 +6741,35 @@ code {
 }
 </style>
 <!-- END_COMPONENT_PREVIEW_STYLE:input-box -->
-<!-- COMPONENT_PREVIEW_STYLE:menuitem -->
-<style>
-@scope (.preview-menuitem) {
-.menuitem-demo-page { width: 100%; }
-.menuitem-demo-header { margin-bottom: var(--spacing-page); }
-.menuitem-demo-header h1 { margin: 0; color: var(--on-surface); font: var(--font-title-lg); font-weight: var(--font-weight-bold); }
-.menuitem-demo-header p { margin: 8px 0 0; color: var(--text-secondary); font: var(--font-body-md); }
-.menuitem-demo-section { margin-top: 40px; }
-.menuitem-demo-section > p { margin: 0 0 var(--spacing-gutter); color: var(--text-secondary); font: var(--font-body-md); }
-.menuitem-prop-hint { margin: 28px 0 0; color: var(--text-secondary); font: var(--font-body-sm); }
-.menuitem-prop-hint code { color: var(--on-surface); }
-.menuitem-section-heading { display: flex; align-items: center; gap: var(--spacing-inline); margin-bottom: 12px; }
-.menuitem-section-heading h2 { margin: 0; color: var(--on-surface); font: var(--font-title-sm); font-weight: var(--font-weight-bold); }
-.menuitem-section-heading span { color: var(--text-placeholder); font: var(--font-caption-lg); }
-.menuitem-configurator-title { margin: 0 0 var(--spacing-gutter); color: var(--on-surface); font: var(--font-subtitle-lg); font-weight: var(--font-weight-bold); }
-.menuitem-configurator { display: grid; grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr); gap: var(--spacing-gutter); }
-.menuitem-controls, .menuitem-live, .menuitem-state-card { box-sizing: border-box; border-radius: var(--radius-container); background: var(--surface-container-lowest); box-shadow: var(--shadow-card); }
-.menuitem-controls { display: grid; align-content: start; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-gutter); padding: var(--spacing-gutter); }
-.menuitem-control { display: grid; gap: 6px; min-width: 0; color: var(--text-secondary); font: var(--font-caption-lg); font-weight: var(--font-weight-medium); }
-.menuitem-control select, .menuitem-control input { width: 100%; min-height: 36px; box-sizing: border-box; padding: 0 10px; border: var(--border-width-thin) solid var(--divider); border-radius: var(--radius-action); background: var(--surface-container-lowest); color: var(--on-surface); font: var(--font-body-md); }
-.menuitem-control input[type="file"] { height: auto; min-height: 36px; padding: 7px 10px; }
-.menuitem-upload small { color: var(--text-placeholder); font: var(--font-caption-md); }
-.menuitem-toggle { grid-template-columns: 20px 1fr; align-items: center; column-gap: 8px; }
-.menuitem-toggle > span { grid-column: 1 / -1; }
-.menuitem-toggle input { width: 16px; min-height: 16px; height: 16px; padding: 0; accent-color: var(--primary); }
-.menuitem-toggle b { color: var(--on-surface); font: var(--font-body-md); font-weight: var(--font-weight-regular); }
-.menuitem-upload small { color: var(--text-placeholder); font: var(--font-caption-md); }
-.menuitem-live { display: grid; place-items: center; min-width: 0; min-height: 156px; padding: 32px; }
-.menuitem-live--left { place-items: center start; }
-.menuitem-live code { display: block; margin-top: 16px; color: var(--text-placeholder); font: var(--font-caption-lg); }
-.menuitem-inline-gallery { display: flex; align-items: center; gap: var(--spacing-gutter); margin-top: var(--spacing-gutter); padding: var(--spacing-gutter); border-radius: var(--radius-container); background: var(--surface-container-lowest); box-shadow: var(--shadow-card); }
-.menuitem-inline-gallery > span { color: var(--text-secondary); font: var(--font-body-sm); }
-.menuitem-state-group { margin-top: 32px; }
-.menuitem-state-group h3 { margin: 0 0 var(--spacing-gutter); color: var(--on-surface); font: var(--font-subtitle-lg); font-weight: var(--font-weight-bold); }
-.menuitem-state-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-gutter); }
-.menuitem-state-matrix--single { grid-template-columns: minmax(0, 1fr); }
-.menuitem-state-sample { display: grid; gap: 12px; min-width: 0; padding: 20px var(--spacing-gutter); border-radius: var(--radius-container); background: var(--surface-container-lowest); box-shadow: var(--shadow-card); }
-.menuitem-state-sample > span { color: var(--text-secondary); font: var(--font-caption-lg); font-weight: var(--font-weight-medium); }
-.menuitem-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-gutter); }
-.menuitem-file-gallery { display: grid; gap: var(--spacing-gutter); overflow-x: auto; padding: 2px; }
-.menuitem-state-card { display: grid; align-content: start; gap: 12px; min-width: 0; padding: var(--spacing-gutter); }
-.menuitem-state-card > span { color: var(--text-secondary); font: var(--font-caption-lg); font-weight: var(--font-weight-medium); }
-.menuitem-contract { display: grid; gap: 32px; margin-top: 56px; }
-.menuitem-token-panel { padding: var(--spacing-inset); border-radius: var(--radius-container); background: var(--surface-container-lowest); box-shadow: var(--shadow-card); }
-.menuitem-token-panel h2 { margin: 0; color: var(--on-surface); font: var(--font-title-sm); font-weight: var(--font-weight-bold); }
-.menuitem-token-panel p { margin: 8px 0 var(--spacing-gutter); color: var(--text-secondary); font: var(--font-body-md); }
-.menuitem-table-wrap { overflow-x: auto; border-radius: var(--radius-container); box-shadow: var(--shadow-card); }
-.menuitem-table { width: 100%; min-width: 760px; border-collapse: collapse; background: var(--surface-container-lowest); }
-.menuitem-table th { padding: 12px var(--spacing-gutter); color: var(--text-secondary); text-align: left; background: var(--surface-container-low); font: var(--font-caption-lg); font-weight: var(--font-weight-bold); }
-.menuitem-table td { padding: 12px var(--spacing-gutter); border-top: var(--border-width-thin) solid var(--divider); color: var(--text-secondary); font: var(--font-body-md); }
-.menuitem-table td:first-child { color: var(--on-surface); font-weight: var(--font-weight-medium); }
-@media (max-width: 760px) { .menuitem-configurator { grid-template-columns: 1fr; } .menuitem-controls { grid-template-columns: 1fr; } .menuitem-gallery { grid-template-columns: 1fr; } .menuitem-live { place-items: start center; overflow-x: auto; } .menuitem-inline-gallery { align-items: flex-start; flex-direction: column; } .menuitem-state-matrix { grid-template-columns: minmax(300px, 1fr); overflow-x: auto; } }
 
-.mi-menu {
-  /* 警告卸载为设计指定色值，集中为组件 token，供文本、图标和背景一致引用。 */
+
+
+
+
+<style id="inspection-preview-styles">
+.preview-menuitem .mi-menu {
+  
   --mi-danger-font: #E02128;
   --mi-danger-icon: #E02128;
   --mi-danger-container: #FEE7E8;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-}
-
-/* ---------- 导航内容列表（nav） ---------- */
-.mi-menu-nav {
+}.preview-menuitem .mi-menu-nav {
   width: 300px;
   padding: 0;
   gap: 12px;
   border-radius: var(--radius-overlay);
-}
-
-/* 无背景形态：用于单条目状态演示 */
-.mi-menu-nav.mi-menu-plain {
+}.preview-menuitem .mi-menu-nav.mi-menu-plain {
   background: transparent;
-}
-
-/* ---------- 历史对话列表（history） ---------- */
-.mi-menu-history {
+}.preview-menuitem .mi-menu-history {
   width: 300px;
   gap: 12px;
-}
-
-/* ---------- 下拉列表（dropdown） ---------- */
-.mi-menu-dropdown {
-  gap: 0; /* 单行条目紧贴无间距 */
-}
-
-/* 中尺寸下拉列表容器：单行条目 */
-.mi-menu-dropdown-md {
+}.preview-menuitem .mi-menu-dropdown {
+  gap: 0; 
+}.preview-menuitem .mi-menu-dropdown-md {
   gap: 0;
-}
-
-/* ================= 条目基础 ================= */
-.mi-item {
+}.preview-menuitem .mi-item {
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -6832,99 +6778,60 @@ code {
   background: transparent;
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-/* ---- 导航内容列表条目 ---- */
-.mi-item-nav {
-  gap: 8px; /* 图标与文本间距 8px */
-  width: 100%; /* 300px */
+}.preview-menuitem .mi-item-nav {
+  gap: 8px; 
+  width: 100%; 
   height: 40px;
-  padding: 0 12px; /* 图标距左 12px */
+  padding: 0 12px; 
   border-radius: var(--radius-container);
   color: var(--on-surface);
-  font: var(--font-body-md); /* 14px */
-  font-weight: var(--font-weight-regular); /* 400 */
+  font: var(--font-body-md); 
+  font-weight: var(--font-weight-regular); 
   line-height: 19px;
-}
-
-/* ---- 历史对话列表条目 ---- */
-.mi-item-history {
+}.preview-menuitem .mi-item-history {
   justify-content: space-between;
-  width: 100%; /* 300px */
+  width: 100%; 
   height: 40px;
-  padding: 0 12px; /* 文本距左 12px，图标距右 12px */
+  padding: 0 12px; 
   border-radius: var(--radius-container);
   color: var(--on-surface);
-  font: var(--font-body-md); /* 14px */
-  font-weight: var(--font-weight-regular); /* 400 */
+  font: var(--font-body-md); 
+  font-weight: var(--font-weight-regular); 
   line-height: 19px;
-}
-
-/* ---- 下拉列表条目 ---- */
-.mi-item-dropdown {
+}.preview-menuitem .mi-item-dropdown {
   gap: var(--spacing-inline);
   width: 152px;
   height: 32px;
-  padding: 4px 12px; /* 文本与图标距容器上下各 4px */
-  border-radius: var(--radius-md); /* 6px */
+  padding: 4px 12px; 
+  border-radius: var(--radius-md); 
   color: var(--on-surface);
-  font: var(--font-body-md); /* 14px；文本行高在下方固定为 16px */
-  font-weight: var(--font-weight-regular); /* 400 */
-}
-
-/* ---- 下拉列表中尺寸条目：232×36px ---- */
-.mi-item-dropdown-md {
-  gap: var(--spacing-inline); /* 文本与 icon 间距 8px */
+  font: var(--font-body-md); 
+  font-weight: var(--font-weight-regular); 
+}.preview-menuitem .mi-item-dropdown-md {
+  gap: var(--spacing-inline); 
   width: 232px;
   height: 36px;
-  padding: 4px 12px; /* icon 距容器左 12px，文本与图标距上下各 4px */
-  border-radius: var(--radius-md); /* 6px */
+  padding: 4px 12px; 
+  border-radius: var(--radius-md); 
   color: var(--on-surface);
-  font: var(--font-body-md); /* 14px；文本行高在下方固定为 16px */
-  font-weight: var(--font-weight-regular); /* 400 */
+  font: var(--font-body-md); 
+  font-weight: var(--font-weight-regular); 
   background: var(--surface-container-lowest);
-}
-
-/* ================= 状态 ================= */
-/* 导航内容列表 / 历史对话列表：悬浮、选中、非默认态均 5% 透明黑背景 */
-.mi-item-nav:hover,
-.mi-item-nav.mi-item-hover,
-.mi-item-nav.mi-item-selected,
-.mi-item-history:hover,
-.mi-item-history.mi-item-active {
+}.preview-menuitem .mi-item-nav:hover, .preview-menuitem .mi-item-nav.mi-item-hover, .preview-menuitem .mi-item-nav.mi-item-selected, .preview-menuitem .mi-item-history:hover, .preview-menuitem .mi-item-history.mi-item-active {
   background-color: var(--color-interactive-hover);
-}
-
-/* 下拉列表普通项悬浮：5% 透明黑背景 */
-.mi-item-dropdown:not(:disabled):hover,
-.mi-item-dropdown.mi-item-hover:not(:disabled) {
+}.preview-menuitem .mi-item-dropdown:not(:disabled):hover, .preview-menuitem .mi-item-dropdown.mi-item-hover:not(:disabled) {
   background-color: var(--color-interactive-hover);
-}
-
-/* 下拉列表危险项：错误语义色图标与文本 */
-.mi-item-dropdown.mi-item-danger {
+}.preview-menuitem .mi-item-dropdown.mi-item-danger {
   color: var(--mi-danger-font);
-}
-
-/* 下拉列表危险项悬浮：设计指定粉色背景 token。 */
-.mi-item-dropdown.mi-item-danger:not(:disabled):hover,
-.mi-item-dropdown.mi-item-danger.mi-item-hover:not(:disabled) {
+}.preview-menuitem .mi-item-dropdown.mi-item-danger:not(:disabled):hover, .preview-menuitem .mi-item-dropdown.mi-item-danger.mi-item-hover:not(:disabled) {
   background-color: var(--mi-danger-container);
-}
-
-/* 下拉列表禁用态：整体 50% 透明度，不可点击 */
-.mi-item-dropdown:disabled {
+}.preview-menuitem .mi-item-dropdown:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-/* ================= 子元素 ================= */
-.mi-icon {
+}.preview-menuitem .mi-icon {
   flex-shrink: 0;
   display: block;
-}
-
-.mi-icon--mask {
+}.preview-menuitem .mi-icon--mask {
   background-color: currentColor;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
@@ -6932,88 +6839,52 @@ code {
   mask-position: center;
   -webkit-mask-size: contain;
   mask-size: contain;
-}
-
-/* 中尺寸下拉列表选中态右侧「正确」图标：右对齐 */
-.mi-check {
+}.preview-menuitem .mi-check {
   flex-shrink: 0;
   margin-left: auto;
-}
-
-.mi-label {
+}.preview-menuitem .mi-label {
   display: flex;
   align-self: stretch;
   align-items: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* 下拉列表：文本 16px 行高，与 14px / 17px 图标在同一 flex 中轴居中。 */
-.mi-item-dropdown .mi-label,
-.mi-item-dropdown-md .mi-label {
+}.preview-menuitem .mi-item-dropdown .mi-label, .preview-menuitem .mi-item-dropdown-md .mi-label {
   line-height: 16px;
-  transform: translateY(1px); /* 字体上行区较大，做 1px 光学校正以落在视觉中轴 */
-}
-
-.mi-item-history .mi-label {
+  transform: translateY(1px); 
+}.preview-menuitem .mi-item-history .mi-label {
   text-align: left;
-}
-
-/* 左侧导航文字的字形视觉重心略高，向下校正 1px。 */
-.mi-item-nav .mi-label {
+}.preview-menuitem .mi-item-nav .mi-label {
   transform: translateY(1px);
-}
-
-/* 历史对话列表右侧状态图标：右对齐 12px（由按钮 padding 提供），上下 8px */
-.mi-status {
+}.preview-menuitem .mi-status {
   flex-shrink: 0;
   margin: 8px 0;
-}
-
-/* ================= 文件夹 / 文件列表（folder / file-level-1 / file-level-2） ================= */
-.fl-list {
+}.preview-menuitem .fl-list {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 4px;
-}
-
-/* 条目：602×40px */
-.fl-row {
+}.preview-menuitem .fl-row {
   display: flex;
   align-items: center;
-  gap: 8px; /* 展开/收起图标 → 文件夹图标 → 文本，三部件间距 8px */
+  gap: 8px; 
   box-sizing: border-box;
   width: 602px;
   height: 40px;
-  padding: 0 12px; /* 内容距容器左右 12px */
+  padding: 0 12px; 
   border-radius: var(--radius-container);
   color: var(--on-surface);
-  font: var(--font-body-md); /* 14px */
-  font-weight: var(--font-weight-regular); /* 400 */
+  font: var(--font-body-md); 
+  font-weight: var(--font-weight-regular); 
   line-height: 19px;
   transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-/* 悬浮态：5% 透明黑背景 */
-.fl-row:hover,
-.fl-row-hover {
+}.preview-menuitem .fl-row:hover, .preview-menuitem .fl-row-hover {
   background-color: var(--color-interactive-hover);
-}
-
-/* 重命名态 / 重命名输入中：5% 透明黑背景（与悬浮一致） */
-.fl-row-rename {
+}.preview-menuitem .fl-row-rename {
   background-color: var(--color-interactive-hover);
-}
-
-/* 禁用态：文本与图标整体使用禁用色，不可交互 */
-.fl-row-disabled {
+}.preview-menuitem .fl-row-disabled {
   color: var(--text-disabled);
-}
-
-/* 展开/收起按钮 */
-.fl-toggle {
+}.preview-menuitem .fl-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -7024,75 +6895,44 @@ code {
   border: none;
   background: transparent;
   cursor: pointer;
-  color: inherit; /* 跟随条目文字色（Lucide 图标 stroke 使用 currentColor） */
-}
-
-.fl-toggle:disabled {
+  color: inherit; 
+}.preview-menuitem .fl-toggle:disabled {
   cursor: not-allowed;
-}
-
-.fl-chevron,
-.fl-folder,
-.fl-file {
+}.preview-menuitem .fl-chevron, .preview-menuitem .fl-folder, .preview-menuitem .fl-file {
   flex-shrink: 0;
   color: inherit;
-}
-
-/* 文件列表：一级/二级 左侧图标缩进 */
-/* 一级文件列表：最左侧文件图标距外框左 12px（无展开/收起，直接由 padding 0 12px 对齐） */
-.fl-row-file-1 .fl-file {
+}.preview-menuitem .fl-row-file-1 .fl-file {
   margin-left: 0;
-}
-
-/* 二级文件列表：最左侧文件图标距外框左 36px（12px 基础缩进 + 24px = 36px） */
-.fl-row-file-2 .fl-file {
+}.preview-menuitem .fl-row-file-2 .fl-file {
   margin-left: 24px;
-}
-
-/* 重命名输入框右边缘统一对齐：folder/file-level-2 图标位 60px → 宽 540；
-   file-level-1 图标位 36px → 宽 564（保证右侧同样对齐到 600px） */
-.fl-row-file-1 .fl-input {
+}.preview-menuitem .fl-row-file-1 .fl-input {
   width: 564px;
-}
-
-/* 文本 */
-.fl-label {
+}.preview-menuitem .fl-label {
   display: flex;
   align-self: stretch;
   align-items: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* 悬浮态操作区（右侧评论 + 更多） */
-.fl-hover-actions {
+}.preview-menuitem .fl-hover-actions {
   display: inline-flex;
   align-items: center;
-  gap: 12px; /* 两个操作图标间距 12px */
+  gap: 12px; 
   flex-shrink: 0;
-  margin-left: auto; /* 右对齐 */
-}
-
-.fl-hover-icon {
+  margin-left: auto; 
+}.preview-menuitem .fl-hover-icon {
   display: inline-block;
   flex-shrink: 0;
-}
-
-/* 重命名输入框：540×36px，brand 蓝 1px 描边 */
-.fl-input {
+}.preview-menuitem .fl-input {
   position: relative;
-  flex-shrink: 0; /* 固定宽度，不收缩 */
+  flex-shrink: 0; 
   box-sizing: border-box;
   width: 540px;
   height: 36px;
-  border: 1px solid var(--primary); /* brand 蓝 #0A59F7 */
+  border: 1px solid var(--primary); 
   border-radius: var(--radius-action);
   background: var(--surface-container-lowest);
-}
-
-/* 真实编辑框：透明文本/光标，覆盖整个输入框，负责交互与输入 */
-.fl-input-field {
+}.preview-menuitem .fl-input-field {
   position: absolute;
   inset: 0;
   box-sizing: border-box;
@@ -7102,15 +6942,12 @@ code {
   border: none;
   background: transparent;
   color: transparent;
-  caret-color: transparent; /* 隐藏原生光标，改用自定义蓝竖线 */
-  font: var(--font-body-md); /* 14px */
+  caret-color: transparent; 
+  font: var(--font-body-md); 
   font-weight: var(--font-weight-regular);
   line-height: 19px;
   outline: none;
-}
-
-/* 可见文本 + 光标层（不接收事件） */
-.fl-input-display {
+}.preview-menuitem .fl-input-display {
   position: absolute;
   left: 8px;
   top: 0;
@@ -7124,10 +6961,7 @@ code {
   font-weight: var(--font-weight-regular);
   line-height: 19px;
   color: var(--on-surface);
-}
-
-/* 蓝色竖线光标：2×24px，文本后 2px（重命名输入中显示） */
-.fl-caret {
+}.preview-menuitem .fl-caret {
   display: inline-block;
   flex-shrink: 0;
   width: 2px;
@@ -7137,252 +6971,46 @@ code {
   background: var(--primary);
 }
 
-}
-</style>
-<!-- END_COMPONENT_PREVIEW_STYLE:menuitem -->
-
-<!-- COMPONENT_PREVIEW_STYLE:iconstate -->
-<style>
-@scope (.preview-iconstate) {
-.demo-page {
-  max-width: 1160px;
-  margin: 0 auto;
-  padding: 48px 24px 96px;
-}
-
-.demo-header { margin-bottom: 48px; }
-.demo-title {
-  font: var(--font-title-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  margin: 0 0 8px;
-}
-.demo-subtitle, .demo-section-desc {
-  font: var(--font-body-md);
-  color: var(--text-secondary);
-}
-.demo-subtitle { margin: 0; }
-.demo-section { margin-bottom: 64px; }
-.demo-section-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-.demo-section-name {
-  font: var(--font-title-sm);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  margin: 0;
-}
-.demo-section-tag {
-  display: inline-flex;
-  align-items: center;
-  font: var(--font-caption-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--primary);
-  background-color: var(--primary-container);
-  padding: 2px 10px;
-  border-radius: var(--radius-full);
-}
-.demo-section-desc { margin: 0 0 28px; }
-
-.iconstate-configurator {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(240px, .8fr);
-  gap: 24px;
-  padding: 24px;
-  border-radius: var(--radius-xl);
-  background: var(--surface-container-lowest);
-  box-shadow: var(--shadow-card);
-}
-.iconstate-controls {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(150px, 1fr));
-  gap: 18px 20px;
-  align-content: start;
-}
-.iconstate-control {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 8px;
-  color: var(--text-secondary);
-  font: var(--font-body-md);
-}
-.iconstate-control select,
-.iconstate-control input {
-  box-sizing: border-box;
-  width: 100%;
-  min-width: 0;
-  height: 40px;
-  border: 1px solid var(--color-comp-border);
-  border-radius: var(--radius-container);
-  background: var(--surface-container-lowest);
-  color: var(--on-surface);
-  font: var(--font-body-md);
-  padding: 0 12px;
-}
-.iconstate-control select { cursor: pointer; }
-.iconstate-control input[type="color"] { padding: 4px; cursor: pointer; }
-.iconstate-control input[type="file"] { height: auto; min-height: 40px; padding: 7px 8px; cursor: pointer; }
-.iconstate-control input:focus-visible,
-.iconstate-control select:focus-visible {
-  outline: var(--outline-width-focus) solid var(--focus-ring);
-  outline-offset: var(--outline-offset-gap);
-}
-.iconstate-control small {
-  font: var(--font-caption-lg);
-  color: var(--text-secondary);
-  overflow-wrap: anywhere;
-}
-.iconstate-live {
-  display: flex;
-  min-width: 0;
-  min-height: 180px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  box-sizing: border-box;
-  padding: 24px;
-  border-radius: var(--radius-lg);
-  background: var(--surface-container-low);
-}
-.iconstate-live-label {
-  font: var(--font-caption-lg);
-  color: var(--text-secondary);
-  letter-spacing: .08em;
-}
-.iconstate-live code {
-  max-width: 100%;
-  overflow-wrap: anywhere;
-  text-align: center;
-  font: var(--font-caption-lg);
-  color: var(--text-secondary);
-}
-.iconstate-gallery-title {
-  font: var(--font-subtitle-sm);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  margin: 32px 0 16px;
-}
-.iconstate-state-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-}
-.iconstate-state-card {
-  display: flex;
-  min-height: 112px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  border-radius: var(--radius-lg);
-  background: var(--surface-container-lowest);
-  box-shadow: var(--shadow-card);
-}
-.iconstate-state-card span {
-  font: var(--font-caption-lg);
-  color: var(--text-secondary);
-}
-.iconstate-contract { margin-top: 64px; display: grid; gap: 24px; }
-.iconstate-token-panel { padding: 24px; border-radius: var(--radius-container); background: var(--surface-container-lowest); box-shadow: var(--shadow-card); }
-.iconstate-token-panel h2 { margin: 0; color: var(--on-surface); font: var(--font-title-sm); font-weight: var(--font-weight-bold); }
-.iconstate-token-panel p { margin: 8px 0 16px; color: var(--text-secondary); font: var(--font-body-md); }
-.iconstate-table-wrap { overflow-x: auto; border-radius: var(--radius-container); box-shadow: var(--shadow-card); }
-.iconstate-table { width: 100%; min-width: 700px; border-collapse: collapse; background: var(--surface-container-lowest); }
-.iconstate-table th { padding: 12px 16px; color: var(--text-secondary); text-align: left; background: var(--surface-container-low); font: var(--font-caption-lg); font-weight: var(--font-weight-bold); }
-.iconstate-table td { padding: 12px 16px; border-top: var(--border-width-thin) solid var(--divider); color: var(--text-secondary); font: var(--font-body-md); }
-.iconstate-table td:first-child { color: var(--on-surface); font-weight: var(--font-weight-medium); }
-@media (max-width: 980px) {
-  .iconstate-configurator { grid-template-columns: 1fr; }
-  .iconstate-live { min-height: 132px; }
-}
-@media (max-width: 760px) {
-  .iconstate-controls { grid-template-columns: 1fr; }
-  .iconstate-state-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 600px) {
-  .demo-page { padding: 32px 16px 64px; }
-}
-
-.is-btn {
+.preview-iconstate .is-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   border: none;
-  border-radius: var(--radius-md); /* 6px 圆角正方形 */
+  border-radius: var(--radius-md); 
   background-color: transparent;
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard);
-}
-
-/* 圆形框（对话框 icon）：正圆形 */
-.is-btn--circle {
+}.preview-iconstate .is-btn--circle {
   border-radius: 50%;
-}
-
-/* 用覆盖层显示状态，圆形框的 frameColor 仍保持可见。 */
-.is-btn::before {
+}.preview-iconstate .is-btn::before {
   position: absolute;
   inset: 0;
   border-radius: inherit;
   content: "";
   pointer-events: none;
-}
-
-.is-btn:not(.is-btn--circle):not(.is-btn--forced):not(:disabled):hover::before,
-.is-btn:not(.is-btn--circle).is-btn--hover::before,
-.is-btn:not(.is-btn--circle):not(.is-btn--forced):not(:disabled):active::before,
-.is-btn:not(.is-btn--circle).is-btn--active::before {
+}.preview-iconstate .is-btn:not(.is-btn--circle):not(.is-btn--forced):not(:disabled):hover::before, .preview-iconstate .is-btn:not(.is-btn--circle).is-btn--hover::before, .preview-iconstate .is-btn:not(.is-btn--circle):not(.is-btn--forced):not(:disabled):active::before, .preview-iconstate .is-btn:not(.is-btn--circle).is-btn--active::before {
   background-color: var(--container-05);
-}
-
-/* 灰色对话框默认透明，悬浮和激活使用 5% 中性色覆盖层。 */
-.is-btn--frame-gray:not(.is-btn--forced):not(:disabled):hover::before,
-.is-btn--frame-gray.is-btn--hover::before,
-.is-btn--frame-gray:not(.is-btn--forced):not(:disabled):active::before,
-.is-btn--frame-gray.is-btn--active::before {
+}.preview-iconstate .is-btn--frame-gray:not(.is-btn--forced):not(:disabled):hover::before, .preview-iconstate .is-btn--frame-gray.is-btn--hover::before, .preview-iconstate .is-btn--frame-gray:not(.is-btn--forced):not(:disabled):active::before, .preview-iconstate .is-btn--frame-gray.is-btn--active::before {
   background-color: var(--container-05);
-}
-
-/* 黑色对话框在默认、悬浮、激活时都保持纯黑。 */
-.is-btn--frame-black:not(.is-btn--forced):not(:disabled):hover::before,
-.is-btn--frame-black.is-btn--hover::before,
-.is-btn--frame-black:not(.is-btn--forced):not(:disabled):active::before,
-.is-btn--frame-black.is-btn--active::before {
+}.preview-iconstate .is-btn--frame-black:not(.is-btn--forced):not(:disabled):hover::before, .preview-iconstate .is-btn--frame-black.is-btn--hover::before, .preview-iconstate .is-btn--frame-black:not(.is-btn--forced):not(:disabled):active::before, .preview-iconstate .is-btn--frame-black.is-btn--active::before {
   background-color: transparent;
-}
-
-/* 保留自定义深色框的可见交互反馈。 */
-.is-btn--frame-custom.is-btn--frame-dark:not(.is-btn--forced):not(:disabled):hover::before,
-.is-btn--frame-custom.is-btn--frame-dark.is-btn--hover::before,
-.is-btn--frame-custom.is-btn--frame-dark:not(.is-btn--forced):not(:disabled):active::before,
-.is-btn--frame-custom.is-btn--frame-dark.is-btn--active::before {
+}.preview-iconstate .is-btn--frame-custom.is-btn--frame-dark:not(.is-btn--forced):not(:disabled):hover::before, .preview-iconstate .is-btn--frame-custom.is-btn--frame-dark.is-btn--hover::before, .preview-iconstate .is-btn--frame-custom.is-btn--frame-dark:not(.is-btn--forced):not(:disabled):active::before, .preview-iconstate .is-btn--frame-custom.is-btn--frame-dark.is-btn--active::before {
   background-color: var(--on-primary-10);
-}
-
-/* 禁用：整体 50% 透明度 */
-.is-btn:disabled,
-.is-btn--disabled {
+}.preview-iconstate .is-btn:disabled, .preview-iconstate .is-btn--disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.is-btn:focus-visible {
+}.preview-iconstate .is-btn.is-btn--pause-disabled {
+  opacity: 1;
+}.preview-iconstate .is-btn:focus-visible {
   outline: var(--outline-width-focus) solid var(--focus-ring);
   outline-offset: var(--outline-offset-gap);
-}
-
-.is-icon {
+}.preview-iconstate .is-icon {
   display: inline-block;
-}
-
-.is-icon--mask {
+}.preview-iconstate .is-icon--asset {
+  object-fit: contain;
+}.preview-iconstate .is-icon--mask {
   flex: none;
   background-color: currentColor;
   -webkit-mask-size: contain;
@@ -7393,10 +7021,896 @@ code {
   mask-repeat: no-repeat;
 }
 
+@scope (.preview-iconstate, .preview-menuitem) {
+.demo-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 48px 24px 96px;
+}
+
+.demo-header {
+  margin-bottom: 48px;
+}
+
+.demo-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: var(--font-title-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0 0 8px;
+}
+
+.demo-title-icon {
+  color: var(--primary);
+}
+
+.demo-subtitle {
+  font: var(--font-body-md);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.demo-section {
+  margin-bottom: 64px;
+}
+
+.demo-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.demo-section-name {
+  font: var(--font-title-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.demo-section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary);
+  background-color: var(--primary-container);
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+}
+
+.demo-section-desc {
+  font: var(--font-body-md);
+  color: var(--text-secondary);
+  margin: 0 0 28px;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 32px;
+  align-items: start;
+}
+
+.demo-grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px 40px;
+}
+
+.demo-card {
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
+}
+
+.demo-card-wide {
+  grid-column: 1 / -1;
+}
+
+.demo-card-flush {
+  padding: 0;
+  overflow: hidden;
+}
+
+.demo-flush-footer {
+  padding: 14px 24px 20px;
+}
+
+.demo-flush-footer .demo-note {
+  margin: 0;
+}
+
+.demo-card-title {
+  font: var(--font-subtitle-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0 0 20px;
+}
+
+.demo-item {
+  min-width: 0;
+}
+
+.demo-item-title {
+  font: var(--font-subtitle-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0 0 24px;
+}
+
+.demo-note {
+  font: var(--font-caption-lg);
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 18px 0 0;
+}
+
+.demo-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: var(--font-caption-lg);
+  line-height: 1.6;
+  color: var(--info);
+  background-color: var(--info-container);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  margin-top: 16px;
+}
+
+/* ==========================================================================
+   Button 展示页专用样式
+   ========================================================================== */
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  color: var(--color-font-emphasize);
+  background-color: var(--surface-container);
+  padding: 1px 5px;
+  border-radius: var(--radius-xs);
+}
+
+/* ── Configurator ── */
+.button-theme-toggle {
+  margin-top: 16px;
+}
+
+.button-configurator {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.8fr);
+  gap: 24px;
+  margin-top: 24px;
+  padding: 24px;
+  border-radius: var(--radius-xl);
+  background: var(--surface-container-lowest);
+  box-shadow: var(--shadow-card);
+}
+
+.button-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(160px, 1fr));
+  gap: 18px 20px;
+  align-content: start;
+}
+
+.button-control {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--text-secondary);
+  font: var(--font-body-md);
+}
+
+.button-control input,
+.button-control select {
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  border: 1px solid var(--color-comp-border);
+  border-radius: var(--radius-container);
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+  font: var(--font-body-md);
+}
+
+.button-control input {
+  padding: 0 12px;
+}
+
+.button-control input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.button-select-wrap {
+  position: relative;
+  display: block;
+}
+
+.button-select-wrap::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid var(--color-icon-primary);
+  border-bottom: 1.5px solid var(--color-icon-primary);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.button-control select {
+  padding: 0 40px 0 12px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.button-control input:hover,
+.button-control select:hover:not(:disabled) {
+  background: var(--surface-container-low);
+  border-color: var(--color-comp-border-hover);
+}
+
+.button-control input:focus-visible,
+.button-control select:focus-visible {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+.button-control select:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button-toggle-line {
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.button-toggle-line > span {
+  color: var(--on-surface);
+  font: var(--font-body-md);
+}
+
+.button-icon-select {
+  margin-top: 0;
+}
+
+.button-switch {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.button-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.button-switch-track {
+  position: relative;
+  display: block;
+  width: 36px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: var(--color-comp-background-secondary);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.button-switch-track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--surface-container-lowest);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.button-switch input:checked + .button-switch-track {
+  background: var(--brand);
+}
+
+.button-switch input:checked + .button-switch-track::after {
+  transform: translateX(16px);
+}
+
+.button-switch input:focus-visible + .button-switch-track {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+.button-configurator-preview {
+  display: flex;
+  min-height: 220px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-container-low);
+}
+
+@media (max-width: 980px) {
+  .button-configurator {
+    grid-template-columns: 1fr;
+  }
+
+  .button-configurator-preview {
+    min-height: 132px;
+  }
+}
+
+@media (max-width: 760px) {
+
+  .button-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .button-controls {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 交互演练区 ── */
+.btn-lab {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.btn-lab-block {
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: 20px 24px 24px;
+}
+
+.btn-lab-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.btn-lab-size {
+  font: var(--font-subtitle-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+}
+
+.btn-lab-spec {
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+}
+
+/* 交互演练：一列 = 一个变体（Primary / Secondary…）
+   列内 Enabled 在上、Disabled 在下，两者都 align-items:center，
+   因此共用同一条竖向中轴，可直接叠着看差异。 */
+.btn-lab-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+@media (max-width: 860px) {
+  .btn-lab-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.btn-lab-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  padding: 14px 12px 18px;
+  background-color: var(--surface-container-low);
+  border-radius: var(--radius-container);
+}
+
+.btn-lab-colhead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.btn-lab-colname {
+  font: var(--font-subtitle-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+}
+
+.btn-lab-colmeta {
+  font: var(--font-caption-md);
+  color: var(--text-placeholder);
+}
+
+.btn-lab-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+/* 下半格用虚线把「可用 / 禁用」分开，但两个按钮仍对齐同一中轴 */
+.btn-lab-slot-off {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--divider);
+}
+
+.btn-lab-slotlabel {
+  font: var(--font-caption-md);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-placeholder);
+}
+
+/* ── 形状对照：只有规范的一个组合（outlined × small），两列并排 ── */
+.btn-lab-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* ── 状态矩阵：按尺寸分区 ── */
+.btn-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.btn-matrix-group {
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: 16px 20px 20px;
+  overflow-x: auto;
+}
+
+.btn-matrix-grouphead {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--divider);
+}
+
+.btn-matrix-groupname {
+  font: var(--font-subtitle-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+}
+
+.btn-matrix-groupspec {
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+}
+
+.btn-matrix-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 200px) repeat(5, minmax(140px, 1fr));
+  gap: 8px;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.btn-matrix-row + .btn-matrix-row {
+  border-top: 1px solid var(--divider);
+}
+
+.btn-matrix-row-head {
+  padding-bottom: 4px;
+}
+
+.btn-matrix-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.btn-matrix-variant {
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--on-surface);
+}
+
+.btn-matrix-meta {
+  font: var(--font-caption-lg);
+  color: var(--text-placeholder);
+}
+
+.btn-matrix-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 44px;
+  /* 静态标本：整格不接收指针事件，真实 hover / active 不会覆盖被强制的状态 */
+  pointer-events: none;
+}
+
+.btn-matrix-state {
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+}
+
+.btn-matrix-hint {
+  font: var(--font-caption-md);
+  color: var(--text-placeholder);
+}
+
+/* ── 对照表 ── */
+.btn-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 24px;
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.btn-table th {
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-secondary);
+  text-align: left;
+  padding: 12px 16px;
+  background-color: var(--surface-container-low);
+}
+
+.btn-table td {
+  font: var(--font-body-md);
+  color: var(--text-secondary);
+  text-align: left;
+  padding: 12px 16px;
+  border-top: 1px solid var(--divider);
+}
+
+.btn-table-strong {
+  display: block;
+  color: var(--on-surface);
+  font-weight: var(--font-weight-medium);
+}
+
+/* token 解析值 / 变体值副行 */
+.btn-table-src {
+  display: block;
+  margin-top: 4px;
+  font: var(--font-caption-md);
+  color: var(--text-placeholder);
+  line-height: 1.5;
+}
+
+/* 色彩规范表：列多，外层容器允许横向滚动 */
+.btn-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+.btn-table-wrap .btn-table {
+  min-width: 900px;
+  border-radius: 0;
+  box-shadow: none;
+  margin-top: 0;
+}
+
+.btn-table-wrap .btn-table--color {
+  min-width: 1180px;
+}
+
+.btn-table-wrap .btn-table--roomy {
+  min-width: 920px;
+}
+
+.btn-table-wrap--spaced {
+  margin-top: 24px;
+}
+
+.btn-table--roomy th,
+.btn-table--roomy td {
+  min-width: 110px;
+}
+
+.btn-table--color th:first-child,
+.btn-table--color td:first-child {
+  min-width: 112px;
+}
+
+.btn-table--color th:not(:first-child),
+.btn-table--color td:not(:first-child) {
+  min-width: 130px;
+}
+
+.btn-color-token {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.btn-color-token code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.btn-table .btn-color-variant {
+  vertical-align: top;
+  color: var(--on-surface);
+  font: var(--font-body-lg);
+  font-weight: var(--font-weight-bold);
+  background: var(--surface-container-low);
+  border-top: 1px solid var(--divider);
+}
+
+.btn-table .btn-color-state {
+  min-width: 110px;
+  vertical-align: top;
+  color: var(--on-surface);
+  font-weight: var(--font-weight-medium);
+}
+
+.btn-color-state small {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-placeholder);
+  font: var(--font-caption-md);
+  font-weight: var(--font-weight-regular);
+  white-space: nowrap;
+}
+
+.btn-color-same {
+  color: var(--text-placeholder);
+  font: var(--font-body-md);
+}
+
+.btn-color-group-start > th,
+.btn-color-group-start > td {
+  border-top: 2px solid var(--color-comp-border);
+}
+
+.btn-color-swatch {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  border: 1px solid var(--color-comp-border);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px var(--surface-container-lowest);
+}
+
+.btn-color-swatch--transparent {
+  background-color: var(--surface-container-lowest);
+  background-image:
+    linear-gradient(45deg, var(--divider) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--divider) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--divider) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--divider) 75%);
+  background-position: 0 0, 0 5px, 5px -5px, -5px 0;
+  background-size: 10px 10px;
+}
+
+.btn-color-swatch--none {
+  background:
+    linear-gradient(
+      135deg,
+      transparent 44%,
+      var(--text-placeholder) 46%,
+      var(--text-placeholder) 54%,
+      transparent 56%
+    ),
+    var(--surface-container-lowest);
+}
+
+.btn-color-swatch--disabled {
+  opacity: 0.5;
+}
+}
+/* Shared Button classes own the page, configurator, controls and state matrices.
+   Only layout safety and table-body semantics are scoped overrides here. */
+:is(.preview-iconstate,.preview-menuitem) .button-configurator { min-width: 0; }
+:is(.preview-iconstate,.preview-menuitem) .inspection-live { box-sizing: border-box; min-width: 0; padding: 32px; overflow-x: auto; }
+:is(.preview-iconstate,.preview-menuitem) .inspection-specimen { flex: none; margin-inline: auto; }
+:is(.preview-iconstate,.preview-menuitem) .inspection-matrix-title { margin: 32px 0 16px; font: var(--font-subtitle-md); font-weight: var(--font-weight-bold); color: var(--on-surface); }
+:is(.preview-iconstate,.preview-menuitem) .btn-matrix { min-width: 0; }
+:is(.preview-iconstate,.preview-menuitem) .btn-matrix-group { min-width: 0; }
+:is(.preview-iconstate,.preview-menuitem) .button-control input[type="file"] { height: auto; min-height: 40px; padding: 8px 12px; }
+:is(.preview-iconstate,.preview-menuitem) .button-control small { font: var(--font-caption-lg); color: var(--text-placeholder); }
+:is(.preview-iconstate,.preview-menuitem) [inert] { pointer-events: none; }
+:is(.preview-iconstate,.preview-menuitem) .btn-table-wrap { overflow-x: auto; max-width: 100%; border-radius: var(--radius-xl); box-shadow: var(--shadow-card); background: var(--surface-container-lowest); }
+:is(.preview-iconstate,.preview-menuitem) .btn-table { width: 100%; min-width: 900px; border-collapse: collapse; margin: 0; box-shadow: none; border-radius: 0; }
+:is(.preview-iconstate,.preview-menuitem) .btn-table :is(th,td) { padding: 12px 16px; border-bottom: 1px solid var(--divider); text-align: left; }
+:is(.preview-iconstate,.preview-menuitem) .btn-table thead th { font: var(--font-caption-lg); font-weight: var(--font-weight-bold); color: var(--text-secondary); background: var(--surface-container-low); }
+:is(.preview-iconstate,.preview-menuitem) .btn-table tbody td { font: var(--font-body-md); color: var(--text-secondary); vertical-align: top; }
+:is(.preview-iconstate,.preview-menuitem) .btn-table tbody th { font: var(--font-body-md); font-weight: var(--font-weight-medium); color: var(--on-surface); background: transparent; }
+:is(.preview-iconstate,.preview-menuitem) .btn-table tbody .btn-color-variant { font: var(--font-body-lg); font-weight: var(--font-weight-bold); background: var(--surface-container-low); vertical-align: top; min-width: 112px; }
+:is(.preview-iconstate,.preview-menuitem) .btn-table tbody .btn-color-state { font-weight: var(--font-weight-medium); color: var(--on-surface); }
+:is(.preview-iconstate,.preview-menuitem) .btn-color-state small { white-space: normal; }
+:is(.preview-iconstate,.preview-menuitem) .btn-color-group-start > * { border-top: 2px solid var(--color-comp-border); }
+:is(.preview-iconstate,.preview-menuitem) .btn-table--color { min-width: 1180px; }
+:is(.preview-iconstate,.preview-menuitem) .btn-color-swatch { width: 18px; height: 18px; flex: 0 0 18px; }
+:is(.preview-iconstate,.preview-menuitem) .btn-color-token code { overflow-wrap: anywhere; }
+
+@media(max-width: 600px) {
+ :is(.preview-iconstate,.preview-menuitem) .inspection-live { padding: 24px; }
+}
+
+</style>
+<style id="compact-control-styles">
+@scope (.preview-checkbox, .preview-action-chip, .preview-tag, .preview-text-tabs, .preview-toggle) {
+.button-control {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--text-secondary);
+  font: var(--font-body-md);
+}
+
+.button-control input,
+.button-control select {
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  border: 1px solid var(--color-comp-border);
+  border-radius: var(--radius-container);
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+  font: var(--font-body-md);
+}
+
+.button-control input {
+  padding: 0 12px;
+}
+
+.button-control input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.button-select-wrap {
+  position: relative;
+  display: block;
+}
+
+.button-select-wrap::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid var(--color-icon-primary);
+  border-bottom: 1.5px solid var(--color-icon-primary);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.button-control select {
+  padding: 0 40px 0 12px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.button-control input:hover,
+.button-control select:hover:not(:disabled) {
+  background: var(--surface-container-low);
+  border-color: var(--color-comp-border-hover);
+}
+
+.button-control input:focus-visible,
+.button-control select:focus-visible {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+.button-control select:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button-toggle-line {
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.button-toggle-line > span {
+  color: var(--on-surface);
+  font: var(--font-body-md);
+}
+
+.button-icon-select {
+  margin-top: 0;
+}
+
+.button-switch {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.button-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.button-switch-track {
+  position: relative;
+  display: block;
+  width: 36px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: var(--color-comp-background-secondary);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.button-switch-track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--surface-container-lowest);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.button-switch input:checked + .button-switch-track {
+  background: var(--brand);
+}
+
+.button-switch input:checked + .button-switch-track::after {
+  transform: translateX(16px);
+}
+
+.button-switch input:focus-visible + .button-switch-track {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
 }
 </style>
-<!-- END_COMPONENT_PREVIEW_STYLE:iconstate -->
-
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -7705,7 +8219,7 @@ function Demo(){
  const [notice,setNotice]=useState('');
  function changeSize(next){setSize(next);setClearable(next==='large');}
  return <div className="demo-page">
- <header className="demo-header"><p className="demo-subtitle">SearchBar · Large / Small · 输入、清空与搜索 · 5 状态</p></header>
+ <header className="demo-header"><p className="demo-subtitle">SearchBar 搜索框 · Large / Small · Filled / Unfilled · 可配置清空按钮及位置 · 输入状态预览</p></header>
  <Section title="Configurator" description="实时输入体验交互；Small 默认无清空按钮，可显式开启。焦点描边仅在 Large 使用 Tab 聚焦时出现。">
  <div className="button-configurator"><div className="button-controls">
  <Select label="Size" value={size} onChange={changeSize} options={SIZES}/>
@@ -8207,9 +8721,7 @@ function Demo() {
           <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYWkiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjN0MzQUVEIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzA2QjZENCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBhdGggZD0iTTIyIDggUTIzLjUgMTguNSAzNCAyMCBRMjMuNSAyMS41IDIyIDMyIFEyMC41IDIxLjUgMTAgMjAgUTIwLjUgMTguNSAyMiA4IFoiIGZpbGw9InVybCgjYWkpIi8+CiAgPHBhdGggZD0iTTM2IDMwIFEzNi44IDM1LjIgNDIgMzYgUTM2LjggMzYuOCAzNiA0MiBRMzUuMiAzNi44IDMwIDM2IFEzNS4yIDM1LjIgMzYgMzAgWiIgZmlsbD0idXJsKCNhaSkiIG9wYWNpdHk9IjAuODUiLz4KICA8Y2lyY2xlIGN4PSIzNyIgY3k9IjEwIiByPSIyLjYiIGZpbGw9IiMwNkI2RDQiLz4KICA8Y2lyY2xlIGN4PSIxMCIgY3k9IjM1IiByPSIyIiBmaWxsPSIjN0MzQUVEIiBvcGFjaXR5PSIwLjciLz4KPC9zdmc+Cg==" alt="logo" style={{ width: 28, height: 28 }} />
           <span>组件预览</span>
         </div>
-        <p className="demo-subtitle">
-          Button · Material 3 命名规范 · 4 变体 × 2 尺寸 × 2 形状 × 5 状态
-        </p>
+        <p className="demo-subtitle">Button 按钮 · Filled / Tonal / Outlined / Text · Large / Small · Round / Square · 5 states</p>
         
       </header>
 
@@ -9150,9 +9662,7 @@ function Demo() {
           <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYWkiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjN0MzQUVEIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzA2QjZENCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBhdGggZD0iTTIyIDggUTIzLjUgMTguNSAzNCAyMCBRMjMuNSAyMS41IDIyIDMyIFEyMC41IDIxLjUgMTAgMjAgUTIwLjUgMTguNSAyMiA4IFoiIGZpbGw9InVybCgjYWkpIi8+CiAgPHBhdGggZD0iTTM2IDMwIFEzNi44IDM1LjIgNDIgMzYgUTM2LjggMzYuOCAzNiA0MiBRMzUuMiAzNi44IDMwIDM2IFEzNS4yIDM1LjIgMzYgMzAgWiIgZmlsbD0idXJsKCNhaSkiIG9wYWNpdHk9IjAuODUiLz4KICA8Y2lyY2xlIGN4PSIzNyIgY3k9IjEwIiByPSIyLjYiIGZpbGw9IiMwNkI2RDQiLz4KICA8Y2lyY2xlIGN4PSIxMCIgY3k9IjM1IiByPSIyIiBmaWxsPSIjN0MzQUVEIiBvcGFjaXR5PSIwLjciLz4KPC9zdmc+Cg==" alt="logo" style={{ width: 28, height: 28 }} />
           <span>组件预览</span>
         </div>
-        <p className="demo-subtitle">
-          Dropdown Button · Material 3 命名规范 · Large / Small / XS · 可配置图标 · 5 状态
-        </p>
+        <p className="demo-subtitle">Dropdown Button 下拉按钮 · Filled / Tonal / Outlined / Text · Large / Small / XS · Round / Square · 可配置前后图标及下拉图标 · 5 states</p>
         
       </header>
 
@@ -9935,7 +10445,7 @@ function Demo() {
   return (
     <div className="demo-page">
       <header className="demo-header">
-        <p className="demo-subtitle">SegmentedButton · Text / Icon · 2–5 segments · 24px / 8px radius · 5 states</p>
+        <p className="demo-subtitle">Segmented Button · Text / Icon · 2–5 segments · 24px / 8px radius · 5 states</p>
       </header>
 
       <Section title="Configurator" description="配置真实组件 props；选中段可通过点击预览或 Active segment 调整。">
@@ -10441,7 +10951,7 @@ function Demo() {
   return (
     <div className="demo-page">
       <header className="demo-header">
-        <p className="demo-subtitle">Input Box · Outlined / Filled · Text / Password · 5 controlled states + Disabled</p>
+        <p className="demo-subtitle">Input Box 输入框 · Outlined / Filled · Text / Password · 可配置宽度 · 6 states</p>
       </header>
 
       <Section title="Configurator" description="配置现有 InputBox props；State 可固定视觉状态，输入内容仍由真实 input 处理。">
@@ -10473,7 +10983,7 @@ function Demo() {
           </div>
           <div className="button-configurator-preview input-demo-live">
             <span className="btn-lab-slotlabel">LIVE PREVIEW</span>
-            <div className="input-demo-preview-width">
+            <div className="input-demo-preview-width" style={{ width }}>
               <InputBox
                 variant={variant}
                 state={state}
@@ -10610,7 +11120,7 @@ window.PreviewDemos["input-box"] = __export.Demo;
   const selected=state==='checked'||state==='disabled-on'; const disabled=state.startsWith('disabled');
   const states=[{key:'unchecked',label:'未选中',checked:false},{key:'checked',label:'选中',checked:true},{key:'disabled-off',label:'禁用 · 未选中',checked:false,disabled:true},{key:'disabled-on',label:'禁用 · 选中',checked:true,disabled:true}];
   return <div className="demo-page"><header className="demo-header"><h1 className="demo-title">Checkbox 勾选组件</h1><p className="demo-subtitle">Checkbox · Square / Circle · Checked / Unchecked · Disabled · 8 个形状状态组合</p></header>
-   <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">Configurator</h2><span className="demo-section-tag">实时配置</span></div><p className="demo-section-desc">形状、状态和标签均映射到组件实际 props；键盘 Space / Enter 可切换可用标本。</p><div className="preview-configurator"><div className="preview-controls"><label className="preview-control"><span>Shape</span><select value={shape} onChange={e=>setShape(e.target.value)}><option value="square">Square · 方形</option><option value="circle">Circle · 圆形</option></select></label><label className="preview-control"><span>State</span><select value={state} onChange={e=>setState(e.target.value)}>{states.map(item=><option key={item.key} value={item.key}>{item.label}</option>)}</select></label><label className="preview-control"><span>Label</span><input value={label} onChange={e=>setLabel(e.target.value)} /></label></div><div className="preview-live"><Checkbox shape={shape} checked={selected} disabled={disabled} label={label||undefined} onChange={next=>setState(next?'checked':'unchecked')}/></div></div></section>
+   <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">Configurator</h2><span className="demo-section-tag">实时配置</span></div><p className="demo-section-desc">形状、状态和标签均映射到组件实际 props；键盘 Space / Enter 可切换可用标本。</p><div className="preview-configurator"><div className="preview-controls"><label className="button-control"><span>Shape</span><span className="button-select-wrap"><select value={shape} onChange={e=>setShape(e.target.value)}><option value="square">Square · 方形</option><option value="circle">Circle · 圆形</option></select></span></label><label className="button-control"><span>State</span><span className="button-select-wrap"><select value={state} onChange={e=>setState(e.target.value)}>{states.map(item=><option key={item.key} value={item.key}>{item.label}</option>)}</select></span></label><label className="button-control"><span>Label</span><input value={label} onChange={e=>setLabel(e.target.value)} /></label></div><div className="preview-live"><Checkbox shape={shape} checked={selected} disabled={disabled} label={label||undefined} onChange={next=>setState(next?'checked':'unchecked')}/></div></div></section>
    <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">Gallery · Shape × State</h2><span className="demo-section-tag">8 combinations</span></div><p className="demo-section-desc">容器 24×24，实际方框 20×20；禁用态在对应状态基础上整体 40% 不透明度。</p><div className="cbx-demo-matrix"><div className="cbx-demo-cell cbx-demo-head"/>{states.map(item=><div className="cbx-demo-cell cbx-demo-head" key={item.key}>{item.label}</div>)}{['square','circle'].map(item=><Fragment key={item}><div className="cbx-demo-cell cbx-demo-head cbx-demo-rowhead">{item==='square'?'方形':'圆形'}</div>{states.map(value=><div className="cbx-demo-cell" key={item+value.key}><Checkbox shape={item} checked={value.checked} disabled={value.disabled} onChange={()=>{}}/></div>)}</Fragment>)}</div></section>
    <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">Controlled multi-select</h2><span className="demo-section-tag">交互</span></div><p className="demo-section-desc">checked + onChange 由外部 state 驱动；禁用项不会改变计数。</p><CheckboxDemoList/></section>
    <section className="demo-section preview-contract"><h2 className="demo-section-name">Color spec</h2><div className="preview-table-wrap"><table className="preview-table preview-table--color"><thead><tr><th>Variant</th><th>State</th><th>Background</th><th>Outline</th><th>Text</th></tr></thead><tbody>{states.map((item,i)=><tr className={i===0?'preview-group-start':''} key={item.key}>{i===0?<th rowSpan={4} className="preview-variant">Square / Circle</th>:null}<td className="preview-state">{item.label}</td><td><code>{item.checked?'--color-comp-background-emphasize':'--color-fg-unchecked'}</code></td><td><code>{item.disabled?'同 Default':'--color-icon-tertiary'}</code></td><td>{item.disabled?<span className="preview-same">同 Default · opacity 40%</span>:<code>--on-surface</code>}</td></tr>)}</tbody></table></div></section>
@@ -10723,7 +11233,7 @@ window.PreviewDemos["input-box"] = __export.Demo;
   const [label,setLabel]=useState('复制'); const [icon,setIcon]=useState('copy'); const [width,setWidth]=useState('auto');
   const actions=[{id:'edit',icon:'square-pen',label:'编辑'},{id:'share',icon:'share-2',label:'分享'},{id:'copy',icon:'copy',label:'复制'},{id:'download',icon:'download',label:'下载'}];
   return <div className="demo-page"><header className="demo-header"><h1 className="demo-title">ActionChip 操作块</h1><p className="demo-subtitle">ActionChip · 图标可选 · 自适应或固定宽度 · 4 个可验证交互状态</p></header>
-   <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">Configurator</h2><span className="demo-section-tag">实时配置</span></div><p className="demo-section-desc">只暴露组件实际支持的 label、icon 和 width；Hover、Pressed、Focus 请在右侧标本上操作。</p><div className="preview-configurator"><div className="preview-controls"><label className="preview-control"><span>Label</span><input value={label} onChange={e=>setLabel(e.target.value)} /></label><label className="preview-control"><span>Icon</span><select value={icon} onChange={e=>setIcon(e.target.value)}><option value="">无图标</option><option value="copy">copy</option><option value="share-2">share-2</option><option value="download">download</option></select></label><label className="preview-control"><span>Width</span><select value={width} onChange={e=>setWidth(e.target.value)}><option value="auto">Auto</option><option value="96px">96px</option><option value="160px">160px</option><option value="100%">100%</option></select></label></div><div className="preview-live"><ActionChip label={label||'操作'} icon={icon||undefined} width={width==='auto'?undefined:width}/></div></div></section>
+   <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">Configurator</h2><span className="demo-section-tag">实时配置</span></div><p className="demo-section-desc">只暴露组件实际支持的 label、icon 和 width；Hover、Pressed、Focus 请在右侧标本上操作。</p><div className="preview-configurator"><div className="preview-controls"><label className="button-control"><span>Label</span><input value={label} onChange={e=>setLabel(e.target.value)} /></label><label className="button-control"><span>Icon</span><span className="button-select-wrap"><select value={icon} onChange={e=>setIcon(e.target.value)}><option value="">无图标</option><option value="copy">copy</option><option value="share-2">share-2</option><option value="download">download</option></select></span></label><label className="button-control"><span>Width</span><span className="button-select-wrap"><select value={width} onChange={e=>setWidth(e.target.value)}><option value="auto">Auto</option><option value="96px">96px</option><option value="160px">160px</option><option value="100%">100%</option></select></span></label></div><div className="preview-live"><ActionChip label={label||'操作'} icon={icon||undefined} width={width==='auto'?undefined:width}/></div></div></section>
    <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">ActionChip</h2><span className="demo-section-tag">Default / Hover / Pressed / Focus</span></div><p className="demo-section-desc">默认品牌 10% 底色；可用鼠标和 Tab 键体验真实交互。</p><div className="demo-grid demo-grid-2"><div className="demo-item"><h3 className="demo-item-title">Gallery · Auto width</h3><div className="demo-chip-row">{actions.map(a=><ActionChip key={a.id} icon={a.icon} label={a.label}/>)}</div></div><div className="demo-item"><h3 className="demo-item-title">Gallery · Fixed width</h3><div className="demo-chip-row"><ActionChip icon="download" label="导出" width={96}/><ActionChip icon="cloud-upload" label="上传到云端" width={96}/><ActionChip icon="settings" label="配置" width={96}/></div></div><div className="demo-item"><h3 className="demo-item-title">No icon / truncation</h3><div className="demo-chip-row demo-chip-row-fixed"><ActionChip label="仅文字操作"/><ActionChip icon="file-text" label="一键导出全部检测报告并同步到云端空间"/></div></div></div></section>
    <section className="demo-section preview-contract"><h2 className="demo-section-name">State matrix</h2><p className="preview-summary">ActionChip 没有 disabled prop；可验证状态来自 CSS 交互伪类。</p><div className="preview-state-grid">{['Default','Hover','Pressed','Focus'].map(state=><div className={'preview-state-card preview-action-chip-state-'+state.toLowerCase()} key={state}><ActionChip icon="copy" label="复制"/><span>{state}</span></div>)}</div></section>
    <section className="demo-section preview-contract"><h2 className="demo-section-name">Color spec</h2><div className="preview-table-wrap"><table className="preview-table preview-table--color"><thead><tr><th>Variant</th><th>State</th><th>Background</th><th>Outline</th><th>Text</th></tr></thead><tbody>{['Default','Hover','Pressed','Focus'].map((state,i)=><tr className={i===0?'preview-group-start':''} key={state}>{i===0?<th rowSpan={4} className="preview-variant">ActionChip</th>:null}<td className="preview-state">{state}</td><td><code>{state==='Default'?'--brand-10':state==='Hover'?'--color-interactive-hover':state==='Pressed'?'--color-interactive-pressed':'同 Default'}</code></td><td>{state==='Focus'?<code>--focus-ring</code>:<span className="preview-same">同 Default</span>}</td><td><code>--color-font-emphasize</code></td></tr>)}</tbody></table></div></section>
@@ -10742,14 +11252,16 @@ window.PreviewDemos["input-box"] = __export.Demo;
  function TextTabs({items,gap=24,activeId,onChange}){const [inner,setInner]=useState(activeId||items[0]?.id);const current=activeId||inner;return <div className="tt-root"><div className="tt-list" role="tablist" style={{gap}}>{items.map(item=><button key={item.id} type="button" role="tab" aria-selected={current===item.id} className={'tt-tab '+(current===item.id?'tt-tab-active':'')} onClick={()=>{setInner(item.id);onChange?.(item.id)}}><span className="tt-label" data-label={item.label}>{item.label}</span></button>)}</div></div>;}
  function Toggle({checked,disabled,label,onChange}){const [inner,setInner]=useState(!!checked);const value=checked!==undefined?checked:inner;return <label className={'tg-root'+(disabled?' tg-root-disabled':'')}><button type="button" role="switch" aria-checked={value} disabled={disabled} className={'tg-switch '+(value?'tg-switch-on':'tg-switch-off')} onClick={()=>{if(!disabled){setInner(!value);onChange?.(!value);}}}><span className="tg-knob"/></button>{label?<span className="tg-label">{label}</span>:null}</label>;}
  function ContractTable({rows,color=false}){return <div className="preview-table-wrap"><table className={'preview-table'+(color?' preview-table--color':'')}><thead><tr>{(color?['Variant','State','Background','Outline','Text']:['Property','Value','Token / rule']).map(x=><th key={x}>{x}</th>)}</tr></thead><tbody>{rows}</tbody></table></div>;}
- function TagDemo(){const [variant,setVariant]=useState('tab');const [selected,setSelected]=useState(false);const variants=['diff-add','diff-remove','icon','tab'];const previewLabel=variant==='diff-add'?'+128':variant==='diff-remove'?'-64':variant==='icon'?'代码编辑':selected?'已选中':'筛选';return <div className="demo-page"><header className="demo-header"><h1 className="demo-title">Tag 标签</h1><p className="demo-subtitle">Tag · Diff / Icon / Tab · 4 个公开变体 · Tab 支持选中与禁用</p></header><section className="demo-section"><h2 className="demo-section-name">Configurator</h2><p className="demo-section-desc">变体切换后仅显示对应的 selected / disabled 能力。</p><div className="preview-configurator"><div className="preview-controls"><label className="preview-control"><span>Variant</span><select value={variant} onChange={e=>setVariant(e.target.value)}>{variants.map(v=><option key={v}>{v}</option>)}</select></label>{variant==='tab'?<><label className="preview-control"><span>Selected</span><select value={String(selected)} onChange={e=>setSelected(e.target.value==='true')}><option value="false">未选中</option><option value="true">已选中</option></select></label><label className="preview-control"><span>Disabled</span><select value="false"><option>按状态矩阵查看</option></select></label></>:null}</div><div className="preview-live"><Tag variant={variant} icon={variant==='icon'||variant==='tab'?'tag':undefined} selected={variant==='tab'&&selected} interactive={variant==='tab'}>{previewLabel}</Tag></div></div></section><section className="demo-section"><h2 className="demo-section-name">Gallery · Variant / State</h2><div className="demo-grid demo-grid-2"><div className="demo-item"><h3 className="demo-item-title">Diff</h3><div className="tag-demo-split"><Tag variant="diff-add">+1,280</Tag><Tag variant="diff-remove">-64</Tag></div></div><div className="demo-item"><h3 className="demo-item-title">Icon</h3><div className="tag-demo-split"><Tag variant="icon" icon="code">代码编辑</Tag><Tag variant="icon">仅文字</Tag></div></div><div className="demo-item"><h3 className="demo-item-title">Tab states</h3><div className="tag-demo-split"><Tag variant="tab" icon="layout-grid" interactive={false}>未选中</Tag><Tag variant="tab" icon="layout-grid" interactive={false} selected>已选中</Tag><Tag variant="tab" icon="layout-grid" interactive={false} disabled>禁用</Tag></div></div></div></section><section className="demo-section preview-contract"><h2 className="demo-section-name">Color spec</h2><ContractTable color rows={['Default','Hover','Focus','Selected','Disabled'].map((s,i)=><tr className={i===0?'preview-group-start':''} key={s}>{i===0?<th rowSpan={5} className="preview-variant">Tab</th>:null}<td className="preview-state">{s}</td><td><code>{s==='Selected'?'--container-90':'--color-comp-background-tertiary'}</code></td><td>{s==='Focus'?<code>--focus-ring</code>:<span className="preview-same">同 Default</span>}</td><td><code>{s==='Selected'?'--color-font-on-primary':'--color-font-secondary'}</code></td></tr>)}/></section><section className="demo-section preview-contract"><h2 className="demo-section-name">Token contract</h2><ContractTable rows={<><tr><th>Diff</th><td>18px line-height</td><td><code>--font-caption-lg</code> · full radius</td></tr><tr><th>Icon</th><td>24px height · 14px icon · 12/16px text</td><td>4px gap · 8px horizontal / 4px vertical</td></tr><tr><th>Tab</th><td>16px icon / 16px text</td><td>6px gap · 16px horizontal / 8px vertical</td></tr></>}/></section></div>;}
- function TextTabsDemo(){const items=[{id:'all',label:'全部'},{id:'photo',label:'图片'},{id:'video',label:'视频'},{id:'doc',label:'文档'}];const [gap,setGap]=useState(24);const [active,setActive]=useState('all');return <div className="demo-page"><header className="demo-header"><h1 className="demo-title">TextTabs 文字标签</h1><p className="demo-subtitle">TextTabs · 18px · Regular / Bold · gap 可配置 · 键盘导航由组件实现</p></header><section className="demo-section"><h2 className="demo-section-name">Configurator</h2><div className="preview-configurator"><div className="preview-controls"><label className="preview-control"><span>Gap</span><select value={gap} onChange={e=>setGap(Number(e.target.value))}><option value="16">16px</option><option value="24">24px</option><option value="40">40px</option></select></label><label className="preview-control"><span>Active item</span><select value={active} onChange={e=>setActive(e.target.value)}>{items.map(item=><option key={item.id} value={item.id}>{item.label}</option>)}</select></label></div><div className="preview-live"><TextTabs items={items} gap={gap} activeId={active} onChange={setActive}/></div></div></section><section className="demo-section"><h2 className="demo-section-name">Gallery · Content lengths</h2><div className="demo-grid demo-grid-2"><div className="demo-item"><h3 className="demo-item-title">Basic</h3><TextTabs items={items}/></div><div className="demo-item"><h3 className="demo-item-title">Long labels</h3><TextTabs items={[{id:'a',label:'推荐给你'},{id:'b',label:'最近浏览过的内容'},{id:'c',label:'我的收藏与下载'}]} activeId="b"/></div><div className="demo-item"><h3 className="demo-item-title">Horizontal overflow</h3><TextTabs items={Array.from({length:10},(_,i)=>({id:String(i),label:'标签 '+(i+1)}))} activeId="7"/></div></div></section><section className="demo-section preview-contract"><h2 className="demo-section-name">State matrix</h2><ContractTable rows={<tr><th>TextTabs</th><td>Default / Hover / Focus / Active</td><td>未选中 placeholder；选中 bold + primary；focus 使用 focus ring</td></tr>}/></section><section className="demo-section preview-contract"><h2 className="demo-section-name">API contract</h2><ContractTable rows={<><tr><th>items</th><td>必填数组，元素包含 id 与 label。</td><td>空数组不渲染内容</td></tr><tr><th>activeId / defaultActiveId</th><td>支持受控与非受控选中项。</td><td>onChange 返回 item</td></tr><tr><th>gap</th><td>数字 px，默认 24。</td><td>横向溢出在 tt-list 内滚动</td></tr></>}/></section></div>;}
- function ToggleDemo(){const [checked,setChecked]=useState(false);const [disabled,setDisabled]=useState(false);return <div className="demo-page"><header className="demo-header"><h1 className="demo-title">Toggle 开关</h1><p className="demo-subtitle">Toggle · 36 × 20 · On / Off · Enabled / Disabled · 4 states</p></header><section className="demo-section"><h2 className="demo-section-name">Configurator</h2><div className="preview-configurator"><div className="preview-controls"><label className="preview-control"><span>Checked</span><select value={String(checked)} onChange={e=>setChecked(e.target.value==='true')}><option value="false">Off</option><option value="true">On</option></select></label><label className="preview-control"><span>Disabled</span><select value={String(disabled)} onChange={e=>setDisabled(e.target.value==='true')}><option value="false">Enabled</option><option value="true">Disabled</option></select></label></div><div className="preview-live"><Toggle checked={checked} disabled={disabled} label="通知" onChange={setChecked}/></div></div></section><section className="demo-section"><h2 className="demo-section-name">State matrix</h2><div className="preview-state-grid">{[[false,false,'Off / Enabled'],[true,false,'On / Enabled'],[false,true,'Off / Disabled'],[true,true,'On / Disabled']].map(([on,off,label])=><div className="preview-state-card" key={label}><Toggle checked={on} disabled={off}/><span>{label}</span></div>)}</div></section><section className="demo-section preview-contract"><h2 className="demo-section-name">Color spec</h2><ContractTable color rows={['Off','On','Disabled'].map((s,i)=><tr className={i===0?'preview-group-start':''} key={s}>{i===0?<th rowSpan={3} className="preview-variant">Toggle</th>:null}<td className="preview-state">{s}</td><td><code>{s==='On'?'--color-comp-background-emphasize':'--color-comp-background-secondary'}</code></td><td><code>{s==='Off'?'--color-comp-background-tertiary':'同 Default'}</code></td><td><code>--on-surface</code></td></tr>)}/></section><section className="demo-section preview-contract"><h2 className="demo-section-name">Token contract</h2><ContractTable rows={<><tr><th>Track</th><td>36 × 20px</td><td><code>--radius-full</code></td></tr><tr><th>Knob</th><td>16px · 2px inset</td><td>On state translates 16px</td></tr><tr><th>Disabled</th><td>opacity 50%</td><td>保留 On / Off 颜色</td></tr></>}/></section><section className="demo-section preview-contract"><h2 className="demo-section-name">API contract</h2><ContractTable rows={<><tr><th>checked / defaultChecked</th><td>受控或非受控布尔值。</td><td>onChange(next, event)</td></tr><tr><th>disabled</th><td>阻止切换，保留当前视觉状态。</td><td>按钮原生 disabled</td></tr><tr><th>label / className</th><td>可选文案与宿主扩展类名。</td><td>label 与 switch 共用可点击区域</td></tr></>}/></section></div>;}
+ function TagDemo(){const [variant,setVariant]=useState('tab');const [selected,setSelected]=useState(false);const [disabled,setDisabled]=useState(false);const variants=['diff-add','diff-remove','icon','tab'];const previewLabel=variant==='diff-add'?'+128':variant==='diff-remove'?'-64':variant==='icon'?'代码编辑':selected?'已选中':'筛选';return <div className="demo-page"><header className="demo-header"><h1 className="demo-title">Tag 标签</h1><p className="demo-subtitle">Tag · Diff / Icon / Tab · 4 个公开变体 · Tab 支持选中与禁用</p></header><section className="demo-section"><h2 className="demo-section-name">Configurator</h2><p className="demo-section-desc">变体切换后仅显示对应的 selected / disabled 能力。</p><div className="preview-configurator"><div className="preview-controls"><label className="button-control"><span>Variant</span><span className="button-select-wrap"><select value={variant} onChange={e=>setVariant(e.target.value)}>{variants.map(v=><option key={v}>{v}</option>)}</select></span></label>{variant==='tab'?<><CompactBoolean label="Selected" value={selected} onChange={setSelected}/><CompactBoolean label="Disabled" value={disabled} onChange={setDisabled}/></>:null}</div><div className="preview-live"><Tag variant={variant} icon={variant==='icon'||variant==='tab'?'tag':undefined} selected={variant==='tab'&&selected} disabled={variant==='tab'&&disabled} interactive={variant==='tab'}>{previewLabel}</Tag></div></div></section><section className="demo-section"><h2 className="demo-section-name">Gallery · Variant / State</h2><div className="demo-grid demo-grid-2"><div className="demo-item"><h3 className="demo-item-title">Diff</h3><div className="tag-demo-split"><Tag variant="diff-add">+1,280</Tag><Tag variant="diff-remove">-64</Tag></div></div><div className="demo-item"><h3 className="demo-item-title">Icon</h3><div className="tag-demo-split"><Tag variant="icon" icon="code">代码编辑</Tag><Tag variant="icon">仅文字</Tag></div></div><div className="demo-item"><h3 className="demo-item-title">Tab states</h3><div className="tag-demo-split"><Tag variant="tab" icon="layout-grid" interactive={false}>未选中</Tag><Tag variant="tab" icon="layout-grid" interactive={false} selected>已选中</Tag><Tag variant="tab" icon="layout-grid" interactive={false} disabled>禁用</Tag></div></div></div></section><section className="demo-section preview-contract"><h2 className="demo-section-name">Color spec</h2><ContractTable color rows={['Default','Hover','Focus','Selected','Disabled'].map((s,i)=><tr className={i===0?'preview-group-start':''} key={s}>{i===0?<th rowSpan={5} className="preview-variant">Tab</th>:null}<td className="preview-state">{s}</td><td><code>{s==='Selected'?'--container-90':'--color-comp-background-tertiary'}</code></td><td>{s==='Focus'?<code>--focus-ring</code>:<span className="preview-same">同 Default</span>}</td><td><code>{s==='Selected'?'--color-font-on-primary':'--color-font-secondary'}</code></td></tr>)}/></section><section className="demo-section preview-contract"><h2 className="demo-section-name">Token contract</h2><ContractTable rows={<><tr><th>Diff</th><td>18px line-height</td><td><code>--font-caption-lg</code> · full radius</td></tr><tr><th>Icon</th><td>24px height · 14px icon · 12/16px text</td><td>4px gap · 8px horizontal / 4px vertical</td></tr><tr><th>Tab</th><td>16px icon / 16px text</td><td>6px gap · 16px horizontal / 8px vertical</td></tr></>}/></section></div>;}
+ function TextTabsDemo(){const items=[{id:'all',label:'全部'},{id:'photo',label:'图片'},{id:'video',label:'视频'},{id:'doc',label:'文档'}];const [gap,setGap]=useState(24);const [active,setActive]=useState('all');return <div className="demo-page"><header className="demo-header"><h1 className="demo-title">TextTabs 文字标签</h1><p className="demo-subtitle">TextTabs · 18px · Regular / Bold · gap 可配置 · 键盘导航由组件实现</p></header><section className="demo-section"><h2 className="demo-section-name">Configurator</h2><div className="preview-configurator"><div className="preview-controls"><label className="button-control"><span>Gap</span><span className="button-select-wrap"><select value={gap} onChange={e=>setGap(Number(e.target.value))}><option value="16">16px</option><option value="24">24px</option><option value="40">40px</option></select></span></label><label className="button-control"><span>Active item</span><span className="button-select-wrap"><select value={active} onChange={e=>setActive(e.target.value)}>{items.map(item=><option key={item.id} value={item.id}>{item.label}</option>)}</select></span></label></div><div className="preview-live"><TextTabs items={items} gap={gap} activeId={active} onChange={setActive}/></div></div></section><section className="demo-section"><h2 className="demo-section-name">Gallery · Content lengths</h2><div className="demo-grid demo-grid-2"><div className="demo-item"><h3 className="demo-item-title">Basic</h3><TextTabs items={items}/></div><div className="demo-item"><h3 className="demo-item-title">Long labels</h3><TextTabs items={[{id:'a',label:'推荐给你'},{id:'b',label:'最近浏览过的内容'},{id:'c',label:'我的收藏与下载'}]} activeId="b"/></div><div className="demo-item"><h3 className="demo-item-title">Horizontal overflow</h3><TextTabs items={Array.from({length:10},(_,i)=>({id:String(i),label:'标签 '+(i+1)}))} activeId="7"/></div></div></section><section className="demo-section preview-contract"><h2 className="demo-section-name">State matrix</h2><ContractTable rows={<tr><th>TextTabs</th><td>Default / Hover / Focus / Active</td><td>未选中 placeholder；选中 bold + primary；focus 使用 focus ring</td></tr>}/></section><section className="demo-section preview-contract"><h2 className="demo-section-name">API contract</h2><ContractTable rows={<><tr><th>items</th><td>必填数组，元素包含 id 与 label。</td><td>空数组不渲染内容</td></tr><tr><th>activeId / defaultActiveId</th><td>支持受控与非受控选中项。</td><td>onChange 返回 item</td></tr><tr><th>gap</th><td>数字 px，默认 24。</td><td>横向溢出在 tt-list 内滚动</td></tr></>}/></section></div>;}
+ function ToggleDemo(){const [checked,setChecked]=useState(false);const [disabled,setDisabled]=useState(false);return <div className="demo-page"><header className="demo-header"><h1 className="demo-title">Toggle 开关</h1><p className="demo-subtitle">Toggle · 36 × 20 · On / Off · Enabled / Disabled · 4 states</p></header><section className="demo-section"><h2 className="demo-section-name">Configurator</h2><div className="preview-configurator"><div className="preview-controls"><CompactBoolean label="Checked" value={checked} onChange={setChecked}/><CompactBoolean label="Disabled" value={disabled} onChange={setDisabled}/></div><div className="preview-live"><Toggle checked={checked} disabled={disabled} label="通知" onChange={setChecked}/></div></div></section><section className="demo-section"><h2 className="demo-section-name">State matrix</h2><div className="preview-state-grid">{[[false,false,'Off / Enabled'],[true,false,'On / Enabled'],[false,true,'Off / Disabled'],[true,true,'On / Disabled']].map(([on,off,label])=><div className="preview-state-card" key={label}><Toggle checked={on} disabled={off}/><span>{label}</span></div>)}</div></section><section className="demo-section preview-contract"><h2 className="demo-section-name">Color spec</h2><ContractTable color rows={['Off','On','Disabled'].map((s,i)=><tr className={i===0?'preview-group-start':''} key={s}>{i===0?<th rowSpan={3} className="preview-variant">Toggle</th>:null}<td className="preview-state">{s}</td><td><code>{s==='On'?'--color-comp-background-emphasize':'--color-comp-background-secondary'}</code></td><td><code>{s==='Off'?'--color-comp-background-tertiary':'同 Default'}</code></td><td><code>--on-surface</code></td></tr>)}/></section><section className="demo-section preview-contract"><h2 className="demo-section-name">Token contract</h2><ContractTable rows={<><tr><th>Track</th><td>36 × 20px</td><td><code>--radius-full</code></td></tr><tr><th>Knob</th><td>16px · 2px inset</td><td>On state translates 16px</td></tr><tr><th>Disabled</th><td>opacity 50%</td><td>保留 On / Off 颜色</td></tr></>}/></section><section className="demo-section preview-contract"><h2 className="demo-section-name">API contract</h2><ContractTable rows={<><tr><th>checked / defaultChecked</th><td>受控或非受控布尔值。</td><td>onChange(next, event)</td></tr><tr><th>disabled</th><td>阻止切换，保留当前视觉状态。</td><td>按钮原生 disabled</td></tr><tr><th>label / className</th><td>可选文案与宿主扩展类名。</td><td>label 与 switch 共用可点击区域</td></tr></>}/></section></div>;}
  window.PreviewDemos.tag=TagDemo; window.PreviewDemos['text-tabs']=TextTabsDemo; window.PreviewDemos.toggle=ToggleDemo;
 })();
 
 /* COMPONENT_PREVIEW:menuitem */
 (function(){const {Icon}=window.ComponentIcons;const {useState,useEffect}=React;
+
+
 
 /**
  * 状态图标配置：历史对话列表各状态对应的右侧图标。
@@ -11069,6 +11581,7 @@ function FileIcon({ size = 16, className }) {
 }
 
 
+
 const LEFT_FORMS = [{ value: "nav", label: "导航条目" }, { value: "history", label: "历史对话" }];
 const NAV_STATES = [{ value: "default", label: "默认" }, { value: "hover", label: "悬浮" }, { value: "selected", label: "选中" }];
 const NAV_ICONS = [
@@ -11095,36 +11608,49 @@ const RIGHT_VARIANTS = [{ value: "folder", label: "文件夹" }, { value: "file-
 const FILE_STATES = [{ value: "default", label: "默认" }, { value: "hover", label: "悬浮" }, { value: "rename", label: "重命名" }, { value: "renaming", label: "重命名输入中" }, { value: "disabled", label: "禁用" }];
 
 function Select({ label, value, onChange, options }) {
-  return <label className="menuitem-control"><span>{label}</span><select value={value} onChange={event => onChange(event.target.value)}>{options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>;
+  return <label className="button-control"><span>{label}</span><span className="button-select-wrap"><select value={value} onChange={event => onChange(event.target.value)}>{options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}</select></span></label>;
 }
 
 function TextInput({ label, value, onChange }) {
-  return <label className="menuitem-control"><span>{label}</span><input value={value} onChange={event => onChange(event.target.value)} /></label>;
+  return <label className="button-control"><span>{label}</span><input value={value} onChange={event => onChange(event.target.value)} /></label>;
 }
 
 function UploadIcon({ label, onLoaded }) {
-  return <label className="menuitem-control menuitem-upload"><span>{label}</span><input type="file" accept=".svg,image/svg+xml" onChange={event => { const file = event.target.files?.[0]; event.target.value = ""; if (!file || (file.type !== "image/svg+xml" && !/\.svg$/i.test(file.name))) return; const reader = new FileReader(); reader.onload = () => onLoaded(String(reader.result)); reader.readAsDataURL(file); }} /><small>上传后作为 iconSrc 传入</small></label>;
+  return <label className="button-control menuitem-upload"><span>{label}</span><input type="file" accept=".svg,image/svg+xml" onChange={event => { const file = event.target.files?.[0]; event.target.value = ""; if (!file || (file.type !== "image/svg+xml" && !/\.svg$/i.test(file.name))) return; const reader = new FileReader(); reader.onload = () => onLoaded(String(reader.result)); reader.readAsDataURL(file); }} /><small>上传后作为 iconSrc 传入</small></label>;
 }
 
-function Preview({ children, code, align = "center" }) {
-  return <div className={`menuitem-live menuitem-live--${align}`}><div>{children}</div><code>{code}</code></div>;
+function Preview({ children }) {
+  return <div className="button-configurator-preview inspection-live"><span className="btn-lab-slotlabel">LIVE PREVIEW</span><div className="inspection-specimen">{children}</div></div>;
 }
 
-function TokenPanel() {
-  const colorRows = [
-    ["导航 / 历史", "Default", "transparent", "--on-surface"], ["导航 / 历史", "Hover / Selected / 状态", "--color-interactive-hover", "--on-surface"],
-    ["下拉 · 一般", "Default", "transparent", "--on-surface"], ["下拉 · 一般", "Hover", "--color-interactive-hover", "--on-surface"],
-    ["下拉 · 警告", "Default", "transparent", "--mi-danger-font / --mi-danger-icon"], ["下拉 · 警告", "Hover", "--mi-danger-container", "同 Default"],
-    ["全部形态", "Disabled", "同 Default", "--text-disabled / opacity: 0.5"], ["中尺寸选中", "Selected", "--surface-container-lowest", "指定 14px 蓝色勾选 SVG"],
-  ];
-  const contracts = [["nav / history", "300 × 40px", "--radius-container · 8px", "12px", "--on-surface"], ["dropdown sm", "152 × 32px", "--radius-md · 6px", "12px", "--on-surface / --mi-danger-font"], ["dropdown md", "232 × 36px", "--radius-md · 6px", "12px", "--on-surface"], ["folder / file", "602 × 40px", "--radius-container · 8px", "12px / 36px", "--on-surface"]];
-  return <div className="menuitem-contract">
-    <section className="menuitem-token-panel"><h2>Color spec</h2><p>形态和状态决定背景与文本、图标的语义色；未变化项会沿用静止态。</p><div className="menuitem-table-wrap"><table className="menuitem-table"><thead><tr><th>Variant</th><th>State</th><th>Background</th><th>Text / icon</th></tr></thead><tbody>{colorRows.map(row => <tr key={row.join()}>{row.map(cell => <td key={cell}>{cell.startsWith("--") ? <code>{cell}</code> : cell}</td>)}</tr>)}</tbody></table></div></section>
-    <section className="menuitem-token-panel"><h2>Token contract</h2><p>尺寸与圆角是固定组件契约；色彩由主题 token 提供，图标跟随条目文字的 <code>currentColor</code>。</p><div className="menuitem-table-wrap"><table className="menuitem-table"><thead><tr><th>Variant</th><th>Size</th><th>Radius</th><th>Inset</th><th>Text / icon</th></tr></thead><tbody>{contracts.map(row => <tr key={row[0]}>{row.map(cell => <td key={cell}>{cell.startsWith("--") ? <code>{cell}</code> : cell}</td>)}</tr>)}</tbody></table></div></section>
-  </div>;
+
+
+function StateMatrix({ label, states, render, wide = false }) {
+  const columns = `minmax(150px, 200px) repeat(${states.length}, minmax(${wide ? 650 : 324}px, 1fr))`;
+  return <div className="btn-matrix"><section className="btn-matrix-group">
+    <div className="btn-matrix-grouphead"><span className="btn-matrix-groupname">{label}</span><span className="btn-matrix-groupspec">静态标本 · 不响应鼠标与键盘</span></div>
+    <div className="btn-matrix-row btn-matrix-row-head" style={{gridTemplateColumns:columns}}><div className="btn-matrix-label"/>{states.map(state=><div className="btn-matrix-cell" key={state.value}><span className="btn-matrix-state">{state.label}</span></div>)}</div>
+    <div className="btn-matrix-row" style={{gridTemplateColumns:columns}}><div className="btn-matrix-label"><span className="btn-matrix-variant">{label}</span></div>{states.map(state=><div className="btn-matrix-cell" key={state.value} inert="">{render(state)}</div>)}</div>
+  </section></div>;
 }
+
+function SpecColor({value, detail}) {
+ if (!value) return <span className="btn-color-same">同 Default</span>;
+ const special=value==='transparent'||value==='none';
+ return <><span className="btn-color-token"><i aria-hidden="true" className={'btn-color-swatch'+(special?' btn-color-swatch--'+value:'')} style={special?undefined:{backgroundColor:value.startsWith('--')?`var(${value})`:value}}/><code>{value==='none'?'无描边':value}</code></span>{detail&&<span className="btn-table-src">{detail}</span>}</>;
+}
+function ContractTable({title,description,headers,rows}) {
+ return <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">{title}</h2></div><p className="demo-section-desc">{description}</p><div className="btn-table-wrap"><table className="btn-table"><thead><tr>{headers.map(h=><th key={h}>{h}</th>)}</tr></thead><tbody>{rows.map((row,i)=><tr key={i}>{row.map((v,j)=>j===0?<th key={j} scope="row">{v}</th>:<td key={j}>{v}</td>)}</tr>)}</tbody></table></div></section>;
+}
+function ColorSpec({groups}) {
+ return <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">Color spec</h2></div><p className="demo-section-desc">Variant → State → Background / Outline / Text。未变化项沿用 Default；SVG 原色不随 token 重着色。</p><div className="btn-table-wrap"><table className="btn-table btn-table--color"><thead><tr>{['Variant','State','Background','Outline','Text / Icon'].map(h=><th key={h}>{h}</th>)}</tr></thead><tbody>{groups.map(group=>group.rows.map((row,i)=><tr key={group.name+row[0]} className={i===0?'btn-color-group-start':undefined}>{i===0&&<th className="btn-color-variant" rowSpan={group.rows.length} scope="rowgroup">{group.name}</th>}<td className="btn-color-state">{row[0]}{row[4]&&<small>{row[4]}</small>}</td>{[1,2,3].map(j=><td key={j}><SpecColor value={row[j]} detail={row[j]==='--on-surface'||row[j]==='--color-icon-primary'?'浅色黑 90% / 深色白 90%':row[j]==='--container-05'?'浅色黑 5% / 深色白 5%':row[j]==='--color-interactive-hover'?'浅色黑 5% / 深色白 10%':undefined}/></td>)}</tr>))}</tbody></table></div></section>;
+}
+function TokenPanel() { return <><ColorSpec groups={[{"name": "Nav", "rows": [["Default", "transparent", "none", "--on-surface", ""], ["Hover", "--color-interactive-hover", null, null, ""], ["Selected", "--color-interactive-hover", null, null, ""]]}, {"name": "History", "rows": [["Default", "transparent", "none", "--on-surface", ""], ["Hover", "--color-interactive-hover", null, null, ""], ["Generating", "--color-interactive-hover", null, null, "状态 SVG 使用资源原色"], ["Completed", "--color-interactive-hover", null, null, "状态 SVG 使用资源原色"], ["Fault", "--color-interactive-hover", null, null, "状态 SVG 使用资源原色"], ["Pending auth", "--color-interactive-hover", null, null, "状态 SVG 使用资源原色"]]}, {"name": "Dropdown · sm", "rows": [["Default", "transparent", "none", "--on-surface", ""], ["Hover", "--color-interactive-hover", null, null, ""], ["Disabled", null, null, null, "opacity: 0.5"]]}, {"name": "Dropdown · sm · Danger", "rows": [["Default", "transparent", "none", "#E02128", ""], ["Hover", "#FEE7E8", null, null, ""], ["Disabled", null, null, null, "opacity: 0.5"]]}, {"name": "Dropdown · md", "rows": [["Default", "--surface-container-lowest", "none", "--on-surface", ""], ["Hover", "--color-interactive-hover", null, null, ""], ["Selected", "--surface-container-lowest", null, null, "右侧 14px 勾选 SVG；悬停仍应用 Hover"], ["Disabled", null, null, null, "opacity: 0.5"]]}, {"name": "Folder / File", "rows": [["Default", "transparent", "none", "--on-surface", ""], ["Hover", "--color-interactive-hover", null, null, ""], ["Rename", "--color-interactive-hover", "--primary", null, "输入框 --surface-container-lowest；光标 --primary"], ["Renaming", "--color-interactive-hover", "--primary", null, "输入框 --surface-container-lowest；光标 --primary"], ["Disabled", null, null, "--text-disabled", "禁用文字色；不改变整体透明度"]]}]}/><ContractTable title="Token contract" headers={["Variant","Size","Content / spacing","Radius"]} rows={[["nav / history", "300 × 40px", "左右 12px；行距 12px", "--radius-container · 8px"], ["dropdown sm", "152 × 32px", "上下 4px / 左右 12px；图标资源 14px", "--radius-md · 6px"], ["dropdown md", "232 × 36px", "图标 17px；勾选 14px；间距 8px", "--radius-md · 6px"], ["folder / file", "602 × 40px", "一级文件图标左距 12px；二级 36px", "--radius-container · 8px"], ["rename input", "540 × 36px；一级文件宽 564px", "1px --primary 描边；内边距 8px", "--radius-action · 4px"]]}/><ContractTable title="Asset contract" headers={["Asset","Scope / path","Contract"]} rows={[["item.icon / iconSrc / rawIcon", "nav / dropdown", "iconSrc 优先；默认 mask 跟随文字色，rawIcon 保留资源原色"], ["expandIconSrc / collapseIconSrc / folderIconSrc", "folder", "缺省使用共享 Lucide 图标"], ["hoverCommentSrc / hoverMoreSrc", "folder / file，hover", "传入共享资源；它们是展示图标，无点击回调"], ["caretSrc", "folder / file，renaming", "可替换光标，缺省为品牌蓝竖线"], ["状态 / 勾选", "assets/uploads/icon/menuitem/", "History 状态图标及 dropdown md 勾选为固定资源"]]}/><ContractTable title="API contract" headers={["Props","Contract"]} rows={[["items / variant", "6 种形态；item.state 取值随形态变化，无统一五态。"], ["selectedId / defaultSelectedId", "nav 和 dropdown md 可展示选中；只有 nav 点击会自动更新内部选中值。"], ["onSelect", "仅 nav / history / dropdown；禁用只适用于 dropdown 的 item.disabled。"], ["expanded / defaultExpanded / onToggle", "仅 folder；item.expanded 优先，onToggle 返回更新后的 item。"], ["onRename", "文件 / 文件夹重命名草稿变化时返回 (item, newName)。"], ["plain", "仅 nav；当前默认容器已透明，无额外视觉差异。"], ["disabled", "文件项使用 state=\"disabled\"，文字禁用色；nav/history 不支持禁用。"]]}/></>; }
 
 function Demo() {
+  const [showNavIcon,setShowNavIcon] = useState(true);
+  const [customAssets,setCustomAssets] = useState(false);
+  const [assetOverrides,setAssetOverrides] = useState({});
   const [leftForm, setLeftForm] = useState("nav");
   const [leftState, setLeftState] = useState("default");
   const [leftLabel, setLeftLabel] = useState("新建对话");
@@ -11146,37 +11672,37 @@ function Demo() {
   const navIconOptions = NAV_ICONS.some(option => option.value === navIconSrc) ? NAV_ICONS : [...NAV_ICONS, { value: navIconSrc, label: "已上传 SVG" }];
   const dropdownIconOptions = MEDIUM_DROPDOWN_ICONS.some(option => option.value === dropdownIconSrc) ? MEDIUM_DROPDOWN_ICONS : [...MEDIUM_DROPDOWN_ICONS, { value: dropdownIconSrc, label: "已上传 SVG" }];
 
-  return <div className="menuitem-demo-page">
-    <header className="menuitem-demo-header"><h1>MenuItem 菜单条目</h1><p>Nav / History / Dropdown / File list · 6 种形态 · 导航 3 状态、历史对话 6 状态、文件列表 5 状态。</p></header>
+  return <div className="demo-page">
+    <header className="demo-header"><p className="demo-subtitle">MenuItem 菜单条目 · Nav / History / Dropdown / Folder / File level 1 / File level 2 · Sm / Md 仅用于 Dropdown · 按形态展示状态</p></header>
 
-    <section className="menuitem-demo-section">
-      <div className="menuitem-section-heading"><h2>左侧导航</h2><span>variant="nav" / "history"</span></div>
-      <p>通过 `variant` 选择导航条目或历史对话；历史对话归入左侧导航主题。</p>
-      <h3 className="menuitem-configurator-title">Configurator</h3>
-      <div className="menuitem-configurator">
-        <div className="menuitem-controls">
+    <section className="demo-section">
+      <div className="demo-section-header"><h2 className="demo-section-name">Configurator</h2><span className="demo-section-tag">左侧导航</span></div>
+      <p className="demo-section-desc">通过 <code>variant</code> 选择导航条目或历史对话；历史对话归入左侧导航主题。</p>
+      
+      <div className="button-configurator">
+        <div className="button-controls">
           <Select label="Variant · 小形态" value={leftForm} onChange={value => { setLeftForm(value); setLeftState("default"); }} options={LEFT_FORMS} />
           <Select label="State · 状态" value={safeLeftState} onChange={setLeftState} options={leftStates} />
-          {leftForm === "nav" ? <><Select label="Icon · 图标" value={navIconSrc} onChange={value => { setNavIconSrc(value); setLeftLabel(NAV_ICONS.find(option => option.value === value)?.label || leftLabel); }} options={navIconOptions} /><TextInput label="Label · 文本" value={leftLabel} onChange={setLeftLabel} /><UploadIcon label="iconSrc · 上传 SVG" onLoaded={setNavIconSrc} /></> : <TextInput label="Label · 文本" value={leftLabel} onChange={setLeftLabel} />}
+          {leftForm === "nav" ? <><div className="button-control"><span>Leading icon</span><div className="button-toggle-line"><span>{showNavIcon?"开启":"关闭"}</span><label className="button-switch"><input aria-label="导航图标" type="checkbox" checked={showNavIcon} onChange={e=>setShowNavIcon(e.target.checked)}/><span className="button-switch-track"/></label></div></div>{showNavIcon&&<Select label="Icon · 图标" value={navIconSrc} onChange={value => { setNavIconSrc(value); setLeftLabel(NAV_ICONS.find(option => option.value === value)?.label || leftLabel); }} options={navIconOptions} />}<TextInput label="Label · 文本" value={leftLabel} onChange={setLeftLabel} />{showNavIcon&&<UploadIcon label="iconSrc · 上传 SVG" onLoaded={setNavIconSrc} />}</> : <TextInput label="Label · 文本" value={leftLabel} onChange={setLeftLabel} />}
         </div>
-        <Preview code={`variant="${leftForm}" · state="${safeLeftState}"`}><MenuItem variant={leftForm} items={[{ id: "left", label: leftLabel, iconSrc: leftForm === "nav" ? navIconSrc : undefined, state: safeLeftState === "default" ? undefined : safeLeftState }]} defaultSelectedId={safeLeftState === "selected" ? "left" : undefined} /></Preview>
+        <Preview code={`variant="${leftForm}" · state="${safeLeftState}"`}><MenuItem variant={leftForm} items={[{ id: "left", label: leftLabel, iconSrc: leftForm === "nav" && showNavIcon ? navIconSrc : undefined, state: safeLeftState === "default" ? undefined : safeLeftState }]} defaultSelectedId={safeLeftState === "selected" ? "left" : undefined} /></Preview>
       </div>
       <div className="menuitem-state-group">
-        <h3>导航条目状态</h3>
-        <div className="menuitem-state-matrix">{NAV_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="nav" items={[{ id: option.value, label: leftLabel, iconSrc: navIconSrc, state: option.value === "default" ? undefined : option.value }]} defaultSelectedId={option.value === "selected" ? option.value : undefined} /></div>)}</div>
+        <h3 className="inspection-matrix-title">State matrix · 导航条目状态</h3>
+        <StateMatrix label="Nav · 导航" states={NAV_STATES} wide={false} render={option=><MenuItem variant="nav" items={[{ id: option.value, label: leftLabel, iconSrc: navIconSrc, state: option.value === "default" ? undefined : option.value }]} defaultSelectedId={option.value === "selected" ? option.value : undefined} />}/>
       </div>
       <div className="menuitem-state-group">
-        <h3>历史对话状态</h3>
-        <div className="menuitem-state-matrix">{HISTORY_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="history" items={[{ id: option.value, label: leftLabel, state: option.value === "default" ? undefined : option.value }]} /></div>)}</div>
+        <h3 className="inspection-matrix-title">State matrix · 历史对话状态</h3>
+        <StateMatrix label="History · 历史对话" states={HISTORY_STATES} wide={false} render={option=><MenuItem variant="history" items={[{ id: option.value, label: leftLabel, state: option.value === "default" ? undefined : option.value }]} />}/>
       </div>
     </section>
 
-    <section className="menuitem-demo-section">
-      <div className="menuitem-section-heading"><h2>下拉列表</h2><span>variant="dropdown"</span></div>
-      <p>小尺寸分为一般和警告样式；中尺寸可选择“添加”或“分支”前置图标。操作面板用于配置，下方完整展示各形态状态。</p>
-      <h3 className="menuitem-configurator-title">Configurator</h3>
-      <div className="menuitem-configurator">
-        <div className="menuitem-controls">
+    <section className="demo-section">
+      <div className="demo-section-header"><h2 className="demo-section-name">Configurator</h2><span className="demo-section-tag">下拉列表</span></div>
+      <p className="demo-section-desc">小尺寸分为一般和警告样式；中尺寸可选择“添加”或“分支”前置图标。操作面板用于配置，下方完整展示各形态状态。</p>
+      
+      <div className="button-configurator">
+        <div className="button-controls">
           <Select label="Size · 尺寸" value={dropdownSize} onChange={value => { setDropdownSize(value); setDropdownState("default"); }} options={[{ value: "sm", label: "小尺寸 · 152 × 32" }, { value: "md", label: "中尺寸 · 232 × 36" }]} />
           {dropdownSize === "sm" && <Select label="Style · 样式" value={dropdownKind} onChange={setDropdownKind} options={[{ value: "general", label: "一般" }, { value: "warning", label: "警告 · 卸载" }]} />}
           <Select label="State · 状态" value={safeDropdownState} onChange={setDropdownState} options={dropdownStates} />
@@ -11185,36 +11711,38 @@ function Demo() {
         </div>
         <Preview align="left" code={`variant="dropdown" · size="${dropdownSize}" · state="${safeDropdownState}"`}><MenuItem variant="dropdown" size={dropdownSize} items={[{ id: "dropdown", label: isDanger ? "卸载" : dropdownLabel, iconSrc: dropdownSize === "md" ? dropdownIconSrc : isDanger ? "./assets/uploads/icon/menuitem/menuitem-dropdown-danger.svg" : "./assets/uploads/icon/menuitem/menuitem-dropdown-small-general.svg", rawIcon: dropdownSize === "sm", danger: isDanger, disabled: safeDropdownState === "disabled", state: ["default", "disabled"].includes(safeDropdownState) ? undefined : safeDropdownState }]} defaultSelectedId={safeDropdownState === "selected" ? "dropdown" : undefined} /></Preview>
       </div>
-      <div className="menuitem-state-group"><h3>小尺寸 · 一般</h3><div className="menuitem-state-matrix">{SMALL_DROPDOWN_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="dropdown" items={[{ id: option.value, label: "新建对话", iconSrc: "./assets/uploads/icon/menuitem/menuitem-dropdown-small-general.svg", rawIcon: true, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : undefined }]} /></div>)}</div></div>
-      <div className="menuitem-state-group"><h3>小尺寸 · 警告</h3><div className="menuitem-state-matrix">{SMALL_DROPDOWN_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="dropdown" items={[{ id: option.value, label: "卸载", iconSrc: "./assets/uploads/icon/menuitem/menuitem-dropdown-danger.svg", rawIcon: true, danger: true, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : undefined }]} /></div>)}</div></div>
-      <div className="menuitem-state-group"><h3>中尺寸</h3><div className="menuitem-state-matrix">{MEDIUM_DROPDOWN_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant="dropdown" size="md" items={[{ id: option.value, label: "添加到工作区", iconSrc: MEDIUM_DROPDOWN_ICONS[0].value, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : option.value === "selected" ? "selected" : undefined }]} defaultSelectedId={option.value === "selected" ? option.value : undefined} /></div>)}</div></div>
+      <div className="menuitem-state-group"><h3 className="inspection-matrix-title">State matrix · 小尺寸 · 一般</h3><StateMatrix label="Small · 一般" states={SMALL_DROPDOWN_STATES} wide={false} render={option=><MenuItem variant="dropdown" items={[{ id: option.value, label: "新建对话", iconSrc: "./assets/uploads/icon/menuitem/menuitem-dropdown-small-general.svg", rawIcon: true, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : undefined }]} />}/></div>
+      <div className="menuitem-state-group"><h3 className="inspection-matrix-title">State matrix · 小尺寸 · 警告</h3><StateMatrix label="Small · 警告" states={SMALL_DROPDOWN_STATES} wide={false} render={option=><MenuItem variant="dropdown" items={[{ id: option.value, label: "卸载", iconSrc: "./assets/uploads/icon/menuitem/menuitem-dropdown-danger.svg", rawIcon: true, danger: true, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : undefined }]} />}/></div>
+      <div className="menuitem-state-group"><h3 className="inspection-matrix-title">State matrix · 中尺寸</h3><StateMatrix label="Medium" states={MEDIUM_DROPDOWN_STATES} wide={false} render={option=><MenuItem variant="dropdown" size="md" items={[{ id: option.value, label: "添加到工作区", iconSrc: MEDIUM_DROPDOWN_ICONS[0].value, disabled: option.value === "disabled", state: option.value === "hover" ? "hover" : option.value === "selected" ? "selected" : undefined }]} defaultSelectedId={option.value === "selected" ? option.value : undefined} />}/></div>
     </section>
 
-    <section className="menuitem-demo-section">
-      <div className="menuitem-section-heading"><h2>右侧列表</h2><span>variant="folder" / "file-level-*"</span></div>
-      <p>通过 `variant` 选择文件夹、一级文件或二级文件；文件名和状态均可编辑。</p>
-      <h3 className="menuitem-configurator-title">Configurator</h3>
-      <div className="menuitem-configurator">
-        <div className="menuitem-controls">
+    <section className="demo-section">
+      <div className="demo-section-header"><h2 className="demo-section-name">Configurator</h2><span className="demo-section-tag">右侧列表</span></div>
+      <p className="demo-section-desc">通过 <code>variant</code> 选择文件夹、一级文件或二级文件；文件名和状态均可编辑。</p>
+      
+      <div className="button-configurator">
+        <div className="button-controls">
           <Select label="Variant · 小形态" value={rightVariant} onChange={value => { setRightVariant(value); setRightLabel(value === "folder" ? "新建文件夹" : "产品需求文档.docx"); }} options={RIGHT_VARIANTS} />
           <Select label="State · 状态" value={rightState} onChange={setRightState} options={FILE_STATES} />
-          <TextInput label="Label · 文本" value={rightLabel} onChange={setRightLabel} />
-          {rightVariant === "folder" && <label className="menuitem-control menuitem-toggle"><span>expanded · 展开 / 收起</span><input type="checkbox" checked={folderExpanded} onChange={event => setFolderExpanded(event.target.checked)} /><b>{folderExpanded ? "展开" : "收起"}</b></label>}
+          <div className="button-control"><span>Custom assets</span><div className="button-toggle-line"><span>{customAssets?"开启":"关闭"}</span><label className="button-switch"><input aria-label="自定义列表资源" type="checkbox" checked={customAssets} onChange={e=>setCustomAssets(e.target.checked)}/><span className="button-switch-track"/></label></div></div>{customAssets&&(rightVariant==="folder"?["expandIconSrc","collapseIconSrc","folderIconSrc",...(rightState==="hover"?["hoverCommentSrc","hoverMoreSrc"]:[]),...(rightState==="renaming"?["caretSrc"]:[])]:rightState==="hover"?["hoverCommentSrc","hoverMoreSrc"]:rightState==="renaming"?["caretSrc"]:[]).map(prop=><TextInput key={prop} label={prop} value={assetOverrides[prop]||""} onChange={value=>setAssetOverrides(prev=>({...prev,[prop]:value}))}/>)}<TextInput label="Label · 文本" value={rightLabel} onChange={setRightLabel} />
+          {rightVariant === "folder" && <div className="button-control"><span>Expanded · 展开 / 收起</span><div className="button-toggle-line"><span>{folderExpanded?"展开":"收起"}</span><label className="button-switch"><input aria-label="展开文件夹" type="checkbox" checked={folderExpanded} onChange={event=>setFolderExpanded(event.target.checked)}/><span className="button-switch-track"/></label></div></div>}
         </div>
-        <Preview code={`variant="${rightVariant}" · state="${rightState}"`}><MenuItem variant={rightVariant} items={[{ id: "right", label: rightLabel, state: rightState === "default" ? undefined : rightState, expanded: rightVariant === "folder" ? folderExpanded : undefined }]} onToggle={item => setFolderExpanded(item.expanded)} /></Preview>
+        <Preview code={`variant="${rightVariant}" · state="${rightState}"`}><MenuItem {...(customAssets?assetOverrides:{})} variant={rightVariant} items={[{ id: "right", label: rightLabel, state: rightState === "default" ? undefined : rightState, expanded: rightVariant === "folder" ? folderExpanded : undefined }]} onRename={(item,name)=>setRightLabel(name)} onToggle={item => setFolderExpanded(item.expanded)} /></Preview>
       </div>
-      {rightVariant === "folder" && <p className="menuitem-prop-hint">容器内的第一个图标是展开 / 收起开关；点击它会触发 <code>onToggle</code>，并更新条目的 <code>expanded</code> 值。</p>}
-      <div className="menuitem-state-group"><h3>全部状态</h3><div className="menuitem-state-matrix menuitem-state-matrix--single">{FILE_STATES.map(option => <div className="menuitem-state-sample" key={option.value}><span>{option.label}</span><MenuItem variant={rightVariant} items={[{ id: option.value, label: rightLabel, state: option.value === "default" ? undefined : option.value }]} defaultExpanded /></div>)}</div></div>
+      {rightVariant === "folder" && <p className="demo-section-desc">容器内的第一个图标是展开 / 收起开关；点击它会触发 <code>onToggle</code>，并更新条目的 <code>expanded</code> 值。</p>}
+      <div className="menuitem-state-group"><h3 className="inspection-matrix-title">State matrix · 全部状态</h3><StateMatrix label="文件列表" states={FILE_STATES} wide={true} render={option=><MenuItem variant={rightVariant} items={[{ id: option.value, label: rightLabel, state: option.value === "default" ? undefined : option.value }]} defaultExpanded />}/></div>
     </section>
     <TokenPanel />
   </div>;
 }
+
 
 window.PreviewDemos.menuitem=Demo;})();
 /* END_COMPONENT_PREVIEW:menuitem */
 
 /* COMPONENT_PREVIEW:iconstate */
 (function(){const {Icon}=window.ComponentIcons;const {useState,useEffect}=React;
+
 
 // 内置图标变量：icon prop 可选值 → 对应 SVG 资源。
 // 新增图标时，只需在此处追加一行映射即可。
@@ -11228,6 +11756,7 @@ const ICON_SRC = {
   // 对话框 icon 使用透明背景的 glyph，框颜色由 frameColor 控制。
   "dialog-glyph": "./assets/uploads/icon/iconstate/icon-dialog-glyph.svg",
   "dialog-pause": "./assets/uploads/icon/iconstate/icon-dialog-pause.svg",
+  "dialog-pause-disabled": "./assets/uploads/icon/iconstate/icon-dialog-pause-disabled.svg",
   "dialog-add": "./assets/uploads/icon/iconstate/icon-dialog-add.svg",
   "dialog-add-active": "./assets/uploads/icon/iconstate/icon-dialog-add-active.svg",
 };
@@ -11267,19 +11796,30 @@ function IconState({
   const visualState =
     state || (disabled ? "disabled" : active ? "active" : "default");
   const isDisabled = visualState === "disabled";
+  const isPause = isCircle && selectedIcon === "dialog-pause";
+  const isDisabledPause = isPause && isDisabled;
   const isActiveAdd = isCircle && selectedIcon === "dialog-add" && visualState === "active";
-  const iconSrc = isActiveAdd ? ICON_SRC["dialog-add-active"] : baseIconSrc;
+  const iconSrc = isDisabledPause
+    ? ICON_SRC["dialog-pause-disabled"]
+    : isActiveAdd
+      ? ICON_SRC["dialog-add-active"]
+      : baseIconSrc;
   const renderedIconSize = iconSize ?? (isCircle ? (isActiveAdd ? 23 : 32) : 20);
 
-  // gray 默认透明；black 为纯黑；也支持任意 CSS 色值（如 "#0A59F7"）。
-  const selectedFrameColor = frameColor || "gray";
-  const bgColor = isCircle ? FRAME_COLORS[selectedFrameColor] || selectedFrameColor : undefined;
+  // 暂停图标只有黑色与禁用两种外观，不提供 gray / custom 框色。
+  // 其他圆形图标：gray 默认透明；black 为纯黑；也支持任意 CSS 色值。
+  const selectedFrameColor = isPause ? "black" : frameColor || "gray";
+  const bgColor = isCircle
+    ? isPause
+      ? "transparent"
+      : FRAME_COLORS[selectedFrameColor] || selectedFrameColor
+    : undefined;
   const foreground = iconColor || (selectedFrameColor === "gray" ? "var(--color-icon-primary)" : "var(--on-primary)");
 
   return (
     <button
       type="button"
-      className={`is-btn is-btn--${variant} is-btn--${visualState}${state ? " is-btn--forced" : ""}${isCircle ? ` is-btn--frame-${selectedFrameColor === "gray" || selectedFrameColor === "black" ? selectedFrameColor : "custom"}` : ""}${isCircle && selectedFrameColor !== "gray" ? " is-btn--frame-dark" : ""}`}
+      className={`is-btn is-btn--${variant} is-btn--${visualState}${state ? " is-btn--forced" : ""}${isCircle ? ` is-btn--frame-${selectedFrameColor === "gray" || selectedFrameColor === "black" ? selectedFrameColor : "custom"}` : ""}${isCircle && selectedFrameColor !== "gray" ? " is-btn--frame-dark" : ""}${isPause ? " is-btn--pause" : ""}${isDisabledPause ? " is-btn--pause-disabled" : ""}`}
       style={{
         width: size,
         height: size,
@@ -11290,7 +11830,9 @@ function IconState({
       aria-label={ariaLabel}
       aria-disabled={isDisabled}
     >
-      {isCircle ? (
+      {isPause ? (
+        <Icon src={iconSrc} size={renderedIconSize} className="is-icon is-icon--asset" />
+      ) : isCircle ? (
         <span
           className="is-icon is-icon--mask"
           style={{
@@ -11322,6 +11864,7 @@ function IconState({
 }
 
 
+
 const STATES = [
   { value: "default", label: "默认" },
   { value: "hover", label: "悬浮" },
@@ -11336,7 +11879,7 @@ const DIALOG_ICONS = [
 ];
 
 function Select({ label, value, onChange, options }) {
-  return <label className="iconstate-control"><span>{label}</span><select value={value} onChange={event => onChange(event.target.value)}>{options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>;
+  return <label className="button-control"><span>{label}</span><span className="button-select-wrap"><select value={value} onChange={event => onChange(event.target.value)}>{options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}</select></span></label>;
 }
 
 function uploadSvg(event, onLoaded, onError) {
@@ -11354,34 +11897,48 @@ function uploadSvg(event, onLoaded, onError) {
 }
 
 function UploadControl({ label, uploaded, onLoaded, error, onError }) {
-  return <label className="iconstate-control iconstate-upload"><span>{label}</span><input type="file" accept=".svg,image/svg+xml" onChange={event => uploadSvg(event, onLoaded, onError)} /><small>{error || (uploaded ? `已载入 ${uploaded.name}` : "选择 SVG 后自动切换为自定义图标")}</small></label>;
+  return <label className="button-control iconstate-upload"><span>{label}</span><input type="file" accept=".svg,image/svg+xml" onChange={event => uploadSvg(event, onLoaded, onError)} /><small>{error || (uploaded ? `已载入 ${uploaded.name}` : "选择 SVG 后自动切换为自定义图标")}</small></label>;
 }
 
 function StateGallery({ variant, icon, src, iconSize, frameColor, iconColor }) {
-  return <div className="iconstate-state-grid">{STATES.map(item => <div className="iconstate-state-card" key={item.value} inert=""><IconState variant={variant} icon={icon} src={src} iconSize={iconSize} frameColor={frameColor} iconColor={iconColor} state={item.value} ariaLabel={`${variant} ${item.label}`} /><span>{item.label}</span></div>)}</div>;
+ return <StateMatrix label={variant==='square'?'Square · 栏目图标':'Circle · 对话框图标'} states={STATES} render={item=><IconState variant={variant} icon={icon} src={src} iconSize={iconSize} frameColor={frameColor} iconColor={iconColor} state={item.value} ariaLabel={`${variant} ${item.label}`}/>}/>;
 }
 
-function TokenPanel() {
-  const colorRows = [
-    ["栏目 icon", "Default", "transparent", "--color-icon-primary"], ["栏目 icon", "Hover / Active", "--container-05", "--color-icon-primary"], ["栏目 icon", "Disabled", "同 Default", "opacity: 0.5"],
-    ["对话框 · 灰色", "Default", "transparent", "--color-icon-primary"], ["对话框 · 灰色", "Hover / Active", "--container-05", "--color-icon-primary"],
-    ["对话框 · 黑色", "Default / Hover / Active", "--black", "--on-primary"], ["对话框", "Disabled", "同 Default", "opacity: 0.5"],
-  ];
-  const contracts = [["square", "32px", "20px / 16px", "--radius-md", "default / hover / active / disabled"], ["circle", "32px", "32px；加号激活 23px", "50%", "default / hover / active / disabled"]];
-  return <div className="iconstate-contract">
-    <section className="iconstate-token-panel"><h2>Color spec</h2><p>形态和状态决定背景与图标颜色；“同 Default”沿用所在形态的静止态。</p><div className="iconstate-table-wrap"><table className="iconstate-table"><thead><tr><th>Variant</th><th>State</th><th>Background</th><th>Icon</th></tr></thead><tbody>{colorRows.map(row => <tr key={row.join()}>{row.map((cell, i) => <td key={cell}>{cell.startsWith("--") ? <code>{cell}</code> : cell}</td>)}</tr>)}</tbody></table></div></section>
-    <section className="iconstate-token-panel"><h2>Token contract</h2><p>尺寸、圆角和状态由固定契约约束；颜色全部从主题 token 读取，自定义框色由 <code>frameColor</code> 传入。</p><div className="iconstate-table-wrap"><table className="iconstate-table"><thead><tr><th>Variant</th><th>Frame</th><th>Icon</th><th>Radius</th><th>State</th></tr></thead><tbody>{contracts.map(row => <tr key={row[0]}>{row.map(cell => <td key={cell}>{cell.startsWith("--") ? <code>{cell}</code> : cell}</td>)}</tr>)}</tbody></table></div></section>
-  </div>;
+
+
+function StateMatrix({ label, states, render, wide = false }) {
+  const columns = `minmax(150px, 200px) repeat(${states.length}, minmax(${wide ? 650 : 180}px, 1fr))`;
+  return <div className="btn-matrix"><section className="btn-matrix-group">
+    <div className="btn-matrix-grouphead"><span className="btn-matrix-groupname">{label}</span><span className="btn-matrix-groupspec">静态标本 · 不响应鼠标与键盘</span></div>
+    <div className="btn-matrix-row btn-matrix-row-head" style={{gridTemplateColumns:columns}}><div className="btn-matrix-label"/>{states.map(state=><div className="btn-matrix-cell" key={state.value}><span className="btn-matrix-state">{state.label}</span></div>)}</div>
+    <div className="btn-matrix-row" style={{gridTemplateColumns:columns}}><div className="btn-matrix-label"><span className="btn-matrix-variant">{label}</span></div>{states.map(state=><div className="btn-matrix-cell" key={state.value} inert="">{render(state)}</div>)}</div>
+  </section></div>;
 }
+
+function SpecColor({value, detail}) {
+ if (!value) return <span className="btn-color-same">同 Default</span>;
+ const special=value==='transparent'||value==='none';
+ return <><span className="btn-color-token"><i aria-hidden="true" className={'btn-color-swatch'+(special?' btn-color-swatch--'+value:'')} style={special?undefined:{backgroundColor:value.startsWith('--')?`var(${value})`:value}}/><code>{value==='none'?'无描边':value}</code></span>{detail&&<span className="btn-table-src">{detail}</span>}</>;
+}
+function ContractTable({title,description,headers,rows}) {
+ return <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">{title}</h2></div><p className="demo-section-desc">{description}</p><div className="btn-table-wrap"><table className="btn-table"><thead><tr>{headers.map(h=><th key={h}>{h}</th>)}</tr></thead><tbody>{rows.map((row,i)=><tr key={i}>{row.map((v,j)=>j===0?<th key={j} scope="row">{v}</th>:<td key={j}>{v}</td>)}</tr>)}</tbody></table></div></section>;
+}
+function ColorSpec({groups}) {
+ return <section className="demo-section"><div className="demo-section-header"><h2 className="demo-section-name">Color spec</h2></div><p className="demo-section-desc">Variant → State → Background / Outline / Text。未变化项沿用 Default；SVG 原色不随 token 重着色。</p><div className="btn-table-wrap"><table className="btn-table btn-table--color"><thead><tr>{['Variant','State','Background','Outline','Text / Icon'].map(h=><th key={h}>{h}</th>)}</tr></thead><tbody>{groups.map(group=>group.rows.map((row,i)=><tr key={group.name+row[0]} className={i===0?'btn-color-group-start':undefined}>{i===0&&<th className="btn-color-variant" rowSpan={group.rows.length} scope="rowgroup">{group.name}</th>}<td className="btn-color-state">{row[0]}{row[4]&&<small>{row[4]}</small>}</td>{[1,2,3].map(j=><td key={j}><SpecColor value={row[j]} detail={row[j]==='--on-surface'||row[j]==='--color-icon-primary'?'浅色黑 90% / 深色白 90%':row[j]==='--container-05'?'浅色黑 5% / 深色白 5%':row[j]==='--color-interactive-hover'?'浅色黑 5% / 深色白 10%':undefined}/></td>)}</tr>))}</tbody></table></div></section>;
+}
+function TokenPanel() { return <><ColorSpec groups={[{"name": "Square", "rows": [["Default", "transparent", "none", "--color-icon-primary", ""], ["Hover", "--container-05", null, null, ""], ["Active", "--container-05", null, null, ""], ["Focus", null, "--focus-ring", null, "1px 焦点轮廓，偏移 2px"], ["Disabled", null, null, null, "opacity: 0.5"]]}, {"name": "Circle · Gray", "rows": [["Default", "transparent", "none", "--color-icon-primary", ""], ["Hover", "--container-05", null, null, ""], ["Active", "--container-05", null, null, ""], ["Focus", null, "--focus-ring", null, "1px 焦点轮廓，偏移 2px"], ["Disabled", null, null, null, "opacity: 0.5"]]}, {"name": "Circle · Black", "rows": [["Default", "--black", "none", "--on-primary", ""], ["Hover", null, null, null, ""], ["Active", null, null, null, ""], ["Focus", null, "--focus-ring", null, "1px 焦点轮廓，偏移 2px"], ["Disabled", null, null, null, "opacity: 0.5"]]}, {"name": "Circle · Custom（品牌色示例）", "rows": [["Default", "var(--brand)", "none", "--on-primary", ""], ["Hover", "--on-primary-10", null, null, ""], ["Active", "--on-primary-10", null, null, ""], ["Focus", null, "--focus-ring", null, "1px 焦点轮廓，偏移 2px"], ["Disabled", null, null, null, "opacity: 0.5"]]}, {"name": "Circle · Pause", "rows": [["Default", "--black", "none", "--white", "SVG 原色"], ["Hover", null, null, null, ""], ["Active", null, null, null, ""], ["Disabled", "#E5E5EA", null, "transparent", "专属 SVG，opacity: 1"]]}]}/><ContractTable title="Token contract" headers={["Variant","Size","Content / spacing","Radius"]} rows={[["square", "size 默认 32px；可配置", "iconSize 默认 20px", "--radius-md · 6px"], ["circle", "size 默认 32px；可配置", "默认 32px；加号 active 默认 23px", "50%"], ["Focus", "--outline-width-focus · 1px", "--outline-offset-gap · 2px", "--focus-ring"]]}/><ContractTable title="Asset contract" headers={["Asset","Scope / path","Contract"]} rows={[["Square", "assets/uploads/icon/iconstate/", "内置搜索、菜单、分栏、全屏、侧栏；支持上传 SVG"], ["Circle", "同一共享资源目录", "发送 / 暂停 / 加号；暂停禁用和加号激活使用专属资源"]]}/><ContractTable title="API contract" headers={["Props","Contract"]} rows={[["state / disabled / active", "state 优先，其次 disabled、active；Auto 不传 state，跟随真实鼠标交互。"], ["size / iconSize", "数值 px；图标尺寸不传时使用各形态默认值。"], ["src / icon", "仅 square 接受 src，优先于 icon；circle 仅发送、暂停、加号。"], ["frameColor / iconColor", "仅 circle；暂停图标忽略这两项，使用原始资源。"], ["onClick / ariaLabel", "点击回调；ariaLabel 提供具体操作名称。"]]}/></>; }
 
 function Demo() {
+  const [frameSize,setFrameSize] = useState(32);
+  const [circleIconSize,setCircleIconSize] = useState(0);
+  const [foreground,setForeground] = useState("");
   const [columnIcon, setColumnIcon] = useState("search");
   const [columnSize, setColumnSize] = useState(20);
-  const [columnState, setColumnState] = useState("default");
+  const [columnState, setColumnState] = useState("auto");
   const [columnUpload, setColumnUpload] = useState(null);
   const [columnError, setColumnError] = useState("");
   const [dialogIcon, setDialogIcon] = useState("dialog-glyph");
-  const [dialogState, setDialogState] = useState("default");
+  const [dialogState, setDialogState] = useState("auto");
   const [frameMode, setFrameMode] = useState("gray");
   const [customColor, setCustomColor] = useState("#0A59F7");
   const frameColor = frameMode === "custom" ? customColor : frameMode;
@@ -11389,48 +11946,55 @@ function Demo() {
   const columnOptions = [...COLUMN_ICONS.map(icon => ({ value: icon, label: icon })), ...(columnUpload ? [{ value: "custom", label: `上传 · ${columnUpload.name}` }] : [])];
 
   return <div className="demo-page">
-    <header className="demo-header"><h1 className="demo-title">IconState 图标状态</h1><p className="demo-subtitle">Square 栏目 icon / Circle 对话框 icon · 32px 外框 · default、hover、active、disabled 四种状态。</p></header>
+    <header className="demo-header"><p className="demo-subtitle">IconState 图标状态 · Square / Circle · 可配置尺寸与资源 · 4 种显式状态及键盘 Focus</p></header>
 
     <section className="demo-section">
-      <div className="demo-section-header"><h2 className="demo-section-name">栏目 icon</h2><span className="demo-section-tag">Square · 32px</span></div>
+      <div className="demo-section-header"><h2 className="demo-section-name">Configurator</h2><span className="demo-section-tag">Square · 32px</span></div>
       <p className="demo-section-desc">选择状态、20px / 16px 图标尺寸和内置图标，也可以上传自己的 SVG。</p>
-      <div className="iconstate-configurator">
-        <div className="iconstate-controls">
-          <Select label="State · 状态" value={columnState} onChange={setColumnState} options={STATES} />
+      <div className="button-configurator">
+        <div className="button-controls"><label className="button-control"><span>Size · 外框 px</span><input type="number" min="16" max="96" value={frameSize} onChange={e=>setFrameSize(Math.max(16,Math.min(96,Number(e.target.value)||32)))}/></label>
+          <Select label="State · 状态" value={columnState} onChange={setColumnState} options={[{value:"auto",label:"Auto · 真实交互"},...STATES]} />
           <Select label="Icon size · 图标大小" value={String(columnSize)} onChange={value => setColumnSize(Number(value))} options={[{ value: "20", label: "20px" }, { value: "16", label: "16px" }]} />
           <Select label="Icon · 图标" value={columnIcon} onChange={setColumnIcon} options={columnOptions} />
           <UploadControl label="Upload SVG · 上传图标" uploaded={columnUpload} error={columnError} onError={setColumnError} onLoaded={file => { setColumnUpload(file); setColumnIcon("custom"); setColumnError(""); }} />
         </div>
-        <div className="iconstate-live"><span className="iconstate-live-label">LIVE PREVIEW</span><IconState variant="square" icon={columnIcon} src={columnSrc} iconSize={columnSize} state={columnState} ariaLabel={`栏目 ${columnIcon} ${columnState}`} /><code>variant="square" · iconSize={'{'}{columnSize}{'}'} · state="{columnState}"</code></div>
+        <div className="button-configurator-preview inspection-live"><span className="btn-lab-slotlabel">LIVE PREVIEW</span><IconState variant="square" icon={columnIcon} src={columnSrc} iconSize={columnSize} size={frameSize} state={columnState==="auto"?undefined:columnState} ariaLabel={`栏目 ${columnIcon} ${columnState}`} /></div>
       </div>
-      <h3 className="iconstate-gallery-title">State matrix · {columnIcon === "custom" ? columnUpload?.name : columnIcon}</h3>
+      <h3 className="inspection-matrix-title">State matrix · {columnIcon === "custom" ? columnUpload?.name : columnIcon}</h3>
       <StateGallery variant="square" icon={columnIcon} src={columnSrc} iconSize={columnSize} />
     </section>
 
     <section className="demo-section">
-      <div className="demo-section-header"><h2 className="demo-section-name">对话框 icon</h2><span className="demo-section-tag">Circle · 32px</span></div>
+      <div className="demo-section-header"><h2 className="demo-section-name">Configurator</h2><span className="demo-section-tag">Circle · 32px</span></div>
       <p className="demo-section-desc">圆形框颜色、状态和图标可选择。灰色默认透明，悬浮和激活使用 5% 黑色背景。</p>
-      <div className="iconstate-configurator">
-        <div className="iconstate-controls">
-          <Select label="Frame color · 框颜色" value={frameMode} onChange={setFrameMode} options={[{ value: "gray", label: "灰色" }, { value: "black", label: "黑色" }, { value: "custom", label: "自定义颜色" }]} />
-          {frameMode === "custom" ? <label className="iconstate-control"><span>Custom color · 自定义色值</span><input type="color" value={customColor} onChange={event => setCustomColor(event.target.value)} /></label> : null}
-          <Select label="State · 状态" value={dialogState} onChange={setDialogState} options={STATES} />
-          <Select label="Icon · 图标" value={dialogIcon} onChange={setDialogIcon} options={DIALOG_ICONS} />
+      <div className="button-configurator">
+        <div className="button-controls"><label className="button-control"><span>Size · 外框 px</span><input type="number" min="16" max="96" value={frameSize} onChange={e=>setFrameSize(Math.max(16,Math.min(96,Number(e.target.value)||32)))}/></label>
+          {dialogIcon!=="dialog-pause"&&<Select label="Frame color · 框颜色" value={frameMode} onChange={setFrameMode} options={[{ value: "gray", label: "灰色" }, { value: "black", label: "黑色" }, { value: "custom", label: "自定义颜色" }]} />}
+          {dialogIcon!=="dialog-pause" && frameMode === "custom" ? <label className="button-control"><span>Custom color · 自定义色值</span><input type="color" value={customColor} onChange={event => setCustomColor(event.target.value)} /></label> : null}
+          <Select label="State · 状态" value={dialogState} onChange={setDialogState} options={[{value:"auto",label:"Auto · 真实交互"},...STATES]} />
+          <label className="button-control"><span>Icon size · 0 为自动</span><input type="number" min="0" max="96" value={circleIconSize} onChange={e=>setCircleIconSize(Math.max(0,Math.min(96,Number(e.target.value))))}/></label>{dialogIcon!=="dialog-pause"&&<label className="button-control"><span>Icon color · 空值使用默认</span><input value={foreground} onChange={e=>setForeground(e.target.value)} placeholder="var(--color-icon-primary)"/></label>}<Select label="Icon · 图标" value={dialogIcon} onChange={setDialogIcon} options={DIALOG_ICONS} />
         </div>
-        <div className="iconstate-live"><span className="iconstate-live-label">LIVE PREVIEW</span><IconState variant="circle" icon={dialogIcon} frameColor={frameColor} state={dialogState} ariaLabel={`对话框 ${DIALOG_ICONS.find(item => item.value === dialogIcon)?.label} ${dialogState}`} /><code>variant="circle" · icon="{dialogIcon}" · frameColor="{frameColor}" · state="{dialogState}"</code></div>
+        <div className="button-configurator-preview inspection-live"><span className="btn-lab-slotlabel">LIVE PREVIEW</span><IconState variant="circle" icon={dialogIcon} frameColor={frameColor} size={frameSize} iconSize={circleIconSize||undefined} iconColor={foreground||undefined} state={dialogState==="auto"?undefined:dialogState} ariaLabel={`对话框 ${DIALOG_ICONS.find(item => item.value === dialogIcon)?.label} ${dialogState}`} /></div>
       </div>
-      <h3 className="iconstate-gallery-title">State matrix · {DIALOG_ICONS.find(item => item.value === dialogIcon)?.label}</h3>
+      <h3 className="inspection-matrix-title">State matrix · {DIALOG_ICONS.find(item => item.value === dialogIcon)?.label}</h3>
       <StateGallery variant="circle" icon={dialogIcon} frameColor={frameColor} />
     </section>
     <TokenPanel />
   </div>;
 }
 
+
 window.PreviewDemos.iconstate=Demo;})();
 /* END_COMPONENT_PREVIEW:iconstate */
 
 // Add future components to this registry; navigation and panels are generated together.
-const COMPONENT_PREVIEWS = [{id:'button',label:'Button'}, {id:'dropdown-button',label:'Dropdown Button'}, {id:'segmented-button',label:'SegmentedButton'}, {id:'input-box',label:'Input Box'}, {id:'searchbar',label:'SearchBar'}, {id:'action-chip',label:'ActionChip'}, {id:'tag',label:'Tag'}, {id:'text-tabs',label:'TextTabs'}, {id:'toggle',label:'Toggle'}, {id:'checkbox',label:'Checkbox'}, {id:'iconstate',label:'IconState'}, {id:'menuitem',label:'MenuItem'}];
+/* BEGIN_COMPACT_CONTROL_HELPERS */
+// Shared configurator boolean; use the existing Button control styling.
+function CompactBoolean({label,value,onChange}) {
+  return <div className="button-control"><span>{label}</span><div className="button-toggle-line"><span>{value?'开启':'关闭'}</span><label className="button-switch"><input type="checkbox" checked={value} onChange={event=>onChange(event.target.checked)} aria-label={label}/><span className="button-switch-track"/></label></div></div>;
+}
+/* END_COMPACT_CONTROL_HELPERS */
+const COMPONENT_PREVIEWS = [{id:'button',label:'Button'}, {id:'dropdown-button',label:'DropdownButton'}, {id:'segmented-button',label:'SegmentedButton'}, {id:'input-box',label:'Input Box'}, {id:'searchbar',label:'SearchBar'}, {id:'action-chip',label:'ActionChip'}, {id:'tag',label:'Tag'}, {id:'text-tabs',label:'TextTabs'}, {id:'toggle',label:'Toggle'}, {id:'checkbox',label:'Checkbox'}, {id:'iconstate',label:'IconState'}, {id:'menuitem',label:'MenuItem'}];
 function ComponentGallery() {
  const tabs = COMPONENT_PREVIEWS;
  const ThemeIcon = window.ComponentIcons.Icon;

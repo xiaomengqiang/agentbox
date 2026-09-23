@@ -40,7 +40,7 @@ export default function Demo(){
  const [notice,setNotice]=useState('');
  function changeSize(next){setSize(next);setClearable(next==='large');}
  return <div className="demo-page">
- <header className="demo-header"><p className="demo-subtitle">SearchBar · Large / Small · 输入、清空与搜索 · 5 状态</p></header>
+ <header className="demo-header"><p className="demo-subtitle">SearchBar 搜索框 · Large / Small · Filled / Unfilled · 可配置清空按钮及位置 · 输入状态预览</p></header>
  <Section title="Configurator" description="实时输入体验交互；Small 默认无清空按钮，可显式开启。焦点描边仅在 Large 使用 Tab 聚焦时出现。">
  <div className="button-configurator"><div className="button-controls">
  <Select label="Size" value={size} onChange={changeSize} options={SIZES}/>
