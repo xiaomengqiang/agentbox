@@ -1,0 +1,353 @@
+.mi-menu {
+  /* 警告卸载为设计指定色值，集中为组件 token，供文本、图标和背景一致引用。 */
+  --mi-danger-font: #E02128;
+  --mi-danger-icon: #E02128;
+  --mi-danger-container: #FEE7E8;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- 导航内容列表（nav） ---------- */
+.mi-menu-nav {
+  width: 300px;
+  padding: 0;
+  gap: 12px;
+  border-radius: var(--radius-overlay);
+}
+
+/* 无背景形态：用于单条目状态演示 */
+.mi-menu-nav.mi-menu-plain {
+  background: transparent;
+}
+
+/* ---------- 历史对话列表（history） ---------- */
+.mi-menu-history {
+  width: 300px;
+  gap: 12px;
+}
+
+/* ---------- 下拉列表（dropdown） ---------- */
+.mi-menu-dropdown {
+  gap: 0; /* 单行条目紧贴无间距 */
+}
+
+/* 中尺寸下拉列表容器：单行条目 */
+.mi-menu-dropdown-md {
+  gap: 0;
+}
+
+/* ================= 条目基础 ================= */
+.mi-item {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+/* ---- 导航内容列表条目 ---- */
+.mi-item-nav {
+  gap: 8px; /* 图标与文本间距 8px */
+  width: 100%; /* 300px */
+  height: 40px;
+  padding: 0 12px; /* 图标距左 12px */
+  border-radius: var(--radius-container);
+  color: var(--on-surface);
+  font: var(--font-body-md); /* 14px */
+  font-weight: var(--font-weight-regular); /* 400 */
+  line-height: 19px;
+}
+
+/* ---- 历史对话列表条目 ---- */
+.mi-item-history {
+  justify-content: space-between;
+  width: 100%; /* 300px */
+  height: 40px;
+  padding: 0 12px; /* 文本距左 12px，图标距右 12px */
+  border-radius: var(--radius-container);
+  color: var(--on-surface);
+  font: var(--font-body-md); /* 14px */
+  font-weight: var(--font-weight-regular); /* 400 */
+  line-height: 19px;
+}
+
+/* ---- 下拉列表条目 ---- */
+.mi-item-dropdown {
+  gap: var(--spacing-inline);
+  width: 152px;
+  height: 32px;
+  padding: 4px 12px; /* 文本与图标距容器上下各 4px */
+  border-radius: var(--radius-md); /* 6px */
+  color: var(--on-surface);
+  font: var(--font-body-md); /* 14px；文本行高在下方固定为 16px */
+  font-weight: var(--font-weight-regular); /* 400 */
+}
+
+/* ---- 下拉列表中尺寸条目：232×36px ---- */
+.mi-item-dropdown-md {
+  gap: var(--spacing-inline); /* 文本与 icon 间距 8px */
+  width: 232px;
+  height: 36px;
+  padding: 4px 12px; /* icon 距容器左 12px，文本与图标距上下各 4px */
+  border-radius: var(--radius-md); /* 6px */
+  color: var(--on-surface);
+  font: var(--font-body-md); /* 14px；文本行高在下方固定为 16px */
+  font-weight: var(--font-weight-regular); /* 400 */
+  background: var(--surface-container-lowest);
+}
+
+/* ================= 状态 ================= */
+/* 导航内容列表 / 历史对话列表：悬浮、选中、非默认态均 5% 透明黑背景 */
+.mi-item-nav:hover,
+.mi-item-nav.mi-item-hover,
+.mi-item-nav.mi-item-selected,
+.mi-item-history:hover,
+.mi-item-history.mi-item-active {
+  background-color: var(--color-interactive-hover);
+}
+
+/* 下拉列表普通项悬浮：5% 透明黑背景 */
+.mi-item-dropdown:not(:disabled):hover,
+.mi-item-dropdown.mi-item-hover:not(:disabled) {
+  background-color: var(--color-interactive-hover);
+}
+
+/* 下拉列表危险项：错误语义色图标与文本 */
+.mi-item-dropdown.mi-item-danger {
+  color: var(--mi-danger-font);
+}
+
+/* 下拉列表危险项悬浮：设计指定粉色背景 token。 */
+.mi-item-dropdown.mi-item-danger:not(:disabled):hover,
+.mi-item-dropdown.mi-item-danger.mi-item-hover:not(:disabled) {
+  background-color: var(--mi-danger-container);
+}
+
+/* 下拉列表禁用态：整体 50% 透明度，不可点击 */
+.mi-item-dropdown:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ================= 子元素 ================= */
+.mi-icon {
+  flex-shrink: 0;
+  display: block;
+}
+
+.mi-icon--mask {
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+/* 中尺寸下拉列表选中态右侧「正确」图标：右对齐 */
+.mi-check {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.mi-label {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 下拉列表：文本 16px 行高，与 14px / 17px 图标在同一 flex 中轴居中。 */
+.mi-item-dropdown .mi-label,
+.mi-item-dropdown-md .mi-label {
+  line-height: 16px;
+  transform: translateY(1px); /* 字体上行区较大，做 1px 光学校正以落在视觉中轴 */
+}
+
+.mi-item-history .mi-label {
+  text-align: left;
+}
+
+/* 左侧导航文字的字形视觉重心略高，向下校正 1px。 */
+.mi-item-nav .mi-label {
+  transform: translateY(1px);
+}
+
+/* 历史对话列表右侧状态图标：右对齐 12px（由按钮 padding 提供），上下 8px */
+.mi-status {
+  flex-shrink: 0;
+  margin: 8px 0;
+}
+
+/* ================= 文件夹 / 文件列表（folder / file-level-1 / file-level-2） ================= */
+.fl-list {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* 条目：602×40px */
+.fl-row {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 展开/收起图标 → 文件夹图标 → 文本，三部件间距 8px */
+  box-sizing: border-box;
+  width: 602px;
+  height: 40px;
+  padding: 0 12px; /* 内容距容器左右 12px */
+  border-radius: var(--radius-container);
+  color: var(--on-surface);
+  font: var(--font-body-md); /* 14px */
+  font-weight: var(--font-weight-regular); /* 400 */
+  line-height: 19px;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+/* 悬浮态：5% 透明黑背景 */
+.fl-row:hover,
+.fl-row-hover {
+  background-color: var(--color-interactive-hover);
+}
+
+/* 重命名态 / 重命名输入中：5% 透明黑背景（与悬浮一致） */
+.fl-row-rename {
+  background-color: var(--color-interactive-hover);
+}
+
+/* 禁用态：文本与图标整体使用禁用色，不可交互 */
+.fl-row-disabled {
+  color: var(--text-disabled);
+}
+
+/* 展开/收起按钮 */
+.fl-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit; /* 跟随条目文字色（Lucide 图标 stroke 使用 currentColor） */
+}
+
+.fl-toggle:disabled {
+  cursor: not-allowed;
+}
+
+.fl-chevron,
+.fl-folder,
+.fl-file {
+  flex-shrink: 0;
+  color: inherit;
+}
+
+/* 文件列表：一级/二级 左侧图标缩进 */
+/* 一级文件列表：最左侧文件图标距外框左 12px（无展开/收起，直接由 padding 0 12px 对齐） */
+.fl-row-file-1 .fl-file {
+  margin-left: 0;
+}
+
+/* 二级文件列表：最左侧文件图标距外框左 36px（12px 基础缩进 + 24px = 36px） */
+.fl-row-file-2 .fl-file {
+  margin-left: 24px;
+}
+
+/* 重命名输入框右边缘统一对齐：folder/file-level-2 图标位 60px → 宽 540；
+   file-level-1 图标位 36px → 宽 564（保证右侧同样对齐到 600px） */
+.fl-row-file-1 .fl-input {
+  width: 564px;
+}
+
+/* 文本 */
+.fl-label {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 悬浮态操作区（右侧评论 + 更多） */
+.fl-hover-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px; /* 两个操作图标间距 12px */
+  flex-shrink: 0;
+  margin-left: auto; /* 右对齐 */
+}
+
+.fl-hover-icon {
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* 重命名输入框：540×36px，brand 蓝 1px 描边 */
+.fl-input {
+  position: relative;
+  flex-shrink: 0; /* 固定宽度，不收缩 */
+  box-sizing: border-box;
+  width: 540px;
+  height: 36px;
+  border: 1px solid var(--primary); /* brand 蓝 #0A59F7 */
+  border-radius: var(--radius-action);
+  background: var(--surface-container-lowest);
+}
+
+/* 真实编辑框：透明文本/光标，覆盖整个输入框，负责交互与输入 */
+.fl-input-field {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 0 8px;
+  border: none;
+  background: transparent;
+  color: transparent;
+  caret-color: transparent; /* 隐藏原生光标，改用自定义蓝竖线 */
+  font: var(--font-body-md); /* 14px */
+  font-weight: var(--font-weight-regular);
+  line-height: 19px;
+  outline: none;
+}
+
+/* 可见文本 + 光标层（不接收事件） */
+.fl-input-display {
+  position: absolute;
+  left: 8px;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  pointer-events: none;
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-regular);
+  line-height: 19px;
+  color: var(--on-surface);
+}
+
+/* 蓝色竖线光标：2×24px，文本后 2px（重命名输入中显示） */
+.fl-caret {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 2px;
+  height: 24px;
+  margin-left: 2px;
+  vertical-align: middle;
+  background: var(--primary);
+}

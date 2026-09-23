@@ -20,7 +20,7 @@ const DIALOG_ICON_NAMES = new Set(["dialog-glyph", "dialog-pause", "dialog-add"]
 
 // 圆形框预设颜色
 const FRAME_COLORS = {
-  black: "#000000",
+  black: "var(--black)",
   gray: "transparent",
 };
 
@@ -42,6 +42,7 @@ export default function IconState({
 }) {
   // 对话框只支持发送、暂停和加号；栏目 icon 支持内置图标和自定义 SVG。
   const isCircle = variant === "circle";
+  const isCustomSource = !isCircle && Boolean(src);
   const selectedIcon = isCircle
     ? (DIALOG_ICON_NAMES.has(icon) ? icon : "dialog-glyph")
     : icon || "search";
@@ -58,7 +59,7 @@ export default function IconState({
   // gray 默认透明；black 为纯黑；也支持任意 CSS 色值（如 "#0A59F7"）。
   const selectedFrameColor = frameColor || "gray";
   const bgColor = isCircle ? FRAME_COLORS[selectedFrameColor] || selectedFrameColor : undefined;
-  const foreground = iconColor || (selectedFrameColor === "gray" ? "var(--color-icon-primary)" : "#FFFFFF");
+  const foreground = iconColor || (selectedFrameColor === "gray" ? "var(--color-icon-primary)" : "var(--on-primary)");
 
   return (
     <button
@@ -86,8 +87,20 @@ export default function IconState({
           }}
           aria-hidden="true"
         />
-      ) : (
+      ) : isCustomSource ? (
         <Icon src={iconSrc} size={renderedIconSize} className="is-icon" />
+      ) : (
+        <span
+          className="is-icon is-icon--mask"
+          style={{
+            width: renderedIconSize,
+            height: renderedIconSize,
+            color: "var(--color-icon-primary)",
+            WebkitMaskImage: `url("${iconSrc}")`,
+            maskImage: `url("${iconSrc}")`,
+          }}
+          aria-hidden="true"
+        />
       )}
     </button>
   );

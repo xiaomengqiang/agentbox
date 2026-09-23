@@ -41,6 +41,19 @@ function StateGallery({ variant, icon, src, iconSize, frameColor, iconColor }) {
   return <div className="iconstate-state-grid">{STATES.map(item => <div className="iconstate-state-card" key={item.value} inert=""><IconState variant={variant} icon={icon} src={src} iconSize={iconSize} frameColor={frameColor} iconColor={iconColor} state={item.value} ariaLabel={`${variant} ${item.label}`} /><span>{item.label}</span></div>)}</div>;
 }
 
+function TokenPanel() {
+  const colorRows = [
+    ["栏目 icon", "Default", "transparent", "--color-icon-primary"], ["栏目 icon", "Hover / Active", "--container-05", "--color-icon-primary"], ["栏目 icon", "Disabled", "同 Default", "opacity: 0.5"],
+    ["对话框 · 灰色", "Default", "transparent", "--color-icon-primary"], ["对话框 · 灰色", "Hover / Active", "--container-05", "--color-icon-primary"],
+    ["对话框 · 黑色", "Default / Hover / Active", "--black", "--on-primary"], ["对话框", "Disabled", "同 Default", "opacity: 0.5"],
+  ];
+  const contracts = [["square", "32px", "20px / 16px", "--radius-md", "default / hover / active / disabled"], ["circle", "32px", "32px；加号激活 23px", "50%", "default / hover / active / disabled"]];
+  return <div className="iconstate-contract">
+    <section className="iconstate-token-panel"><h2>Color spec</h2><p>形态和状态决定背景与图标颜色；“同 Default”沿用所在形态的静止态。</p><div className="iconstate-table-wrap"><table className="iconstate-table"><thead><tr><th>Variant</th><th>State</th><th>Background</th><th>Icon</th></tr></thead><tbody>{colorRows.map(row => <tr key={row.join()}>{row.map((cell, i) => <td key={cell}>{cell.startsWith("--") ? <code>{cell}</code> : cell}</td>)}</tr>)}</tbody></table></div></section>
+    <section className="iconstate-token-panel"><h2>Token contract</h2><p>尺寸、圆角和状态由固定契约约束；颜色全部从主题 token 读取，自定义框色由 <code>frameColor</code> 传入。</p><div className="iconstate-table-wrap"><table className="iconstate-table"><thead><tr><th>Variant</th><th>Frame</th><th>Icon</th><th>Radius</th><th>State</th></tr></thead><tbody>{contracts.map(row => <tr key={row[0]}>{row.map(cell => <td key={cell}>{cell.startsWith("--") ? <code>{cell}</code> : cell}</td>)}</tr>)}</tbody></table></div></section>
+  </div>;
+}
+
 export default function Demo() {
   const [columnIcon, setColumnIcon] = useState("search");
   const [columnSize, setColumnSize] = useState(20);
@@ -56,7 +69,7 @@ export default function Demo() {
   const columnOptions = [...COLUMN_ICONS.map(icon => ({ value: icon, label: icon })), ...(columnUpload ? [{ value: "custom", label: `上传 · ${columnUpload.name}` }] : [])];
 
   return <div className="demo-page">
-    <header className="demo-header"><h1 className="demo-title">IconState 图标状态</h1><p className="demo-subtitle">两类图标分别配置；选择项直接传给 IconState 的 props。</p></header>
+    <header className="demo-header"><h1 className="demo-title">IconState 图标状态</h1><p className="demo-subtitle">Square 栏目 icon / Circle 对话框 icon · 32px 外框 · default、hover、active、disabled 四种状态。</p></header>
 
     <section className="demo-section">
       <div className="demo-section-header"><h2 className="demo-section-name">栏目 icon</h2><span className="demo-section-tag">Square · 32px</span></div>
@@ -89,5 +102,6 @@ export default function Demo() {
       <h3 className="iconstate-gallery-title">State matrix · {DIALOG_ICONS.find(item => item.value === dialogIcon)?.label}</h3>
       <StateGallery variant="circle" icon={dialogIcon} frameColor={frameColor} />
     </section>
+    <TokenPanel />
   </div>;
 }
