@@ -22,13 +22,5 @@ coverage/
 !.env.example
 /.codex/
 
-# Share only the three project workflow skills, not unrelated local skills.
-/.agents/*
-!/.agents/skills/
-/.agents/skills/*
-!/.agents/skills/agentbox-component/
-!/.agents/skills/component-preview-html/
-!/.agents/skills/component-readme/
-
-# Legacy skill scaffolds are local tooling; this project uses root scripts/.
-/.agents/skills/*/scripts/
+# Agent skills and configuration stay local.
+/.agents/
