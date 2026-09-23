@@ -11877,6 +11877,8 @@ const DIALOG_ICONS = [
   { value: "dialog-pause", label: "暂停" },
   { value: "dialog-add", label: "加号" },
 ];
+const DIALOG_FRAME_OPTIONS = [{ value: "gray", label: "灰色" }, { value: "black", label: "黑色" }, { value: "custom", label: "自定义颜色" }];
+const PAUSE_FRAME_OPTIONS = [{ value: "black", label: "黑色" }];
 
 function Select({ label, value, onChange, options }) {
   return <label className="button-control"><span>{label}</span><span className="button-select-wrap"><select value={value} onChange={event => onChange(event.target.value)}>{options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}</select></span></label>;
@@ -11941,7 +11943,10 @@ function Demo() {
   const [dialogState, setDialogState] = useState("auto");
   const [frameMode, setFrameMode] = useState("gray");
   const [customColor, setCustomColor] = useState("#0A59F7");
-  const frameColor = frameMode === "custom" ? customColor : frameMode;
+  const isPause = dialogIcon === "dialog-pause";
+  const safeFrameMode = isPause ? "black" : frameMode;
+  const frameColor = safeFrameMode === "custom" ? customColor : safeFrameMode;
+  const frameOptions = isPause ? PAUSE_FRAME_OPTIONS : DIALOG_FRAME_OPTIONS;
   const columnSrc = columnIcon === "custom" ? columnUpload?.src : undefined;
   const columnOptions = [...COLUMN_ICONS.map(icon => ({ value: icon, label: icon })), ...(columnUpload ? [{ value: "custom", label: `上传 · ${columnUpload.name}` }] : [])];
 
