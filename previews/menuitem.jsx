@@ -91,7 +91,7 @@ export default function Demo() {
   const dropdownIconOptions = MEDIUM_DROPDOWN_ICONS.some(option => option.value === dropdownIconSrc) ? MEDIUM_DROPDOWN_ICONS : [...MEDIUM_DROPDOWN_ICONS, { value: dropdownIconSrc, label: "已上传 SVG" }];
 
   return <div className="demo-page">
-    <header className="demo-header"><p className="demo-subtitle">MenuItem 菜单条目 · Nav / History / Dropdown / Folder / File level 1 / File level 2 · Sm / Md 仅用于 Dropdown · 按形态展示状态</p></header>
+    <header className="demo-header"><h2 className="preview-panel-title">MenuItem 菜单条目</h2><p className="demo-subtitle">MenuItem 菜单条目 · Nav / History / Dropdown / Folder / File level 1 / File level 2 · Sm / Md 仅用于 Dropdown · 按形态展示状态</p></header>
 
     <section className="demo-section">
       <div className="demo-section-header"><h2 className="demo-section-name">Configurator</h2><span className="demo-section-tag">左侧导航</span></div>

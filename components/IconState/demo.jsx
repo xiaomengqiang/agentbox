@@ -75,7 +75,7 @@ export default function Demo() {
   const columnOptions = [...COLUMN_ICONS.map(icon => ({ value: icon, label: icon })), ...(columnUpload ? [{ value: "custom", label: `上传 · ${columnUpload.name}` }] : [])];
 
   return <div className="demo-page">
-    <header className="demo-header"><h1 className="demo-title">IconState 图标状态</h1><p className="demo-subtitle">Square 栏目 icon / Circle 对话框 icon · 32px 外框 · default、hover、active、disabled 四种状态。</p></header>
+    <header className="demo-header"><h2 className="preview-panel-title">IconState 图标状态</h2><p className="demo-subtitle">Square 栏目 icon / Circle 对话框 icon · 32px 外框 · default、hover、active、disabled 四种状态。</p></header>
 
     <section className="demo-section">
       <div className="demo-section-header"><h2 className="demo-section-name">栏目 icon</h2><span className="demo-section-tag">Square · 32px</span></div>

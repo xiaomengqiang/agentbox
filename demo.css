@@ -754,3 +754,11 @@ code {
 .btn-table tbody .btn-color-group-start > th {
   border-top: 2px solid var(--color-comp-border);
 }
+
+/* Bilingual panel title: page 30px > panel 24px > section 20px. */
+.preview-panel-title {
+  margin: 0 0 8px;
+  font: var(--font-title-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+}

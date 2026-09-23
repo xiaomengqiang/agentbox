@@ -81,7 +81,7 @@ export default function Demo() {
   const columnOptions = [...COLUMN_ICONS.map(icon => ({ value: icon, label: icon })), ...(columnUpload ? [{ value: "custom", label: `上传 · ${columnUpload.name}` }] : [])];
 
   return <div className="demo-page">
-    <header className="demo-header"><p className="demo-subtitle">IconState 图标状态 · Square / Circle · 可配置尺寸与资源 · 4 种显式状态及键盘 Focus</p></header>
+    <header className="demo-header"><h2 className="preview-panel-title">IconState 图标状态</h2><p className="demo-subtitle">IconState 图标状态 · Square / Circle · 可配置尺寸与资源 · 4 种显式状态及键盘 Focus</p></header>
 
     <section className="demo-section">
       <div className="demo-section-header"><h2 className="demo-section-name">Configurator</h2><span className="demo-section-tag">Square · 32px</span></div>
