@@ -8,9 +8,9 @@ ActionChip 用于展示技能、连接器或专家条目，并提供轻量的移
 
 #### 视觉样式
 
-采用单一品牌浅底样式，适合在输入区或内容附近展示可操作的条目。Default 与 Hover 是同一样式的交互状态：
+采用单一品牌浅底样式。Default 与 Hover 是同一样式的交互状态：
 
-- Default：显示类型图标和名称，便于识别已添加的内容。
+- Default：显示类型图标和名称。
 - Hover：悬浮整个操作块时叠加交互色，前置图标原位切换为 close，提示可移除；移出后恢复。
 
 #### 尺寸与形状
@@ -45,17 +45,10 @@ Hover 统一使用 `assets/uploads/icon/function/close.svg`。资源通过 SVG m
 | `icon` | `"skill" \| "connector" \| "expert"` | `"skill"` | 前置图标类型；省略、传入空字符串或 `null` 时使用 skill。 |
 | `onClick` | `(event: React.MouseEvent<HTMLButtonElement>) => void` | — | 整个按钮的点击回调；移除等业务逻辑由宿主实现。 |
 | `className` | `string` | `""` | 追加到根按钮的样式类名。 |
+| `id` | `string` | — | 可选的根按钮元素标识。 |
+| `style` | `React.CSSProperties` | — | 可选的根按钮行内样式，可覆盖默认 CSS 样式。 |
 
 组件使用原生 `button`，固定 `type="button"`。不提供 `width`、`disabled` 或状态配置，也不透传其余原生按钮属性。
-
-## Color Spec
-
-| State | Background | Outline | Text | Icon |
-|-------|------------|---------|------|------|
-| Default | `--color-comp-emphasize-tertiary`（引用 `--brand-10`） | 无 | `--color-font-emphasize` | `--color-icon-emphasize` |
-| Hover | Default 上叠加 `--color-interactive-hover` | 同 Default | 同 Default | 同 Default，图形切换为 close |
-
-颜色随项目主题 token 切换。仅提供 Default、Hover 两种展示状态，无独立 Pressed 样式。键盘导航时保留 `:focus-visible` 提示：使用 `--focus-ring`，宽度为 `--outline-width-focus`，外偏移为 `--outline-offset-gap`。
 
 ## Usage
 
@@ -81,6 +74,8 @@ export default function SelectedItems() {
       {items.map(item => (
         <ActionChip
           key={item.id}
+          id={`action-chip-${item.id}`}
+          style={{ maxWidth: 160 }}
           icon={item.icon}
           label={item.label}
           onClick={() => removeItem(item.id)}

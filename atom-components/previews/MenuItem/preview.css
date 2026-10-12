@@ -1,0 +1,73 @@
+@import url("../../../tooling/preview/documentation.css");
+@import url("../../../tooling/preview/color-spec.css");
+@import url("../../../tooling/preview/section-layout.css");
+
+.menuitem-control-stack { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.menuitem-live { box-sizing: border-box; min-width: 0; padding: 32px; }
+.menuitem-live .mi-menu { width: 300px; max-width: 100%; }
+.menuitem-charts { display: flex; flex-direction: column; gap: 24px; }
+.menuitem-chart-title { display: flex; align-items: baseline; gap: 12px; margin: 0 0 12px; font: var(--font-body-lg); font-weight: var(--font-weight-bold); color: var(--on-surface); }
+.menuitem-chart-title span { font: var(--font-caption-lg); color: var(--text-secondary); }
+.btn-table-wrap .menuitem-combination-table { min-width: 1000px; table-layout: fixed; }
+.menuitem-combination-table thead th:nth-child(1) { width: 80px; }
+.menuitem-combination-table thead th:nth-child(2) { width: 68px; }
+.menuitem-combination-table th, .menuitem-combination-table td { padding: 8px 12px; }
+.menuitem-column-detail { display: block; margin-top: 2px; font-weight: inherit; }
+.menuitem-state-table .btn-table { min-width: 900px; table-layout: fixed; }
+.menuitem-state-table th:first-child { width: 100px; }
+.menuitem-state-table td { padding: 8px 12px; }
+.btn-table tbody th:not(.btn-color-variant) { font: var(--font-body-md); font-weight: var(--font-weight-medium); color: var(--on-surface); background: transparent; border-top: 1px solid var(--divider); }
+.mi-preview-default .mi-row::before { background: transparent; }
+.mi-preview-hover .mi-row::before { background: var(--color-interactive-hover); }
+/* Forced specimens keep the same colors as live interaction. */
+.mi-menu-error.mi-preview-hover .mi-row::before { background: var(--color-error-container); }
+@media (max-width: 760px) { .menuitem-live { padding: 24px; } }
+
+.menuitem-combination-table thead th:first-child,
+.menuitem-combination-table tbody th[scope="rowgroup"] {
+  border-right: 1px solid var(--divider);
+}
+
+/* Freeze the two identifying columns within each chart's horizontal scroller. */
+.btn-table-wrap .menuitem-combination-table {
+  overflow: visible;
+}
+.menuitem-combination-table thead th:nth-child(-n+2),
+.menuitem-combination-table tbody th[scope="rowgroup"],
+.menuitem-combination-table tbody th[scope="row"] {
+  position: sticky;
+  z-index: 2;
+  box-sizing: border-box;
+  border-right: 0;
+}
+.menuitem-combination-table thead th:first-child,
+.menuitem-combination-table tbody th[scope="rowgroup"] {
+  left: 0;
+}
+.menuitem-combination-table thead th:nth-child(2),
+.menuitem-combination-table tbody th[scope="row"] {
+  left: 80px;
+}
+.menuitem-combination-table thead th:nth-child(-n+2) {
+  z-index: 3;
+  background: var(--surface-container-low);
+}
+.btn-table.menuitem-combination-table tbody th[scope] {
+  background: var(--surface-container-lowest);
+}
+.menuitem-combination-table thead th:nth-child(-n+2)::after,
+.menuitem-combination-table tbody th[scope]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 1px;
+  background: var(--divider);
+  pointer-events: none;
+}
+
+.btn-table-wrap .menuitem-limit-table { min-width: 980px; width: 100%; }
+.menuitem-limit-table th, .menuitem-limit-table td { padding: 8px 12px; }
+.menuitem-limit-table tbody th { white-space: nowrap; }
+

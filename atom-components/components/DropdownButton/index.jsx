@@ -4,7 +4,7 @@ import "./index.css";
 
 /** Button-derived dropdown trigger. It never renders the menu itself. */
 export default function DropdownButton({
-  variant = "filled",
+  variant = "primary",
   size = "large",
   shape = "round",
   dropdownIcon,
@@ -16,26 +16,24 @@ export default function DropdownButton({
   disabled = false,
   type = "button",
   onClick,
+  id,
+  style,
   className = "",
   "data-state": state,
   "aria-label": ariaLabel,
   "aria-expanded": expanded,
   "aria-controls": controls,
 }) {
-  const resolvedSize = size === "xs" ? "xs" : resolveSize(size);
-  const requestedVariant = resolveVariant(variant);
-  const resolvedVariant =
-    resolvedSize === "xs" && !["outlined", "text"].includes(requestedVariant)
-      ? "outlined"
-      : requestedVariant;
-  const resolvedShape =
-    resolvedSize === "xs" && resolvedVariant === "outlined" ? "square" : resolveShape(shape);
+  const resolvedSize = size === "small" ? "small" : resolveSize(size);
+  const resolvedVariant = resolveVariant(variant);
+  const resolvedShape = resolveShape(shape);
   const indicator = dropdownIcon
     ? (dropdownIcon === "chevron-down" ? "chevron-down" : "caret-down-filled")
-    : (resolvedSize === "xs" && resolvedVariant === "text" ? "chevron-down" : "caret-down-filled");
-  const canShowContentIcon = resolvedSize === "xs" && resolvedVariant === "outlined";
+    : (resolvedSize === "small" && resolvedVariant === "text" ? "chevron-down" : "caret-down-filled");
   return (
     <button
+      id={id}
+      style={style}
       type={type}
       className={`btn btn--${resolvedVariant} btn--${resolvedSize} btn--${resolvedShape} dropdown-btn ${className}`}
       disabled={disabled}
@@ -46,21 +44,15 @@ export default function DropdownButton({
       aria-controls={controls}
     >
       {leadingIconSrc ? (
-        <img
-          className="dropdown-btn__asset dropdown-btn__asset--leading"
-          src={leadingIconSrc}
-          alt={leadingIconAlt}
-          aria-hidden={leadingIconAlt ? undefined : true}
-        />
+        <span className="dropdown-btn__asset dropdown-btn__asset--leading" style={{ "--dropdown-asset": `url("${leadingIconSrc}")` }}>
+          <img src={leadingIconSrc} alt={leadingIconAlt} aria-hidden={leadingIconAlt ? undefined : true} />
+        </span>
       ) : null}
       <span className="btn__label">{children}</span>
-      {contentIconSrc && canShowContentIcon ? (
-        <img
-          className="dropdown-btn__asset dropdown-btn__asset--content"
-          src={contentIconSrc}
-          alt={contentIconAlt}
-          aria-hidden={contentIconAlt ? undefined : true}
-        />
+      {contentIconSrc ? (
+        <span className="dropdown-btn__asset dropdown-btn__asset--content" style={{ "--dropdown-asset": `url("${contentIconSrc}")` }}>
+          <img src={contentIconSrc} alt={contentIconAlt} aria-hidden={contentIconAlt ? undefined : true} />
+        </span>
       ) : null}
       <span className={`dropdown-btn__indicator dropdown-btn__indicator--${indicator}`} aria-hidden="true" />
     </button>

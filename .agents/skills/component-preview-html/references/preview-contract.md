@@ -4,7 +4,7 @@ Use this contract when the user asks for the established Agentbox component-prev
 
 ## Application to independent pages and galleries
 
-In the dual-library project, author the target component's `preview.jsx` and `preview.css`; generated HTML is not source. Both output modes use the same preview module. A standalone page contains the shared title/theme control and one component panel; it does not need a component tab row. Gallery-only navigation and panel-state checks apply when aggregating or editing the shared gallery shell. Keep this contract focused on presentation; build commands live in `agentbox-component/references/component-workflow.md`.
+In the dual-library project, author `<library>/previews/<Name>/preview.jsx` and `preview.css`, separate from `<library>/components/<Name>/`; generated HTML is not source. Both output modes use the same preview module. A standalone page contains the shared title/theme control and one component panel; it does not need a component tab row. Gallery-only navigation and panel-state checks apply when aggregating or editing the shared gallery shell. Keep this contract focused on presentation; build commands live in `agentbox-component/references/component-workflow.md`.
 
 ## Page structure
 
@@ -37,13 +37,13 @@ Use `English name 中文名称 · key prop choices · relevant capabilities · s
 
 Approved Agentbox summary examples (verify against the implementation before reusing after API changes):
 
-- Button 按钮 · Filled / Tonal / Outlined / Text · Large / Small · Round / Square · 5 states
-- Dropdown Button 下拉按钮 · Filled / Tonal / Outlined / Text · Large / Small / XS · Round / Square · 可配置前后图标及下拉图标 · 5 states
+- Button 按钮 · Primary / Secondary / Tertiary / Text · Large / Medium · Round / Square · 5 states
+- Dropdown Button 下拉按钮 · Primary / Secondary / Tertiary / Text · Large / Medium / Small · Round / Square · 可配置前后图标及下拉图标 · 5 states
 - Segmented Button 分段按钮 · Text / Icon · 2–5 segments · 24px / 8px radius · 5 states
 - Input Box 输入框 · Outlined / Filled · Text / Password · 可配置宽度 · 6 states
 - SearchBar 搜索框 · Large / Small · Filled / Unfilled · 可配置清空按钮及位置 · 输入状态预览
 
-State counts must reflect real behavior, not the number of columns in a generic matrix. SearchBar has size-dependent interaction appearances and separate input stages; use “输入状态预览” rather than an ambiguous total. Do not imply that derived appearances (such as SearchBar fill tied to size) are independent props. Unsupported combinations belong in the Configurator constraints and detailed documentation.
+State counts must reflect real behavior, not the number of columns in a generic matrix. SearchBar has size-dependent interaction appearances and separate input stages; use “输入状态预览” rather than an ambiguous total. Do not imply that derived appearances (such as SearchBar fill tied to size) are independent props. For atomic components, migrate size-dependent capabilities to independent axes when editing them. Cross-axis restrictions require explicit second confirmation; composed components are exempt.
 
 ## Configurator
 
@@ -52,7 +52,7 @@ Order controls by the public API: Size, Shape, Variant, State, then optional con
 - Enum prop: labeled select.
 - Boolean prop: title above a toggle and its current value. Do not wrap a standalone toggle in a tinted card or bordered panel.
 - Boolean-gated enum: place the toggle and dependent selector in one configuration item. Hide the selector while the toggle is off.
-- Conditionally supported prop: hide the entire control until the selected combination supports it.
+- Atomic components: all public axes form a full Cartesian product. Do not hide, disable, or reset another capability based on size, shape, or variant. Ask the user to confirm a requested restriction a second time before adding it. Boolean-gated controls may still hide when their own feature is off. Composed components are exempt.
 - Text prop: input only when editable copy is part of the component contract.
 
 Do not add button type, click counters, debug values, or controls that do not change a supported prop.
@@ -91,6 +91,18 @@ Update preview source and generated HTML together. In verification, distinguish 
 Center the actual specimen group, not only a larger wrapper. Keep its label, field, and helper/error text aligned together. For a width-configurable Input Box, size the wrapper to the selected width and cap both wrapper and component at `max-width: 100%`.
 
 Use `min-width: 0` and `box-sizing: border-box` on the live-preview container. Reserve 32px padding on all sides (24px on narrow screens). Allow required markers, focus rings, and shadows room to render; do not use `overflow: hidden` to mask a sizing problem. The specimen should shrink to the available width when appropriate; if a true fixed-size specimen cannot shrink, use an intentional inner scroller with safe padding. Check the widest option, fluid width, required markers, and helper/error text.
+
+## Section spacing and specimen cards
+
+Agentbox 的组件预览采用以下间距基线；用户给出的具体排版要求优先：
+
+- 组件标题到概要 12px；概要所在 header 到首节 40px（窄屏 32px）。
+- 章节标题到卡片、表格或正文 24px；有章节说明时，标题到说明 8px，说明到内容 24px。
+- 卡片内小标题到标本 16px；章节之间 48px（窄屏 40px）。
+- 统一从一个元素设置相邻间距，避免 margin 叠加、折叠或用空段落占位。检查最终层叠值，不能只凭源码中的 margin 判断。
+- Interactive gallery、Shape 及独立的状态标本区域使用共享 `.demo-card` 容器：`--surface-container-lowest` 背景、无边框、`--shadow-card`、24px 内边距（窄屏 20px）。Shape 即使只有一行也保留底卡；契约表沿用表格容器，不额外套卡。
+- Agentbox 可在目标 `preview.css` 中导入 `tooling/preview/section-layout.css` 复用间距，底卡沿用现有共享样式。组件级不重复复制整套卡片 CSS。聚焦修改只构建目标预览，不因共享规范更新擅自重建总览。
+- 浏览器验收需查看标题及其下方内容的实际边界、Shape 底卡、卡片内边距和窄屏换行；运行 smoke check 不能代替这项视觉检查。
 
 ## Gallery and state matrix
 
@@ -159,7 +171,7 @@ Apply body-header rules explicitly (for example `.btn-table tbody th`), then ove
 Use separate tables when the component has independent axes. Typical columns are:
 
 - Size: height, font size, icon size, padding, gap, radius behavior.
-- Shape: public value, class, radius token, resolved value, aliases, supported combinations.
+- Shape: public value, class, radius token, resolved value, supported combinations.
 - Replaceable asset: prop value, source file, default or supported use.
 
 Document exceptions next to the affected table instead of hiding them in prose elsewhere.
@@ -175,7 +187,7 @@ Document exceptions next to the affected table instead of hiding them in prose e
 
 ## Completion checks
 
-- Visual/interactive props are configurable; integration props are documented, with unsupported combinations prevented or hidden.
+- Visual/interactive props are configurable and independent across all atomic size × shape × variant combinations; integration props are documented. Only composed components or explicitly reconfirmed exceptions may restrict combinations.
 - Toggles and dependent selectors update the preview correctly.
 - Gallery and matrix match the actual component CSS.
 - Color Spec describes real state behavior and uses `同 Default` correctly.
@@ -195,3 +207,7 @@ In Agentbox specimen cards, use a left-aligned `h3` title with `--font-subtitle-
 Use “Interactive gallery” consistently across component panels, keeping each panel’s bilingual component heading intact. Specimen cards use `--surface-container-lowest` (white in the light theme), no border, `--shadow-card`, and `--radius-xl`. Group examples by content type, then shape and optional icons. Segmented Button uses Text (Round / Square × with / without prefix icon) and Icon. Do not mix disabled specimens into this gallery. Use real component interaction and reserve forced states for State matrix.
 
 Configurable width is a consumer-controlled layout prop, documented under API and exposed in Configurator where supported. Omit fixed width columns from Token contract; preserve actual intrinsic dimensions such as icon size and fixed child-button width.
+
+### Color spec shared implementation
+
+For Color spec creation, review, or alignment, read [Button-standard Color spec](color-spec.md). Its shared renderer and styling are authoritative for the color table; do not introduce component-local alternatives. Other contract tables retain their existing structure.

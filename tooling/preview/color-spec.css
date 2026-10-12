@@ -1,0 +1,215 @@
+/* Button Color spec baseline. Imported by every atomic preview. */
+@scope (.color-spec-section) {
+.btn-table {
+width: 100%;
+  border-collapse: collapse;
+  margin-top: 24px;
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.btn-table th {
+font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-secondary);
+  text-align: left;
+  padding: 12px 16px;
+  background-color: var(--surface-container-low);
+}
+
+.btn-table td {
+font: var(--font-body-md);
+  color: var(--text-secondary);
+  text-align: left;
+  padding: 12px 16px;
+  border-top: 1px solid var(--divider);
+}
+
+.btn-table-strong {
+display: block;
+  color: var(--on-surface);
+  font-weight: var(--font-weight-medium);
+}
+
+.btn-table-src {
+display: block;
+  margin-top: 4px;
+  font: var(--font-caption-md);
+  color: var(--text-placeholder);
+  line-height: 1.5;
+}
+
+.btn-table-wrap {
+overflow-x: auto;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+.btn-table-wrap .btn-table {
+min-width: 900px;
+  border-radius: 0;
+  box-shadow: none;
+  margin-top: 0;
+}
+
+.btn-table-wrap .btn-table--color {
+min-width: 1180px;
+}
+
+.btn-table-wrap .btn-table--roomy {
+min-width: 920px;
+}
+
+.btn-table-wrap--spaced {
+margin-top: 24px;
+}
+
+.btn-table--roomy th,
+.btn-table--roomy td {
+min-width: 110px;
+}
+
+.btn-table--color th:first-child,
+.btn-table--color td:first-child {
+min-width: 112px;
+}
+
+.btn-table--color th:not(:first-child),
+.btn-table--color td:not(:first-child) {
+min-width: 130px;
+}
+
+.btn-color-token {
+display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.btn-color-token code {
+white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.btn-table .btn-color-variant {
+vertical-align: top;
+  color: var(--on-surface);
+  font: var(--font-body-lg);
+  font-weight: var(--font-weight-bold);
+  background: var(--surface-container-low);
+  border-top: 1px solid var(--divider);
+}
+
+.btn-table .btn-color-state {
+min-width: 110px;
+  vertical-align: top;
+  color: var(--on-surface);
+  font-weight: var(--font-weight-medium);
+}
+
+.btn-color-state small {
+display: block;
+  margin-top: 4px;
+  color: var(--text-placeholder);
+  font: var(--font-caption-md);
+  font-weight: var(--font-weight-regular);
+  white-space: nowrap;
+}
+
+.btn-color-same {
+color: var(--text-placeholder);
+  font: var(--font-body-md);
+}
+
+.btn-color-group-start > th,
+.btn-color-group-start > td {
+border-top: 2px solid var(--color-comp-border);
+}
+
+.btn-color-swatch {
+display: inline-block;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  border: 1px solid var(--color-comp-border);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px var(--surface-container-lowest);
+}
+
+.btn-color-swatch--transparent {
+background-color: var(--surface-container-lowest);
+  background-image:
+    linear-gradient(45deg, var(--divider) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--divider) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--divider) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--divider) 75%);
+  background-position: 0 0, 0 5px, 5px -5px, -5px 0;
+  background-size: 10px 10px;
+}
+
+.btn-color-swatch--none {
+background:
+    linear-gradient(
+      135deg,
+      transparent 44%,
+      var(--text-placeholder) 46%,
+      var(--text-placeholder) 54%,
+      transparent 56%
+    ),
+    var(--surface-container-lowest);
+}
+
+.btn-color-swatch--disabled {
+opacity: 0.5;
+}
+
+/* Button and DropdownButton table contract; scoped by the preview builder. */
+.btn-table thead th {
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-secondary);
+  background: var(--surface-container-low);
+  padding: 12px 16px;
+}
+.btn-table tbody th,
+.btn-table tbody td {
+  font: var(--font-body-md);
+  color: var(--text-secondary);
+  padding: 12px 16px;
+  border-top: 1px solid var(--divider);
+}
+.btn-table tbody th,
+.btn-table tbody .btn-table-strong {
+  display: table-cell;
+  font-weight: var(--font-weight-medium);
+  color: var(--on-surface);
+  background: transparent;
+}
+.btn-table tbody .btn-color-variant {
+  font: var(--font-body-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  background: var(--surface-container-low);
+  vertical-align: top;
+}
+.btn-table tbody .btn-color-state {
+  font-weight: var(--font-weight-medium);
+  color: var(--on-surface);
+}
+.btn-table .btn-color-group-start > th,
+.btn-table .btn-color-group-start > td {
+  border-top: 1px solid var(--divider);
+}
+
+.color-spec-value + .color-spec-value { margin-top: 12px; }
+.demo-section-header { margin: 0 0 8px; }
+.demo-section-desc { margin: 0 0 24px; font: var(--font-body-md); color: var(--text-secondary); }
+.btn-table-wrap { margin: 0; max-width: 100%; }
+.btn-table th, .btn-table td { vertical-align: top; }
+.btn-color-state small { white-space: normal; }
+.btn-table code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: var(--color-font-emphasize); background: var(--surface-container); padding: 1px 5px; border-radius: var(--radius-xs); }
+}
+.color-spec-footnote { margin: 16px 0 0; font: var(--font-caption-lg); color: var(--text-secondary); }

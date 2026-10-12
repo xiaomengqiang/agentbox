@@ -1,0 +1,97 @@
+.tt-root {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.tt-list {
+  display: flex;
+  align-items: center;
+  gap: var(--tt-gap);
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none; /* 横向溢出时不显示滚动条 */
+  -ms-overflow-style: none;
+}
+
+.tt-list::-webkit-scrollbar {
+  display: none;
+}
+
+.tt-tab {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  color: var(--text-placeholder);
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tt-label {
+  display: inline-block;
+  font: var(--font-subtitle-lg); /* 18px / 1.5 */
+  font-size: var(--tt-font-size, var(--font-size-lg));
+  font-weight: var(--font-weight-regular);
+  color: inherit;
+  white-space: nowrap;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.tt-tab:not(.tt-tab-active):hover {
+  color: var(--text-secondary);
+}
+
+.tt-tab-active {
+  color: #000000; /* Light/black 100%，设计指定值 */
+
+}
+
+.tt-tab:focus-visible {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+  border-radius: var(--radius-xs);
+}
+
+/* 深色模式：选中态反相为纯白，未选中态由 token 自动翻转 */
+.dark .tt-tab-active {
+  color: var(--white);
+}
+
+.tt-size-large {
+  --tt-font-size: var(--font-size-lg);
+  --tt-gap: var(--spacing-6);
+}
+
+.tt-size-medium {
+  --tt-font-size: var(--font-size-md);
+  --tt-gap: var(--spacing-5);
+}
+
+.tt-panel {
+  margin-top: var(--spacing-6);
+  color: var(--text-primary);
+  font: var(--font-body-md);
+}
+
+.tt-tab-active .tt-label { font-weight: var(--font-weight-bold); }
+.tt-icon { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; width: var(--tt-font-size); height: var(--tt-font-size); }
+.tt-icon > * { width: 100%; height: 100%; }
+
+.tt-nav { position: relative; display: flex; align-items: center; width: 100%; min-width: 0; }
+.tt-nav .tt-list { display: block; flex: 1 1 auto; min-width: 0; width: auto; }
+.tt-track { display: flex; align-items: center; gap: var(--tt-gap); width: max-content; }
+.tt-nav .tt-scroll-button { position: absolute; top: 50%; transform: translateY(-50%); z-index: 1; }
+.tt-scroll-left { left: 0; }
+.tt-scroll-right { right: 0; }
+.tt-scroll-hidden { visibility: hidden; pointer-events: none; }
+.tt-fade-left { mask-image: linear-gradient(to right, transparent 32px, #000 56px); }
+.tt-fade-right { mask-image: linear-gradient(to left, transparent 32px, #000 56px); }
+.tt-fade-left.tt-fade-right { mask-image: linear-gradient(to right, transparent 32px, #000 56px, #000 calc(100% - 56px), transparent calc(100% - 32px)); }

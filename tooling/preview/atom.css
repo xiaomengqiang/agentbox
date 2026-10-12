@@ -571,7 +571,7 @@
   border-top: 0;
 
 }
-.preview-segmented-button .seg-demo-live {
+.preview-segmented .seg-demo-live {
 
   box-sizing: border-box;
   min-width: 0;
@@ -583,16 +583,16 @@
   gap: 24px;
 
 }
-.preview-segmented-button .seg-demo-gallery {
+.preview-segmented .seg-demo-gallery {
  grid-template-columns: repeat(2, minmax(0, 1fr)); 
 }
-.preview-segmented-button .seg-demo-card {
+.preview-segmented .seg-demo-card {
  display: flex; flex-direction: column; align-items: center; gap: 20px; 
 }
-.preview-segmented-button .seg-demo-card h3 {
+.preview-segmented .seg-demo-card h3 {
  align-self: flex-start; margin: 0; 
 }
-.preview-segmented-button .btn-table thead th {
+.preview-segmented .btn-table thead th {
 
   font: var(--font-caption-lg);
   font-weight: var(--font-weight-bold);
@@ -601,8 +601,8 @@
   padding: 12px 16px;
 
 }
-.preview-segmented-button .btn-table tbody td,
-.preview-segmented-button .btn-table tbody th {
+.preview-segmented .btn-table tbody td,
+.preview-segmented .btn-table tbody th {
 
   font: var(--font-body-md);
   padding: 12px 16px;
@@ -610,15 +610,15 @@
   border-right: 0;
 
 }
-.preview-segmented-button .btn-table tbody th:not(.btn-color-variant),
-.preview-segmented-button .btn-table tbody td:first-child:not(.btn-color-state) {
+.preview-segmented .btn-table tbody th:not(.btn-color-variant),
+.preview-segmented .btn-table tbody td:first-child:not(.btn-color-state) {
 
   background: transparent;
   color: var(--on-surface);
   font-weight: var(--font-weight-medium);
 
 }
-.preview-segmented-button .btn-table tbody .btn-color-variant {
+.preview-segmented .btn-table tbody .btn-color-variant {
 
   font: var(--font-body-lg);
   font-weight: var(--font-weight-bold);
@@ -627,22 +627,22 @@
   min-width: 150px;
 
 }
-.preview-segmented-button .btn-table .btn-color-state {
+.preview-segmented .btn-table .btn-color-state {
  font-weight: var(--font-weight-medium); 
 }
-.preview-segmented-button .btn-table .btn-table-src {
+.preview-segmented .btn-table .btn-table-src {
  font: var(--font-caption-md); color: var(--text-placeholder); 
 }
-.preview-segmented-button .seg-demo-matrix {
+.preview-segmented .seg-demo-matrix {
  min-width: 1280px; 
 }
 @media (max-width: 760px) {
 
-  .preview-segmented-button .seg-demo-gallery { grid-template-columns: minmax(0, 1fr); }
-  .preview-segmented-button .seg-demo-live { padding: 24px; }
+  .preview-segmented .seg-demo-gallery { grid-template-columns: minmax(0, 1fr); }
+  .preview-segmented .seg-demo-live { padding: 24px; }
 
 }
-.preview-segmented-button .seg-gallery-heading {
+.preview-segmented .seg-gallery-heading {
  margin: 28px 0 16px; font: var(--font-subtitle-sm); color: var(--on-surface); 
 }
 /* Shared Button classes own the page, configurator, controls and state matrices.

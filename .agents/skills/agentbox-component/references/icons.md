@@ -1,6 +1,6 @@
 # Icon Component
 
-Default use **Lucide icon name** (`name` prop); only when the user explicitly provides image files, use `src` prop.
+Agentbox 功能图标优先且统一使用 `assets/uploads/icon/function/` 对应 SVG，名称与文件名一致，不设别名。Button 以 CSS mask 呈现并跟随 currentColor。缺少语义对应资源时说明缺口，不用 Lucide 或手绘图标冒充。下文为共享 Icon 的技术说明，不改变这条项目资源约定。
 
 ## Usage
 
@@ -34,7 +34,7 @@ let open = true;
 
 ## Lucide name mode (`name`)
 
-The default mode — prefer it unless the user explicitly provides asset files.
+Shared Icon 的既有能力；Agentbox 功能图标不使用此模式。
 
 1. **Use real Lucide icon names only** — exactly as they exist in the Lucide icon set (kebab-case: `chevron-down`, `shopping-cart`, `circle-check`). Never invent, guess-spell, or pluralize names.
 2. **Never hand-write SVG path data** — the Icon component renders Lucide nodes; hand-written paths will not render.
@@ -45,7 +45,7 @@ The default mode — prefer it unless the user explicitly provides asset files.
 
 ## src mode (`src`)
 
-Only when the user explicitly requires their own images (svg/png/jpg). Place them in the existing project’s shared `assets/uploads/`. In the dual-library project, the builder resolves the source URL below and rewrites it for both standalone and gallery output; do not copy assets into each component. Legacy scaffolds keep their own existing asset root:
+Agentbox 功能图标使用项目提供的对应 SVG。 Place them in the existing project’s shared `assets/uploads/`. In the dual-library project, the builder resolves the source URL below and rewrites it for both standalone and gallery output; do not copy assets into each component. Legacy scaffolds keep their own existing asset root:
 
 1. `<Icon src="./assets/uploads/logo.svg" size={28} />`
 2. `<img src="./assets/uploads/banner.png" />`

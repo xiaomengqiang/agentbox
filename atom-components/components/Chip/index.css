@@ -1,0 +1,56 @@
+ .chip { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; white-space:nowrap; font-family:var(--font-family); transition:background-color var(--duration-fast) var(--ease-standard),color var(--duration-fast) var(--ease-standard); }
+.chip__icon { flex-shrink:0; width:16px; height:16px; background:currentColor; mask:center / contain no-repeat; }
+.chip {
+  --chip-bg: var(--color-comp-background-tertiary);
+  --chip-bg-hover: var(--container-10);
+  --chip-bg-selected: var(--container-90);
+  --chip-bg-selected-hover: var(--container-80);
+
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius-3xl); /* 20px */
+  background-color: var(--chip-bg);
+  color: var(--color-font-secondary);
+  font: var(--font-body-lg); /* 16px / 1.5 */
+  line-height: 20px; /* 规格：行高 20px */
+  font-weight: var(--font-weight-regular);
+  cursor: pointer;
+}
+
+.chip .chip__icon {
+  color: var(--container-60);
+}
+
+.chip:hover:not(.chip--disabled) {
+  background-color: var(--chip-bg-hover);
+}
+
+/* 禁用态 */
+.chip.chip--disabled {
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+.chip.chip--disabled .chip__icon {
+  color: var(--text-disabled);
+}
+
+/* 选中态：container90 底 + font_on_primary 文字 + Medium 字重 */
+.chip.chip--selected {
+  background-color: var(--chip-bg-selected);
+  color: var(--color-background-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.chip.chip--selected .chip__icon {
+  color: var(--color-background-primary);
+}
+
+.chip.chip--selected:hover:not(.chip--disabled) {
+  background-color: var(--chip-bg-selected-hover);
+}
+
+.chip-group { display:flex; flex-wrap:wrap; align-items:center; }
+
+.chip.chip--selected.chip--disabled { opacity:0.5; }

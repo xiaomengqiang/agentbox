@@ -75,7 +75,7 @@ export function buildPage(level, entries, output, standalone) {
   }
   const galleryId = load(path.join(ROOT, 'tooling/preview/Gallery.jsx'));
   const demos = entries.map(entry => {
-    const directory = path.join(ROOT, folder, 'components', entry.name);
+    const directory = path.join(ROOT, folder, 'previews', entry.name);
     const file = path.join(directory, 'preview.jsx');
     return { ...entry, directory, file, module: load(file) };
   });

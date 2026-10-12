@@ -103,7 +103,7 @@
   gap: 8px;
 }
 
-.artifact-summary__undo.btn--small {
+.artifact-summary__undo.btn--medium {
   --btn-padding-inline: 10px;
   --btn-border-width: var(--border-width-none);
   --btn-container: transparent;
@@ -112,7 +112,7 @@
   --btn-label-pressed: var(--color-font-primary);
 }
 
-.artifact-summary__review.btn--small {
+.artifact-summary__review.btn--medium {
   --btn-padding-inline: 8px;
   --btn-border-width: var(--border-width-thin);
   --btn-border-color: var(--color-interactive-click);

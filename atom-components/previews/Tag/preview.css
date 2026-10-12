@@ -1,0 +1,11 @@
+@import url("../../../tooling/preview/compact.css");
+@import url("../../../tooling/preview/section-layout.css");
+
+/* Each table uses the shared card wrapper without a second padded card. */
+.demo-page .preview-table-wrap { margin-top:0; }
+.demo-page .preview-table { width:100%; min-width:640px; table-layout:fixed; }
+.demo-page .preview-table thead th,
+.demo-page .preview-table tbody th,
+.demo-page .preview-table tbody td { text-align:left; vertical-align:middle; padding:16px; }
+
+@import url("../../../tooling/preview/color-spec.css");

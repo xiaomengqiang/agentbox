@@ -59,21 +59,6 @@
 | `children` | `ReactNode` | — | 一组 `TaskTemplateCard` |
 | `className` | `string` | `""` | 追加到容器根节点的类名 |
 
-## Color Spec
-
-| 部位 | Token | 说明 |
-|------|-------|------|
-| 卡片背景 | `--surface-container-lowest` | Light 白底 / Dark 深色面；叠加液态玻璃（内高光 + 背景折射） |
-| 卡片内高光（液态玻璃） | 组件内固定值 | `inset 0 1px 1px rgba(255, 255, 255, 1)`（Pixso 导出 innerShadow：y 1 / 白 / blur 1）；底色不透明时只在深色下可见 |
-| 卡片背景折射（液态玻璃） | 组件内固定值 | `blur(4px)`；Chromium 追加 `url(#glass-xs)`（档位同设计系统 `glass-xs`，滤镜由 `build.mjs` 预埋在 HTML） |
-| 图标 | `--color-icon-tertiary` | 三级图标灰（Light 黑 40% / Dark 白 40%） |
-| 标题文字 | `--container` | container 100% · 最实的文字层（Light `#000000` / Dark `#FFFFFF`） |
-| 描述文字 | `--container-50` | 中性叠加色，Light #000 50% / Dark #fff 50% |
-| 悬停阴影 | `--task-template-card-hover-shadow` | 组件内定义的固定值 `0 8px 24px rgba(0,0,0,8%)`（非主题 token） |
-| 焦点描边 | `--focus-ring` | 键盘聚焦时的 outline |
-
-描述文字按规格取 50% 中性叠加色，而非语义文本色（secondary/placeholder）。悬浮态不引入任何颜色 token —— 可点击卡片悬浮时背景仍取 `--surface-container-lowest`、描边仍为空，只有阴影变化。所有颜色 token 在 `.dark` 下自动翻转，无需为暗色单独适配；悬停阴影是固定 rgba 值、不参与翻转，若后续需要暗色专用阴影，应改用主题层的 `--shadow-*` 尺阶。
-
 ## Usage
 
 ```jsx

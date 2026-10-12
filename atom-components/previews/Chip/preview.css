@@ -1,0 +1,12 @@
+@import url("../../../tooling/preview/documentation.css");
+@import url("../../../tooling/preview/button-tables.css");
+@import url("../../../tooling/preview/compact.css");
+@import url("../../../tooling/preview/section-layout.css");
+.chip-state-table { min-width:640px; }
+.chip-state-table td { pointer-events:none; }
+.chip-demo-hover { background:var(--chip-bg-hover); }
+.chip-demo-hover.chip--selected { background:var(--chip-bg-selected-hover); }
+
+
+
+@import url("../../../tooling/preview/color-spec.css");

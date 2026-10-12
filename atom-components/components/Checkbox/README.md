@@ -8,8 +8,8 @@ Checkbox 用于切换独立的布尔选项，或在一组选项中进行多选�
 
 #### 视觉样式
 
-- `square`：默认方形，适用于设置选项、协议确认和多选列表。
-- `circle`：圆形选择标记，适用于需要圆形视觉语言的多选场景；仍遵循 Checkbox 的多选行为。
+- `square`：默认方形。
+- `circle`：圆形选择标记；仍遵循 Checkbox 的多选行为。
 
 #### 尺寸与形状
 
@@ -41,20 +41,6 @@ Checkbox 用于切换独立的布尔选项，或在一组选项中进行多选�
 | `onChange` | `(checked: boolean) => void` | — | 切换时接收下一选中值，而非 DOM 事件；受控模式下需由调用方更新 `checked`。 |
 
 配置器仅暴露 `shape`、`disabled` 和 `label`；选中状态通过实际交互切换。组件没有 `state` prop，也不支持半选状态。
-
-## Color Spec
-
-两种形状共用以下颜色规则，语义 token 随明暗主题切换。
-
-| Element / State | Background | Border | Text / Mark |
-|-----------------|------------|--------|-------------|
-| Unchecked | `--color-fg-unchecked` | `--color-icon-tertiary` | 文字 `--on-surface`；隐藏对勾 |
-| Checked | `--color-comp-background-emphasize` | 同背景 | 文字 `--on-surface`；对勾 `--white` |
-| Hover / Pressed | 同当前选中状态 | 同当前选中状态 | 同当前选中状态 |
-| Disabled | 同当前选中状态 | 同当前选中状态 | 同当前选中状态，整体 opacity 40% |
-
-- 对勾底层描边使用 `--container-05`，阴影使用 `--container-10`；白色对勾在明暗主题中均保持白色。
-- 预览不单列 Focus 状态；当前实现仍保留 `:focus-visible` 键盘焦点环，使用 `--focus-ring`、`--outline-width-focus` 和 `--outline-offset-gap`。
 
 ## Usage
 

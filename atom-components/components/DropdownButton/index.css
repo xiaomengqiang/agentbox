@@ -5,15 +5,17 @@
   --dropdown-btn-padding-end: 12px;
 }
 
-.dropdown-btn.btn--small {
+.dropdown-btn.btn--medium {
   --dropdown-btn-padding-end: 8px;
 }
 
-.dropdown-btn.btn--xs {
+.dropdown-btn.btn--small {
   --btn-height: 28px;
   --btn-padding-inline: 8px;
+  padding-inline-start: 8px;
   --dropdown-btn-padding-end: 8px;
   --btn-font-size: var(--font-size-sm); /* 12px */
+  --btn-font-weight: var(--font-weight-regular); /* 400 */
   --btn-icon-size: 16px;
   --btn-icon-gap: 4px;
 }
@@ -22,7 +24,7 @@
   padding-inline-end: var(--dropdown-btn-padding-end);
 }
 
-/* Dropdown Plain uses neutral content and the same state fills as Tertiary. */
+/* Dropdown Text uses neutral content and the same state fills as Tertiary. */
 .dropdown-btn.btn--text {
   --btn-label: var(--btn-main-color);
   --btn-label-hover: var(--btn-label);
@@ -31,17 +33,12 @@
   --btn-state-layer-pressed: var(--color-interactive-pressed);
 }
 
-/* Compact square trigger: a dedicated exception for outlined + small. */
-.dropdown-btn.btn--outlined.btn--small.btn--square {
-  --btn-height: 32px;
+/* Compact square trigger: a dedicated exception for tertiary + medium. */
+.dropdown-btn.btn--tertiary.btn--medium.btn--square {
   padding-inline-start: 8px;
   padding-inline-end: 4px;
 }
 
-/* XS Outlined is always the 8px-radius square version. */
-.dropdown-btn.btn--outlined.btn--xs {
-  --btn-radius: var(--radius-lg);
-}
 
 .dropdown-btn__asset {
   display: block;
@@ -68,4 +65,25 @@
 
 .dropdown-btn__indicator--chevron-down {
   --dropdown-btn-icon: url('../../../assets/uploads/icon/dropdown/chevron-down.svg');
+}
+
+.dropdown-btn__asset img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.dropdown-btn.btn--primary .dropdown-btn__indicator,
+.dropdown-btn.btn--primary .dropdown-btn__asset {
+  background-color: var(--color-icon-on-primary);
+}
+
+.dropdown-btn.btn--primary .dropdown-btn__asset {
+  mask: var(--dropdown-asset) center / contain no-repeat;
+  -webkit-mask: var(--dropdown-asset) center / contain no-repeat;
+}
+
+.dropdown-btn.btn--primary .dropdown-btn__asset img {
+  opacity: 0;
 }

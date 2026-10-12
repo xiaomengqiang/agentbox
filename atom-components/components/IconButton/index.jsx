@@ -24,22 +24,20 @@ export const FUNCTION_ICONS = {
 };
 export const DIALOG_ICONS = {
   "add": "./assets/uploads/icon/send button/add.svg",
-  "airplane": "./assets/uploads/icon/send button/ariplane.svg",
+  "ariplane": "./assets/uploads/icon/send button/ariplane.svg",
   "pause": "./assets/uploads/icon/send button/pause.svg",
   "resume": "./assets/uploads/icon/send button/resume.svg"
 };
 
-/** Icon-only action button. Use ariaLabel to describe the action. */
-export default function IconButton({ variant = "normal", size = "large", emphasis = "primary", radius = 6,
-  icon, src, disabled = false, state, ariaLabel = "图标操作", onClick, className = "", style, ...rest }) {
-  const dialog = variant === "dialog";
-  const icons = dialog ? DIALOG_ICONS : FUNCTION_ICONS;
-  const fallback = dialog ? (emphasis === "secondary" ? "add" : "airplane") : "search";
-  const source = src || icons[icon] || icons[fallback];
-  const isDisabled = disabled || state === "disabled";
-  return <button {...rest} type="button" className={`icon-button icon-button--${variant} icon-button--${size}${dialog ? ` icon-button--${emphasis}` : ""} ${className}`}
-    style={{ ...style, borderRadius: dialog ? "50%" : radius }} data-state={isDisabled ? "disabled" : state}
-    disabled={isDisabled} aria-label={ariaLabel} onClick={onClick}>
+export const ICONS = { ...DIALOG_ICONS, ...FUNCTION_ICONS };
+
+/** Icon-only action button with independent visual axes. */
+export default function IconButton({ variant = "unfilled", size = "large", shape = "square",
+  icon = "search", src, disabled = false, ariaLabel = "图标操作", onClick, id, className = "", style, ...rest }) {
+  const source = src || ICONS[icon] || ICONS.search;
+  return <button {...rest} id={id} type="button" className={`icon-button icon-button--${variant} icon-button--${size} icon-button--${shape} ${className}`}
+    style={style}
+    disabled={disabled} aria-label={ariaLabel} onClick={onClick}>
     <span className="icon-button__glyph" aria-hidden="true" style={{ WebkitMaskImage: `url("${source}")`, maskImage: `url("${source}")` }} />
   </button>;
 }

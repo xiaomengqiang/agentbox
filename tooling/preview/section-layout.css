@@ -1,0 +1,15 @@
+/* Opt-in documentation rhythm; import inside the component preview scope. */
+.demo-page .demo-header > .preview-panel-title { margin: 0 0 12px; }
+.demo-page .demo-header { margin-bottom: 40px; }
+.demo-page .demo-section { margin-bottom: 48px; }
+.demo-page .demo-section > .demo-section-name { margin: 0 0 24px; }
+.demo-page .demo-section > .demo-section-name:has(+ .demo-section-desc) { margin-bottom: 8px; }
+.demo-page .demo-section > .demo-section-desc { margin: 0 0 24px; }
+.demo-page .demo-item-title { margin: 0 0 16px; }
+.demo-page .demo-section > p:not(.demo-section-desc) { margin: 0; }
+.demo-page .demo-card { min-width: 0; }
+@media (max-width: 600px) {
+  .demo-page .demo-header { margin-bottom: 32px; }
+  .demo-page .demo-section { margin-bottom: 40px; }
+  .demo-page .demo-card { padding: 20px; }
+}

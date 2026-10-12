@@ -9,7 +9,7 @@
 - `short`（默认，窄卡）：内容垂直堆叠 —— 标题行（标题 + 右侧开关）→ 标签 → 描述 → 底部信息行。多张短卡由 `TaskCardGroup` 横向排列。
 - `long`（宽卡）：首行把「标题 / 标签 / 开关」并列起来（标题紧贴标签，开关落在该行最右），下一行是描述，最后一行同样是「时间周期 / 下次执行」左右分布。
 
-两形态共用同一套文字规格与底部信息行样式。内容里只有标签可能缺省（复用原子 `Tag` 的 `icon` 形态），`title` / `description` / `schedule` / `nextRun` 固定存在；卡片默认是静态容器，卡内唯一可交互的元素是右侧开关（复用原子 `Toggle`），传入 `onClick` 时整卡可点击、悬浮抬起一层阴影。
+两形态共用同一套文字规格与底部信息行样式。内容里只有标签可能缺省（复用原子 `Tag` 的 `icon` 形态），`title` / `description` / `schedule` / `nextRun` 固定存在；卡片默认是静态容器，卡内唯一可交互的元素是右侧开关（复用原子 `Switch`），传入 `onClick` 时整卡可点击、悬浮抬起一层阴影。
 
 #### 视觉样式
 
@@ -66,7 +66,7 @@
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `variant` | `"short" \| "long"` | `"short"` | 形态：窄卡（内容叠放）/ 宽卡（标题行并列）；非法值回退为 `short` |
+| `variant` | `"short" \| "long"` | `"short"` | 布局形态（非尺寸）：窄卡（内容叠放）/ 宽卡（标题行并列）；非法值回退为 `short` |
 | `title` | `string` | — | 标题文案，单行省略 |
 | `label` | `string` | — | 任务标签文案；唯一可缺省的内容字段，缺省时整个标签不渲染 |
 | `labelIcon` | `string` | `"calendar-clock"` | 标签的 Lucide 图标名 |
@@ -90,25 +90,6 @@
 |------|------|---------|-------------|
 | `children` | `ReactNode` | — | 一组 `TaskCard`（短卡） |
 | `className` | `string` | `""` | 追加到容器根节点的类名 |
-
-## Color Spec
-
-| 部位 | Token | 说明 |
-|------|-------|------|
-| 卡片背景 | `--surface-container-lowest` | 卡片底色 · Light `#FFFFFF` / Dark `#000000`；叠加液态玻璃（内高光 + 背景折射） |
-| 卡片内高光（液态玻璃） | 组件内固定值 | `inset 0 1px 1px rgba(255, 255, 255, 1)`（Pixso 导出 innerShadow：y 1 / 白 / blur 1）；底色不透明时只在深色下可见 |
-| 卡片背景折射（液态玻璃） | 组件内固定值 | `blur(4px)`；Chromium 追加 `url(#glass-xs)`（档位同设计系统 `glass-xs`，滤镜由 `build.mjs` 预埋在 HTML） |
-| 标题 | `--container` | container 100% · 最实的文字层 · Light `#000000` / Dark `#FFFFFF` |
-| 描述 | `--container-50` | 中性叠加色 · Light 黑 50% / Dark 白 50% |
-| 底部信息行（文字 + 时间图标） | `--container-30` | 中性叠加色 · Light 黑 30% / Dark 白 30% |
-| 标签（原子 `Tag` · `icon` 形态） | 底 `--container-05`；文字 `--color-font-primary`、图标 `--color-icon-primary` | 底 Light 黑 5% / Dark 白 5%；文字与图标 Light 黑 90% / Dark 白 90% |
-| 开关轨道 · 开（原子 `Toggle`） | `--color-comp-background-emphasize` → `--brand` | 品牌蓝 · Light `#0A59F7` / Dark `#317AF7` |
-| 开关轨道 · 关（原子 `Toggle`） | `--color-comp-background-secondary` | 中性叠加色 · Light 黑 10% / Dark 白 10% |
-| 开关滑块（原子 `Toggle`） | `--color-comp-background-primary` | Light `#FFFFFF` / Dark 恒白（保证深色轨道上可见） |
-
-卡片本体的外观只有 Default 一种填充色：唯一的交互态是悬浮，且只抬起阴影，不改变背景与文字，因此卡片自身不引入任何新颜色，交互反馈的颜色全部由内部原子组件（`Toggle`、`Tag`）给出。所有 token 在 `.dark` 下自动翻转，组件不定义任何自定义颜色。`--container-*` 是递归混合色，Light 用黑、Dark 用白按百分比叠加；`--brand` 在两个主题下取值不同。
-
-底部信息行取 30% 中性叠加色（比描述的 50% 更弱），时间图标随文字同色，整行作为一个退让的信息层。
 
 ## Usage
 

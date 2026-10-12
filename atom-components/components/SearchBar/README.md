@@ -8,61 +8,73 @@
 
 #### 视觉样式
 
-- `large`：填充式，用于主要搜索入口；高 40px，字号 14px / 行高 22px，圆角 24px。
-- `small`：透明背景，用于紧凑区域搜索；高 36px，字号 12px / 行高 16px，圆角 6px。
-- Large 有 Hover 外观；两种尺寸均无 Focus / Pressed 专属外观，聚焦仍可正常输入。
+- `filled`：填充背景，圆角 24px。
+- `unfilled`：透明背景，圆角 6px。
+- 搜索框容器在两种样式下均无独立 Hover / Focus / Pressed 外观；Typing 沿用 Default 外观，仅增加原生光标，不显示外框。
+
+#### 尺寸
+
+尺寸与填充样式独立，支持全部 2 × 2 组合；字号与尺寸一一绑定，占位文字和输入文字在所有状态下均使用 regular（400）。
+
+| size | 高度 | 字号 / 行高 |
+|------|------|-------------|
+| `medium` | 40px | 14px / 22px |
+| `small` | 36px | 12px / 18px |
 
 #### 图标
 
-搜索图标使用 `assets/uploads/icon/function/search.svg`。清空按钮固定在右侧，仅使用 `assets/uploads/icon/function/close.svg`。两个图标均使用 `--color-icon-secondary` 着色。Large 两个图标均为 16px，Small 为 16px，图标与输入区间距 8px。
+搜索和清空分别使用 `assets/uploads/icon/function/search.svg`、`assets/uploads/icon/function/close.svg`。所有尺寸图标均为 16px，图标与输入区间距 8px。清空按钮位于右侧，点击区域为 24 × 24px，悬浮时不增加底色。
 
 #### 输入光标
 
-两种尺寸均使用 `--text-primary`（浅色黑 90%）。自绘 SVG 光标宽 1.5px、圆角 0.75px，Large 高 24px，Small 高 18px；输入时与前面的文字间隔 0.5px。聚焦时以 1.1 秒周期闪烁，空值保留占位文字，失焦后隐藏。
+与 TextFields 一致，使用浏览器原生光标。光标的尺寸、闪烁、选区、输入法及滚动行为由浏览器管理；聚焦空值时保留占位文字。
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `size` | `"large" \| "small"` | `"large"` | 尺寸与填充样式 |
-| `fontSize` | `string` | Large `--font-size-base` / Small `--font-size-sm` | 使用项目 `--font-size-*` token 名称；调整占位与输入字号，优先于 style.fontSize；不改变行高、光标高度。无效值回退默认字号 |
-| `placeholder` | `string` | `"请输入搜索内容"` | 占位文字；空字符串回退默认文案 |
+| `size` | `"medium" \| "small"` | `"medium"` | 尺寸及对应字号，无独立字号属性 |
+| `variant` | `"filled" \| "unfilled"` | `"filled"` | 填充样式，与 size 独立 |
+| `placeholder` | `string` | `"请输入搜索内容"` | 占位文字，支持空字符串 |
 | `value` | `string` | — | 受控值，配合 onChange 使用 |
 | `defaultValue` | `string` | `""` | 非受控初始值，仅初始化生效 |
 | `onChange` | `(value: string) => void` | — | 输入与清空时返回字符串 |
-| `onSearch` | `(value: string) => void` | — | 回车搜索 |
-| `clearable` | `boolean` | Large true / Small false | 有文字且未禁用时显示右侧清空按钮 |
-| `onClear` | `() => void` | — | 清空回调 |
+| `onSearch` | `(value: string) => void` | — | 回车搜索，输入法组合期间不触发 |
+| `clearable` | `boolean` | `true` | 所有尺寸均支持；有文字且未禁用时显示清空按钮 |
+| `onClear` | `() => void` | — | 清空回调；清空后聚焦输入框 |
 | `disabled` | `boolean` | `false` | 禁用输入，隐藏清空按钮 |
-| `className` | `string` | — | 追加类名 |
-| `style` | `object` | — | 内联样式，宽度默认由父容器决定 |
+| `id` | `string` | — | 根 div 的元素标识 |
+| `className` | `string` | — | 追加到根 div，保留内部类名 |
+| `style` | `React.CSSProperties` | — | 根 div 的行内样式，调用方值优先；宽度默认由父容器决定 |
 
-不提供 `state` 或 `clearPosition` 属性。受控判断为 `value != null`；清空通过 `onChange("")` 通知外部更新。`value` 和 `defaultValue` 不应同时使用。
+输入框使用原生 `type="search"` 与 `enterKeyHint="search"`；仅显示组件清空按钮，避免与浏览器自带按钮重复。传入 onSearch 时 Enter 阻止表单默认提交，由回调处理搜索；未传入时保留原生表单行为。
 
-## Color Spec
-
-| 内容 | Token / 外观 |
-|------|-------------|
-| Large 背景 | `--surface-container` |
-| Large Hover | 叠加 `--color-interactive-hover` |
-| Small 背景 | transparent |
-| 占位文字（Large / Small） | `--text-tertiary` |
-| 输入文字 / 光标 | `--text-primary` |
-| 搜索 / 清空图标 | `--color-icon-secondary` |
-| 禁用搜索图标 | `--color-icon-fourth` |
-| 禁用文字 | `--text-disabled` |
+受控判断为 `value != null`；清空通过 `onChange("")` 通知外部更新。`value` 和 `defaultValue` 不应同时使用。
 
 ## Usage
 
 ```jsx
+import { useState } from "react";
 import SearchBar from "./SearchBar/index.jsx";
 
-<SearchBar />
-<SearchBar size="small" placeholder="搜索" />
-<SearchBar size="large" fontSize="--font-size-md" />
-<SearchBar defaultValue="手机" onChange={console.log} />
+export default function SearchExample() {
+  const [keyword, setKeyword] = useState("");
 
-const [keyword, setKeyword] = useState("");
-<SearchBar value={keyword} onChange={setKeyword} onSearch={console.log} />
-<SearchBar placeholder="搜索联系人" style={{ width: 320 }} />
+  return (
+    <>
+      <SearchBar />
+      <SearchBar size="medium" variant="unfilled" placeholder="搜索" />
+      <SearchBar size="small" variant="filled" clearable={false} />
+      <SearchBar defaultValue="手机" onChange={console.log} />
+      <SearchBar
+        id="contact-search"
+        placeholder="搜索联系人"
+        value={keyword}
+        onChange={setKeyword}
+        onSearch={console.log}
+        style={{ width: 320 }}
+      />
+    </>
+  );
+}
 ```

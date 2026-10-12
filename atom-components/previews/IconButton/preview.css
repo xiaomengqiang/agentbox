@@ -1,0 +1,41 @@
+@import url("../../../tooling/preview/documentation.css");
+.icon-preview-gallery { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+.icon-preview-sample { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 32px 24px; border: none; background: var(--surface-container-lowest); box-shadow: var(--shadow-card); border-radius: var(--radius-xl); }
+.icon-preview-sample small { color: var(--text-secondary); }
+.icon-preview-static { display: inline-flex; padding: 8px; pointer-events: none; }
+@media(max-width: 800px) { .icon-preview-gallery { grid-template-columns: 1fr; } }
+@media(max-width: 480px) { .icon-preview-gallery { grid-template-columns: 1fr; } }
+
+/* Preview section spacing and consistent table dividers. */
+.demo-section > .demo-section-name + .btn-table-wrap,
+.demo-section > .demo-section-name + .button-configurator,
+.demo-section > .demo-section-name + .icon-preview-gallery { margin-top: 24px; }
+.btn-table tbody th,
+.btn-table tbody td { border-top: 1px solid var(--divider); }
+.btn-table tbody th:not(.btn-color-variant) {
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--on-surface);
+  background: transparent;
+}
+.btn-table--color .btn-color-group-start > th,
+.btn-table--color .btn-color-group-start > td { border-top: 1px solid var(--divider); }
+
+.btn-color-token { flex-wrap: wrap; }
+
+.icon-preview-sample { align-items: stretch; gap: 0; padding: 24px; }
+.icon-preview-sample h3 { margin: 0 0 24px; font: var(--font-subtitle-sm); font-weight: var(--font-weight-bold); color: var(--on-surface); }
+.icon-preview-specimen { display: flex; justify-content: center; }
+.icon-preview-sample small { text-align: center; }
+.btn-table { min-width: 600px; }
+
+.icon-preview-combinations { display: grid; grid-template-columns: auto repeat(2, minmax(0, 1fr)); align-items: center; gap: 20px 12px; font: var(--font-body-md); color: var(--text-secondary); }
+.icon-preview-combinations > span:not(:nth-child(3n + 1)) { text-align: center; }
+
+/* Forced states are internal to the preview, not component API. */
+.icon-preview-static .icon-preview-state--hover { color: var(--icon-color-hover); }
+.icon-preview-static .icon-preview-state--hover::before { background: var(--icon-hover); }
+.icon-preview-static .icon-preview-state--pressed { color: var(--icon-color-pressed); }
+.icon-preview-static .icon-preview-state--pressed::before { background: var(--icon-pressed); }
+
+@import url("../../../tooling/preview/color-spec.css");

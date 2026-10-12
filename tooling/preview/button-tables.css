@@ -1,0 +1,64 @@
+/* Button and DropdownButton table contract; scoped by the preview builder. */
+.btn-table thead th {
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-secondary);
+  background: var(--surface-container-low);
+  padding: 12px 16px;
+}
+.btn-table tbody th,
+.btn-table tbody td {
+  font: var(--font-body-md);
+  color: var(--text-secondary);
+  padding: 12px 16px;
+  border-top: 1px solid var(--divider);
+}
+.btn-table tbody th,
+.btn-table tbody .btn-table-strong {
+  display: table-cell;
+  font-weight: var(--font-weight-medium);
+  color: var(--on-surface);
+  background: transparent;
+}
+.btn-table tbody .btn-color-variant {
+  font: var(--font-body-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  background: var(--surface-container-low);
+  vertical-align: top;
+}
+.btn-table tbody .btn-color-state {
+  font-weight: var(--font-weight-medium);
+  color: var(--on-surface);
+}
+.btn-table .btn-color-group-start > th,
+.btn-table .btn-color-group-start > td {
+  border-top: 1px solid var(--divider);
+}
+.btn-matrix-groupname { margin: 0; }
+.btn-matrix-row {
+  min-width: 950px;
+  gap: 0;
+  padding: 0;
+}
+.btn-matrix-row > div { box-sizing: border-box; padding: 12px 16px; }
+.btn-matrix-row-head {
+  background: var(--surface-container-low);
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-secondary);
+}
+.btn-matrix-state { color: var(--text-secondary); }
+.btn-matrix-row:not(.btn-matrix-row-head) .btn-matrix-label {
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--on-surface);
+}
+.btn-matrix-row + .btn-matrix-row { border-top: 1px solid var(--divider); }
+
+/* Keep the group heading aligned with the full horizontally scrollable matrix. */
+.btn-matrix-grouphead {
+  min-width: 950px;
+  box-sizing: border-box;
+  margin-bottom: 0;
+}

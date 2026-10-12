@@ -1400,19 +1400,19 @@ code {
 /* ==========================================================================
    Button · Material 3（消费 HarmonyOS 语义色彩规范）
    --------------------------------------------------------------------------
-   变体 Variant（M3 规范命名 / 别名）
-     .btn--filled    M3 Filled button        高强调 · 品牌实心   （primary）
-     .btn--tonal     M3 Filled tonal button  中强调 · 品牌淡底   （secondary）
-     .btn--outlined  M3 Outlined button      中强调 · 描边       （tertiary）
-     .btn--text      M3 Text button          低强调 · 纯文字     （plain）
+   变体 Variant（唯一 API 命名）
+     .btn--primary    M3 Primary button        高强调 · 品牌实心   （primary）
+     .btn--secondary     M3 Filled secondary button  中强调 · 品牌淡底   （secondary）
+     .btn--tertiary  M3 Tertiary button      中强调 · 描边       （tertiary）
+     .btn--text      M3 Text button          低强调 · 纯文字     （text）
 
    尺寸 Size             高     字号   图标   左右内边距  图标间距
      .btn--large        40px   16px   20px     16px        8px
-     .btn--small        28px   14px   16px     12px        4px
+     .btn--medium        32px   14px   16px     12px        4px
 
    形状 Shape（几何轴，与 variant / size 正交）
      .btn--round        跑道圆  --radius-full（默认，历史外观）
-     .btn--square       方圆角  --radius-lg（8px，规范上只用于 outlined × small）
+     .btn--square       方圆角  --radius-lg（8px，全变体 × 全尺寸）
 
    状态 State（纯 CSS，组件无内部 state）
      default → :hover → :focus-visible → :active(pressed) → :disabled
@@ -1422,15 +1422,15 @@ code {
    色彩映射：main color = --btn-main-color → --color-icon-primary（主色，不是 brand）
 
    variant     背景 background                     描边 border             文字 text
-   filled      --btn-main-color                   —                     --color-font-on-primary
-   tonal       --color-comp-background-tertiary   —                     --btn-main-color
-   outlined    透明                               --color-comp-border    --btn-main-color
+   primary      --btn-main-color                   —                     --color-background-primary
+   secondary       --color-comp-background-tertiary   —                     --btn-main-color
+   tertiary    透明                               --color-comp-border    --btn-main-color
    text        透明（任何状态都无背景）              —                     --color-font-emphasize
 
    variant     hover                          pressed                        disabled
-   filled      叠 --on-primary-10             叠 --on-primary-15              沿用静止态 + 50% 透明度
-   tonal       叠 --color-interactive-hover    叠 --color-interactive-pressed  沿用静止态 + 50% 透明度
-   outlined    叠 --color-interactive-hover    叠 --color-interactive-pressed  沿用静止态（含描边）+ 50% 透明度
+   primary      叠 --on-primary-10             叠 --on-primary-15              沿用静止态 + 50% 透明度
+   secondary       叠 --color-interactive-hover    叠 --color-interactive-pressed  沿用静止态 + 50% 透明度
+   tertiary    叠 --color-interactive-hover    叠 --color-interactive-pressed  沿用静止态（含描边）+ 50% 透明度
    text        字 --primary-hover              字 --primary-active             沿用静止态 + 50% 透明度
 
    disabled 统一模型：四个变体都保留静止态的底 / 字 / 描边，仅整体 opacity: 0.5。
@@ -1442,16 +1442,16 @@ code {
      → pressed --primary-active（brand 实色）；三档互不相同，按下有明确纵深。
 
    叠加层分两种模型（取决于静止底是浅色还是实心主色）：
-   ① tonal / outlined —— 静止底是浅色 / 透明，叠中性交互层
+   ① secondary / tertiary —— 静止底是浅色 / 透明，叠中性交互层
       --color-interactive-hover / -pressed（= container-05 / container-10，暗色各加深一档），
       即「不变静止底，只叠交互层」，与 design_system.md 的「Hover/pressed on surfaces」一致。
-     tonal    hover → container-05 叠 container-05 ≈ container-10 = --color-comp-background-secondary ✓
+     secondary    hover → container-05 叠 container-05 ≈ container-10 = --color-comp-background-secondary ✓
               pressed → container-10 叠 container-05 ≈ container-15 ✓
-     outlined hover → container-05 = --color-comp-background-tertiary ✓
+     tertiary hover → container-05 = --color-comp-background-tertiary ✓
               pressed → container-10 = --color-comp-background-secondary ✓
-   ② filled —— 静止底是 --btn-main-color（默认近黑 / 近白实心），中性层叠在其上对比度极低
+   ② primary —— 静止底是 --btn-main-color（默认近黑 / 近白实心），中性层叠在其上对比度极低
       （视觉上接近无变化），所以改用「主色上的颜色」--on-primary-10 / -15 作叠加层。
-      M3 Filled button 的 state layer 规范即为 on-primary，因此这不是特例而是对齐规范。
+      M3 Primary button 的 state layer 规范即为 on-primary，因此这不是特例而是对齐规范。
       该令牌明色为白基、暗色为黑基，自带翻转，一个值覆盖两个模式且方向都正确：
         Light：rgba(0,0,0,.9) 上叠白 10% → 合成后明度约从 10% 灰升到 19% 灰，比黑色浅一点 ✓
         Dark ：rgba(255,255,255,.9) 上叠黑 10% → 变深一档，反馈同样可见 ✓
@@ -1460,20 +1460,18 @@ code {
    聚焦环：--btn-focus-ring = --black（纯黑 1px + --outline-offset-gap 间隙）。
      text 变体无容器，focus 不画描边环（--btn-focus-ring: transparent）。
 
-   Dark Mode（html.dark）：
-     filled 的底 = --color-icon-primary，暗色下翻为近白；文字跟随翻黑（见 .dark .btn--filled）。
-     其叠加层 --on-primary-10 / -15 在暗色下翻为黑基，叠加方向自动变成「变深」，无需额外规则。
-     其余变体的底 / 字都引用了自带翻转的语义 token，无需额外规则。
+   Dark Mode：背景与文字均消费自动翻转的语义 token。
 
    所有 --btn-* 都是可覆盖契约，单实例定制：
      <Button className="my-btn" />  +  .my-btn { --btn-padding-inline: 32px; }
    ========================================================================== */
 
 .btn {
-  /* ── 尺寸契约（由 .btn--large / .btn--small 覆写）── */
+  /* ── 尺寸契约（由 .btn--large / .btn--medium 覆写）── */
   --btn-height: 40px;
   --btn-padding-inline: 16px;
   --btn-font-size: var(--font-size-md);
+  --btn-font-weight: var(--font-weight-medium);
   --btn-icon-size: 20px;
   --btn-icon-gap: 8px;
 
@@ -1511,7 +1509,7 @@ code {
   color: var(--btn-label);
   font-family: var(--font-family);
   font-size: var(--btn-font-size);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--btn-font-weight);
   line-height: var(--line-height-none);
   white-space: nowrap;
   text-decoration: none;
@@ -1594,30 +1592,30 @@ code {
   --btn-height: 40px;
   --btn-padding-inline: 16px;
   --btn-font-size: var(--font-size-md); /* 16px */
+  --btn-font-weight: var(--font-weight-medium); /* 500 */
   --btn-icon-size: 20px;
   --btn-icon-gap: 8px;
 }
 
-.btn--small {
-  --btn-height: 28px;
+.btn--medium {
+  --btn-height: 32px;
   --btn-padding-inline: 12px;
   --btn-font-size: var(--font-size-base); /* 14px */
+  --btn-font-weight: var(--font-weight-medium); /* 500 */
   --btn-icon-size: 16px;
   --btn-icon-gap: 4px;
 }
 
 /* ── 形状 Shape：与 variant / size 正交的第三个轴 ────────
    形状不并入变体名：variant 表达强调层级，shape 表达几何，
-   两者相乘会让命名膨胀（filled-round / filled-square / tonal-round…）并使别名失效。 */
+   两者相乘会让命名膨胀（primary-round / primary-square / secondary-round…）。 */
 
 /* Round：跑道圆（默认外观，与历史版本一致，向后兼容） */
 .btn--round {
   --btn-radius: var(--radius-full);
 }
 
-/* Square：方圆角 8px（--radius-lg）。
-   design system 里只用于 outlined × small 这一个组合；组件不做静默降级，
-   其它组合传了 square 也照常渲染，合规性由调用方（presets.isShapeSupported）判断。 */
+/* Square：方圆角 8px（--radius-lg），支持全部 variant × size。 */
 .btn--square {
   --btn-radius: var(--radius-lg);
 }
@@ -1625,41 +1623,34 @@ code {
 /* ── 变体：颜色契约 ─────────────────────────────────── */
 
 /* Filled：main color 实心 + 纯白文字。
-   hover / pressed 用「主色上的颜色」--on-primary-10 / -15 作叠加层（M3 Filled button 的
+   hover / pressed 用「主色上的颜色」--on-primary-10 / -15 作叠加层（M3 Primary button 的
    state layer 规范即为 on-primary）：该令牌明色为白基、暗色为黑基，自带翻转，
    所以浅色下近黑实心变浅、暗色下近白实心变深，两个模式方向都对。
    disabled：沿用静止态（实心底 + 纯白文字）整体 50% 透明度。 */
-.btn--filled {
+.btn--primary {
   --btn-container: var(--btn-main-color);
-  --btn-label: var(--color-font-on-primary);
+  --btn-label: var(--color-background-primary);
   --btn-state-layer-hover: var(--on-primary-10);
   --btn-state-layer-pressed: var(--on-primary-15);
 }
 
-/* Filled · Dark Mode：主色实心在暗色下翻为近白（--primary-90 → rgba(255,255,255,.9)），
-   文字必须随之翻成黑色，否则白底白字不可读。
-   注意：style 层的 --on-primary 被 theme.css 的 :root 固定为 --white（与 base.css 的
-   .dark 同权重且更晚加载，导致暗色下不翻转），所以只能按 html.dark 约定在组件内覆盖。
-   只覆盖文字色，底 / 叠加层 / disabled 继续沿用上面的契约（叠加层 --on-primary-* 自带翻转）。 */
-.dark .btn--filled {
-  --btn-label: var(--black);
-}
+/* Primary 的反差文字使用 --color-background-primary，随主题自动翻转；不依赖 scope 外祖先选择器。 */
 
 /* Tonal：静止 comp_background_tertiary，叠加 --color-interactive-* 得到
    hover ≈ comp_background_secondary（container-10）、pressed ≈ container-15
    （叠层规则见 design_system「Hover/pressed on surfaces」）。
    disabled：沿用静止态配色，整体 50% 透明度。 */
-.btn--tonal {
+.btn--secondary {
   --btn-container: var(--color-comp-background-tertiary);
   --btn-label: var(--btn-main-color);
   --btn-state-layer-hover: var(--color-interactive-hover);
   --btn-state-layer-pressed: var(--color-interactive-pressed);
 }
 
-/* Outlined：透明底 + 1px 中性描边 + 主色文字；描边不随状态变化
+/* Tertiary：透明底 + 1px 中性描边 + 主色文字；描边不随状态变化
    hover = comp_background_tertiary（container-05）、pressed = comp_background_secondary（container-10）
    disabled：沿用静止态配色（含描边），整体 50% 透明度。 */
-.btn--outlined {
+.btn--tertiary {
   --btn-label: var(--btn-main-color);
   --btn-border-width: var(--border-width-thin);
   --btn-border-color: var(--color-comp-border);
@@ -1683,6 +1674,13 @@ code {
 
 /* ── 内容 ───────────────────────────────────────────── */
 .btn__icon {
+  background-color: currentColor;
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
@@ -1702,15 +1700,17 @@ code {
   --dropdown-btn-padding-end: 12px;
 }
 
-.dropdown-btn.btn--small {
+.dropdown-btn.btn--medium {
   --dropdown-btn-padding-end: 8px;
 }
 
-.dropdown-btn.btn--xs {
+.dropdown-btn.btn--small {
   --btn-height: 28px;
   --btn-padding-inline: 8px;
+  padding-inline-start: 8px;
   --dropdown-btn-padding-end: 8px;
   --btn-font-size: var(--font-size-sm); /* 12px */
+  --btn-font-weight: var(--font-weight-regular); /* 400 */
   --btn-icon-size: 16px;
   --btn-icon-gap: 4px;
 }
@@ -1719,7 +1719,7 @@ code {
   padding-inline-end: var(--dropdown-btn-padding-end);
 }
 
-/* Dropdown Plain uses neutral content and the same state fills as Tertiary. */
+/* Dropdown Text uses neutral content and the same state fills as Tertiary. */
 .dropdown-btn.btn--text {
   --btn-label: var(--btn-main-color);
   --btn-label-hover: var(--btn-label);
@@ -1728,17 +1728,12 @@ code {
   --btn-state-layer-pressed: var(--color-interactive-pressed);
 }
 
-/* Compact square trigger: a dedicated exception for outlined + small. */
-.dropdown-btn.btn--outlined.btn--small.btn--square {
-  --btn-height: 32px;
+/* Compact square trigger: a dedicated exception for tertiary + medium. */
+.dropdown-btn.btn--tertiary.btn--medium.btn--square {
   padding-inline-start: 8px;
   padding-inline-end: 4px;
 }
 
-/* XS Outlined is always the 8px-radius square version. */
-.dropdown-btn.btn--outlined.btn--xs {
-  --btn-radius: var(--radius-lg);
-}
 
 .dropdown-btn__asset {
   display: block;
@@ -1767,150 +1762,37 @@ code {
   --dropdown-btn-icon: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPG1hc2sgaWQ9Im1hc2swXzU4MV81IiBzdHlsZT0ibWFzay10eXBlOmx1bWluYW5jZSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMyIgeT0iMyIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIj4KPHBhdGggZD0iTTEzIDNIM1YxM0gxM1YzWiIgZmlsbD0id2hpdGUiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzU4MV81KSI+CjxtYXNrIGlkPSJtYXNrMV81ODFfNSIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjMiIHk9IjMiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCI+CjxwYXRoIGQ9Ik0xMyAzSDNWMTNIMTNWM1oiIGZpbGw9IndoaXRlIi8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMV81ODFfNSkiPgo8cGF0aCBkPSJNMTIuMDYyNSA1LjkxNjVMOCAxMC4wODMyTDMuOTM3NSA1LjkxNjUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS1vcGFjaXR5PSIwLjg5ODAzOSIgc3Ryb2tlLXdpZHRoPSIwLjgzMzMzMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjwvZz4KPC9nPgo8L3N2Zz4K");
 }
 
-/* ===== Tag =====
-   三种形态：diff 增删标签 / icon 图标文字标签 / tab 可选中圆角标签 */
-
-.tag {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  width: auto;
-  white-space: nowrap;
-  font-family: var(--font-family);
-  transition: background-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
-}
-
-.tag__icon {
-  flex-shrink: 0;
-}
-
-/* ── 1. 代码增删标签：12px 文字 / 18px 行高，左右内边距 4px、上下 0，全圆角（999px）──
-   上下内边距为 0，标签高度即行高 18px；行高显式写死 18px，
-   避免日后调整字号时被 font 简写的比例行高带偏。 */
-.tag--diff-add,
-.tag--diff-remove {
-  padding: 0 4px;
-  border-radius: var(--radius-full); /* 999px */
-  font: var(--font-caption-lg); /* 12px / 1.5 */
-  line-height: 18px;
-}
-
-/* 用户指定色：绿底绿字 / 红底红字 */
-.tag--diff-add {
-  background-color: #D5F2DC;
-  color: #01802B;
-}
-
-.tag--diff-remove {
-  background-color: #FCE3E0;
-  color: #BF0A1C;
-}
-
-/* 增删一体容器：绿 + 红两个标签固定成对，间距 4px */
-.tag-diff-pair {
-  display: inline-flex;
-  align-items: center;
-  width: auto;
-}
-
-/* ── 2. 图标 + 文字标签：14px 图标 + 12px 文字，间距 4px，container5 底色，8/4 内边距 ── */
-.tag--icon {
-  gap: 4px;
-  padding: 4px 8px;
-  border-radius: var(--radius-badge);
-  background-color: var(--container-05);
-  color: var(--color-font-primary);
-  font: var(--font-caption-lg); /* 12px / 1.5 */
-  line-height: 16px;
-}
-
-.tag--icon .tag__icon {
-  color: var(--color-icon-primary);
-}
-
-/* ── 3. 可选中圆角标签：16px 图标 + 16px 文字 / 20px 行高，间距 6px，16/8 内边距 ──
-   行高按规格固定 20px（非 16×1.5），标签高度 = 20 + 8×2 = 36px。 */
-.tag--tab {
-  --tag-tab-bg: var(--color-comp-background-tertiary);
-  --tag-tab-bg-hover: var(--container-10);
-  --tag-tab-bg-selected: var(--container-90);
-  --tag-tab-bg-selected-hover: var(--container-80);
-
-  gap: 6px;
-  padding: 8px 16px;
-  border: none;
-  border-radius: var(--radius-3xl); /* 20px */
-  background-color: var(--tag-tab-bg);
-  color: var(--color-font-secondary);
-  font: var(--font-body-lg); /* 16px / 1.5 */
-  line-height: 20px; /* 规格：行高 20px */
-  font-weight: var(--font-weight-regular);
-  cursor: pointer;
-}
-
-.tag--tab .tag__icon {
-  color: var(--container-60);
-}
-
-.tag--tab:hover:not(.tag--disabled):not(.tag--static) {
-  background-color: var(--tag-tab-bg-hover);
-}
-
-.tag--tab:focus-visible {
-  outline: var(--outline-width-focus) solid var(--focus-ring);
-  outline-offset: var(--outline-offset-gap);
-}
-
-/* 禁用态：静态形态（span）与交互形态（button）表现一致 */
-.tag--tab.tag--disabled {
-  color: var(--text-disabled);
-  cursor: not-allowed;
-}
-
-.tag--tab.tag--disabled .tag__icon {
-  color: var(--text-disabled);
-}
-
-/* 选中态：container90 底 + font_on_primary 文字 + Medium 字重 */
-.tag--tab.tag--selected {
-  background-color: var(--tag-tab-bg-selected);
-  color: var(--color-font-on-primary);
-  font-weight: var(--font-weight-medium);
-}
-
-.tag--tab.tag--selected .tag__icon {
-  color: var(--color-icon-on-primary);
-}
-
-.tag--tab.tag--selected:hover:not(.tag--disabled):not(.tag--static) {
-  background-color: var(--tag-tab-bg-selected-hover);
-}
-
-/* 静态形态：仅展示，不响应 hover、不显示手型 */
-.tag--tab.tag--static {
-  cursor: default;
-}
-
-.tag--tab.tag--static.tag--disabled {
-  cursor: not-allowed;
-}
-
-/* dark 模式下 container90 会翻转为浅色，与白色文字冲突 —— 改用深灰底保持对比 */
-.dark .tag--tab {
-  --tag-tab-bg-hover: var(--container-15);
-  --tag-tab-bg-selected: var(--gray-02);
-  --tag-tab-bg-selected-hover: var(--gray-03);
-}
-
-/* ── 标签行容器 ── */
-.tag-group {
+.dropdown-btn__asset img {
+  display: block;
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  height: 100%;
+  object-fit: contain;
 }
+
+.dropdown-btn.btn--primary .dropdown-btn__indicator,
+.dropdown-btn.btn--primary .dropdown-btn__asset {
+  background-color: var(--color-icon-on-primary);
+}
+
+.dropdown-btn.btn--primary .dropdown-btn__asset {
+  mask: var(--dropdown-asset) center / contain no-repeat;
+  -webkit-mask: var(--dropdown-asset) center / contain no-repeat;
+}
+
+.dropdown-btn.btn--primary .dropdown-btn__asset img {
+  opacity: 0;
+}
+
+.tag { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; white-space:nowrap; gap:4px; font-family:var(--font-family); font-weight:var(--font-weight-regular); background:var(--container-05); color:var(--color-font-primary); }
+.tag--medium { height:24px; padding:0 8px; font-size:14px; line-height:20px; }
+.tag--small { height:20px; padding:0 6px; font-size:12px; line-height:16px; }
+.tag--round { border-radius:var(--radius-full); }
+.tag--square { border-radius:var(--radius-badge); }
+.tag--green { background:var(--color-success-container); color:var(--color-success); }
+.tag--red { background:var(--color-error-container); color:var(--color-error); }
+.tag__icon { width:14px; height:14px; flex-shrink:0; background:currentColor; mask:center / contain no-repeat; }
+.tag--small .tag__icon { width:12px; height:12px; }
+.tag-diff-pair { display:inline-flex; align-items:center; }
 
 .artifact-summary {
   display: flex;
@@ -2017,7 +1899,7 @@ code {
   gap: 8px;
 }
 
-.artifact-summary__undo.btn--small {
+.artifact-summary__undo.btn--medium {
   --btn-padding-inline: 10px;
   --btn-border-width: var(--border-width-none);
   --btn-container: transparent;
@@ -2026,7 +1908,7 @@ code {
   --btn-label-pressed: var(--color-font-primary);
 }
 
-.artifact-summary__review.btn--small {
+.artifact-summary__review.btn--medium {
   --btn-padding-inline: 8px;
   --btn-border-width: var(--border-width-thin);
   --btn-border-color: var(--color-interactive-click);
@@ -2154,150 +2036,16 @@ code {
 
 }
 @scope (.preview-task-card) {
-/* ===== Tag =====
-   三种形态：diff 增删标签 / icon 图标文字标签 / tab 可选中圆角标签 */
-
-.tag {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  width: auto;
-  white-space: nowrap;
-  font-family: var(--font-family);
-  transition: background-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
-}
-
-.tag__icon {
-  flex-shrink: 0;
-}
-
-/* ── 1. 代码增删标签：12px 文字 / 18px 行高，左右内边距 4px、上下 0，全圆角（999px）──
-   上下内边距为 0，标签高度即行高 18px；行高显式写死 18px，
-   避免日后调整字号时被 font 简写的比例行高带偏。 */
-.tag--diff-add,
-.tag--diff-remove {
-  padding: 0 4px;
-  border-radius: var(--radius-full); /* 999px */
-  font: var(--font-caption-lg); /* 12px / 1.5 */
-  line-height: 18px;
-}
-
-/* 用户指定色：绿底绿字 / 红底红字 */
-.tag--diff-add {
-  background-color: #D5F2DC;
-  color: #01802B;
-}
-
-.tag--diff-remove {
-  background-color: #FCE3E0;
-  color: #BF0A1C;
-}
-
-/* 增删一体容器：绿 + 红两个标签固定成对，间距 4px */
-.tag-diff-pair {
-  display: inline-flex;
-  align-items: center;
-  width: auto;
-}
-
-/* ── 2. 图标 + 文字标签：14px 图标 + 12px 文字，间距 4px，container5 底色，8/4 内边距 ── */
-.tag--icon {
-  gap: 4px;
-  padding: 4px 8px;
-  border-radius: var(--radius-badge);
-  background-color: var(--container-05);
-  color: var(--color-font-primary);
-  font: var(--font-caption-lg); /* 12px / 1.5 */
-  line-height: 16px;
-}
-
-.tag--icon .tag__icon {
-  color: var(--color-icon-primary);
-}
-
-/* ── 3. 可选中圆角标签：16px 图标 + 16px 文字 / 20px 行高，间距 6px，16/8 内边距 ──
-   行高按规格固定 20px（非 16×1.5），标签高度 = 20 + 8×2 = 36px。 */
-.tag--tab {
-  --tag-tab-bg: var(--color-comp-background-tertiary);
-  --tag-tab-bg-hover: var(--container-10);
-  --tag-tab-bg-selected: var(--container-90);
-  --tag-tab-bg-selected-hover: var(--container-80);
-
-  gap: 6px;
-  padding: 8px 16px;
-  border: none;
-  border-radius: var(--radius-3xl); /* 20px */
-  background-color: var(--tag-tab-bg);
-  color: var(--color-font-secondary);
-  font: var(--font-body-lg); /* 16px / 1.5 */
-  line-height: 20px; /* 规格：行高 20px */
-  font-weight: var(--font-weight-regular);
-  cursor: pointer;
-}
-
-.tag--tab .tag__icon {
-  color: var(--container-60);
-}
-
-.tag--tab:hover:not(.tag--disabled):not(.tag--static) {
-  background-color: var(--tag-tab-bg-hover);
-}
-
-.tag--tab:focus-visible {
-  outline: var(--outline-width-focus) solid var(--focus-ring);
-  outline-offset: var(--outline-offset-gap);
-}
-
-/* 禁用态：静态形态（span）与交互形态（button）表现一致 */
-.tag--tab.tag--disabled {
-  color: var(--text-disabled);
-  cursor: not-allowed;
-}
-
-.tag--tab.tag--disabled .tag__icon {
-  color: var(--text-disabled);
-}
-
-/* 选中态：container90 底 + font_on_primary 文字 + Medium 字重 */
-.tag--tab.tag--selected {
-  background-color: var(--tag-tab-bg-selected);
-  color: var(--color-font-on-primary);
-  font-weight: var(--font-weight-medium);
-}
-
-.tag--tab.tag--selected .tag__icon {
-  color: var(--color-icon-on-primary);
-}
-
-.tag--tab.tag--selected:hover:not(.tag--disabled):not(.tag--static) {
-  background-color: var(--tag-tab-bg-selected-hover);
-}
-
-/* 静态形态：仅展示，不响应 hover、不显示手型 */
-.tag--tab.tag--static {
-  cursor: default;
-}
-
-.tag--tab.tag--static.tag--disabled {
-  cursor: not-allowed;
-}
-
-/* dark 模式下 container90 会翻转为浅色，与白色文字冲突 —— 改用深灰底保持对比 */
-.dark .tag--tab {
-  --tag-tab-bg-hover: var(--container-15);
-  --tag-tab-bg-selected: var(--gray-02);
-  --tag-tab-bg-selected-hover: var(--gray-03);
-}
-
-/* ── 标签行容器 ── */
-.tag-group {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
+.tag { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; white-space:nowrap; gap:4px; font-family:var(--font-family); font-weight:var(--font-weight-regular); background:var(--container-05); color:var(--color-font-primary); }
+.tag--medium { height:24px; padding:0 8px; font-size:14px; line-height:20px; }
+.tag--small { height:20px; padding:0 6px; font-size:12px; line-height:16px; }
+.tag--round { border-radius:var(--radius-full); }
+.tag--square { border-radius:var(--radius-badge); }
+.tag--green { background:var(--color-success-container); color:var(--color-success); }
+.tag--red { background:var(--color-error-container); color:var(--color-error); }
+.tag__icon { width:14px; height:14px; flex-shrink:0; background:currentColor; mask:center / contain no-repeat; }
+.tag--small .tag__icon { width:12px; height:12px; }
+.tag-diff-pair { display:inline-flex; align-items:center; }
 
 /* ── 固定尺寸：轨道 36 × 20，滑块 16，四周内边距 2 ── */
 .tg-root {
@@ -2503,7 +2251,7 @@ code {
   flex: 0 0 auto;
 }
 
-/* 开关：不参与拉伸，尺寸由原子 Toggle 自带（36 × 20） */
+/* 开关：不参与拉伸，尺寸由原子 Switch 自带（36 × 20） */
 .task-card__switch {
   flex: 0 0 auto;
 }
@@ -2763,7 +2511,7 @@ function Gallery({
 }
 },
 "assets/shared/icons.js": function(module, exports, require) {
-const LUCIDE = {"bot":[["path",{"d":"M12 8V4H8"}],["rect",{"width":"16","height":"12","x":"4","y":"8","rx":"2"}],["path",{"d":"M2 14h2"}],["path",{"d":"M20 14h2"}],["path",{"d":"M15 13v2"}],["path",{"d":"M9 13v2"}]],"calendar-clock":[["path",{"d":"M16 14v2.2l1.6 1"}],["path",{"d":"M16 2v3"}],["path",{"d":"M21 7.338V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h2.338"}],["path",{"d":"M3 9h5.859"}],["path",{"d":"M8 2v3"}],["circle",{"cx":"16","cy":"16","r":"6"}]],"chart-column":[["path",{"d":"M3 3v16a2 2 0 0 0 2 2h16"}],["path",{"d":"M18 17V9"}],["path",{"d":"M13 17V5"}],["path",{"d":"M8 17v-3"}]],"chevron-down":[["path",{"d":"m6 9 6 6 6-6"}]],"circle":[["circle",{"cx":"12","cy":"12","r":"10"}]],"clock":[["circle",{"cx":"12","cy":"12","r":"10"}],["path",{"d":"M12 6v6l4 2"}]],"database":[["ellipse",{"cx":"12","cy":"5","rx":"9","ry":"3"}],["path",{"d":"M3 5V19A9 3 0 0 0 21 19V5"}],["path",{"d":"M3 12A9 3 0 0 0 21 12"}]],"eye-off":[["path",{"d":"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"}],["path",{"d":"M14.084 14.158a3 3 0 0 1-4.242-4.242"}],["path",{"d":"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"}],["path",{"d":"m2 2 20 20"}]],"file":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}]],"file-text":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"M10 9H8"}],["path",{"d":"M16 13H8"}],["path",{"d":"M16 17H8"}]],"focus":[["circle",{"cx":"12","cy":"12","r":"3"}],["path",{"d":"M3 7V5a2 2 0 0 1 2-2h2"}],["path",{"d":"M17 3h2a2 2 0 0 1 2 2v2"}],["path",{"d":"M21 17v2a2 2 0 0 1-2 2h-2"}],["path",{"d":"M7 21H5a2 2 0 0 1-2-2v-2"}]],"lock":[["rect",{"width":"18","height":"11","x":"3","y":"11","rx":"2","ry":"2"}],["path",{"d":"M7 11V7a5 5 0 0 1 10 0v4"}]],"moon":[["path",{"d":"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"}]],"repeat":[["path",{"d":"m17 2 4 4-4 4"}],["path",{"d":"M3 11v-1a4 4 0 0 1 4-4h14"}],["path",{"d":"m7 22-4-4 4-4"}],["path",{"d":"M21 13v1a4 4 0 0 1-4 4H3"}]],"rocket":[["path",{"d":"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"}],["path",{"d":"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"}],["path",{"d":"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"}],["path",{"d":"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"}]],"shield-check":[["path",{"d":"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"}],["path",{"d":"m9 12 2 2 4-4"}]],"sparkles":[["path",{"d":"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"}],["path",{"d":"M20 2v4"}],["path",{"d":"M22 4h-4"}],["circle",{"cx":"4","cy":"20","r":"2"}]],"square":[["rect",{"width":"18","height":"18","x":"3","y":"3","rx":"2"}]],"sun":[["circle",{"cx":"12","cy":"12","r":"4"}],["path",{"d":"M12 2v2"}],["path",{"d":"M12 20v2"}],["path",{"d":"m4.93 4.93 1.41 1.41"}],["path",{"d":"m17.66 17.66 1.41 1.41"}],["path",{"d":"M2 12h2"}],["path",{"d":"M20 12h2"}],["path",{"d":"m6.34 17.66-1.41 1.41"}],["path",{"d":"m19.07 4.93-1.41 1.41"}]],"tag":[["path",{"d":"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"}],["circle",{"cx":"7.5","cy":"7.5","r":".5","fill":"currentColor"}]],"terminal":[["path",{"d":"M12 19h8"}],["path",{"d":"m4 17 6-6-6-6"}]],"timer":[["line",{"x1":"10","x2":"14","y1":"2","y2":"2"}],["line",{"x1":"12","x2":"15","y1":"14","y2":"11"}],["circle",{"cx":"12","cy":"14","r":"8"}]],"workflow":[["rect",{"width":"8","height":"8","x":"3","y":"3","rx":"2"}],["path",{"d":"M7 11v4a2 2 0 0 0 2 2h4"}],["rect",{"width":"8","height":"8","x":"13","y":"13","rx":"2"}]],"zap":[["path",{"d":"M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"}]]};
+const LUCIDE = {"bot":[["path",{"d":"M12 8V4H8"}],["rect",{"width":"16","height":"12","x":"4","y":"8","rx":"2"}],["path",{"d":"M2 14h2"}],["path",{"d":"M20 14h2"}],["path",{"d":"M15 13v2"}],["path",{"d":"M9 13v2"}]],"calendar-clock":[["path",{"d":"M16 14v2.2l1.6 1"}],["path",{"d":"M16 2v3"}],["path",{"d":"M21 7.338V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h2.338"}],["path",{"d":"M3 9h5.859"}],["path",{"d":"M8 2v3"}],["circle",{"cx":"16","cy":"16","r":"6"}]],"chart-column":[["path",{"d":"M3 3v16a2 2 0 0 0 2 2h16"}],["path",{"d":"M18 17V9"}],["path",{"d":"M13 17V5"}],["path",{"d":"M8 17v-3"}]],"chevron-down":[["path",{"d":"m6 9 6 6 6-6"}]],"circle":[["circle",{"cx":"12","cy":"12","r":"10"}]],"clock":[["circle",{"cx":"12","cy":"12","r":"10"}],["path",{"d":"M12 6v6l4 2"}]],"database":[["ellipse",{"cx":"12","cy":"5","rx":"9","ry":"3"}],["path",{"d":"M3 5V19A9 3 0 0 0 21 19V5"}],["path",{"d":"M3 12A9 3 0 0 0 21 12"}]],"eye-off":[["path",{"d":"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"}],["path",{"d":"M14.084 14.158a3 3 0 0 1-4.242-4.242"}],["path",{"d":"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"}],["path",{"d":"m2 2 20 20"}]],"file":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}]],"file-text":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"M10 9H8"}],["path",{"d":"M16 13H8"}],["path",{"d":"M16 17H8"}]],"lock":[["rect",{"width":"18","height":"11","x":"3","y":"11","rx":"2","ry":"2"}],["path",{"d":"M7 11V7a5 5 0 0 1 10 0v4"}]],"moon":[["path",{"d":"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"}]],"repeat":[["path",{"d":"m17 2 4 4-4 4"}],["path",{"d":"M3 11v-1a4 4 0 0 1 4-4h14"}],["path",{"d":"m7 22-4-4 4-4"}],["path",{"d":"M21 13v1a4 4 0 0 1-4 4H3"}]],"rocket":[["path",{"d":"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"}],["path",{"d":"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"}],["path",{"d":"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"}],["path",{"d":"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"}]],"shield-check":[["path",{"d":"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"}],["path",{"d":"m9 12 2 2 4-4"}]],"sparkles":[["path",{"d":"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"}],["path",{"d":"M20 2v4"}],["path",{"d":"M22 4h-4"}],["circle",{"cx":"4","cy":"20","r":"2"}]],"square":[["rect",{"width":"18","height":"18","x":"3","y":"3","rx":"2"}]],"sun":[["circle",{"cx":"12","cy":"12","r":"4"}],["path",{"d":"M12 2v2"}],["path",{"d":"M12 20v2"}],["path",{"d":"m4.93 4.93 1.41 1.41"}],["path",{"d":"m17.66 17.66 1.41 1.41"}],["path",{"d":"M2 12h2"}],["path",{"d":"M20 12h2"}],["path",{"d":"m6.34 17.66-1.41 1.41"}],["path",{"d":"m19.07 4.93-1.41 1.41"}]],"tag":[["path",{"d":"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"}],["circle",{"cx":"7.5","cy":"7.5","r":".5","fill":"currentColor"}]],"terminal":[["path",{"d":"M12 19h8"}],["path",{"d":"m4 17 6-6-6-6"}]],"timer":[["line",{"x1":"10","x2":"14","y1":"2","y2":"2"}],["line",{"x1":"12","x2":"15","y1":"14","y2":"11"}],["circle",{"cx":"12","cy":"14","r":"8"}]],"workflow":[["rect",{"width":"8","height":"8","x":"3","y":"3","rx":"2"}],["path",{"d":"M7 11v4a2 2 0 0 0 2 2h4"}],["rect",{"width":"8","height":"8","x":"13","y":"13","rx":"2"}]],"zap":[["path",{"d":"M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"}]]};
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3251,7 +2999,7 @@ function Icon({
   });
 }
 },
-"large-components/components/ArtifactSummary/preview.jsx": function(module, exports, require) {
+"large-components/previews/ArtifactSummary/preview.jsx": function(module, exports, require) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3259,7 +3007,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = ArtifactSummaryPanel;
 var _react = _interopRequireWildcard(require("react"));
-var _index = _interopRequireDefault(require("./index.jsx"));
+var _index = _interopRequireDefault(require("../../components/ArtifactSummary/index.jsx"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
@@ -3573,13 +3321,13 @@ require("./index.css");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 const FILE_TYPE_ICONS = {
-  PDF: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPG1hc2sgaWQ9Im1hc2swXzU3M180IiBzdHlsZT0ibWFzay10eXBlOmx1bWluYW5jZSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMCIgeT0iMCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj4KPHBhdGggZD0iTTMyIDBIMFYzMkgzMlYwWiIgZmlsbD0id2hpdGUiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzU3M180KSI+CjxtYXNrIGlkPSJtYXNrMV81NzNfNCIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+CjxwYXRoIGQ9Ik0zMiAwSDBWMzJIMzJWMFoiIGZpbGw9IndoaXRlIi8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMV81NzNfNCkiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIwLjg2NiAwLjMzMzMxM0g3LjQzOTUxQzQuNjc5NTEgMC4zMzMzMTMgMi40Mzk1MSAyLjU2NjY1IDIuNDM5NTEgNS4zMzMzMVYyNi42NjY2QzIuNDM5NTEgMjkuNDI2NiA0LjY3OTUxIDMxLjY2NjYgNy40Mzk1MSAzMS42NjY2SDI0LjU1M0MyNy4zMTMgMzEuNjY2NiAyOS41NTMgMjkuNDI2NiAyOS41NTMgMjYuNjY2NlY5LjAxMzMxQzI5LjU1MyA4LjY1OTk4IDI5LjQwNiA4LjMxOTk4IDI5LjE1OSA4LjA3MzMxTDIxLjgwNiAwLjcxOTk4QzIxLjU1OSAwLjQ3MzMxMyAyMS4yMTkgMC4zMzMzMTMgMjAuODY2IDAuMzMzMzEzWiIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzU3M180KSIvPgo8ZyBvcGFjaXR5PSIwLjYiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIwLjg2NiAwLjMzMzMxM0gyMC40MzlDMjAuOTc5IDAuMzMzMzEzIDIxLjQxMyAwLjc2NjY0NiAyMS40MTMgMS4yOTk5OFY1Ljc5OTk4QzIxLjQxMyA3LjI2NjY1IDIyLjYxMyA4LjQ2NjY1IDI0LjA3OSA4LjQ2NjY1SDI4LjU3OUMyOS4xMTMgOC40NjY2NSAyOS41NTMgOC44OTk5OCAyOS41NTMgOS40MzMzMVY5LjAxMzMxQzI5LjU1MyA4LjY1OTk4IDI5LjQwNiA4LjMxOTk4IDI5LjE1OSA4LjA3MzMxTDIxLjgwNiAwLjcxOTk4QzIxLjU1OSAwLjQ3MzMxMyAyMS4yMTkgMC4zMzMzMTMgMjAuODY2IDAuMzMzMzEzWiIgZmlsbD0idXJsKCNwYWludDFfbGluZWFyXzU3M180KSIvPgo8L2c+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTUuMzM0IDE4LjU4QzE1LjM5NCAxOC42NiAxNS40NTQgMTguNzQgMTUuNTE0IDE4LjgyNjdDMTUuNTM0IDE4Ljg0NjcgMTUuNTU0IDE4Ljg3MzQgMTUuNTc0IDE4LjlDMTUuNDM0IDE4LjkzMzQgMTUuMyAxOC45NjY3IDE1LjE2IDE5QzE1LjIyIDE4Ljg2IDE1LjI4IDE4LjcyIDE1LjMzNCAxOC41OFpNMTQuMDQgMTYuNDUzNEMxMy43MiAxNy4yNiAxMy4zNCAxOC4xNzM0IDEyLjkgMTkuMkMxMi44MTQgMTkuNCAxMi43MjcgMTkuNiAxMi42NDcgMTkuNzg2N0MxMS4zNjAyIDIwLjI4NjcgMTAuMjUzNSAyMC44OTM0IDkuMzI2OTIgMjEuNjEzNEM4LjU2NjkyIDIyLjE5MzQgOC4wNjY5MiAyMi43ODY3IDcuODEzNTIgMjMuMzhDNy42MjAyMiAyMy44NCA3LjU2NjgzIDI0LjI2NjcgNy42NTM1MyAyNC42NkM3LjczMzUzIDI1LjAyNjcgNy45MzM1MyAyNS4zNjY3IDguMjYwMjMgMjUuNjhDOC42NTM1MyAyNi4wNjY3IDkuMDczNTMgMjYuMjkzNCA5LjUyMDIzIDI2LjM2NjdDOS43NTM1MyAyNi40IDEwLjAwMDIgMjYuMzkzNCAxMC4yNDY4IDI2LjMzMzRDMTAuODMzNSAyNi4yMTM0IDExLjM5MzUgMjUuODIgMTEuOTQ2OSAyNS4xNjY3QzEyLjU2NyAyNC40MjY3IDEzLjI5NCAyMy4xNjY3IDE0LjEyIDIxLjM4QzE0LjQ3NCAyMS4yNiAxNC44NDcgMjEuMTUzNCAxNS4yMzQgMjEuMDQ2N0MxNS45MDcgMjAuODY2NyAxNi41NDcgMjAuNzIgMTcuMTYgMjAuNkMxNy42NzQgMjEuMDQ2NyAxOC4yMiAyMS40MzM0IDE4LjggMjEuNzZDMTkuMjYgMjIuMDIgMTkuNzQ3IDIyLjI0IDIwLjI0NyAyMi40MjY3QzIxLjE2NyAyMi43NiAyMS45NTQgMjIuODYgMjIuNjI3IDIyLjcyNjdDMjMuMTM0IDIyLjYyIDIzLjUyNyAyMi40MTM0IDIzLjgwNyAyMi4xQzI0LjA2NyAyMS44MTM0IDI0LjIyIDIxLjQyNjcgMjQuMjggMjAuOTUzNEMyNC4zMzQgMjAuNTI2NyAyNC4yOCAyMC4xNCAyNC4xMiAxOS44MDY3QzIzLjk0IDE5LjQxMzQgMjMuNjA3IDE5LjA4NjcgMjMuMTM0IDE4LjgyQzIyLjU2IDE4LjUwNjcgMjEuNzY3IDE4LjMyNjcgMjAuNzYgMTguMjg2N0MxOS44NjcgMTguMjUzNCAxOC44ODcgMTguMzEzNCAxNy44MiAxOC40NjY3QzE3LjU3NCAxOC4yMDY3IDE3LjM0IDE3LjkyNjcgMTcuMTIgMTcuNjI2N0MxNi43ODcgMTcuMTggMTYuNDk0IDE2Ljc0IDE2LjIzNCAxNi4zMDY3QzE2LjYzNCAxNS4yMiAxNi45MTQgMTQuMzQ2NyAxNy4wNjcgMTMuNjg2N0MxNy4zIDEyLjY2IDE3LjMzNCAxMS44NCAxNy4xNiAxMS4yNEMxNy4wMjcgMTAuNzczNCAxNi44MDcgMTAuNDIgMTYuNSAxMC4xOEMxNi4xNjcgOS45MTMzNiAxNS43MjcgOS43ODAwMyAxNS4xOCA5Ljc4MDAzQzE0LjY2IDkuNzgwMDMgMTQuMjI3IDkuOTAwMDMgMTMuODggMTAuMTQ2N0MxMy41NiAxMC4zNzM0IDEzLjMxNCAxMC42OTM0IDEzLjE0IDExLjEyNjdDMTIuODg3IDExLjc0NjcgMTIuODU0IDEyLjU0IDEzLjAyNyAxMy41MDY3QzEzLjIxNCAxNC40ODY3IDEzLjU0NyAxNS40NjY3IDE0LjA0IDE2LjQ1MzRaTTE1LjA2IDEzLjQ2QzE1LjA4IDEzLjM4IDE1LjEgMTMuMzA2NyAxNS4xMTQgMTMuMjRDMTUuMjc0IDEyLjU0NjcgMTUuMzE0IDEyLjA2IDE1LjI0IDExLjc4NjdDMTUuMTY3IDExLjc4NjcgMTUuMDU0IDExLjggMTUuMDIgMTEuODMzNEMxNC45MTQgMTIuMDkzNCAxNC44ODcgMTIuNTYgMTQuOTk0IDEzLjE0QzE1LjAxNCAxMy4yNDY3IDE1LjA0IDEzLjM1MzQgMTUuMDYgMTMuNDZaTTIwLjI4IDIwLjI3MzRDMjAuNDk0IDIwLjM4IDIwLjcxNCAyMC40NjY3IDIwLjkzNCAyMC41NDY3QzIxLjUgMjAuNzUzNCAyMS45MjcgMjAuODI2NyAyMi4yMjcgMjAuNzY2N0MyMi4yNjcgMjAuNzUzNCAyMi4yODcgMjAuNzQ2NyAyMi4yOTQgMjAuNzI2N0MyMi4yOTQgMjAuNjggMjIuMjU0IDIwLjYyIDIyLjE3NCAyMC41NzM0QzIxLjg2NyAyMC40MDY3IDIxLjM3NCAyMC4zMTM0IDIwLjY4IDIwLjI4NjdDMjAuNTU0IDIwLjI4IDIwLjQyIDIwLjI4IDIwLjI4IDIwLjI3MzRaTTExLjE4MDIgMjIuNzQ2N0MxMC45NjAyIDIyLjg5MzQgMTAuNzQ2OSAyMy4wNCAxMC41NDY5IDIzLjE5MzRDMTAuMDY2OSAyMy41NjY3IDkuNzczNTMgMjMuODg2NyA5LjY1MzUzIDI0LjE2QzkuNjQwMjMgMjQuMiA5LjYzMzUyIDI0LjIyNjcgOS42NDY5MiAyNC4yNDY3QzkuNzQ2ODIgMjQuMzQgOS44MDY5MiAyNC4zODY3IDkuODI2OTIgMjQuMzhDOS45NjY5MiAyNC4zNTM0IDEwLjE2MDIgMjQuMTg2NyAxMC40MTM1IDIzLjg4QzEwLjY0NjkgMjMuNjA2NyAxMC45MDAyIDIzLjIyNjcgMTEuMTgwMiAyMi43NDY3WiIgZmlsbD0idXJsKCNwYWludDJfbGluZWFyXzU3M180KSIvPgo8L2c+CjwvZz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl81NzNfNCIgeDE9IjE1Ljk5OTQiIHkxPSIwLjMzMzMxMyIgeDI9IjE1Ljk5OTQiIHkyPSIzMS4wNjA5IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiNFRTY5NkYiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRTAyMTI4Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQxX2xpbmVhcl81NzNfNCIgeDE9IjIwLjQ0NjEiIHkxPSIyLjYyMzQ2IiB4Mj0iMjkuNTUyOCIgeTI9IjEyLjE2MzkiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSJ3aGl0ZSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQyX2xpbmVhcl81NzNfNCIgeDE9IjE1Ljk1ODgiIHkxPSI5Ljc4NDUzIiB4Mj0iMTUuOTU4OCIgeTI9IjI2LjM4ODQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiIHN0b3Atb3BhY2l0eT0iMC44Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0id2hpdGUiIHN0b3Atb3BhY2l0eT0iMC42Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==",
-  DOCX: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPG1hc2sgaWQ9Im1hc2swXzU3M18yIiBzdHlsZT0ibWFzay10eXBlOmx1bWluYW5jZSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMCIgeT0iMCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj4KPHBhdGggZD0iTTMyIDBIMFYzMkgzMlYwWiIgZmlsbD0id2hpdGUiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzU3M18yKSI+CjxtYXNrIGlkPSJtYXNrMV81NzNfMiIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+CjxwYXRoIGQ9Ik0zMiAwSDBWMzJIMzJWMFoiIGZpbGw9IndoaXRlIi8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMV81NzNfMikiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIwLjg2NzMgMC4zMzMzMTNINy40NDcyN0M0LjY4MDYgMC4zMzMzMTMgMi40NDcyNyAyLjU2NjY1IDIuNDQ3MjcgNS4zMzMzMVYyNi42NjY2QzIuNDQ3MjcgMjkuNDI2NiA0LjY4MDYgMzEuNjY2NiA3LjQ0NzI3IDMxLjY2NjZIMjQuNTUzOUMyNy4zMTM5IDMxLjY2NjYgMjkuNTUzOSAyOS40MjY2IDI5LjU1MzkgMjYuNjY2NlY5LjAxMzMxQzI5LjU1MzkgOC42NTk5OCAyOS40MDczIDguMzE5OTggMjkuMTYwNiA4LjA3MzMxTDIxLjgwNzMgMC43MTk5OEMyMS41NjA2IDAuNDczMzEzIDIxLjIyMDYgMC4zMzMzMTMgMjAuODY3MyAwLjMzMzMxM1oiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl81NzNfMikiLz4KPGcgb3BhY2l0eT0iMC42Ij4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yMC44NjczIDAuMzMzMzEzSDIwLjQ0NzNDMjAuOTgwNiAwLjMzMzMxMyAyMS40MjA2IDAuNzY2NjQ2IDIxLjQyMDYgMS4yOTk5OFY1Ljc5OTk4QzIxLjQyMDYgNy4yNjY2NSAyMi42MTM5IDguNDY2NjUgMjQuMDg3MyA4LjQ2NjY1SDI4LjU4MDZDMjkuMTEzOSA4LjQ2NjY1IDI5LjU1MzkgOC44OTk5OCAyOS41NTM5IDkuNDMzMzFWOS4wMTMzMUMyOS41NTM5IDguNjU5OTggMjkuNDA3MyA4LjMxOTk4IDI5LjE2MDYgOC4wNzMzMUwyMS44MDczIDAuNzE5OThDMjEuNTYwNiAwLjQ3MzMxMyAyMS4yMjA2IDAuMzMzMzEzIDIwLjg2NzMgMC4zMzMzMTNaIiBmaWxsPSJ1cmwoI3BhaW50MV9saW5lYXJfNTczXzIpIi8+CjwvZz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik03LjQwNjI1IDIyLjk4SDE3Ljk3OTZDMTguNTM5NiAyMi45OCAxOC45Nzk2IDIyLjU0IDE4Ljk3OTYgMjEuOThDMTguOTc5NiAyMS40MiAxOC41Mzk2IDIwLjk4IDE3Ljk3OTYgMjAuOThINy40MDYyNUM2Ljg0NjI1IDIwLjk4IDYuNDA2MjUgMjEuNDIgNi40MDYyNSAyMS45OEM2LjQwNjI1IDIyLjU0IDYuODQ2MjUgMjIuOTggNy40MDYyNSAyMi45OFpNNy40MDYyNSAxNi4zNzM0SDE0LjAxMjlDMTQuNTcyOSAxNi4zNzM0IDE1LjAxMjkgMTUuOTMzNCAxNS4wMTI5IDE1LjM3MzRDMTUuMDEyOSAxNC44MTM0IDE0LjU3MjkgMTQuMzczNCAxNC4wMTI5IDE0LjM3MzRINy40MDYyNUM2Ljg0NjI1IDE0LjM3MzQgNi40MDYyNSAxNC44MTM0IDYuNDA2MjUgMTUuMzczNEM2LjQwNjI1IDE1LjkzMzQgNi44NDYyNSAxNi4zNzM0IDcuNDA2MjUgMTYuMzczNFoiIGZpbGw9InVybCgjcGFpbnQyX2xpbmVhcl81NzNfMikiLz4KPC9nPgo8L2c+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfNTczXzIiIHgxPSIxNi4wMDA2IiB5MT0iMC4zMzMzMTMiIHgyPSIxNi4wMDA2IiB5Mj0iMzEuMDYwOSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjNUNBM0U5Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwNjdEMSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MV9saW5lYXJfNTczXzIiIHgxPSIyMC40NDczIiB5MT0iMi42MjM0NiIgeDI9IjI5LjU1NCIgeTI9IjEyLjE2MzkiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSJ3aGl0ZSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQyX2xpbmVhcl81NzNfMiIgeDE9IjEyLjY5NjQiIHkxPSIxNC4zNzUiIHgyPSIxMi42OTY0IiB5Mj0iMjIuOTgxOCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSJ3aGl0ZSIgc3RvcC1vcGFjaXR5PSIwLjgiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSJ3aGl0ZSIgc3RvcC1vcGFjaXR5PSIwLjYiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K",
-  XLSX: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPG1hc2sgaWQ9Im1hc2swXzU3M18zIiBzdHlsZT0ibWFzay10eXBlOmx1bWluYW5jZSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMCIgeT0iMCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj4KPHBhdGggZD0iTTMyIDBIMFYzMkgzMlYwWiIgZmlsbD0id2hpdGUiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzU3M18zKSI+CjxtYXNrIGlkPSJtYXNrMV81NzNfMyIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+CjxwYXRoIGQ9Ik0zMiAwSDBWMzJIMzJWMFoiIGZpbGw9IndoaXRlIi8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMV81NzNfMykiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIwLjg2NjEgMC4zMzMzMTNINy40Mzk1MUM0LjY3OTUxIDAuMzMzMzEzIDIuNDM5NTEgMi41NjY2NSAyLjQzOTUxIDUuMzMzMzFWMjYuNjY2NkMyLjQzOTUxIDI5LjQyNjYgNC42Nzk1MSAzMS42NjY2IDcuNDM5NTEgMzEuNjY2NkgyNC41NTI4QzI3LjMxMjggMzEuNjY2NiAyOS41NTI4IDI5LjQyNjYgMjkuNTUyOCAyNi42NjY2VjkuMDEzMzFDMjkuNTUyOCA4LjY1OTk4IDI5LjQwNjEgOC4zMTk5OCAyOS4xNTk1IDguMDczMzFMMjEuODA2MSAwLjcxOTk4QzIxLjU1OTUgMC40NzMzMTMgMjEuMjE5NSAwLjMzMzMxMyAyMC44NjYxIDAuMzMzMzEzWiIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzU3M18zKSIvPgo8ZyBvcGFjaXR5PSIwLjYiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIwLjg2NjEgMC4zMzMzMTNIMjAuNDM5NUMyMC45Nzk1IDAuMzMzMzEzIDIxLjQxMjggMC43NjY2NDYgMjEuNDEyOCAxLjI5OTk4VjUuNzk5OThDMjEuNDEyOCA3LjI2NjY1IDIyLjYxMjggOC40NjY2NSAyNC4wNzk1IDguNDY2NjVIMjguNTc5NUMyOS4xMTI4IDguNDY2NjUgMjkuNTUyOCA4Ljg5OTk4IDI5LjU1MjggOS40MzMzMVY5LjAxMzMxQzI5LjU1MjggOC42NTk5OCAyOS40MDYxIDguMzE5OTggMjkuMTU5NSA4LjA3MzMxTDIxLjgwNjEgMC43MTk5OEMyMS41NTk1IDAuNDczMzEzIDIxLjIxOTUgMC4zMzMzMTMgMjAuODY2MSAwLjMzMzMxM1oiIGZpbGw9InVybCgjcGFpbnQxX2xpbmVhcl81NzNfMykiLz4KPC9nPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTcuNDA2MjIgMTAuMzczNEgxMC43Mzk2QzExLjI5OTYgMTAuMzczNCAxMS43Mzk2IDEwLjgxMzQgMTEuNzM5NiAxMS4zNzM0QzExLjczOTYgMTEuOTMzNCAxMS4yOTk2IDEyLjM3MzQgMTAuNzM5NiAxMi4zNzM0SDcuNDA2MjJDNi44NDYzMiAxMi4zNzM0IDYuNDA2MjIgMTEuOTMzNCA2LjQwNjIyIDExLjM3MzRDNi40MDYyMiAxMC44MTM0IDYuODQ2MzIgMTAuMzczNCA3LjQwNjIyIDEwLjM3MzRaTTE2LjA3MjkgMTAuMzczNEgxOS40MDYyQzE5Ljk2NjMgMTAuMzczNCAyMC40MDYyIDEwLjgxMzQgMjAuNDA2MiAxMS4zNzM0QzIwLjQwNjIgMTEuOTMzNCAxOS45NjYzIDEyLjM3MzQgMTkuNDA2MiAxMi4zNzM0SDE2LjA3MjlDMTUuNTEyOSAxMi4zNzM0IDE1LjA3MjkgMTEuOTMzNCAxNS4wNzI5IDExLjM3MzRDMTUuMDcyOSAxMC44MTM0IDE1LjUxMjkgMTAuMzczNCAxNi4wNzI5IDEwLjM3MzRaTTcuNDA2MjIgMTUuNzA2N0gxMC43Mzk2QzExLjI5OTYgMTUuNzA2NyAxMS43Mzk2IDE2LjE0NjcgMTEuNzM5NiAxNi43MDY3QzExLjczOTYgMTcuMjY2NyAxMS4yOTk2IDE3LjcwNjcgMTAuNzM5NiAxNy43MDY3SDcuNDA2MjJDNi44NDYzMiAxNy43MDY3IDYuNDA2MjIgMTcuMjY2NyA2LjQwNjIyIDE2LjcwNjdDNi40MDYyMiAxNi4xNDY3IDYuODQ2MzIgMTUuNzA2NyA3LjQwNjIyIDE1LjcwNjdaTTE2LjA3MjkgMTUuNzA2N0gxOS40MDYyQzE5Ljk2NjMgMTUuNzA2NyAyMC40MDYyIDE2LjE0NjcgMjAuNDA2MiAxNi43MDY3QzIwLjQwNjIgMTcuMjY2NyAxOS45NjYzIDE3LjcwNjcgMTkuNDA2MiAxNy43MDY3SDE2LjA3MjlDMTUuNTEyOSAxNy43MDY3IDE1LjA3MjkgMTcuMjY2NyAxNS4wNzI5IDE2LjcwNjdDMTUuMDcyOSAxNi4xNDY3IDE1LjUxMjkgMTUuNzA2NyAxNi4wNzI5IDE1LjcwNjdaTTcuNDA2MjIgMjEuMDRIMTAuNzM5NkMxMS4yOTk2IDIxLjA0IDExLjczOTYgMjEuNDggMTEuNzM5NiAyMi4wNEMxMS43Mzk2IDIyLjYgMTEuMjk5NiAyMy4wNCAxMC43Mzk2IDIzLjA0SDcuNDA2MjJDNi44NDYzMiAyMy4wNCA2LjQwNjIyIDIyLjYgNi40MDYyMiAyMi4wNEM2LjQwNjIyIDIxLjQ4IDYuODQ2MzIgMjEuMDQgNy40MDYyMiAyMS4wNFoiIGZpbGw9InVybCgjcGFpbnQyX2xpbmVhcl81NzNfMykiLz4KPC9nPgo8L2c+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfNTczXzMiIHgxPSIxNS45OTk0IiB5MT0iMC4zMzMzMTMiIHgyPSIxNS45OTk0IiB5Mj0iMzEuMDYwOSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjNjNENUE4Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzA5QUE3MSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MV9saW5lYXJfNTczXzMiIHgxPSIyMC40NDYxIiB5MT0iMi42MjM0NiIgeDI9IjI5LjU1MjciIHkyPSIxMi4xNjM5IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IndoaXRlIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0id2hpdGUiIHN0b3Atb3BhY2l0eT0iMCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50Ml9saW5lYXJfNTczXzMiIHgxPSIxMy40MDk4IiB5MT0iMTAuMzc1MyIgeDI9IjEzLjQwOTgiIHkyPSIyMy4wNDIiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiIHN0b3Atb3BhY2l0eT0iMC44Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0id2hpdGUiIHN0b3Atb3BhY2l0eT0iMC42Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==",
-  PPTX: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPG1hc2sgaWQ9Im1hc2swXzU3M181IiBzdHlsZT0ibWFzay10eXBlOmx1bWluYW5jZSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMCIgeT0iMCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj4KPHBhdGggZD0iTTMyIDBIMFYzMkgzMlYwWiIgZmlsbD0id2hpdGUiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzU3M181KSI+CjxtYXNrIGlkPSJtYXNrMV81NzNfNSIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+CjxwYXRoIGQ9Ik0zMiAwSDBWMzJIMzJWMFoiIGZpbGw9IndoaXRlIi8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMV81NzNfNSkiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIwLjg2NiAwLjMzMzMxM0g3LjQzODk2QzQuNjc4OTYgMC4zMzMzMTMgMi40Mzg5NiAyLjU2NjY1IDIuNDM4OTYgNS4zMzMzMVYyNi42NjY2QzIuNDM4OTYgMjkuNDI2NiA0LjY3ODk2IDMxLjY2NjcgNy40Mzg5NiAzMS42NjY3SDI0LjU1M0MyNy4zMTMgMzEuNjY2NyAyOS41NTMgMjkuNDI2NiAyOS41NTMgMjYuNjY2NlY5LjAxMzMxQzI5LjU1MyA4LjY1OTk4IDI5LjQwNiA4LjMxOTk4IDI5LjE1OSA4LjA3MzMxTDIxLjgwNiAwLjcxOTk4QzIxLjU1OSAwLjQ3MzMxMyAyMS4yMTkgMC4zMzMzMTMgMjAuODY2IDAuMzMzMzEzWiIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzU3M181KSIvPgo8ZyBvcGFjaXR5PSIwLjYiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIwLjg2NiAwLjMzMzMxM0gyMC40MzlDMjAuOTc5IDAuMzMzMzEzIDIxLjQxMyAwLjc2NjY0NiAyMS40MTMgMS4yOTk5OFY1Ljc5OTk4QzIxLjQxMyA3LjI2NjY1IDIyLjYxMyA4LjQ2NjY1IDI0LjA3OSA4LjQ2NjY1SDI4LjU3OUMyOS4xMTMgOC40NjY2NSAyOS41NTMgOC44OTk5OCAyOS41NTMgOS40MzMzMVY5LjAxMzMxQzI5LjU1MyA4LjY1OTk4IDI5LjQwNiA4LjMxOTk4IDI5LjE1OSA4LjA3MzMxTDIxLjgwNiAwLjcxOTk4QzIxLjU1OSAwLjQ3MzMxMyAyMS4yMTkgMC4zMzMzMTMgMjAuODY2IDAuMzMzMzEzWiIgZmlsbD0idXJsKCNwYWludDFfbGluZWFyXzU3M181KSIvPgo8L2c+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTkuMzU0IDkuODkwNzJDMTguODc2IDkuNTg1ODEgMTguMjk2IDkuNDMzMzUgMTcuNjE1IDkuNDMzMzVIMTEuODFDMTEuNzI1IDkuNDMzMzUgMTEuNjQ3IDkuNDQ4MjcgMTEuNTc1IDkuNDc4MUMxMS41IDkuNTA5MTEgMTEuNDMzIDkuNTU2MjUgMTEuMzcyIDkuNjE5NTFDMTEuMzE2IDkuNjc5NDIgMTEuMjc0IDkuNzQ0NiAxMS4yNDUgOS44MTUwM0MxMS4yMTUgOS44OTA0OSAxMS4xOTkgOS45NzE5OSAxMS4xOTkgMTAuMDU5NVYyNS4wMDg4QzExLjE5OSAyNS4xMDAzIDExLjIxNyAyNS4xODM1IDExLjI1MyAyNS4yNTg1QzExLjI4NCAyNS4zMjIyIDExLjMyNyAyNS4zODAxIDExLjM4NCAyNS40MzE5QzExLjQ3IDI1LjUxMTIgMTEuNTYzIDI1LjU2MzUgMTEuNjYzIDI1LjU4ODlDMTEuNzExIDI1LjYwMDggMTEuNzU5IDI1LjYwNjggMTEuODEgMjUuNjA2OEgxMy4wODhDMTMuMTg3IDI1LjYwNjggMTMuMjc2IDI1LjU4NzkgMTMuMzU1IDI1LjU1MDFDMTMuNDE2IDI1LjUyMTYgMTMuNDcxIDI1LjQ4MjEgMTMuNTIgMjUuNDMxOUMxMy41NzIgMjUuMzgzMyAxMy42MTIgMjUuMzI5NCAxMy42NDEgMjUuMjcwNEMxMy42NzkgMjUuMTkyMyAxMy42OTkgMjUuMTA1MSAxMy42OTkgMjUuMDA4OEwxMy43IDE5LjE4MjRIMTcuNjE2QzE4LjMwMyAxOS4xODI0IDE4Ljg4OCAxOS4wMjgxIDE5LjM2OSAxOC43MTkzQzE5LjUyNyAxOC42MTc4IDE5LjY3NCAxOC40OTk1IDE5LjgxIDE4LjM2NDVDMTkuOTQ3IDE4LjIyNzYgMjAuMDY3IDE4LjA4IDIwLjE3IDE3LjkyMThDMjAuNDc5IDE3LjQ0NTYgMjAuNjM0IDE2Ljg3MjkgMjAuNjM0IDE2LjIwMzlMMjAuNjMzIDEyLjQxNzZDMjAuNjMzIDExLjczNjcgMjAuNDc0IDExLjE1NyAyMC4xNTYgMTAuNjc4NkMyMC4wNTYgMTAuNTI4IDE5Ljk0MSAxMC4zODc1IDE5LjgwOSAxMC4yNTdDMTkuNjY5IDEwLjExNzEgMTkuNTE4IDkuOTk0OTggMTkuMzU0IDkuODkwNzJaTTE3LjkxMiAxMS45MjI1QzE4LjA2IDEyLjA2ODMgMTguMTMzIDEyLjI4NTkgMTguMTMzIDEyLjU3NTVMMTguMTM0IDE2LjA0MDNDMTguMTM0IDE2LjMzMzYgMTguMDU5IDE2LjU1MzYgMTcuOTEgMTYuNzAwM0MxNy43NiAxNi44NDcgMTcuNTM1IDE2LjkyMDMgMTcuMjM2IDE2LjkyMDNIMTMuN0wxMy42OTkgMTIuNDg1M0MxMy42OTkgMTIuMTkxOSAxMy43NjIgMTEuOTg4OCAxMy44ODkgMTEuODc2QzE0LjAxNiAxMS43NTk0IDE0LjIyNyAxMS43MDExIDE0LjUyMiAxMS43MDExSDE3LjIzNUMxNy41MzYgMTEuNzAxMSAxNy43NjIgMTEuNzc0OSAxNy45MTIgMTEuOTIyNVoiIGZpbGw9InVybCgjcGFpbnQyX2xpbmVhcl81NzNfNSkiLz4KPC9nPgo8L2c+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfNTczXzUiIHgxPSIxNS45OTk0IiB5MT0iMC4zMzMzMTMiIHgyPSIxNS45OTk0IiB5Mj0iMzEuMDYwOSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjRjlCNzY2Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0Y0ODQwQyIvPgo8L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MV9saW5lYXJfNTczXzUiIHgxPSIyMC40NDYiIHkxPSIyLjYyMzQ2IiB4Mj0iMjkuNTUyNyIgeTI9IjEyLjE2MzkiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSJ3aGl0ZSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQyX2xpbmVhcl81NzNfNSIgeDE9IjE1LjkxNjUiIHkxPSI5LjQ0MDIyIiB4Mj0iMTUuOTE2NSIgeTI9IjI1LjYwODMiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiIHN0b3Atb3BhY2l0eT0iMC44Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0id2hpdGUiIHN0b3Atb3BhY2l0eT0iMC41MDE5NjEiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K",
-  CSV: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPG1hc2sgaWQ9Im1hc2swXzU3M184IiBzdHlsZT0ibWFzay10eXBlOmx1bWluYW5jZSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMCIgeT0iMCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj4KPHBhdGggZD0iTTMyIDBIMFYzMkgzMlYwWiIgZmlsbD0id2hpdGUiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzU3M184KSI+CjxtYXNrIGlkPSJtYXNrMV81NzNfOCIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+CjxwYXRoIGQ9Ik0zMiAwSDBWMzJIMzJWMFoiIGZpbGw9IndoaXRlIi8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMV81NzNfOCkiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIwLjg2NiAwLjMzMzMxM0g3LjQzODk2QzQuNjc4OTYgMC4zMzMzMTMgMi40Mzg5NiAyLjU2NjY1IDIuNDM4OTYgNS4zMzMzMVYyNi42NjY2QzIuNDM4OTYgMjkuNDI2NiA0LjY3ODk2IDMxLjY2NjYgNy40Mzg5NiAzMS42NjY2SDI0LjU1M0MyNy4zMTMgMzEuNjY2NiAyOS41NTMgMjkuNDI2NiAyOS41NTMgMjYuNjY2NlY5LjAxMzMxQzI5LjU1MyA4LjY1OTk4IDI5LjQwNiA4LjMxOTk4IDI5LjE1OSA4LjA3MzMxTDIxLjgwNiAwLjcxOTk4QzIxLjU1OSAwLjQ3MzMxMyAyMS4yMTkgMC4zMzMzMTMgMjAuODY2IDAuMzMzMzEzWiIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzU3M184KSIvPgo8ZyBvcGFjaXR5PSIwLjYiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIwLjg2NiAwLjMzMzMxM0gyMC40MzlDMjAuOTc5IDAuMzMzMzEzIDIxLjQxMyAwLjc2NjY0NiAyMS40MTMgMS4yOTk5OFY1Ljc5OTk4QzIxLjQxMyA3LjI2NjY1IDIyLjYxMyA4LjQ2NjY1IDI0LjA3OSA4LjQ2NjY1SDI4LjU3OUMyOS4xMTMgOC40NjY2NSAyOS41NTMgOC44OTk5OCAyOS41NTMgOS40MzMzMVY5LjAxMzMxQzI5LjU1MyA4LjY1OTk4IDI5LjQwNiA4LjMxOTk4IDI5LjE1OSA4LjA3MzMxTDIxLjgwNiAwLjcxOTk4QzIxLjU1OSAwLjQ3MzMxMyAyMS4yMTkgMC4zMzMzMTMgMjAuODY2IDAuMzMzMzEzWiIgZmlsbD0idXJsKCNwYWludDFfbGluZWFyXzU3M184KSIvPgo8L2c+CjwvZz4KPHBhdGggZD0iTTI0Ljg5NyAxNC42MDAzQzI0LjY0NyAxNC4wNTczIDIzLjk2IDEzLjY2NjcgMjMuMTUxIDEzLjY2NjdDMjIuMTMyIDEzLjY2NjcgMjEuMzA1IDE0LjI4NjUgMjEuMzA1IDE1LjA1MDhDMjEuMzA1IDE1LjgxNTIgMjEuOTAzIDE2LjQwNjMgMjMuMTUxIDE2LjYyOUMyNC4zOTkgMTYuODUyOSAyNS4wNzQgMTcuMjg5MSAyNC45OTUgMTguMjM0NEMyNC45MTcgMTkuMTc5NyAyNC4wNDEgMTkuNTgwOCAyMy4xNTcgMTkuNTgwOEMyMi4yNzQgMTkuNTgwOCAyMS4yOTUgMTkuMTU3NiAyMS4wODQgMTguMjM0NE0xMS4zNjkgMTQuNTkxMkMxMC45MDcgMTQuMDIwOCAxMC4yNTcgMTMuNjY2NyA5LjUzNTk4IDEzLjY2NjdDOC4xMzM5OCAxMy42NjY3IDYuOTk3OTkgMTUuMDA5MiA2Ljk5Nzk5IDE2LjY2NjdDNi45OTc5OSAxOC4zMjMgOC4xMzM5OCAxOS42NjU0IDkuNTM1OTggMTkuNjY1NEMxMC4yNTcgMTkuNjY1NCAxMC45MDcgMTkuMzExMiAxMS4zNjkgMTguNzQwOU0xMy45MTEgMTMuNjY2N0MxMy45MTEgMTMuNjY2NyAxNC4yOSAxNC42NDY3IDE1LjA1IDE2LjYwNjdDMTUuMzc1IDE3LjQ0NjcgMTUuNzcgMTguNDY2NyAxNi4yMzUgMTkuNjY2N0MxNi4yOCAxOS41NTEyIDE2LjgzNCAxOC4xMDk4IDE3LjM4OCAxNi42NjgyQzE3Ljk0OCAxNS4yMTMyIDE4LjUwNyAxMy43NTgyIDE4LjU0MiAxMy42NjY3IiBzdHJva2U9InVybCgjcGFpbnQyX2xpbmVhcl81NzNfOCkiIHN0cm9rZS13aWR0aD0iMS42NjY2NyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjwvZz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl81NzNfOCIgeDE9IjE1Ljk5OTQiIHkxPSIwLjMzMzMxMyIgeDI9IjE1Ljk5OTQiIHkyPSIzMS4wNjA5IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiNBOERCODEiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNjNENUE4Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQxX2xpbmVhcl81NzNfOCIgeDE9IjIwLjQ0NjEiIHkxPSIyLjYyMzQ2IiB4Mj0iMjkuNTUyNyIgeTI9IjEyLjE2MzkiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSJ3aGl0ZSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQyX2xpbmVhcl81NzNfOCIgeDE9IjE1Ljk5OTgiIHkxPSIxMy42NjY3IiB4Mj0iMTUuOTk5OCIgeTI9IjE5LjY2NjciIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiIHN0b3Atb3BhY2l0eT0iMC44Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0id2hpdGUiIHN0b3Atb3BhY2l0eT0iMC41Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==",
-  MD: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPG1hc2sgaWQ9Im1hc2swXzU3M18xOCIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+CjxwYXRoIGQ9Ik0zMiAwSDBWMzJIMzJWMFoiIGZpbGw9IndoaXRlIi8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMF81NzNfMTgpIj4KPG1hc2sgaWQ9Im1hc2sxXzU3M18xOCIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+CjxwYXRoIGQ9Ik0zMiAwSDBWMzJIMzJWMFoiIGZpbGw9IndoaXRlIi8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMV81NzNfMTgpIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yMC44NjcgMC4zMzMzMTNINy40NDcwMkM0LjY4MTAyIDAuMzMzMzEzIDIuNDQ3MDIgMi41NjY2NSAyLjQ0NzAyIDUuMzMzMzFWMjYuNjY2NkMyLjQ0NzAyIDI5LjQyNjYgNC42ODEwMiAzMS42NjY2IDcuNDQ3MDIgMzEuNjY2NkgyNC41NTRDMjcuMzE0IDMxLjY2NjYgMjkuNTU0IDI5LjQyNjYgMjkuNTU0IDI2LjY2NjZWOS4wMTMzMUMyOS41NTQgOC42NTk5OCAyOS40MDcgOC4zMTk5OCAyOS4xNjEgOC4wNzMzMUwyMS44MDcgMC43MTk5OEMyMS41NjEgMC40NzMzMTMgMjEuMjIxIDAuMzMzMzEzIDIwLjg2NyAwLjMzMzMxM1oiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl81NzNfMTgpIi8+CjxnIG9wYWNpdHk9IjAuNiI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMjAuODY3IDAuMzMzMzEzSDIwLjQ0N0MyMC45ODEgMC4zMzMzMTMgMjEuNDIxIDAuNzY2NjQ2IDIxLjQyMSAxLjI5OTk4VjUuNzk5OThDMjEuNDIxIDcuMjY2NjUgMjIuNjE0IDguNDY2NjUgMjQuMDg3IDguNDY2NjVIMjguNTgxQzI5LjExNCA4LjQ2NjY1IDI5LjU1NCA4Ljg5OTk4IDI5LjU1NCA5LjQzMzMxVjkuMDEzMzFDMjkuNTU0IDguNjU5OTggMjkuNDA3IDguMzE5OTggMjkuMTYxIDguMDczMzFMMjEuODA3IDAuNzE5OThDMjEuNTYxIDAuNDczMzEzIDIxLjIyMSAwLjMzMzMxMyAyMC44NjcgMC4zMzMzMTNaIiBmaWxsPSJ1cmwoI3BhaW50MV9saW5lYXJfNTczXzE4KSIvPgo8L2c+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMjAuMzcgMTEuOTgzNkgyMS4xNDdDMjEuMjY0IDExLjk4MzYgMjEuMzcxIDEyLjAwNCAyMS40NyAxMi4wNDVDMjEuNTY5IDEyLjA4NjEgMjEuNjYgMTIuMTQ3OSAyMS43NDIgMTIuMjNDMjEuODI0IDEyLjMxMjIgMjEuODg2IDEyLjQwMjUgMjEuOTI3IDEyLjUwMThDMjEuOTY4IDEyLjYwMDggMjEuOTg4IDEyLjcwODMgMjEuOTg4IDEyLjgyNDVWMjMuMjY4QzIxLjk4OCAyMy4zODQxIDIxLjk2OCAyMy40OTE3IDIxLjkyNyAyMy41OTA2QzIxLjg4NiAyMy42ODk5IDIxLjgyNCAyMy43ODAzIDIxLjc0MiAyMy44NjI0QzIxLjY2IDIzLjk0NDUgMjEuNTY5IDI0LjAwNjMgMjEuNDcgMjQuMDQ3NEMyMS4zNzEgMjQuMDg4NSAyMS4yNjQgMjQuMTA4OCAyMS4xNDcgMjQuMTA4OEgyMC4yMTlDMjAuMTAzIDI0LjEwODggMTkuOTk1IDI0LjA4ODUgMTkuODk2IDI0LjA0NzRDMTkuNzk3IDI0LjAwNjMgMTkuNzA3IDIzLjk0NDUgMTkuNjI1IDIzLjg2MjRDMTkuNTQyIDIzLjc4MDMgMTkuNDgxIDIzLjY4OTkgMTkuNDQgMjMuNTkwNkMxOS4zOTggMjMuNDkxNyAxOS4zNzggMjMuMzg0MSAxOS4zNzggMjMuMjY4VjE3LjAwNjNMMTcuMTA0IDIwLjM5MzFDMTYuOTcxIDIwLjU5MTQgMTYuODEyIDIwLjc0IDE2LjYyNiAyMC44MzkzQzE2LjQ0IDIwLjkzODMgMTYuMjI4IDIwLjk4NzkgMTUuOTg5IDIwLjk4NzlDMTUuNzUgMjAuOTg3OSAxNS41MzcgMjAuOTM4MyAxNS4zNTEgMjAuODM4OUMxNS4xNjUgMjAuNzM5NiAxNS4wMDUgMjAuNTkwMiAxNC44NzIgMjAuMzkxNUwxMi41ODcgMTYuOTc3VjIzLjI2OEMxMi41ODcgMjMuMzg0MSAxMi41NjYgMjMuNDkxNyAxMi41MjUgMjMuNTkwNkMxMi40ODQgMjMuNjg5OSAxMi40MjIgMjMuNzgwMyAxMi4zNCAyMy44NjI0QzEyLjI1OCAyMy45NDQ1IDEyLjE2OCAyNC4wMDYzIDEyLjA2OCAyNC4wNDc0QzExLjk2OSAyNC4wODg1IDExLjg2MiAyNC4xMDg4IDExLjc0NiAyNC4xMDg4SDEwLjgyOUMxMC43MTMgMjQuMTA4OCAxMC42MDUgMjQuMDg4NSAxMC41MDYgMjQuMDQ3NEMxMC40MDcgMjQuMDA2MyAxMC4zMTcgMjMuOTQ0NSAxMC4yMzUgMjMuODYyNEMxMC4xNTMgMjMuNzgwMyAxMC4wOTEgMjMuNjg5OSAxMC4wNSAyMy41OTA2QzEwLjAwOSAyMy40OTE3IDkuOTg3OTggMjMuMzg0MSA5Ljk4Nzk4IDIzLjI2OFYxMi44MjQ1QzkuOTg3OTggMTIuNzA4MyAxMC4wMDkgMTIuNjAwOCAxMC4wNSAxMi41MDE4QzEwLjA5MSAxMi40MDI1IDEwLjE1MyAxMi4zMTIyIDEwLjIzNSAxMi4yM0MxMC4zMTcgMTIuMTQ3OSAxMC40MDcgMTIuMDg2MSAxMC41MDYgMTIuMDQ1QzEwLjYwNSAxMi4wMDQgMTAuNzEzIDExLjk4MzYgMTAuODI5IDExLjk4MzZIMTEuNjg2QzExLjgzNyAxMS45ODM2IDExLjk3IDEyLjAxNTMgMTIuMDg4IDEyLjA3ODNDMTIuMjA1IDEyLjE0MTIgMTIuMzA1IDEyLjIzNTUgMTIuMzg4IDEyLjM2MTRMMTYuMDM1IDE3Ljg4OTRMMTkuNjY3IDEyLjM2MjZDMTkuNzUgMTIuMjM2MyAxOS44NSAxMi4xNDE2IDE5Ljk2OCAxMi4wNzgzQzIwLjA4NCAxMi4wMTUzIDIwLjIxOSAxMS45ODM2IDIwLjM3IDExLjk4MzZaIiBmaWxsPSJ1cmwoI3BhaW50Ml9saW5lYXJfNTczXzE4KSIvPgo8L2c+CjwvZz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl81NzNfMTgiIHgxPSIxNi4wMDA2IiB5MT0iMC4zMzMzMTMiIHgyPSIxNi4wMDA2IiB5Mj0iMzEuMDYwOSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjNUNBM0U5Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwNjdEMSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MV9saW5lYXJfNTczXzE4IiB4MT0iMjAuNDQ3MyIgeTE9IjIuNjIzNDYiIHgyPSIyOS41NTQiIHkyPSIxMi4xNjM5IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IndoaXRlIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0id2hpdGUiIHN0b3Atb3BhY2l0eT0iMCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50Ml9saW5lYXJfNTczXzE4IiB4MT0iMTUuOTkxNiIgeTE9IjExLjk4NiIgeDI9IjE1Ljk5MTYiIHkyPSIyNC4xMTEzIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IndoaXRlIiBzdG9wLW9wYWNpdHk9IjAuOCIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IndoaXRlIiBzdG9wLW9wYWNpdHk9IjAuNiIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo=",
-  TXT: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPG1hc2sgaWQ9Im1hc2swXzU3M183IiBzdHlsZT0ibWFzay10eXBlOmx1bWluYW5jZSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMCIgeT0iMCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj4KPHBhdGggZD0iTTMyIDBIMFYzMkgzMlYwWiIgZmlsbD0id2hpdGUiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzU3M183KSI+CjxtYXNrIGlkPSJtYXNrMV81NzNfNyIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+CjxwYXRoIGQ9Ik0zMiAwSDBWMzJIMzJWMFoiIGZpbGw9IndoaXRlIi8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMV81NzNfNykiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIwLjg2NyAwLjMzMzMxM0g3LjQ0NzAyQzQuNjgxMDIgMC4zMzMzMTMgMi40NDcwMiAyLjU2NjY1IDIuNDQ3MDIgNS4zMzMzMVYyNi42NjY2QzIuNDQ3MDIgMjkuNDI2NiA0LjY4MTAyIDMxLjY2NjYgNy40NDcwMiAzMS42NjY2SDI0LjU1NEMyNy4zMTQgMzEuNjY2NiAyOS41NTQgMjkuNDI2NiAyOS41NTQgMjYuNjY2NlY5LjAxMzMxQzI5LjU1NCA4LjY1OTk4IDI5LjQwNyA4LjMxOTk4IDI5LjE2MSA4LjA3MzMxTDIxLjgwNyAwLjcxOTk4QzIxLjU2MSAwLjQ3MzMxMyAyMS4yMjEgMC4zMzMzMTMgMjAuODY3IDAuMzMzMzEzWiIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzU3M183KSIvPgo8ZyBvcGFjaXR5PSIwLjYiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIwLjg2NyAwLjMzMzMxM0gyMC40NDdDMjAuOTgxIDAuMzMzMzEzIDIxLjQyMSAwLjc2NjY0NiAyMS40MjEgMS4yOTk5OFY1Ljc5OTk4QzIxLjQyMSA3LjI2NjY1IDIyLjYxNCA4LjQ2NjY1IDI0LjA4NyA4LjQ2NjY1SDI4LjU4MUMyOS4xMTQgOC40NjY2NSAyOS41NTQgOC44OTk5OCAyOS41NTQgOS40MzMzMVY5LjAxMzMxQzI5LjU1NCA4LjY1OTk4IDI5LjQwNyA4LjMxOTk4IDI5LjE2MSA4LjA3MzMxTDIxLjgwNyAwLjcxOTk4QzIxLjU2MSAwLjQ3MzMxMyAyMS4yMjEgMC4zMzMzMTMgMjAuODY3IDAuMzMzMzEzWiIgZmlsbD0idXJsKCNwYWludDFfbGluZWFyXzU3M183KSIvPgo8L2c+CjwvZz4KPHBhdGggZD0iTTEzLjkyMiAxMy42NjY3TDE4LjA3NSAxOS42NjY3TTE4LjA3NSAxMy42NjY3TDEzLjkyMiAxOS42NjY3TTkuMzQ3OTkgMTMuNjY4VjE5LjY2NjdNMTEuNjUzIDEzLjY2OEg3LjAzOU0yMi42NTMgMTMuNjY4VjE5LjY2NjdNMjQuOTU4IDEzLjY2OEgyMC4zNDQiIHN0cm9rZT0idXJsKCNwYWludDJfbGluZWFyXzU3M183KSIgc3Ryb2tlLXdpZHRoPSIxLjY2NjY3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9nPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzU3M183IiB4MT0iMTYuMDAwNiIgeTE9IjAuMzMzMzEzIiB4Mj0iMTYuMDAwNiIgeTI9IjMxLjA2MDkiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iI0ZDRDcyRSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGQ0M4MDAiLz4KPC9saW5lYXJHcmFkaWVudD4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDFfbGluZWFyXzU3M183IiB4MT0iMjAuNDQ3MyIgeTE9IjIuNjIzNDYiIHgyPSIyOS41NTQiIHkyPSIxMi4xNjM5IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IndoaXRlIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0id2hpdGUiIHN0b3Atb3BhY2l0eT0iMCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50Ml9saW5lYXJfNTczXzciIHgxPSIxNS45OTg4IiB5MT0iMTMuNjY2NyIgeDI9IjE1Ljk5ODgiIHkyPSIxOS42NjY3IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IndoaXRlIiBzdG9wLW9wYWNpdHk9IjAuOSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IndoaXRlIiBzdG9wLW9wYWNpdHk9IjAuNyIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo="
+  PDF: "../assets/uploads/icon/file_type/pdf.svg",
+  DOCX: "../assets/uploads/icon/file_type/docx.svg",
+  XLSX: "../assets/uploads/icon/file_type/excel.svg",
+  PPTX: "../assets/uploads/icon/file_type/ppt.svg",
+  CSV: "../assets/uploads/icon/file_type/cvs.svg",
+  MD: "../assets/uploads/icon/file_type/markdown.svg",
+  TXT: "../assets/uploads/icon/file_type/txt.svg"
 };
 const CODE_ICON_SRC = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgiIGhlaWdodD0iMjgiIHZpZXdCb3g9IjAgMCAyOCAyOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBjbGlwLXBhdGg9InVybCgjY2xpcDBfMjAzN18yKSI+PHBhdGggZD0iTTI1Ljk1ODUgMTIuMDczNEwyNS45NTg0IDIxLjI5MTVDMjUuOTU4NCAyMy44Njg5IDIzLjg2OTEgMjUuOTU4MiAyMS4yOTE4IDI1Ljk1ODJINi43MDg0MUM0LjEzMTA5IDI1Ljk1ODIgMi4wNDE3NSAyMy44Njg4IDIuMDQxNzUgMjEuMjkxNVY2LjcwODE3QzIuMDQxNzUgNC4xMzA4NCA0LjEzMTA5IDIuMDQxNSA2LjcwODQxIDIuMDQxNUgyMS4yOTE3QzIzLjg2OTEgMi4wNDE1IDI1Ljk1ODQgNC4xMzA4NCAyNS45NTg0IDYuNzA4MTdWOC4wMjA2NyIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLW9wYWNpdHk9IjAuNiIgc3Ryb2tlLXdpZHRoPSIxLjc1Ii8+PHBhdGggZD0iTTkuNDAwMzkgOS43NUw2Ljg5NjU2IDEyLjI1MDdDNi4wMDc5NCAxMy4xMzgyIDUuOTgxMjEgMTQuNTY5OSA2LjgzNjA4IDE1LjQ4OTlMOS40MDAzOSAxOC4yNDk3IiBzdHJva2U9ImJsYWNrIiBzdHJva2Utb3BhY2l0eT0iMC42IiBzdHJva2Utd2lkdGg9IjEuNzUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xOC42NTA2IDkuNzVMMjEuMTU0NSAxMi4yNTA3QzIyLjA0MzEgMTMuMTM4MiAyMi4wNjk4IDE0LjU2OTkgMjEuMjE0OSAxNS40ODk5TDE4LjY1MDYgMTguMjQ5NyIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLW9wYWNpdHk9IjAuNiIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMTIuMjAxNyAyMC4yMzI0TDE2LjQxMTcgNy4xMTMyMyIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLW9wYWNpdHk9IjAuNiIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L2c+PGRlZnM+PGNsaXBQYXRoIGlkPSJjbGlwMF8yMDM3XzIiPjxyZWN0IHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgZmlsbD0id2hpdGUiLz48L2NsaXBQYXRoPjwvZGVmcz48L3N2Zz4=";
 function ArtifactIcon({
@@ -3622,7 +3370,7 @@ function FileArtifactCard({
   }, title), _react.default.createElement("div", {
     className: "artifact-summary__meta"
   }, normalizedType)), _react.default.createElement(_index2.default, {
-    variant: "outlined",
+    variant: "tertiary",
     size: "xs",
     className: "artifact-summary__open",
     "aria-label": `打开 ${title}`,
@@ -3652,12 +3400,12 @@ function CodeChangeCard({
     className: "artifact-summary__actions"
   }, _react.default.createElement(_index.default, {
     variant: "text",
-    size: "small",
+    size: "medium",
     className: "artifact-summary__undo",
     onClick: onUndo
   }, "\u64A4\u9500"), _react.default.createElement(_index.default, {
-    variant: "outlined",
-    size: "small",
+    variant: "tertiary",
+    size: "medium",
     shape: "square",
     className: "artifact-summary__review",
     onClick: onReview
@@ -3695,7 +3443,7 @@ function ArtifactSummary({
 }
 },
 "assets/shared/large-icons.js": function(module, exports, require) {
-const LUCIDE = {"bot":[["path",{"d":"M12 8V4H8"}],["rect",{"width":"16","height":"12","x":"4","y":"8","rx":"2"}],["path",{"d":"M2 14h2"}],["path",{"d":"M20 14h2"}],["path",{"d":"M15 13v2"}],["path",{"d":"M9 13v2"}]],"calendar-clock":[["path",{"d":"M16 14v2.2l1.6 1"}],["path",{"d":"M16 2v3"}],["path",{"d":"M21 7.338V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h2.338"}],["path",{"d":"M3 9h5.859"}],["path",{"d":"M8 2v3"}],["circle",{"cx":"16","cy":"16","r":"6"}]],"chart-column":[["path",{"d":"M3 3v16a2 2 0 0 0 2 2h16"}],["path",{"d":"M18 17V9"}],["path",{"d":"M13 17V5"}],["path",{"d":"M8 17v-3"}]],"chevron-down":[["path",{"d":"m6 9 6 6 6-6"}]],"circle":[["circle",{"cx":"12","cy":"12","r":"10"}]],"clock":[["circle",{"cx":"12","cy":"12","r":"10"}],["path",{"d":"M12 6v6l4 2"}]],"database":[["ellipse",{"cx":"12","cy":"5","rx":"9","ry":"3"}],["path",{"d":"M3 5V19A9 3 0 0 0 21 19V5"}],["path",{"d":"M3 12A9 3 0 0 0 21 12"}]],"eye-off":[["path",{"d":"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"}],["path",{"d":"M14.084 14.158a3 3 0 0 1-4.242-4.242"}],["path",{"d":"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"}],["path",{"d":"m2 2 20 20"}]],"file":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}]],"file-text":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"M10 9H8"}],["path",{"d":"M16 13H8"}],["path",{"d":"M16 17H8"}]],"focus":[["circle",{"cx":"12","cy":"12","r":"3"}],["path",{"d":"M3 7V5a2 2 0 0 1 2-2h2"}],["path",{"d":"M17 3h2a2 2 0 0 1 2 2v2"}],["path",{"d":"M21 17v2a2 2 0 0 1-2 2h-2"}],["path",{"d":"M7 21H5a2 2 0 0 1-2-2v-2"}]],"lock":[["rect",{"width":"18","height":"11","x":"3","y":"11","rx":"2","ry":"2"}],["path",{"d":"M7 11V7a5 5 0 0 1 10 0v4"}]],"moon":[["path",{"d":"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"}]],"repeat":[["path",{"d":"m17 2 4 4-4 4"}],["path",{"d":"M3 11v-1a4 4 0 0 1 4-4h14"}],["path",{"d":"m7 22-4-4 4-4"}],["path",{"d":"M21 13v1a4 4 0 0 1-4 4H3"}]],"rocket":[["path",{"d":"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"}],["path",{"d":"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"}],["path",{"d":"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"}],["path",{"d":"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"}]],"shield-check":[["path",{"d":"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"}],["path",{"d":"m9 12 2 2 4-4"}]],"sparkles":[["path",{"d":"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"}],["path",{"d":"M20 2v4"}],["path",{"d":"M22 4h-4"}],["circle",{"cx":"4","cy":"20","r":"2"}]],"square":[["rect",{"width":"18","height":"18","x":"3","y":"3","rx":"2"}]],"sun":[["circle",{"cx":"12","cy":"12","r":"4"}],["path",{"d":"M12 2v2"}],["path",{"d":"M12 20v2"}],["path",{"d":"m4.93 4.93 1.41 1.41"}],["path",{"d":"m17.66 17.66 1.41 1.41"}],["path",{"d":"M2 12h2"}],["path",{"d":"M20 12h2"}],["path",{"d":"m6.34 17.66-1.41 1.41"}],["path",{"d":"m19.07 4.93-1.41 1.41"}]],"tag":[["path",{"d":"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"}],["circle",{"cx":"7.5","cy":"7.5","r":".5","fill":"currentColor"}]],"terminal":[["path",{"d":"M12 19h8"}],["path",{"d":"m4 17 6-6-6-6"}]],"timer":[["line",{"x1":"10","x2":"14","y1":"2","y2":"2"}],["line",{"x1":"12","x2":"15","y1":"14","y2":"11"}],["circle",{"cx":"12","cy":"14","r":"8"}]],"workflow":[["rect",{"width":"8","height":"8","x":"3","y":"3","rx":"2"}],["path",{"d":"M7 11v4a2 2 0 0 0 2 2h4"}],["rect",{"width":"8","height":"8","x":"13","y":"13","rx":"2"}]],"zap":[["path",{"d":"M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"}]]};
+const LUCIDE = {"bot":[["path",{"d":"M12 8V4H8"}],["rect",{"width":"16","height":"12","x":"4","y":"8","rx":"2"}],["path",{"d":"M2 14h2"}],["path",{"d":"M20 14h2"}],["path",{"d":"M15 13v2"}],["path",{"d":"M9 13v2"}]],"calendar-clock":[["path",{"d":"M16 14v2.2l1.6 1"}],["path",{"d":"M16 2v3"}],["path",{"d":"M21 7.338V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h2.338"}],["path",{"d":"M3 9h5.859"}],["path",{"d":"M8 2v3"}],["circle",{"cx":"16","cy":"16","r":"6"}]],"chart-column":[["path",{"d":"M3 3v16a2 2 0 0 0 2 2h16"}],["path",{"d":"M18 17V9"}],["path",{"d":"M13 17V5"}],["path",{"d":"M8 17v-3"}]],"chevron-down":[["path",{"d":"m6 9 6 6 6-6"}]],"circle":[["circle",{"cx":"12","cy":"12","r":"10"}]],"clock":[["circle",{"cx":"12","cy":"12","r":"10"}],["path",{"d":"M12 6v6l4 2"}]],"database":[["ellipse",{"cx":"12","cy":"5","rx":"9","ry":"3"}],["path",{"d":"M3 5V19A9 3 0 0 0 21 19V5"}],["path",{"d":"M3 12A9 3 0 0 0 21 12"}]],"eye-off":[["path",{"d":"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"}],["path",{"d":"M14.084 14.158a3 3 0 0 1-4.242-4.242"}],["path",{"d":"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"}],["path",{"d":"m2 2 20 20"}]],"file":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}]],"file-text":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"M10 9H8"}],["path",{"d":"M16 13H8"}],["path",{"d":"M16 17H8"}]],"lock":[["rect",{"width":"18","height":"11","x":"3","y":"11","rx":"2","ry":"2"}],["path",{"d":"M7 11V7a5 5 0 0 1 10 0v4"}]],"moon":[["path",{"d":"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"}]],"repeat":[["path",{"d":"m17 2 4 4-4 4"}],["path",{"d":"M3 11v-1a4 4 0 0 1 4-4h14"}],["path",{"d":"m7 22-4-4 4-4"}],["path",{"d":"M21 13v1a4 4 0 0 1-4 4H3"}]],"rocket":[["path",{"d":"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"}],["path",{"d":"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"}],["path",{"d":"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"}],["path",{"d":"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"}]],"shield-check":[["path",{"d":"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"}],["path",{"d":"m9 12 2 2 4-4"}]],"sparkles":[["path",{"d":"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"}],["path",{"d":"M20 2v4"}],["path",{"d":"M22 4h-4"}],["circle",{"cx":"4","cy":"20","r":"2"}]],"square":[["rect",{"width":"18","height":"18","x":"3","y":"3","rx":"2"}]],"sun":[["circle",{"cx":"12","cy":"12","r":"4"}],["path",{"d":"M12 2v2"}],["path",{"d":"M12 20v2"}],["path",{"d":"m4.93 4.93 1.41 1.41"}],["path",{"d":"m17.66 17.66 1.41 1.41"}],["path",{"d":"M2 12h2"}],["path",{"d":"M20 12h2"}],["path",{"d":"m6.34 17.66-1.41 1.41"}],["path",{"d":"m19.07 4.93-1.41 1.41"}]],"tag":[["path",{"d":"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"}],["circle",{"cx":"7.5","cy":"7.5","r":".5","fill":"currentColor"}]],"terminal":[["path",{"d":"M12 19h8"}],["path",{"d":"m4 17 6-6-6-6"}]],"timer":[["line",{"x1":"10","x2":"14","y1":"2","y2":"2"}],["line",{"x1":"12","x2":"15","y1":"14","y2":"11"}],["circle",{"cx":"12","cy":"14","r":"8"}]],"workflow":[["rect",{"width":"8","height":"8","x":"3","y":"3","rx":"2"}],["path",{"d":"M7 11v4a2 2 0 0 0 2 2h4"}],["rect",{"width":"8","height":"8","x":"13","y":"13","rx":"2"}]],"zap":[["path",{"d":"M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"}]]};
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4228,7 +3976,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = Button;
 var _react = _interopRequireDefault(require("react"));
-var _icons = require("../../../assets/shared/icons.js");
 var _presets = require("./presets.js");
 require("./index.css");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
@@ -4236,26 +3983,29 @@ function Button(props) {
   const variant = (0, _presets.resolveVariant)(props.variant);
   const size = (0, _presets.resolveSize)(props.size);
   const shape = (0, _presets.resolveShape)(props.shape);
-  const sizeToken = _presets.BUTTON_SIZE_TOKENS[size];
-  const iconPosition = props.iconPosition === "end" ? "end" : "start";
-  const hasIcon = Boolean(props.icon || props.iconSrc);
-  const hasLabel = props.children != null && props.children !== "";
+  const iconSrc = props.icon;
+  const hasIcon = Boolean(iconSrc);
+  const hasLabel = _react.default.Children.toArray(props.children).some(child => typeof child === "string" ? child.trim().length > 0 : true);
+  if (!hasLabel) return null;
   const extraClass = props.className ? ` ${props.className}` : "";
-  const iconNode = hasIcon ? _react.default.createElement(_icons.Icon, {
-    name: props.icon,
-    src: props.iconSrc,
-    size: sizeToken.iconSize,
-    className: "btn__icon"
+  const iconNode = hasIcon ? _react.default.createElement("span", {
+    "aria-hidden": "true",
+    className: "btn__icon",
+    style: {
+      maskImage: `url("${iconSrc}")`,
+      WebkitMaskImage: `url("${iconSrc}")`
+    }
   }) : null;
   return _react.default.createElement("button", {
+    id: props.id,
+    style: props.style,
     type: props.type || "button",
     className: `btn btn--${variant} btn--${size} btn--${shape}${extraClass}`,
     disabled: props.disabled,
-    "data-state": props["data-state"],
     onClick: props.onClick
-  }, iconPosition === "start" ? iconNode : null, hasLabel ? _react.default.createElement("span", {
+  }, iconNode, _react.default.createElement("span", {
     className: "btn__label"
-  }, props.children) : null, iconPosition === "end" ? iconNode : null);
+  }, props.children));
 }
 },
 "atom-components/components/Button/presets.js": function(module, exports, require) {
@@ -4264,19 +4014,13 @@ function Button(props) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.BUTTON_VARIANT_ALIASES = exports.BUTTON_VARIANTS = exports.BUTTON_SIZE_TOKENS = exports.BUTTON_SIZES = exports.BUTTON_SHAPE_TOKENS = exports.BUTTON_SHAPE_SCOPE = exports.BUTTON_SHAPE_ALIASES = exports.BUTTON_SHAPES = void 0;
+exports.BUTTON_VARIANTS = exports.BUTTON_SIZE_TOKENS = exports.BUTTON_SIZES = exports.BUTTON_SHAPE_TOKENS = exports.BUTTON_SHAPE_SCOPE = exports.BUTTON_SHAPES = void 0;
 exports.isShapeSupported = isShapeSupported;
 exports.resolveShape = resolveShape;
 exports.resolveSize = resolveSize;
 exports.resolveVariant = resolveVariant;
-const BUTTON_VARIANTS = exports.BUTTON_VARIANTS = ["filled", "tonal", "outlined", "text"];
-const BUTTON_VARIANT_ALIASES = exports.BUTTON_VARIANT_ALIASES = {
-  primary: "filled",
-  secondary: "tonal",
-  tertiary: "outlined",
-  plain: "text"
-};
-const BUTTON_SIZES = exports.BUTTON_SIZES = ["large", "small"];
+const BUTTON_VARIANTS = exports.BUTTON_VARIANTS = ["primary", "secondary", "tertiary", "text"];
+const BUTTON_SIZES = exports.BUTTON_SIZES = ["large", "medium"];
 const BUTTON_SIZE_TOKENS = exports.BUTTON_SIZE_TOKENS = {
   large: {
     height: 40,
@@ -4285,8 +4029,8 @@ const BUTTON_SIZE_TOKENS = exports.BUTTON_SIZE_TOKENS = {
     iconSize: 20,
     iconGap: 8
   },
-  small: {
-    height: 28,
+  medium: {
+    height: 32,
     paddingInline: 12,
     fontSize: "var(--font-size-base)",
     iconSize: 16,
@@ -4294,12 +4038,6 @@ const BUTTON_SIZE_TOKENS = exports.BUTTON_SIZE_TOKENS = {
   }
 };
 const BUTTON_SHAPES = exports.BUTTON_SHAPES = ["round", "square"];
-const BUTTON_SHAPE_ALIASES = exports.BUTTON_SHAPE_ALIASES = {
-  rounded: "round",
-  pill: "round",
-  rect: "square",
-  sharp: "square"
-};
 const BUTTON_SHAPE_TOKENS = exports.BUTTON_SHAPE_TOKENS = {
   round: {
     radius: "var(--radius-full)",
@@ -4311,33 +4049,23 @@ const BUTTON_SHAPE_TOKENS = exports.BUTTON_SHAPE_TOKENS = {
     radius: "var(--radius-lg)",
     radiusPx: 8,
     label: "方圆角",
-    scope: "仅 outlined × small"
+    scope: "全变体 × 全尺寸"
   }
 };
 const BUTTON_SHAPE_SCOPE = exports.BUTTON_SHAPE_SCOPE = {
   round: null,
-  square: [{
-    variant: "outlined",
-    size: "small"
-  }]
+  square: null
 };
 function isShapeSupported(shape, variant, size) {
-  const scope = BUTTON_SHAPE_SCOPE[resolveShape(shape)];
-  if (!scope) return true;
-  for (let i = 0; i < scope.length; i++) {
-    if (scope[i].variant === variant && scope[i].size === size) return true;
-  }
-  return false;
+  return BUTTON_SHAPES.includes(shape) && BUTTON_VARIANTS.includes(variant) && BUTTON_SIZES.includes(size);
 }
 function resolveShape(shape) {
   if (BUTTON_SHAPES.indexOf(shape) > -1) return shape;
-  if (BUTTON_SHAPE_ALIASES[shape]) return BUTTON_SHAPE_ALIASES[shape];
   return "round";
 }
 function resolveVariant(variant) {
   if (BUTTON_VARIANTS.indexOf(variant) > -1) return variant;
-  if (BUTTON_VARIANT_ALIASES[variant]) return BUTTON_VARIANT_ALIASES[variant];
-  return "filled";
+  return "primary";
 }
 function resolveSize(size) {
   return BUTTON_SIZES.indexOf(size) > -1 ? size : "large";
@@ -4355,7 +4083,7 @@ var _presets = require("../Button/presets.js");
 require("./index.css");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 function DropdownButton({
-  variant = "filled",
+  variant = "primary",
   size = "large",
   shape = "round",
   dropdownIcon,
@@ -4367,19 +4095,21 @@ function DropdownButton({
   disabled = false,
   type = "button",
   onClick,
+  id,
+  style,
   className = "",
   "data-state": state,
   "aria-label": ariaLabel,
   "aria-expanded": expanded,
   "aria-controls": controls
 }) {
-  const resolvedSize = size === "xs" ? "xs" : (0, _presets.resolveSize)(size);
-  const requestedVariant = (0, _presets.resolveVariant)(variant);
-  const resolvedVariant = resolvedSize === "xs" && !["outlined", "text"].includes(requestedVariant) ? "outlined" : requestedVariant;
-  const resolvedShape = resolvedSize === "xs" && resolvedVariant === "outlined" ? "square" : (0, _presets.resolveShape)(shape);
-  const indicator = dropdownIcon ? dropdownIcon === "chevron-down" ? "chevron-down" : "caret-down-filled" : resolvedSize === "xs" && resolvedVariant === "text" ? "chevron-down" : "caret-down-filled";
-  const canShowContentIcon = resolvedSize === "xs" && resolvedVariant === "outlined";
+  const resolvedSize = size === "small" ? "small" : (0, _presets.resolveSize)(size);
+  const resolvedVariant = (0, _presets.resolveVariant)(variant);
+  const resolvedShape = (0, _presets.resolveShape)(shape);
+  const indicator = dropdownIcon ? dropdownIcon === "chevron-down" ? "chevron-down" : "caret-down-filled" : resolvedSize === "small" && resolvedVariant === "text" ? "chevron-down" : "caret-down-filled";
   return _react.default.createElement("button", {
+    id: id,
+    style: style,
     type: type,
     className: `btn btn--${resolvedVariant} btn--${resolvedSize} btn--${resolvedShape} dropdown-btn ${className}`,
     disabled: disabled,
@@ -4388,19 +4118,27 @@ function DropdownButton({
     "aria-label": ariaLabel,
     "aria-expanded": expanded,
     "aria-controls": controls
-  }, leadingIconSrc ? _react.default.createElement("img", {
+  }, leadingIconSrc ? _react.default.createElement("span", {
     className: "dropdown-btn__asset dropdown-btn__asset--leading",
+    style: {
+      "--dropdown-asset": `url("${leadingIconSrc}")`
+    }
+  }, _react.default.createElement("img", {
     src: leadingIconSrc,
     alt: leadingIconAlt,
     "aria-hidden": leadingIconAlt ? undefined : true
-  }) : null, _react.default.createElement("span", {
+  })) : null, _react.default.createElement("span", {
     className: "btn__label"
-  }, children), contentIconSrc && canShowContentIcon ? _react.default.createElement("img", {
+  }, children), contentIconSrc ? _react.default.createElement("span", {
     className: "dropdown-btn__asset dropdown-btn__asset--content",
+    style: {
+      "--dropdown-asset": `url("${contentIconSrc}")`
+    }
+  }, _react.default.createElement("img", {
     src: contentIconSrc,
     alt: contentIconAlt,
     "aria-hidden": contentIconAlt ? undefined : true
-  }) : null, _react.default.createElement("span", {
+  })) : null, _react.default.createElement("span", {
     className: `dropdown-btn__indicator dropdown-btn__indicator--${indicator}`,
     "aria-hidden": "true"
   }));
@@ -4413,117 +4151,67 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.DiffTags = DiffTags;
-exports.TagGroup = TagGroup;
 exports.default = Tag;
-var _react = _interopRequireWildcard(require("react"));
-var _icons = require("../../../assets/shared/icons.js");
+var _react = _interopRequireDefault(require("react"));
 require("./index.css");
-function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
-const VARIANT_CLASS = {
-  "diff-add": "tag--diff-add",
-  "diff-remove": "tag--diff-remove",
-  "icon": "tag--icon",
-  "tab": "tag--tab"
-};
-const DEFAULT_ICON_SIZE = {
-  icon: 14,
-  tab: 16
-};
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+function Tag({
+  variant = "default",
+  size = "medium",
+  shape = "round",
+  icon,
+  children,
+  title,
+  id,
+  style,
+  className = ""
+}) {
+  return _react.default.createElement("span", {
+    id: id,
+    style: style,
+    title: title,
+    className: ["tag", `tag--${variant}`, `tag--${size}`, `tag--${shape}`, className].filter(Boolean).join(" ")
+  }, icon && _react.default.createElement("span", {
+    "aria-hidden": "true",
+    className: "tag__icon",
+    style: {
+      maskImage: `url("${icon}")`,
+      WebkitMaskImage: `url("${icon}")`
+    }
+  }), _react.default.createElement("span", {
+    className: "tag__label"
+  }, children));
+}
 function formatDiffValue(value, sign) {
   const text = String(value);
-  const signed = /^[+-]/.test(text) ? text : sign + text;
-  return signed.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return (/^[+-]/.test(text) ? text : sign + text).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-function Tag(props) {
-  const variant = props.variant || "diff-add";
-  const iconSize = props.iconSize != null ? props.iconSize : DEFAULT_ICON_SIZE[variant] || 14;
-  const isTab = variant === "tab";
-  const interactive = props.interactive != null ? props.interactive : isTab;
-  const isSelected = isTab && !!props.selected;
-  const className = ["tag", VARIANT_CLASS[variant] || VARIANT_CLASS["diff-add"], isSelected ? "tag--selected" : "", props.disabled ? "tag--disabled" : "", isTab && !interactive ? "tag--static" : "", props.className || ""].filter(Boolean).join(" ");
-  const content = _react.default.createElement(_react.default.Fragment, null, props.icon ? _react.default.createElement(_icons.Icon, {
-    name: props.icon,
-    size: iconSize,
-    className: "tag__icon"
-  }) : null, _react.default.createElement("span", {
-    className: "tag__label"
-  }, props.children));
-  if (isTab && interactive) {
-    return _react.default.createElement("button", {
-      type: "button",
-      className: className,
-      disabled: props.disabled,
-      "aria-pressed": isSelected,
-      onClick: props.onClick
-    }, content);
-  }
+function DiffTags({
+  added,
+  removed,
+  gap = 4,
+  id,
+  style,
+  className = ""
+}) {
+  if (added == null && removed == null) return null;
   return _react.default.createElement("span", {
-    className: className,
-    title: props.title
-  }, content);
-}
-function DiffTags(props) {
-  const hasAdded = props.added != null;
-  const hasRemoved = props.removed != null;
-  if (!hasAdded && !hasRemoved) return null;
-  const gap = props.gap != null ? props.gap : 4;
-  return _react.default.createElement("span", {
-    className: ["tag-diff-pair", props.className || ""].filter(Boolean).join(" "),
+    id: id,
+    className: ["tag-diff-pair", className].filter(Boolean).join(" "),
     style: {
-      gap: `${gap}px`
+      gap,
+      ...style
     }
-  }, hasAdded ? _react.default.createElement(Tag, {
-    variant: "diff-add"
-  }, formatDiffValue(props.added, "+")) : null, hasRemoved ? _react.default.createElement(Tag, {
-    variant: "diff-remove"
-  }, formatDiffValue(props.removed, "-")) : null);
-}
-function TagGroup(props) {
-  const items = props.items || [];
-  const variant = props.variant || "tab";
-  const multiple = !!props.multiple;
-  const selectable = props.selectable != null ? props.selectable : variant === "tab";
-  const gap = props.gap != null ? props.gap : variant === "tab" ? 8 : 4;
-  const controlled = props.value !== undefined;
-  const [innerValue, setInnerValue] = (0, _react.useState)(() => {
-    if (!selectable) return multiple ? [] : null;
-    if (props.defaultValue !== undefined) return props.defaultValue;
-    return multiple ? [] : items.length ? items[0].id : null;
-  });
-  const value = controlled ? props.value : innerValue;
-  const isSelected = id => multiple ? (value || []).indexOf(id) > -1 : value === id;
-  const handleClick = item => {
-    if (!selectable || item.disabled) return;
-    let next;
-    if (multiple) {
-      const list = value || [];
-      next = isSelected(item.id) ? list.filter(id => id !== item.id) : list.concat(item.id);
-    } else {
-      next = item.id;
-    }
-    if (!controlled) setInnerValue(next);
-    if (props.onChange) props.onChange(next, item);
-  };
-  return _react.default.createElement("div", {
-    className: ["tag-group", props.className || ""].filter(Boolean).join(" "),
-    style: {
-      gap: `${gap}px`
-    },
-    role: variant === "tab" ? "tablist" : undefined
-  }, items.map(item => _react.default.createElement(Tag, {
-    key: item.id,
-    variant: variant,
-    icon: item.icon,
-    disabled: item.disabled,
-    title: item.title || item.label,
-    selected: isSelected(item.id),
-    interactive: selectable,
-    onClick: () => handleClick(item)
-  }, item.label)));
+  }, added != null && _react.default.createElement(Tag, {
+    variant: "green",
+    size: "small"
+  }, formatDiffValue(added, "+")), removed != null && _react.default.createElement(Tag, {
+    variant: "red",
+    size: "small"
+  }, formatDiffValue(removed, "-")));
 }
 },
-"large-components/components/TaskTemplateCard/preview.jsx": function(module, exports, require) {
+"large-components/previews/TaskTemplateCard/preview.jsx": function(module, exports, require) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4531,7 +4219,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = TaskTemplateCardPanel;
 var _react = _interopRequireWildcard(require("react"));
-var _index = _interopRequireWildcard(require("./index.jsx"));
+var _index = _interopRequireWildcard(require("../../components/TaskTemplateCard/index.jsx"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 const CAPABILITIES = [{
@@ -4911,7 +4599,7 @@ function TaskTemplateCardGroup(props) {
   }, props.children);
 }
 },
-"large-components/components/TaskCard/preview.jsx": function(module, exports, require) {
+"large-components/previews/TaskCard/preview.jsx": function(module, exports, require) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4919,7 +4607,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = TaskCardPanel;
 var _react = _interopRequireWildcard(require("react"));
-var _index = _interopRequireWildcard(require("./index.jsx"));
+var _index = _interopRequireWildcard(require("../../components/TaskCard/index.jsx"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
@@ -5088,13 +4776,13 @@ function TaskCardColorRows() {
     note: "原子 Tag · icon 形态"
   }, {
     state: "开关 · 关",
-    note: "原子 Toggle"
+    note: "原子 Switch"
   }, {
     state: "开关 · 开",
-    note: "原子 Toggle"
+    note: "原子 Switch"
   }, {
     state: "开关 · 禁用",
-    note: "原子 Toggle · 整体 50%"
+    note: "原子 Switch · 整体 50%"
   }];
   const cells = {
     Default: {
@@ -5235,7 +4923,7 @@ function TaskCardPanel() {
     className: "demo-panel-name"
   }, "TaskCard \u5B9A\u65F6\u4EFB\u52A1\u5361\u7247"), _react.default.createElement("p", {
     className: "demo-panel-summary"
-  }, "short\uFF08\u6A2A\u5411\u6392\u5217\u7684\u7A84\u5361\u7EC4\uFF09/ long\uFF08\u9996\u884C\u6807\u9898 + \u6807\u7B7E + \u5F00\u5173\u5E76\u5217\uFF09\xB7 \u6807\u9898 / \u6807\u7B7E / \u63CF\u8FF0 / \u65F6\u95F4\u5468\u671F\u4E0E\u4E0B\u6B21\u6267\u884C \xB7 \u590D\u7528\u539F\u5B50 Toggle / Tag \xB7 \u53EF\u70B9\u51FB\uFF08hover \u62AC\u8D77\u9634\u5F71\uFF09/ \u9759\u6001")), _react.default.createElement(Section, {
+  }, "short\uFF08\u6A2A\u5411\u6392\u5217\u7684\u7A84\u5361\u7EC4\uFF09/ long\uFF08\u9996\u884C\u6807\u9898 + \u6807\u7B7E + \u5F00\u5173\u5E76\u5217\uFF09\xB7 \u6807\u9898 / \u6807\u7B7E / \u63CF\u8FF0 / \u65F6\u95F4\u5468\u671F\u4E0E\u4E0B\u6B21\u6267\u884C \xB7 \u590D\u7528\u539F\u5B50 Switch / Tag \xB7 \u53EF\u70B9\u51FB\uFF08hover \u62AC\u8D77\u9634\u5F71\uFF09/ \u9759\u6001")), _react.default.createElement(Section, {
     title: "Configurator",
     tag: "\u5B9E\u65F6\u914D\u7F6E",
     description: "\u5B9E\u65F6\u8C03\u6574 props\uFF1B\u5F00\u5173\u8D70\u53D7\u63A7\u7528\u6CD5\uFF08\u4E0E\u4E0B\u65B9\u9884\u89C8\u8054\u52A8\uFF09\u3002\u53EA\u6709\u6807\u7B7E\u53EF\u80FD\u7F3A\u7701 \u2014\u2014 \u6807\u7B7E\u7559\u7A7A\u5373\u6574\u4E2A\u6807\u7B7E\u4E0D\u6E32\u67D3\uFF1B\u6807\u9898 / \u63CF\u8FF0 / \u6267\u884C\u65F6\u95F4 / \u4E0B\u6B21\u6267\u884C\u662F\u56FA\u5B9A\u5185\u5BB9\uFF0C\u7531\u5BBF\u4E3B\u59CB\u7EC8\u63D0\u4F9B\u3002"
@@ -5244,7 +4932,7 @@ function TaskCardPanel() {
   }, _react.default.createElement("div", {
     className: "button-controls"
   }, _react.default.createElement(Select, {
-    label: "\u5F62\u6001",
+    label: "\u5E03\u5C40\u5F62\u6001 \xB7 variant",
     value: variant,
     onChange: setVariant,
     options: [{
@@ -5378,7 +5066,7 @@ function TaskCardPanel() {
     key: row[0]
   }, _react.default.createElement("th", null, row[0]), _react.default.createElement("td", null, row[1]), _react.default.createElement("td", null, row[2]))))))), _react.default.createElement(Section, {
     title: "Color spec",
-    description: "\u5C42\u7EA7\u4E3A Variant \u2192 State \u2192 Background / Outline / Text\uFF1B\u672A\u53D8\u5316\u9879\u6807\u8BB0\u4E3A\u201C\u540C Default\u201D\u3002\u4E24\u5F62\u6001\u540C\u8272\uFF0C\u65E0 size / shape\uFF1B\u5361\u7247\u4E0E TaskTemplateCard \u540C\u72B6\u6001\u6A21\u578B \u2014\u2014 \u53EA\u6709\u9ED8\u8BA4\u4E0E\u60AC\u6D6E\u4E24\u4E2A\u72B6\u6001\uFF0C\u53EF\u70B9\u51FB\uFF08\u4F20 onClick\uFF09\u65F6\u60AC\u6D6E\u62AC\u8D77\u4E00\u5C42\u9634\u5F71\uFF0C\u989C\u8272\u4E0E Default \u5B8C\u5168\u4E00\u81F4\uFF0C\u4EA4\u4E92\u53CD\u9988\u7684\u989C\u8272\u4ECD\u6765\u81EA\u5185\u90E8\u539F\u5B50 Toggle \u4E0E Tag\u3002"
+    description: "\u5C42\u7EA7\u4E3A Variant \u2192 State \u2192 Background / Outline / Text\uFF1B\u672A\u53D8\u5316\u9879\u6807\u8BB0\u4E3A\u201C\u540C Default\u201D\u3002\u4E24\u5F62\u6001\u540C\u8272\uFF0C\u65E0 size / shape\uFF1B\u5361\u7247\u4E0E TaskTemplateCard \u540C\u72B6\u6001\u6A21\u578B \u2014\u2014 \u53EA\u6709\u9ED8\u8BA4\u4E0E\u60AC\u6D6E\u4E24\u4E2A\u72B6\u6001\uFF0C\u53EF\u70B9\u51FB\uFF08\u4F20 onClick\uFF09\u65F6\u60AC\u6D6E\u62AC\u8D77\u4E00\u5C42\u9634\u5F71\uFF0C\u989C\u8272\u4E0E Default \u5B8C\u5168\u4E00\u81F4\uFF0C\u4EA4\u4E92\u53CD\u9988\u7684\u989C\u8272\u4ECD\u6765\u81EA\u5185\u90E8\u539F\u5B50 Switch \u4E0E Tag\u3002"
   }, _react.default.createElement("div", {
     className: "btn-table-wrap"
   }, _react.default.createElement("table", {
@@ -5400,12 +5088,12 @@ function TaskCardPanel() {
     key: row[0]
   }, _react.default.createElement("th", null, row[0]), _react.default.createElement("td", null, row[1]), _react.default.createElement("td", null, _react.default.createElement("code", null, row[2])))))))), _react.default.createElement(Section, {
     title: "API contract",
-    description: "\u7F3A\u7701\u5373\u9759\u6001\u5BB9\u5668\uFF1B\u4F20\u5165 onClick \u624D\u6574\u5361\u53EF\u70B9\u51FB\uFF08\u60AC\u6D6E\u62AC\u8D77\u9634\u5F71\u3001\u952E\u76D8 Enter / Space \u7B49\u4EF7\u70B9\u51FB\uFF09\u3002\u4E0D\u63D0\u4F9B size / shape / disabled\uFF08\u5F00\u5173\u7684 disabled \u7531\u539F\u5B50 Toggle \u900F\u4F20\uFF09\u3002"
+    description: "\u7F3A\u7701\u5373\u9759\u6001\u5BB9\u5668\uFF1B\u4F20\u5165 onClick \u624D\u6574\u5361\u53EF\u70B9\u51FB\uFF08\u60AC\u6D6E\u62AC\u8D77\u9634\u5F71\u3001\u952E\u76D8 Enter / Space \u7B49\u4EF7\u70B9\u51FB\uFF09\u3002\u4E0D\u63D0\u4F9B size / shape / disabled\uFF08\u5F00\u5173\u7684 disabled \u7531\u539F\u5B50 Switch \u900F\u4F20\uFF09\u3002"
   }, _react.default.createElement("div", {
     className: "btn-table-wrap"
   }, _react.default.createElement("table", {
     className: "btn-table btn-table--roomy"
-  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Props"), _react.default.createElement("th", null, "\u5951\u7EA6"))), _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "variant"), _react.default.createElement("td", null, _react.default.createElement("code", null, "\"short\""), "\uFF08\u9ED8\u8BA4\uFF0C\u7A84\u5361\uFF09\xB7 ", _react.default.createElement("code", null, "\"long\""), "\uFF08\u5BBD\u5361\uFF0C\u9996\u884C\u5E76\u5217\uFF09\uFF1B\u975E\u6CD5\u503C\u56DE\u9000\u4E3A short\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "title"), _react.default.createElement("td", null, "\u6807\u9898\u6587\u6848\uFF0C\u5355\u884C\u8D85\u51FA\u663E\u793A\u7701\u7565\u53F7\uFF1B\u59CB\u7EC8\u6E32\u67D3\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "label / labelIcon"), _react.default.createElement("td", null, "\u6807\u7B7E\u6587\u6848\u4E0E\u56FE\u6807\u3002label \u662F\u552F\u4E00\u53EF\u7F3A\u7701\u7684\u5185\u5BB9\u5B57\u6BB5\uFF0C\u7F3A\u7701\u65F6\u6574\u4E2A\u6807\u7B7E\u4E0D\u6E32\u67D3\uFF1BlabelIcon \u9ED8\u8BA4 ", _react.default.createElement("code", null, "calendar-clock"), "\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "description"), _react.default.createElement("td", null, "\u63CF\u8FF0\u6587\u6848\uFF0C\u6700\u591A\u4E24\u884C\u8D85\u51FA\u7701\u7565\uFF1B\u56FA\u5B9A\u5185\u5BB9\uFF0C\u5BBF\u4E3B\u59CB\u7EC8\u63D0\u4F9B\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "schedule / nextRun"), _react.default.createElement("td", null, "\u5E95\u90E8\u4FE1\u606F\u884C\u7684\u5DE6\u53F3\u4E24\u7AEF\uFF08\u65F6\u95F4\u5468\u671F / \u4E0B\u6B21\u6267\u884C\uFF09\uFF1B\u56FA\u5B9A\u5185\u5BB9\uFF0C\u5BBF\u4E3B\u59CB\u7EC8\u63D0\u4F9B\uFF0C\u4FE1\u606F\u884C\u56FA\u5B9A\u6E32\u67D3\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "nextRunLabel"), _react.default.createElement("td", null, "\u300C\u4E0B\u6B21\u6267\u884C\u300D\u524D\u7F00\uFF0C\u9ED8\u8BA4 ", _react.default.createElement("code", null, "\u4E0B\u6B21\u6267\u884C"), "\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "checked / defaultChecked"), _react.default.createElement("td", null, "\u900F\u4F20\u539F\u5B50 Toggle\uFF1A\u4F20 checked \u4E3A\u53D7\u63A7\uFF0C\u5426\u5219\u7528 defaultChecked \u975E\u53D7\u63A7\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "onChange"), _react.default.createElement("td", null, _react.default.createElement("code", null, "(next, event) => void"), "\uFF0C\u5F00\u5173\u5207\u6362\u56DE\u8C03\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "disabled"), _react.default.createElement("td", null, "\u4EC5\u7981\u7528\u5F00\u5173\uFF0C\u4E0D\u5F71\u54CD\u5361\u7247\u5176\u4ED6\u90E8\u5206\u7684\u5C55\u793A\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "onClick"), _react.default.createElement("td", null, "\u4F20\u5165\u5373\u6574\u5361\u53EF\u70B9\u51FB\uFF0C\u4E0E TaskTemplateCard \u540C\u89C4\u683C\uFF1A\u60AC\u6D6E\u62AC\u8D77\u9634\u5F71 ", _react.default.createElement("code", null, "0 8px 24px rgba(0,0,0,8%)"), "\u3001\u952E\u76D8 Enter / Space \u7B49\u4EF7\u70B9\u51FB\u3001\u6839\u8282\u70B9\u5E26 ", _react.default.createElement("code", null, "role=\"button\""), " \u4E0E ", _react.default.createElement("code", null, "tabIndex=0"), "\uFF1B\u70B9\u51FB\u5361\u5185\u5F00\u5173\u4E0D\u89E6\u53D1\u6574\u5361\u70B9\u51FB\u3002\u7F3A\u7701\u4E3A\u9759\u6001\u5C55\u793A\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "className"), _react.default.createElement("td", null, "\u5BBF\u4E3B\u5E03\u5C40\u6269\u5C55\uFF0C\u4E0D\u4F5C\u4E3A\u89C6\u89C9\u53D8\u4F53\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "TaskCardGroup.children"), _react.default.createElement("td", null, "\u4E00\u7EC4\u77ED\u5361\uFF1B\u8D1F\u8D23 16px \u95F4\u8DDD\u3001\u81EA\u52A8\u6362\u884C\u4E0E\u300C\u4E00\u884C\u6700\u5C11\u4E24\u5F20\u300D\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "\u4E0D\u63D0\u4F9B\u7684\u8F74"), _react.default.createElement("td", null, "\u65E0 size / shape\u3001\u65E0 loading / error \u72B6\u6001\u3002")))))));
+  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Props"), _react.default.createElement("th", null, "\u5951\u7EA6"))), _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "variant"), _react.default.createElement("td", null, _react.default.createElement("code", null, "\"short\""), "\uFF08\u9ED8\u8BA4\uFF0C\u7A84\u5361\uFF09\xB7 ", _react.default.createElement("code", null, "\"long\""), "\uFF08\u5BBD\u5361\uFF0C\u9996\u884C\u5E76\u5217\uFF09\uFF1B\u975E\u6CD5\u503C\u56DE\u9000\u4E3A short\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "title"), _react.default.createElement("td", null, "\u6807\u9898\u6587\u6848\uFF0C\u5355\u884C\u8D85\u51FA\u663E\u793A\u7701\u7565\u53F7\uFF1B\u59CB\u7EC8\u6E32\u67D3\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "label / labelIcon"), _react.default.createElement("td", null, "\u6807\u7B7E\u6587\u6848\u4E0E\u56FE\u6807\u3002label \u662F\u552F\u4E00\u53EF\u7F3A\u7701\u7684\u5185\u5BB9\u5B57\u6BB5\uFF0C\u7F3A\u7701\u65F6\u6574\u4E2A\u6807\u7B7E\u4E0D\u6E32\u67D3\uFF1BlabelIcon \u9ED8\u8BA4 ", _react.default.createElement("code", null, "calendar-clock"), "\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "description"), _react.default.createElement("td", null, "\u63CF\u8FF0\u6587\u6848\uFF0C\u6700\u591A\u4E24\u884C\u8D85\u51FA\u7701\u7565\uFF1B\u56FA\u5B9A\u5185\u5BB9\uFF0C\u5BBF\u4E3B\u59CB\u7EC8\u63D0\u4F9B\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "schedule / nextRun"), _react.default.createElement("td", null, "\u5E95\u90E8\u4FE1\u606F\u884C\u7684\u5DE6\u53F3\u4E24\u7AEF\uFF08\u65F6\u95F4\u5468\u671F / \u4E0B\u6B21\u6267\u884C\uFF09\uFF1B\u56FA\u5B9A\u5185\u5BB9\uFF0C\u5BBF\u4E3B\u59CB\u7EC8\u63D0\u4F9B\uFF0C\u4FE1\u606F\u884C\u56FA\u5B9A\u6E32\u67D3\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "nextRunLabel"), _react.default.createElement("td", null, "\u300C\u4E0B\u6B21\u6267\u884C\u300D\u524D\u7F00\uFF0C\u9ED8\u8BA4 ", _react.default.createElement("code", null, "\u4E0B\u6B21\u6267\u884C"), "\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "checked / defaultChecked"), _react.default.createElement("td", null, "\u900F\u4F20\u539F\u5B50 Switch\uFF1A\u4F20 checked \u4E3A\u53D7\u63A7\uFF0C\u5426\u5219\u7528 defaultChecked \u975E\u53D7\u63A7\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "onChange"), _react.default.createElement("td", null, _react.default.createElement("code", null, "(next, event) => void"), "\uFF0C\u5F00\u5173\u5207\u6362\u56DE\u8C03\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "disabled"), _react.default.createElement("td", null, "\u4EC5\u7981\u7528\u5F00\u5173\uFF0C\u4E0D\u5F71\u54CD\u5361\u7247\u5176\u4ED6\u90E8\u5206\u7684\u5C55\u793A\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "onClick"), _react.default.createElement("td", null, "\u4F20\u5165\u5373\u6574\u5361\u53EF\u70B9\u51FB\uFF0C\u4E0E TaskTemplateCard \u540C\u89C4\u683C\uFF1A\u60AC\u6D6E\u62AC\u8D77\u9634\u5F71 ", _react.default.createElement("code", null, "0 8px 24px rgba(0,0,0,8%)"), "\u3001\u952E\u76D8 Enter / Space \u7B49\u4EF7\u70B9\u51FB\u3001\u6839\u8282\u70B9\u5E26 ", _react.default.createElement("code", null, "role=\"button\""), " \u4E0E ", _react.default.createElement("code", null, "tabIndex=0"), "\uFF1B\u70B9\u51FB\u5361\u5185\u5F00\u5173\u4E0D\u89E6\u53D1\u6574\u5361\u70B9\u51FB\u3002\u7F3A\u7701\u4E3A\u9759\u6001\u5C55\u793A\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "className"), _react.default.createElement("td", null, "\u5BBF\u4E3B\u5E03\u5C40\u6269\u5C55\uFF0C\u4E0D\u4F5C\u4E3A\u89C6\u89C9\u53D8\u4F53\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "TaskCardGroup.children"), _react.default.createElement("td", null, "\u4E00\u7EC4\u77ED\u5361\uFF1B\u8D1F\u8D23 16px \u95F4\u8DDD\u3001\u81EA\u52A8\u6362\u884C\u4E0E\u300C\u4E00\u884C\u6700\u5C11\u4E24\u5F20\u300D\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "\u4E0D\u63D0\u4F9B\u7684\u8F74"), _react.default.createElement("td", null, "\u65E0 size / shape\u3001\u65E0 loading / error \u72B6\u6001\u3002")))))));
 }
 },
 "large-components/components/TaskCard/index.jsx": function(module, exports, require) {
@@ -5419,7 +5107,7 @@ exports.default = TaskCard;
 var _react = _interopRequireDefault(require("react"));
 var _largeIcons = require("../../../assets/shared/large-icons.js");
 var _index = _interopRequireDefault(require("../../../atom-components/components/Tag/index.jsx"));
-var _index2 = _interopRequireDefault(require("../../../atom-components/components/Toggle/index.jsx"));
+var _index2 = _interopRequireDefault(require("../../../atom-components/components/Switch/index.jsx"));
 require("./index.css");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 function TaskCard(props) {
@@ -5451,11 +5139,21 @@ function TaskCard(props) {
     title: props.title
   }, props.title);
   const tag = props.label ? _react.default.createElement(_index.default, {
-    variant: "icon",
-    icon: props.labelIcon || "calendar-clock",
+    variant: "default",
+    size: "small",
+    shape: "square",
     className: "task-card__label",
     title: props.label
-  }, props.label) : null;
+  }, _react.default.createElement("span", {
+    style: {
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 4
+    }
+  }, _react.default.createElement(_largeIcons.Icon, {
+    name: props.labelIcon || "calendar-clock",
+    size: 14
+  }), props.label)) : null;
   const toggle = _react.default.createElement(_index2.default, {
     className: "task-card__switch",
     checked: props.checked,
@@ -5498,24 +5196,24 @@ function TaskCardGroup(props) {
   }, props.children);
 }
 },
-"atom-components/components/Toggle/index.jsx": function(module, exports, require) {
+"atom-components/components/Switch/index.jsx": function(module, exports, require) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = Toggle;
+exports.default = Switch;
 var _react = _interopRequireWildcard(require("react"));
 require("./index.css");
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
-function Toggle(props) {
+function Switch(props) {
   const disabled = !!props.disabled;
   const label = props.label;
   const controlled = props.checked !== undefined && props.checked !== null;
   const [innerChecked, setInnerChecked] = (0, _react.useState)(!!props.defaultChecked);
   const checked = controlled ? !!props.checked : innerChecked;
-  const handleToggle = event => {
+  const handleSwitch = event => {
     if (disabled) return;
     const next = !checked;
     if (!controlled) setInnerChecked(next);
@@ -5523,6 +5221,8 @@ function Toggle(props) {
   };
   const rootClass = "tg-root" + (disabled ? " tg-root-disabled" : "") + (props.className ? " " + props.className : "");
   return _react.default.createElement("label", {
+    id: props.id,
+    style: props.style,
     className: rootClass
   }, _react.default.createElement("button", {
     type: "button",
@@ -5530,7 +5230,7 @@ function Toggle(props) {
     "aria-checked": checked,
     disabled: disabled,
     className: "tg-switch " + (checked ? "tg-switch-on" : "tg-switch-off"),
-    onClick: handleToggle
+    onClick: handleSwitch
   }, _react.default.createElement("span", {
     className: "tg-knob"
   })), label ? _react.default.createElement("span", {
@@ -5538,7 +5238,7 @@ function Toggle(props) {
   }, label) : null);
 }
 }};
-const imports = {"tooling/preview/Gallery.jsx":{"react":"react","../../assets/shared/icons.js":"assets/shared/icons.js"},"assets/shared/icons.js":{"react":"react"},"large-components/components/ArtifactSummary/preview.jsx":{"react":"react","./index.jsx":"large-components/components/ArtifactSummary/index.jsx"},"large-components/components/ArtifactSummary/index.jsx":{"react":"react","../../../assets/shared/large-icons.js":"assets/shared/large-icons.js","../../../atom-components/components/Button/index.jsx":"atom-components/components/Button/index.jsx","../../../atom-components/components/DropdownButton/index.jsx":"atom-components/components/DropdownButton/index.jsx","../../../atom-components/components/Tag/index.jsx":"atom-components/components/Tag/index.jsx","./index.css":"css"},"assets/shared/large-icons.js":{"react":"react"},"atom-components/components/Button/index.jsx":{"react":"react","../../../assets/shared/icons.js":"assets/shared/icons.js","./presets.js":"atom-components/components/Button/presets.js","./index.css":"css"},"atom-components/components/Button/presets.js":{},"atom-components/components/DropdownButton/index.jsx":{"react":"react","../Button/presets.js":"atom-components/components/Button/presets.js","./index.css":"css"},"atom-components/components/Tag/index.jsx":{"react":"react","../../../assets/shared/icons.js":"assets/shared/icons.js","./index.css":"css"},"large-components/components/TaskTemplateCard/preview.jsx":{"react":"react","./index.jsx":"large-components/components/TaskTemplateCard/index.jsx"},"large-components/components/TaskTemplateCard/index.jsx":{"react":"react","../../../assets/shared/large-icons.js":"assets/shared/large-icons.js","./index.css":"css"},"large-components/components/TaskCard/preview.jsx":{"react":"react","./index.jsx":"large-components/components/TaskCard/index.jsx"},"large-components/components/TaskCard/index.jsx":{"react":"react","../../../assets/shared/large-icons.js":"assets/shared/large-icons.js","../../../atom-components/components/Tag/index.jsx":"atom-components/components/Tag/index.jsx","../../../atom-components/components/Toggle/index.jsx":"atom-components/components/Toggle/index.jsx","./index.css":"css"},"atom-components/components/Toggle/index.jsx":{"react":"react","./index.css":"css"}};
+const imports = {"tooling/preview/Gallery.jsx":{"react":"react","../../assets/shared/icons.js":"assets/shared/icons.js"},"assets/shared/icons.js":{"react":"react"},"large-components/previews/ArtifactSummary/preview.jsx":{"react":"react","../../components/ArtifactSummary/index.jsx":"large-components/components/ArtifactSummary/index.jsx"},"large-components/components/ArtifactSummary/index.jsx":{"react":"react","../../../assets/shared/large-icons.js":"assets/shared/large-icons.js","../../../atom-components/components/Button/index.jsx":"atom-components/components/Button/index.jsx","../../../atom-components/components/DropdownButton/index.jsx":"atom-components/components/DropdownButton/index.jsx","../../../atom-components/components/Tag/index.jsx":"atom-components/components/Tag/index.jsx","./index.css":"css"},"assets/shared/large-icons.js":{"react":"react"},"atom-components/components/Button/index.jsx":{"react":"react","./presets.js":"atom-components/components/Button/presets.js","./index.css":"css"},"atom-components/components/Button/presets.js":{},"atom-components/components/DropdownButton/index.jsx":{"react":"react","../Button/presets.js":"atom-components/components/Button/presets.js","./index.css":"css"},"atom-components/components/Tag/index.jsx":{"react":"react","./index.css":"css"},"large-components/previews/TaskTemplateCard/preview.jsx":{"react":"react","../../components/TaskTemplateCard/index.jsx":"large-components/components/TaskTemplateCard/index.jsx"},"large-components/components/TaskTemplateCard/index.jsx":{"react":"react","../../../assets/shared/large-icons.js":"assets/shared/large-icons.js","./index.css":"css"},"large-components/previews/TaskCard/preview.jsx":{"react":"react","../../components/TaskCard/index.jsx":"large-components/components/TaskCard/index.jsx"},"large-components/components/TaskCard/index.jsx":{"react":"react","../../../assets/shared/large-icons.js":"assets/shared/large-icons.js","../../../atom-components/components/Tag/index.jsx":"atom-components/components/Tag/index.jsx","../../../atom-components/components/Switch/index.jsx":"atom-components/components/Switch/index.jsx","./index.css":"css"},"atom-components/components/Switch/index.jsx":{"react":"react","./index.css":"css"}};
 const cache = {};
 function load(id) {
   if (id === 'react') return React;
@@ -5549,6 +5249,6 @@ function load(id) {
   factories[id](module, module.exports, name => load(imports[id][name]));
   return module.exports;
 }
-const entries = [{"id":"artifact-summary","name":"ArtifactSummary","module":"large-components/components/ArtifactSummary/preview.jsx"},{"id":"task-template-card","name":"TaskTemplateCard","module":"large-components/components/TaskTemplateCard/preview.jsx"},{"id":"task-card","name":"TaskCard","module":"large-components/components/TaskCard/preview.jsx"}].map(entry => ({ ...entry, Demo: load(entry.module).default }));
+const entries = [{"id":"artifact-summary","name":"ArtifactSummary","module":"large-components/previews/ArtifactSummary/preview.jsx"},{"id":"task-template-card","name":"TaskTemplateCard","module":"large-components/previews/TaskTemplateCard/preview.jsx"},{"id":"task-card","name":"TaskCard","module":"large-components/previews/TaskCard/preview.jsx"}].map(entry => ({ ...entry, Demo: load(entry.module).default }));
 window.PreviewDemos = Object.fromEntries(entries.map(entry => [entry.id, entry.Demo]));
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(load("tooling/preview/Gallery.jsx").default, { entries, title: "Large Components", standalone: false, panelClassName: "demo-page" }));</script></body></html>

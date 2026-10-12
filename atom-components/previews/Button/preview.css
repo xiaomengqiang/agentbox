@@ -1,0 +1,19 @@
+@import url("../../../tooling/preview/documentation.css");
+
+
+@import url("../../../tooling/preview/button-gallery.css");
+@import url("../../../tooling/preview/button-tables.css");
+
+.btn-matrix, .btn-lab, .btn-matrix-group { min-width: 0; max-width: 100%; box-sizing: border-box; }
+.btn-matrix-row { min-width: 950px; }
+
+ .button-specimen-title { margin: 0 0 24px; font: var(--font-subtitle-sm); font-weight: var(--font-weight-bold); color: var(--on-surface); text-align: left; }
+
+/* 静态状态仅属于预览，不进入 Button API。 */
+.button-preview-state-hover::before, .button-preview-state-focus::before { background-color: var(--btn-state-layer-hover); opacity: 1; }
+.button-preview-state-hover { color: var(--btn-label-hover); }
+.button-preview-state-pressed::before { background-color: var(--btn-state-layer-pressed); opacity: 1; }
+.button-preview-state-pressed { color: var(--btn-label-pressed); }
+.btn.button-preview-state-focus { outline: var(--outline-width-focus) solid var(--btn-focus-ring); outline-offset: var(--outline-offset-gap); }
+
+@import url("../../../tooling/preview/color-spec.css");

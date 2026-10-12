@@ -44,8 +44,8 @@ function verify(file, ids) {
   if (ids.includes('iconstate')) for (const icon of ['dialog-glyph','dialog-pause','dialog-add']) for (const state of ['auto','default','hover','active','disabled']) for (const frame of ['gray','black','custom']) {
     hookIndex=0; overrides={8:icon,9:state,10:frame}; walk(context.PreviewDemos.iconstate()); cases++;
   }
-  if (ids.includes('menuitem')) for (const left of ['nav','history']) for (const size of ['sm','md']) for (const variant of ['folder','file-level-1','file-level-2']) for (const state of ['default','hover','rename','renaming','disabled']) {
-    hookIndex=0; overrides={1:true,3:left,7:size,12:variant,13:state}; walk(context.PreviewDemos.menuitem()); cases++;
+  if (ids.includes('menuitem')) for (const size of ['large','medium','small']) for (const variant of ['default','error']) for (const level of ['level-1','level-2']) for (const leading of [true,false]) for (const trailing of [true,false]) for (const disclosure of [true,false]) for (const renameable of [true,false]) {
+    hookIndex=0; overrides={0:size,1:variant,2:level,3:leading,4:trailing,5:disclosure,11:trailing,12:renameable}; walk(context.PreviewDemos.menuitem()); cases++;
   }
   // External runtime/font paths must work from both gallery and deeply nested previews.
   for (const match of html.matchAll(/(?:src="|url\(")([^"\)]+)(?:"|\))/g)) {
@@ -59,7 +59,7 @@ for (const level of levels) {
   const { folder, entries } = registry(level);
   const selected = ['--all','--gallery'].includes(target) ? entries : entries.filter(entry => [entry.id, entry.name].includes(target));
   if (!selected.length) throw new Error('Unknown component: ' + target);
-  if (target !== '--gallery') for (const entry of selected) verify(path.join(ROOT,folder,'components',entry.name,'preview.html'),[entry.id]);
+  if (target !== '--gallery') for (const entry of selected) verify(path.join(ROOT,folder,'previews',entry.name,'preview.html'),[entry.id]);
   if (['--all','--gallery'].includes(target)) verify(path.join(ROOT,folder,'index.html'),entries.map(entry => entry.id));
 }
 console.log(`PASS: runtime rendering and local asset paths; ${cases} additional configuration cases`);

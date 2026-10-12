@@ -37,7 +37,7 @@ export function FileArtifactCard({ title, fileType = "PPTX", iconSrc, onOpen }) 
         <div className="artifact-summary__meta">{normalizedType}</div>
       </div>
       <DropdownButton
-        variant="outlined"
+        variant="tertiary"
         size="xs"
         className="artifact-summary__open"
         aria-label={`打开 ${title}`}
@@ -58,8 +58,8 @@ export function CodeChangeCard({ fileCount, added, removed, onUndo, onReview }) 
         <DiffTags added={added} removed={removed} />
       </div>
       <div className="artifact-summary__actions">
-        <Button variant="text" size="small" className="artifact-summary__undo" onClick={onUndo}>撤销</Button>
-        <Button variant="outlined" size="small" shape="square" className="artifact-summary__review" onClick={onReview}>审核</Button>
+        <Button variant="text" size="medium" className="artifact-summary__undo" onClick={onUndo}>撤销</Button>
+        <Button variant="tertiary" size="medium" shape="square" className="artifact-summary__review" onClick={onReview}>审核</Button>
       </div>
     </article>
   );

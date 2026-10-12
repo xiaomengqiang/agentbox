@@ -18,7 +18,7 @@ for (const level of levels) {
   if (!entries.length || new Set(entries.map(entry => entry.id)).size !== entries.length || new Set(entries.map(entry => entry.name)).size !== entries.length) throw new Error('Invalid registry: ' + folder);
   const selected = ['--all','--gallery'].includes(target) ? entries : entries.filter(entry => [entry.id,entry.name].includes(target));
   if (!selected.length) throw new Error(`Unknown component ${target}. Available: ${entries.map(entry => entry.name).join(', ')}`);
-  const jobs = target === '--gallery' ? [] : selected.map(entry => ({ entries: [entry], output: path.join(ROOT, folder, 'components', entry.name, 'preview.html'), standalone: true }));
+  const jobs = target === '--gallery' ? [] : selected.map(entry => ({ entries: [entry], output: path.join(ROOT, folder, 'previews', entry.name, 'preview.html'), standalone: true }));
   if (['--all','--gallery'].includes(target)) jobs.push({ entries, output: path.join(ROOT, folder, 'index.html'), standalone: false });
   for (const job of jobs) {
     const result = buildPage(level, job.entries, job.output, job.standalone);

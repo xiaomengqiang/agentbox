@@ -21,15 +21,15 @@
   cursor: pointer;
   transition: color var(--duration-fast) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard);
 }
-.icon-button--small { --icon-color: var(--color-icon-secondary); }
-.icon-button--primary {
+.icon-button--square { border-radius: var(--radius-md); }
+.icon-button--round { border-radius: var(--radius-full); }
+.icon-button--filled {
   --icon-bg: var(--color-icon-primary);
-  --icon-color: var(--color-font-on-primary);
+  --icon-color: var(--color-background-primary);
   --icon-hover: var(--on-primary-10);
   --icon-pressed: var(--on-primary-15);
 }
-.dark .icon-button--primary { --icon-color: var(--black); }
-.icon-button--secondary {
+.icon-button--unfilled {
   --icon-color: var(--color-icon-primary);
   --icon-hover: var(--color-interactive-hover);
   --icon-pressed: var(--color-interactive-pressed);
@@ -42,23 +42,18 @@
   border-radius: inherit;
   pointer-events: none;
 }
-.icon-button:not([data-state]):not(:disabled):hover,
-.icon-button[data-state="hover"] { color: var(--icon-color-hover); }
-.icon-button:not([data-state]):not(:disabled):hover::before,
-.icon-button[data-state="hover"]::before { background: var(--icon-hover); }
-.icon-button:not([data-state]):not(:disabled):active,
-.icon-button[data-state="pressed"] { color: var(--icon-color-pressed); }
-.icon-button:not([data-state]):not(:disabled):active::before,
-.icon-button[data-state="pressed"]::before { background: var(--icon-pressed); }
+.icon-button:not(:disabled):hover { color: var(--icon-color-hover); }
+.icon-button:not(:disabled):hover::before { background: var(--icon-hover); }
+.icon-button:not(:disabled):active { color: var(--icon-color-pressed); }
+.icon-button:not(:disabled):active::before { background: var(--icon-pressed); }
 .icon-button:focus { outline: none; }
 .icon-button:disabled { opacity: .5; cursor: not-allowed; outline: none; }
 .icon-button__glyph {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   flex: none;
   background: currentColor;
   mask: no-repeat center / contain;
   -webkit-mask: no-repeat center / contain;
 }
-.icon-button--small .icon-button__glyph,
-.icon-button--dialog .icon-button__glyph { width: 16px; height: 16px; }
+.icon-button--small { width: 28px; height: 28px; }

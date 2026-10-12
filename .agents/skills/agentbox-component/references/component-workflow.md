@@ -11,6 +11,7 @@ atom-components/                  基础组件层，对应 CLI 的 atom
   components/<Name>/
     index.jsx / index.css         真实实现
     README.md                     静态 API 与使用文档
+  previews/<Name>/                与组件实现分离，内部检查专用
     preview.jsx / preview.css     此组件的交互预览源码
     preview.html                  生成的独立预览
 large-components/                 组合组件层，对应 CLI 的 large；同上结构
@@ -22,6 +23,8 @@ index.html                        工程导航
 ```
 
 HTML 是输出；独立页面与总览使用同一份 `preview.jsx` 和组件源码。总览重新汇总源码，不拼接独立 HTML，也不要求独立 HTML 已生成。不要复制一份“总览专用组件实现”。
+
+预览从 `../../components/<Name>/index.jsx` 导入真实实现；共享模块仍使用 `../../../assets/…` 或 `../../../tooling/preview/…`。三个 preview 文件不得放回 components。交付前端时提供 components 与必要的共享 assets、atom 依赖，不需提供 previews 或预览工具。README 采用 Overview、Props、Usage；Color Spec 留在交互预览。
 
 组合组件引用示例：
 
@@ -45,7 +48,7 @@ node scripts/build.mjs large TaskCard
 node scripts/verify.mjs large TaskCard
 ```
 
-交付 `<library>/components/<Name>/preview.html`。可用目录名 `TextFields` 或注册 ID `text-fields`。此操作只更新目标独立页面，总览与其他独立页面保留原状；这是精修期间的正常工作状态。
+交付 `<library>/previews/<Name>/preview.html`。可用目录名 `TextFields` 或注册 ID `text-fields`。此操作只更新目标独立页面，总览与其他独立页面保留原状；这是精修期间的正常工作状态。
 
 ### 用户要求汇总
 
@@ -70,13 +73,13 @@ node scripts/build.mjs --all --check
 
 ## 新增组件
 
-在正确层建立组件目录，编写实现、README、默认导出的 `preview.jsx` 与 `preview.css`，向该层 `registry.json` 增加 `{ "id": "new-component", "name": "NewComponent" }`。按单组件流程构建、验证和交付。除非用户要求集成或汇总，暂不重建总览。
+在正确层建立组件目录，编写实现和 README；在同层 `previews/<Name>/` 编写默认导出的 `preview.jsx` 与 `preview.css`，向该层 `registry.json` 增加 `{ "id": "new-component", "name": "NewComponent" }`。按单组件流程构建、验证和交付。除非用户要求集成或汇总，暂不重建总览。
 
 新组件 README 采用 `component-readme`；交互预览采用 `component-preview-html`。注册表只维护目录名、ID 和顺序，不承载组件实现或预览内容。
 
 ## 节省上下文
 
-- 工作上下文优先限制在一个组件目录；先定位对应函数、状态或样式再扩大读取范围。
+- 工作上下文优先限制在目标组件的实现与预览目录；先定位对应函数、状态或样式再扩大读取范围。
 - 配置器与表格样式复用 `tooling/preview/documentation.css`、`compact.css` 等实际存在的公共文件，不把整份样式复制进每个预览。
 - 仅在维护构建工具或排查输出错误时读取生成 HTML 的相关片段。普通布局问题从源码与浏览器定位。
 - 仅修改 README 时无需构建。公共样式或构建器变更才扩大到受影响的组件与总览验证。

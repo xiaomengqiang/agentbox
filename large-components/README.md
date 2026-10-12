@@ -1,6 +1,6 @@
 # Large Components
 
-组合组件实现位于 `components/<Name>/`，直接引用 `atom-components` 的源码。单独预览：该目录下的 `preview.html`；本层总览：`index.html`。
+组合组件实现位于 `components/<Name>/`，直接引用 `atom-components` 的源码。单独预览：`previews/<Name>/preview.html`；本层总览：`index.html`。
 
 ```sh
 node scripts/build.mjs large TaskCard

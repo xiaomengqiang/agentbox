@@ -7,17 +7,19 @@ agentbox/
 ├── atom-components/             基础组件库
 │   ├── registry.json            总览顺序、组件 ID 与目录名
 │   ├── index.html               基础组件总览（生成）
-│   └── components/Button/
-│       ├── index.jsx            组件实现
-│       ├── index.css            组件样式
-│       ├── README.md            API 与使用说明
+│   ├── components/Button/
+│   │   ├── index.jsx            组件实现
+│   │   ├── index.css            组件样式
+│   │   └── README.md            API 与使用说明
+│   └── previews/Button/         内部检查预览，与组件代码分离
 │       ├── preview.jsx          此组件的预览、配置器与文档
 │       ├── preview.css          此组件的预览布局与状态演示
 │       └── preview.html         独立预览（生成）
 ├── large-components/            组合组件库，相同结构
 │   ├── registry.json
 │   ├── index.html
-│   └── components/TaskCard/…
+│   ├── components/TaskCard/…
+│   └── previews/TaskCard/…
 ├── assets/                     两层共用的字体、主题、图标与本地运行库
 ├── tooling/preview/             共用页面壳、预览样式和模块构建器
 ├── scripts/build.mjs            唯一构建入口
@@ -36,7 +38,7 @@ node scripts/build.mjs --all
 node scripts/verify.mjs --all
 ```
 
-仓库已包含构建好的 HTML，clone 后无需构建即可用浏览器打开根目录 `index.html`，进入基础组件或组合组件总览。也可以直接打开某组件目录下的 `preview.html`。
+仓库已包含构建好的 HTML，clone 后无需构建即可用浏览器打开根目录 `index.html`，进入基础组件或组合组件总览。也可以直接打开`<library>/previews/<Name>/preview.html`。
 
 后续更新已有副本：
 
@@ -71,6 +73,10 @@ git push -u origin main
 - clone / pull 后可直接打开已提交的 HTML；发布版本前运行全量构建与验证，将源码及生成 HTML 一起提交，保证预览与源码一致。
 - `.gitignore` 不会清除已有 Git 历史。已跟踪的本地历史文件需从索引移除；这不影响保留的本地副本，也不会改写之前的提交。
 
+## 交付前端
+
+交付两层的 `components/` 目录及实现依赖的共享 `assets/`，保留相对目录关系；组合组件还需包含其引用的基础组件。`previews/`、`tooling/preview/`、构建脚本与总览 HTML 用于内部检查，无需交付。组件 README 采用 Overview、Props、Usage；Color spec 保留在交互预览。
+
 ## 精修单个组件
 
 例如只修改 Button：
@@ -80,7 +86,7 @@ node scripts/build.mjs atom Button
 node scripts/verify.mjs atom Button
 ```
 
-打开 `atom-components/components/Button/preview.html`。它只包含 Button 预览及其依赖，不加载其他组件预览，也不会更新总览或其他独立页面。可传目录名 `TextFields` 或注册 ID `text-fields`。
+打开 `atom-components/previews/Button/preview.html`。它只包含 Button 预览及其依赖，不加载其他组件预览，也不会更新总览或其他独立页面。可传目录名 `TextFields` 或注册 ID `text-fields`。
 
 精修组合组件的用法完全相同：
 
@@ -89,7 +95,7 @@ node scripts/build.mjs large TaskCard
 node scripts/verify.mjs large TaskCard
 ```
 
-打开 `large-components/components/TaskCard/preview.html`。组合组件直接 import 原子组件源码；修改一个原子组件后，重新构建使用它的组合组件即可看到变化，不需要先更新原子总览。
+打开 `large-components/previews/TaskCard/preview.html`。组合组件直接 import 原子组件源码；修改一个原子组件后，重新构建使用它的组合组件即可看到变化，不需要先更新原子总览。
 
 ## 确认后汇总
 
@@ -120,8 +126,8 @@ node scripts/build.mjs --all --check
 
 ## 新增组件
 
-1. 在对应 `components/` 下新增组件目录，包含实现、样式、README、`preview.jsx`、`preview.css`。
-2. `preview.jsx` 使用标准 ES Module，导入真实组件，并 `export default` 一个预览组件。
+1. 在对应 `components/<Name>/` 下新增实现、样式和 README；在同层 `previews/<Name>/` 下新增 `preview.jsx`、`preview.css`。
+2. `preview.jsx` 使用标准 ES Module，通过 `../../components/<Name>/index.jsx` 导入真实组件，并 `export default` 一个预览组件。
 3. 在该层 `registry.json` 中增加 `{ "id": "new-component", "name": "NewComponent" }`。
 4. 单独构建和验证，完成后更新该层总览。
 

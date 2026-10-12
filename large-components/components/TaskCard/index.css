@@ -97,7 +97,7 @@
   flex: 0 0 auto;
 }
 
-/* 开关：不参与拉伸，尺寸由原子 Toggle 自带（36 × 20） */
+/* 开关：不参与拉伸，尺寸由原子 Switch 自带（36 × 20） */
 .task-card__switch {
   flex: 0 0 auto;
 }

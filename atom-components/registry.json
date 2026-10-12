@@ -8,8 +8,8 @@
     "name": "DropdownButton"
   },
   {
-    "id": "segmented-button",
-    "name": "SegmentedButton"
+    "id": "segmented",
+    "name": "Segmented"
   },
   {
     "id": "text-fields",
@@ -28,12 +28,16 @@
     "name": "Tag"
   },
   {
-    "id": "text-tabs",
-    "name": "TextTabs"
+    "id": "chip",
+    "name": "Chip"
   },
   {
-    "id": "toggle",
-    "name": "Toggle"
+    "id": "tab",
+    "name": "Tab"
+  },
+  {
+    "id": "switch",
+    "name": "Switch"
   },
   {
     "id": "checkbox",

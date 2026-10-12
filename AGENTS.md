@@ -1,7 +1,7 @@
 # Component workflow
 
 - This repository has two symmetric libraries: `atom-components/` and `large-components/`.
-- Components live in `<library>/components/<Name>/`. Start with only the target's README, index.jsx, index.css, preview.jsx and preview.css.
+- Component implementation and README live in `<library>/components/<Name>/`; preview.jsx, preview.css and generated preview.html live separately in `<library>/previews/<Name>/`. Start with only those five source files for the target.
 - Do not read generated `preview.html` / `index.html`, unrelated components, or `.history/` by default. HTML is disposable output, never a source template.
 - For focused edits run `node scripts/build.mjs atom <Name>` and `node scripts/verify.mjs atom <Name>` (use `large` for composed components). Do not refresh galleries unless asked to aggregate or rebuild all.
 - When asked to aggregate run `node scripts/build.mjs <atom|large> --gallery`, then the same target with `scripts/verify.mjs`.
@@ -10,3 +10,7 @@
 - Use existing `assets/` and `tooling/preview/`. Do not initialize another preview scaffold, copy runtime assets, or restore old HTML-patching scripts. These project-specific paths supersede generic scaffold paths in skills.
 - Shared preview styles are not component styles. Keep implementation CSS in index.css and documentation/forced-state styles in preview.css.
 - See README.md for command options. Verification is a runtime smoke check, not browser visual validation.
+
+- Preview modules import the real implementation from `../../components/<Name>/index.jsx`. Never put preview files back into component delivery directories.
+- Component README sections are Overview, Props and Usage. Keep Color Spec in interactive previews, not README.
+- Frontend delivery includes component source and required shared assets/atomic dependencies; previews and preview tooling are for internal checks.
