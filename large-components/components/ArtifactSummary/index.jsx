@@ -38,7 +38,7 @@ export function FileArtifactCard({ title, fileType = "PPTX", iconSrc, onOpen }) 
       </div>
       <DropdownButton
         variant="tertiary"
-        size="xs"
+        size="small"
         className="artifact-summary__open"
         aria-label={`打开 ${title}`}
         onClick={onOpen}
