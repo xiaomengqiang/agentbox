@@ -8,7 +8,7 @@
 </mask>
 <g mask="url(#mask1_735_500)">
 <mask id="mask2_735_500" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M15.5 0.5V15.5H0.5V0.5H15.5Z" fill="#C4C4C4"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15.5 0.5V15.5H0.5V0.5H15.5Z" fill="white"/>
 </mask>
 <g mask="url(#mask2_735_500)">
 <path d="M1.125 8H14.875" stroke="black" stroke-width="0.9375" stroke-linecap="round" stroke-linejoin="round"/>
