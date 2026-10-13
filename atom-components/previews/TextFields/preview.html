@@ -1371,7 +1371,8 @@ body {
 
 /* The native bottom-right resize grip remains outside the text column. */
 .tf-disabled.tf-multiline .tf-box { resize: none; }
-.tf-root.tf-error.tf-editing .tf-box { box-shadow: inset 0 0 0 1px var(--error), 0 0 0 2px var(--brand-10); }
+.tf-root.tf-error:not(.tf-disabled).tf-editing .tf-box,
+.tf-root.tf-error:not(.tf-disabled):has(.tf-password:focus-visible) .tf-box { box-shadow: inset 0 0 0 1px var(--error), 0 0 0 2px var(--error-container); }
 
 
 /* Fixed 12px masking cells: 8px dot + 4px gap. Keep the real password input. */
@@ -3292,7 +3293,7 @@ function TextFieldsPreview() {
     className: "tf-card-content"
   }, _react.default.createElement(StressField, props)))))), _react.default.createElement(_colorSpec.default, {
     textHeading: "Text / Icon",
-    description: "Single / Multiline / Password \u5171\u7528\u989C\u8272\uFF1B\u9519\u8BEF\u63CF\u8FB9\u5728\u7F16\u8F91\u65F6\u4FDD\u7559\uFF0CDisabled \u4E0E Error \u53EF\u53E0\u52A0\u3002",
+    description: "Single / Multiline / Password \u5171\u7528\u989C\u8272\uFF1B\u9519\u8BEF\u63CF\u8FB9\u5728\u7F16\u8F91\u65F6\u4FDD\u7559\uFF0C\u805A\u7126\u5916\u5708\u6539\u7528 --error-container\uFF082px\uFF09\uFF1BDisabled \u4E0E Error \u53EF\u53E0\u52A0\u3002",
     groups: [{
       name: 'Single / Multiline / Password',
       rows: [{

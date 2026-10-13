@@ -292,4 +292,7 @@
 
 .btn__label {
   display: inline-block;
+  /* 当前字体的中文字形略高于行盒中心；仅校正文字的视觉位置。 */
+  position: relative;
+  top: 1px;
 }

@@ -7,7 +7,7 @@
 <path d="M13 3H3V13H13V3Z" fill="white"/>
 </mask>
 <g mask="url(#mask1_581_5)">
-<path d="M12.0625 5.9165L8 10.0832L3.9375 5.9165" stroke="black" stroke-opacity="0.898039" stroke-width="0.833333" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.0625 5.9165L8 10.0832L3.9375 5.9165" stroke="black" stroke-width="0.833333" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 </g>
 </svg>

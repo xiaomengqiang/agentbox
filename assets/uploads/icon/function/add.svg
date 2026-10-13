@@ -3,6 +3,6 @@
 <path d="M16 0H0V16H16V0Z" fill="white"/>
 </mask>
 <g mask="url(#mask0_2001_270)">
-<path d="M1 8H15M8 15V1" stroke="black" stroke-opacity="0.898039" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1 8H15M8 15V1" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 </svg>

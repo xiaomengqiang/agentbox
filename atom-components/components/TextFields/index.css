@@ -43,7 +43,8 @@
 
 /* The native bottom-right resize grip remains outside the text column. */
 .tf-disabled.tf-multiline .tf-box { resize: none; }
-.tf-root.tf-error.tf-editing .tf-box { box-shadow: inset 0 0 0 1px var(--error), 0 0 0 2px var(--brand-10); }
+.tf-root.tf-error:not(.tf-disabled).tf-editing .tf-box,
+.tf-root.tf-error:not(.tf-disabled):has(.tf-password:focus-visible) .tf-box { box-shadow: inset 0 0 0 1px var(--error), 0 0 0 2px var(--error-container); }
 
 
 /* Fixed 12px masking cells: 8px dot + 4px gap. Keep the real password input. */

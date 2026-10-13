@@ -82,7 +82,7 @@ export default function TextFieldsPreview() {
         { title: "Mixed text · 中英与 emoji", variant: "multiline", label: "混合字符", maxLength: 80, defaultValue: "中文 English 123 😀\n第二行：标点，符号 !?", helperText: "😀 按 2 个 UTF-16 单位计数；可继续输入或粘贴。" },
       ].map(({ title, ...props }) => <article className="tf-card" key={title}><h3>{title}</h3><div className="tf-card-content"><StressField {...props} /></div></article>)}</div>
     </Section>
-    <ColorSpecTable textHeading="Text / Icon" description="Single / Multiline / Password 共用颜色；错误描边在编辑时保留，Disabled 与 Error 可叠加。" groups={[{name:'Single / Multiline / Password',rows:[
+    <ColorSpecTable textHeading="Text / Icon" description="Single / Multiline / Password 共用颜色；错误描边在编辑时保留，聚焦外圈改用 --error-container（2px）；Disabled 与 Error 可叠加。" groups={[{name:'Single / Multiline / Password',rows:[
  {label:'Default',background:'--color-background-primary',outline:'--color-comp-border',text:[color('--text-primary','标题 / 输入文字 / 光标'),color('--text-tertiary','占位文字 / helper / 字数'),color('--color-icon-primary','Password 图标'),color('--text-error','必填标记')]},
  {label:'Hover',outline:'--color-comp-border-hover'},
  {label:'Active',outline:[color('--brand','1px 内描边'),color('--brand-10','2px 外圈；不占布局空间')]},
