@@ -1,6 +1,6 @@
 .tag { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; white-space:nowrap; gap:4px; font-family:var(--font-family); font-weight:var(--font-weight-regular); background:var(--container-05); color:var(--color-font-primary); }
-.tag--medium { height:24px; padding:0 8px; font-size:14px; line-height:20px; }
-.tag--small { height:20px; padding:0 6px; font-size:12px; line-height:16px; }
+.tag--medium { height:24px; padding:0 8px; font:var(--font-body-md); }
+.tag--small { height:20px; padding:0 6px; font:var(--font-body-sm); }
 .tag--round { border-radius:var(--radius-full); }
 .tag--square { border-radius:var(--radius-badge); }
 .tag--green { background:var(--color-success-container); color:var(--color-success); }

@@ -111,7 +111,8 @@
   /* 9. Font Weight（字重） */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
-  --font-weight-bold: 600;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   /* 10. Line Height（行高） */
   --line-height-none: 1;
@@ -284,6 +285,14 @@
   font-family: 'HarmonyOS Sans';
   src: url("../assets/font/HarmonyOS_SansSC/Medium.woff2") format('woff2');
   font-weight: 500;
+  font-style: normal;
+}
+
+/* Semibold */
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: url("../assets/font/HarmonyOS_SansSC/Semibold.ttf") format('truetype');
+  font-weight: 600;
   font-style: normal;
 }
 
@@ -524,29 +533,31 @@ body {
   --outline-offset-gap: 2px;
 
   /* ── typography → --font-*（排印角色：字号+行高+字体族绑定，字重在其后组合）── */
+  /* Line boxes follow each role ratio, rounded upward to a 2px grid.
+     Use em so size overrides keep the same ratio (e.g. Tab large / medium). */
   /* Display（展示文本）*/
-  --font-display-sm: var(--font-size-4xl)/var(--line-height-tight) var(--font-family); /* 38px/1.25 */
-  --font-display-md: var(--font-size-5xl)/var(--line-height-tight) var(--font-family); /* 48px/1.25 */
-  --font-display-lg: var(--font-size-6xl)/var(--line-height-tight) var(--font-family); /* 56px/1.25 */
+  --font-display-sm: var(--font-size-4xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 38px/1.25 */
+  --font-display-md: var(--font-size-5xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 48px/1.25 */
+  --font-display-lg: var(--font-size-6xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 56px/1.25 */
 
   /* Title（标题）*/
-  --font-title-sm: var(--font-size-xl)/var(--line-height-snug) var(--font-family); /* 20px/1.375 */
-  --font-title-md: var(--font-size-2xl)/var(--line-height-snug) var(--font-family); /* 24px/1.375 */
-  --font-title-lg: var(--font-size-3xl)/var(--line-height-snug) var(--font-family); /* 30px/1.375 */
+  --font-title-sm: var(--font-size-xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 20px/1.375 */
+  --font-title-md: var(--font-size-2xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 24px/1.375 */
+  --font-title-lg: var(--font-size-3xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 30px/1.375 */
 
   /* Subtitle（副标题）*/
-  --font-subtitle-sm: var(--font-size-base)/var(--line-height-base) var(--font-family); /* 14px/1.5 */
-  --font-subtitle-md: var(--font-size-md)/var(--line-height-base) var(--font-family); /* 16px/1.5 */
-  --font-subtitle-lg: var(--font-size-lg)/var(--line-height-base) var(--font-family); /* 18px/1.5 */
+  --font-subtitle-sm: var(--font-size-base)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 14px/1.5 */
+  --font-subtitle-md: var(--font-size-md)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 16px/1.5 */
+  --font-subtitle-lg: var(--font-size-lg)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 18px/1.5 */
 
   /* Body（正文）*/
-  --font-body-sm: var(--font-size-sm)/var(--line-height-base) var(--font-family); /* 12px/1.5 */
-  --font-body-md: var(--font-size-base)/var(--line-height-base) var(--font-family); /* 14px/1.5 */
-  --font-body-lg: var(--font-size-md)/var(--line-height-base) var(--font-family); /* 16px/1.5 */
+  --font-body-sm: var(--font-size-sm)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 12px/1.5 */
+  --font-body-md: var(--font-size-base)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 14px/1.5 */
+  --font-body-lg: var(--font-size-md)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 16px/1.5 */
 
   /* Caption（注释，源表仅 m/l 两档）*/
-  --font-caption-md: var(--font-size-xs)/var(--line-height-base) var(--font-family); /* 10px/1.5 */
-  --font-caption-lg: var(--font-size-sm)/var(--line-height-base) var(--font-family); /* 12px/1.5 */
+  --font-caption-md: var(--font-size-xs)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 10px/1.5 */
+  --font-caption-lg: var(--font-size-sm)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 12px/1.5 */
 
   /* ── fontFamily（已在 base 定义，此处保留兼容）── */
   --font-family: 'HarmonyOS Sans', 'Microsoft YaHei', Arial, 'PingFang SC', 'San Francisco', sans-serif;
@@ -1470,7 +1481,7 @@ code {
   /* ── 尺寸契约（由 .btn--large / .btn--medium 覆写）── */
   --btn-height: 40px;
   --btn-padding-inline: 16px;
-  --btn-font-size: var(--font-size-md);
+  --btn-font: var(--font-body-lg);
   --btn-font-weight: var(--font-weight-medium);
   --btn-icon-size: 20px;
   --btn-icon-gap: 8px;
@@ -1507,10 +1518,8 @@ code {
   border-radius: var(--btn-radius);
   background-color: var(--btn-container);
   color: var(--btn-label);
-  font-family: var(--font-family);
-  font-size: var(--btn-font-size);
+  font: var(--btn-font);
   font-weight: var(--btn-font-weight);
-  line-height: var(--line-height-none);
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
@@ -1591,7 +1600,7 @@ code {
 .btn--large {
   --btn-height: 40px;
   --btn-padding-inline: 16px;
-  --btn-font-size: var(--font-size-md); /* 16px */
+  --btn-font: var(--font-body-lg); /* 16px */
   --btn-font-weight: var(--font-weight-medium); /* 500 */
   --btn-icon-size: 20px;
   --btn-icon-gap: 8px;
@@ -1600,7 +1609,7 @@ code {
 .btn--medium {
   --btn-height: 32px;
   --btn-padding-inline: 12px;
-  --btn-font-size: var(--font-size-base); /* 14px */
+  --btn-font: var(--font-body-md); /* 14px */
   --btn-font-weight: var(--font-weight-medium); /* 500 */
   --btn-icon-size: 16px;
   --btn-icon-gap: 4px;
@@ -1691,9 +1700,6 @@ code {
 
 .btn__label {
   display: inline-block;
-  /* 当前字体的中文字形略高于行盒中心；仅校正文字的视觉位置。 */
-  position: relative;
-  top: 1px;
 }
 
 
@@ -1712,7 +1718,7 @@ code {
   --btn-padding-inline: 8px;
   padding-inline-start: 8px;
   --dropdown-btn-padding-end: 8px;
-  --btn-font-size: var(--font-size-sm); /* 12px */
+  --btn-font: var(--font-body-sm); /* 12px */
   --btn-font-weight: var(--font-weight-regular); /* 400 */
   --btn-icon-size: 16px;
   --btn-icon-gap: 4px;
@@ -1787,8 +1793,8 @@ code {
 }
 
 .tag { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; white-space:nowrap; gap:4px; font-family:var(--font-family); font-weight:var(--font-weight-regular); background:var(--container-05); color:var(--color-font-primary); }
-.tag--medium { height:24px; padding:0 8px; font-size:14px; line-height:20px; }
-.tag--small { height:20px; padding:0 6px; font-size:12px; line-height:16px; }
+.tag--medium { height:24px; padding:0 8px; font:var(--font-body-md); }
+.tag--small { height:20px; padding:0 6px; font:var(--font-body-sm); }
 .tag--round { border-radius:var(--radius-full); }
 .tag--square { border-radius:var(--radius-badge); }
 .tag--green { background:var(--color-success-container); color:var(--color-success); }
@@ -2040,8 +2046,8 @@ code {
 }
 @scope (.preview-task-card) {
 .tag { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; white-space:nowrap; gap:4px; font-family:var(--font-family); font-weight:var(--font-weight-regular); background:var(--container-05); color:var(--color-font-primary); }
-.tag--medium { height:24px; padding:0 8px; font-size:14px; line-height:20px; }
-.tag--small { height:20px; padding:0 6px; font-size:12px; line-height:16px; }
+.tag--medium { height:24px; padding:0 8px; font:var(--font-body-md); }
+.tag--small { height:20px; padding:0 6px; font:var(--font-body-sm); }
 .tag--round { border-radius:var(--radius-full); }
 .tag--square { border-radius:var(--radius-badge); }
 .tag--green { background:var(--color-success-container); color:var(--color-success); }
@@ -2384,7 +2390,7 @@ body { background: var(--surface); color: var(--on-surface); font-family: var(--
 [hidden] { display: none !important; }
 .preview-toolbar { max-width: 1400px; margin: 0 auto; padding: 32px 24px 0; }
 .preview-heading { display: flex; align-items: center; gap: 14px; }
-.preview-heading h1 { margin: 0; font: var(--font-title-lg); }
+.preview-heading h1 { margin: 0; font: var(--font-title-lg); font-weight: var(--font-weight-bold); }
 .gallery-library-label { margin-left: auto; color: var(--text-secondary); font: var(--font-body-md); }
 /* Shared by standalone previews and both component galleries. */
 .preview-theme { position: relative; flex: 0 0 auto; width: 68px; height: 36px; padding: 3px; border: 1px solid var(--divider); border-radius: 999px; display: inline-flex; align-items: center; justify-content: space-around; color: var(--text-secondary); background: var(--surface-container); cursor: pointer; }
@@ -2395,10 +2401,10 @@ body { background: var(--surface); color: var(--on-surface); font-family: var(--
 @media (prefers-reduced-motion: reduce) { .preview-theme::before { transition: none; } }
 
 .preview-tabs { display: flex; gap: 24px; margin-top: 24px; overflow-x: auto; border-bottom: 1px solid var(--divider); }
-.preview-tab { flex-shrink: 0; padding: 12px 16px; border: 0; border-bottom: 2px solid transparent; color: var(--text-secondary); background: none; font: var(--font-body-md); cursor: pointer; }
-.preview-tab[aria-selected="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+button.preview-tab { flex-shrink: 0; padding: 12px 16px; border: 0; border-bottom: 2px solid transparent; color: var(--text-secondary); background: none; font: var(--font-body-md); cursor: pointer; }
+button.preview-tab[aria-selected="true"] { font-weight: var(--font-weight-bold); color: var(--brand); border-bottom-color: var(--brand); }
 .preview-panel-title { margin: 0 0 12px; font: var(--font-title-md); }
-.preview-theme:focus-visible, .preview-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.preview-theme:focus-visible, button.preview-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 @media (max-width: 600px) { .preview-toolbar { padding: 24px 16px 0; } .gallery-library-label { font-size: 12px; } }
 </style>
 </head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="glass-xs"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="8" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-sm"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="15" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-md"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="25" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-lg"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="35" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-xl"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="50" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg><div id="root"></div>

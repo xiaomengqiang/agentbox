@@ -111,7 +111,8 @@
   /* 9. Font Weight（字重） */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
-  --font-weight-bold: 600;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   /* 10. Line Height（行高） */
   --line-height-none: 1;
@@ -284,6 +285,14 @@
   font-family: 'HarmonyOS Sans';
   src: url("../assets/font/HarmonyOS_SansSC/Medium.woff2") format('woff2');
   font-weight: 500;
+  font-style: normal;
+}
+
+/* Semibold */
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: url("../assets/font/HarmonyOS_SansSC/Semibold.ttf") format('truetype');
+  font-weight: 600;
   font-style: normal;
 }
 
@@ -524,29 +533,31 @@ body {
   --outline-offset-gap: 2px;
 
   /* ── typography → --font-*（排印角色：字号+行高+字体族绑定，字重在其后组合）── */
+  /* Line boxes follow each role ratio, rounded upward to a 2px grid.
+     Use em so size overrides keep the same ratio (e.g. Tab large / medium). */
   /* Display（展示文本）*/
-  --font-display-sm: var(--font-size-4xl)/var(--line-height-tight) var(--font-family); /* 38px/1.25 */
-  --font-display-md: var(--font-size-5xl)/var(--line-height-tight) var(--font-family); /* 48px/1.25 */
-  --font-display-lg: var(--font-size-6xl)/var(--line-height-tight) var(--font-family); /* 56px/1.25 */
+  --font-display-sm: var(--font-size-4xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 38px/1.25 */
+  --font-display-md: var(--font-size-5xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 48px/1.25 */
+  --font-display-lg: var(--font-size-6xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 56px/1.25 */
 
   /* Title（标题）*/
-  --font-title-sm: var(--font-size-xl)/var(--line-height-snug) var(--font-family); /* 20px/1.375 */
-  --font-title-md: var(--font-size-2xl)/var(--line-height-snug) var(--font-family); /* 24px/1.375 */
-  --font-title-lg: var(--font-size-3xl)/var(--line-height-snug) var(--font-family); /* 30px/1.375 */
+  --font-title-sm: var(--font-size-xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 20px/1.375 */
+  --font-title-md: var(--font-size-2xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 24px/1.375 */
+  --font-title-lg: var(--font-size-3xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 30px/1.375 */
 
   /* Subtitle（副标题）*/
-  --font-subtitle-sm: var(--font-size-base)/var(--line-height-base) var(--font-family); /* 14px/1.5 */
-  --font-subtitle-md: var(--font-size-md)/var(--line-height-base) var(--font-family); /* 16px/1.5 */
-  --font-subtitle-lg: var(--font-size-lg)/var(--line-height-base) var(--font-family); /* 18px/1.5 */
+  --font-subtitle-sm: var(--font-size-base)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 14px/1.5 */
+  --font-subtitle-md: var(--font-size-md)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 16px/1.5 */
+  --font-subtitle-lg: var(--font-size-lg)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 18px/1.5 */
 
   /* Body（正文）*/
-  --font-body-sm: var(--font-size-sm)/var(--line-height-base) var(--font-family); /* 12px/1.5 */
-  --font-body-md: var(--font-size-base)/var(--line-height-base) var(--font-family); /* 14px/1.5 */
-  --font-body-lg: var(--font-size-md)/var(--line-height-base) var(--font-family); /* 16px/1.5 */
+  --font-body-sm: var(--font-size-sm)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 12px/1.5 */
+  --font-body-md: var(--font-size-base)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 14px/1.5 */
+  --font-body-lg: var(--font-size-md)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 16px/1.5 */
 
   /* Caption（注释，源表仅 m/l 两档）*/
-  --font-caption-md: var(--font-size-xs)/var(--line-height-base) var(--font-family); /* 10px/1.5 */
-  --font-caption-lg: var(--font-size-sm)/var(--line-height-base) var(--font-family); /* 12px/1.5 */
+  --font-caption-md: var(--font-size-xs)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 10px/1.5 */
+  --font-caption-lg: var(--font-size-sm)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 12px/1.5 */
 
   /* ── fontFamily（已在 base 定义，此处保留兼容）── */
   --font-family: 'HarmonyOS Sans', 'Microsoft YaHei', Arial, 'PingFang SC', 'San Francisco', sans-serif;
@@ -650,7 +661,7 @@ body {
 }
 
 .demo-page {
-  max-width: 1160px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 48px 24px 96px;
 }
@@ -1011,7 +1022,7 @@ body {
 .preview-state-card {
  display: flex; min-width: 0; min-height: 96px; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: var(--radius-container); background: var(--surface-container-lowest); box-shadow: var(--shadow-card); 
 }
-.preview-state-card span {
+.preview-state-caption {
  font: var(--font-caption-lg); color: var(--text-secondary); text-align: center; 
 }
 .preview-api {
@@ -1038,16 +1049,16 @@ body {
 .preview-tabs {
  display:flex; gap:8px; width:100%; min-width:0; overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:thin; border-bottom:1px solid var(--color-comp-border); 
 }
-.preview-tab {
+button.preview-tab {
  flex:0 0 auto; font:inherit; font-size:14px; cursor:pointer; border:0; border-bottom:2px solid transparent; padding:12px 16px; color:var(--text-secondary); background:transparent; white-space:nowrap; 
 }
-.preview-tab[aria-selected="true"] {
- border-bottom-color:var(--brand); color:var(--brand); font-weight:600; 
+button.preview-tab[aria-selected="true"] {
+ border-bottom-color:var(--brand); color:var(--brand); font-weight:var(--font-weight-bold);
 }
-.preview-tab:hover {
+button.preview-tab:hover {
  background:var(--color-comp-background-tertiary); 
 }
-.preview-tab:focus-visible, .preview-theme:focus-visible {
+button.preview-tab:focus-visible, .preview-theme:focus-visible {
  outline:2px solid var(--brand); outline-offset:-2px; 
 }
 [role="tabpanel"][hidden] {
@@ -1325,6 +1336,46 @@ body {
  :is(.preview-iconstate,.preview-menuitem) .inspection-live { padding: 24px; }
 }
 
+/* Atom page geometry is shared by every standalone preview and gallery panel.
+   Keep these selectors above component-scoped documentation specificity. */
+main > .demo-page {
+  width: 100%;
+  max-width: 1400px;
+  min-width: 0;
+  margin-inline: auto;
+  padding: 48px 24px 96px;
+}
+.demo-page :is(.button-controls, .dropdown-controls) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.demo-page :is(.button-configurator, .dropdown-configurator, .preview-configurator) > * {
+  min-width: 0;
+}
+@media (max-width: 980px) {
+  .demo-page :is(.button-configurator, .dropdown-configurator, .preview-configurator) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  main > .demo-page { padding: 32px 16px 64px; }
+  .demo-page :is(.button-configurator, .dropdown-configurator, .preview-configurator) { padding: 16px; }
+}
+@media (max-width: 520px) {
+  .demo-page :is(.button-controls, .dropdown-controls, .preview-controls) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 360px) {
+  .preview-heading { flex-wrap: wrap; }
+  .preview-heading h1 { flex-shrink: 0; }
+  .gallery-library-label { flex-basis: 100%; }
+}
+
+/* Table footnotes share one gap; section introductions keep their own rhythm. */
+.demo-page .demo-section > :is(.btn-table-wrap, .preview-table-wrap) + p {
+  margin: 16px 0 0;
+}
+
 @scope (.preview-button) {
 /* ==========================================================================
    Button · Material 3（消费 HarmonyOS 语义色彩规范）
@@ -1399,7 +1450,7 @@ body {
   /* ── 尺寸契约（由 .btn--large / .btn--medium 覆写）── */
   --btn-height: 40px;
   --btn-padding-inline: 16px;
-  --btn-font-size: var(--font-size-md);
+  --btn-font: var(--font-body-lg);
   --btn-font-weight: var(--font-weight-medium);
   --btn-icon-size: 20px;
   --btn-icon-gap: 8px;
@@ -1436,10 +1487,8 @@ body {
   border-radius: var(--btn-radius);
   background-color: var(--btn-container);
   color: var(--btn-label);
-  font-family: var(--font-family);
-  font-size: var(--btn-font-size);
+  font: var(--btn-font);
   font-weight: var(--btn-font-weight);
-  line-height: var(--line-height-none);
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
@@ -1520,7 +1569,7 @@ body {
 .btn--large {
   --btn-height: 40px;
   --btn-padding-inline: 16px;
-  --btn-font-size: var(--font-size-md); /* 16px */
+  --btn-font: var(--font-body-lg); /* 16px */
   --btn-font-weight: var(--font-weight-medium); /* 500 */
   --btn-icon-size: 20px;
   --btn-icon-gap: 8px;
@@ -1529,7 +1578,7 @@ body {
 .btn--medium {
   --btn-height: 32px;
   --btn-padding-inline: 12px;
-  --btn-font-size: var(--font-size-base); /* 14px */
+  --btn-font: var(--font-body-md); /* 14px */
   --btn-font-weight: var(--font-weight-medium); /* 500 */
   --btn-icon-size: 16px;
   --btn-icon-gap: 4px;
@@ -1620,9 +1669,6 @@ body {
 
 .btn__label {
   display: inline-block;
-  /* 当前字体的中文字形略高于行盒中心；仅校正文字的视觉位置。 */
-  position: relative;
-  top: 1px;
 }
 
 .demo-page {
@@ -2733,7 +2779,7 @@ opacity: 0.5;
   /* ── 尺寸契约（由 .btn--large / .btn--medium 覆写）── */
   --btn-height: 40px;
   --btn-padding-inline: 16px;
-  --btn-font-size: var(--font-size-md);
+  --btn-font: var(--font-body-lg);
   --btn-font-weight: var(--font-weight-medium);
   --btn-icon-size: 20px;
   --btn-icon-gap: 8px;
@@ -2770,10 +2816,8 @@ opacity: 0.5;
   border-radius: var(--btn-radius);
   background-color: var(--btn-container);
   color: var(--btn-label);
-  font-family: var(--font-family);
-  font-size: var(--btn-font-size);
+  font: var(--btn-font);
   font-weight: var(--btn-font-weight);
-  line-height: var(--line-height-none);
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
@@ -2854,7 +2898,7 @@ opacity: 0.5;
 .btn--large {
   --btn-height: 40px;
   --btn-padding-inline: 16px;
-  --btn-font-size: var(--font-size-md); /* 16px */
+  --btn-font: var(--font-body-lg); /* 16px */
   --btn-font-weight: var(--font-weight-medium); /* 500 */
   --btn-icon-size: 20px;
   --btn-icon-gap: 8px;
@@ -2863,7 +2907,7 @@ opacity: 0.5;
 .btn--medium {
   --btn-height: 32px;
   --btn-padding-inline: 12px;
-  --btn-font-size: var(--font-size-base); /* 14px */
+  --btn-font: var(--font-body-md); /* 14px */
   --btn-font-weight: var(--font-weight-medium); /* 500 */
   --btn-icon-size: 16px;
   --btn-icon-gap: 4px;
@@ -2954,9 +2998,6 @@ opacity: 0.5;
 
 .btn__label {
   display: inline-block;
-  /* 当前字体的中文字形略高于行盒中心；仅校正文字的视觉位置。 */
-  position: relative;
-  top: 1px;
 }
 
 
@@ -2974,7 +3015,7 @@ opacity: 0.5;
   --btn-padding-inline: 8px;
   padding-inline-start: 8px;
   --dropdown-btn-padding-end: 8px;
-  --btn-font-size: var(--font-size-sm); /* 12px */
+  --btn-font: var(--font-body-sm); /* 12px */
   --btn-font-weight: var(--font-weight-regular); /* 400 */
   --btn-icon-size: 16px;
   --btn-icon-gap: 4px;
@@ -4284,8 +4325,7 @@ opacity: 0.5;
   border: none;
   border-radius: 24px;
   background-color: transparent;
-  font: var(--font-body-md); /* 14px/1.5 + family */
-  line-height: 19px;
+  font: var(--font-body-md); /* 14px / 22px（字体 token 向上取偶数） */
   font-weight: var(--font-weight-medium);
   color: var(--color-font-secondary);
   cursor: pointer;
@@ -4299,7 +4339,7 @@ opacity: 0.5;
 .sb-root.sb-height-44 { height: 44px; padding: 4px; }
 .sb-root.sb-icon-only .sb-segment {
   box-sizing: border-box;
-  flex: 0 0 36px;
+  flex: 1 1 36px;
   width: 36px;
   min-width: 0;
   padding: 0;
@@ -5421,7 +5461,7 @@ opacity: 0.5;
 .tf-root:not(.tf-disabled):not(.tf-editing):not(.tf-error):not(:has(.tf-password:focus-visible)):hover .tf-box { box-shadow: inset 0 0 0 1px var(--color-comp-border-hover); }
 .tf-root.tf-editing .tf-box { box-shadow: inset 0 0 0 1px var(--brand), 0 0 0 2px var(--brand-10); }
 .tf-field { position: relative; flex: 1 1 auto; min-width: 0; clip-path: inset(-2px 0 -2px -2px); }
-.tf-input { display: block; box-sizing: border-box; width: 100%; min-width: 0; padding: 0; margin: 0; border: 0; outline: none; background: transparent; font: inherit; line-height: 22px; color: var(--text-primary); caret-color: var(--text-primary); }
+.tf-input { display: block; box-sizing: border-box; width: 100%; min-width: 0; padding: 0; margin: 0; border: 0; outline: none; background: transparent; font: inherit; color: var(--text-primary); caret-color: var(--text-primary); }
 .tf-input::placeholder { color: var(--text-tertiary); opacity: 1; }
 .tf-multiline .tf-box { position: relative; box-sizing: border-box; flex-direction: column; align-items: stretch; gap: 0; padding: 0; overflow: hidden; border-radius: var(--tf-radius, var(--radius-container)); resize: vertical; }
 .tf-multiline .tf-field { flex: 1 1 auto; min-height: 0; margin-inline: var(--spacing-4); clip-path: inset(0 0 0 -2px); }
@@ -5453,7 +5493,7 @@ opacity: 0.5;
 .tf-root, .tf-label, .tf-box, .tf-input, .tf-input::placeholder, .tf-helper, .tf-support, .tf-counter { font-weight: var(--font-weight-regular); }
 .tf-support { display: flex; align-items: flex-start; gap: var(--spacing-4); margin-top: var(--spacing-1); padding: 0; box-sizing: border-box; }
 .tf-helper { flex: 1 1 auto; min-width: 0; }
-.tf-counter { flex: 0 0 auto; margin-left: auto; text-align: right; white-space: nowrap; font: var(--font-caption-lg); font-weight: var(--font-weight-regular); line-height: 18px; font-variant-numeric: tabular-nums; color: var(--text-tertiary); }
+.tf-counter { flex: 0 0 auto; margin-left: auto; text-align: right; white-space: nowrap; font: var(--font-caption-lg); font-weight: var(--font-weight-regular); font-variant-numeric: tabular-nums; color: var(--text-tertiary); }
 .tf-counter-over, .tf-error .tf-counter { color: var(--text-error); }
 .tf-disabled .tf-counter { color: var(--text-disabled); }
 
@@ -6446,8 +6486,8 @@ opacity: 0.5;
 }
 
 .sb-root { padding: 9px 12px; gap: 8px; }
-.sb-medium { height: 40px; font: var(--font-body-md); font-size: var(--font-size-base); line-height: 22px; font-weight: var(--font-weight-regular); }
-.sb-small { height: 36px; font: var(--font-body-sm); font-size: var(--font-size-sm); line-height: 18px; font-weight: var(--font-weight-regular); }
+.sb-medium { height: 40px; font: var(--font-body-md); font-weight: var(--font-weight-regular); }
+.sb-small { height: 36px; font: var(--font-body-sm); font-weight: var(--font-weight-regular); }
 .sb-filled { border-radius: 24px; background-color: var(--surface-container); }
 .sb-unfilled { border-radius: var(--radius-md); background-color: transparent; }
 
@@ -7309,9 +7349,6 @@ pointer-events:none;
 }
 
 
-.search-demo-footnote {
-margin-top:20px;
-}
 
 @media(max-width:760px) {
 .search-demo-live { padding:24px; }
@@ -7587,9 +7624,7 @@ opacity: 0.5;
   box-sizing: border-box;
   border: none;
   border-radius: var(--radius-full);
-  font-family: var(--font-family);
-  font-size: var(--font-size-sm);
-  line-height: 20px;
+  font: var(--font-body-sm);
   font-weight: var(--font-weight-medium);
   color: var(--color-icon-emphasize);
   background-color: var(--color-comp-emphasize-tertiary);
@@ -8016,8 +8051,8 @@ opacity: 0.5;
 }
 @scope (.preview-tag) {
 .tag { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; white-space:nowrap; gap:4px; font-family:var(--font-family); font-weight:var(--font-weight-regular); background:var(--container-05); color:var(--color-font-primary); }
-.tag--medium { height:24px; padding:0 8px; font-size:14px; line-height:20px; }
-.tag--small { height:20px; padding:0 6px; font-size:12px; line-height:16px; }
+.tag--medium { height:24px; padding:0 8px; font:var(--font-body-md); }
+.tag--small { height:20px; padding:0 6px; font:var(--font-body-sm); }
 .tag--round { border-radius:var(--radius-full); }
 .tag--square { border-radius:var(--radius-badge); }
 .tag--green { background:var(--color-success-container); color:var(--color-success); }
@@ -8418,13 +8453,13 @@ opacity: 0.5;
   --chip-bg-selected-hover: var(--container-80);
 
   gap: 6px;
-  padding: 8px 16px;
+  height: 36px;
+  padding: 0 16px;
   border: none;
   border-radius: var(--radius-3xl); /* 20px */
   background-color: var(--chip-bg);
   color: var(--color-font-secondary);
   font: var(--font-body-lg); /* 16px / 1.5 */
-  line-height: 20px; /* 规格：行高 20px */
   font-weight: var(--font-weight-regular);
   cursor: pointer;
 }
@@ -9717,8 +9752,7 @@ opacity: 0.5;
 
 .tt-label {
   display: inline-block;
-  font: var(--font-subtitle-lg); /* 18px / 1.5 */
-  font-size: var(--tt-font-size, var(--font-size-lg));
+  font: var(--tt-font, var(--font-subtitle-lg));
   font-weight: var(--font-weight-regular);
   color: inherit;
   white-space: nowrap;
@@ -9746,11 +9780,13 @@ opacity: 0.5;
 }
 
 .tt-size-large {
+  --tt-font: var(--font-subtitle-lg);
   --tt-font-size: var(--font-size-lg);
   --tt-gap: var(--spacing-6);
 }
 
 .tt-size-medium {
+  --tt-font: var(--font-subtitle-md);
   --tt-font-size: var(--font-size-md);
   --tt-gap: var(--spacing-5);
 }
@@ -13377,7 +13413,7 @@ body { background: var(--surface); color: var(--on-surface); font-family: var(--
 [hidden] { display: none !important; }
 .preview-toolbar { max-width: 1400px; margin: 0 auto; padding: 32px 24px 0; }
 .preview-heading { display: flex; align-items: center; gap: 14px; }
-.preview-heading h1 { margin: 0; font: var(--font-title-lg); }
+.preview-heading h1 { margin: 0; font: var(--font-title-lg); font-weight: var(--font-weight-bold); }
 .gallery-library-label { margin-left: auto; color: var(--text-secondary); font: var(--font-body-md); }
 /* Shared by standalone previews and both component galleries. */
 .preview-theme { position: relative; flex: 0 0 auto; width: 68px; height: 36px; padding: 3px; border: 1px solid var(--divider); border-radius: 999px; display: inline-flex; align-items: center; justify-content: space-around; color: var(--text-secondary); background: var(--surface-container); cursor: pointer; }
@@ -13388,10 +13424,10 @@ body { background: var(--surface); color: var(--on-surface); font-family: var(--
 @media (prefers-reduced-motion: reduce) { .preview-theme::before { transition: none; } }
 
 .preview-tabs { display: flex; gap: 24px; margin-top: 24px; overflow-x: auto; border-bottom: 1px solid var(--divider); }
-.preview-tab { flex-shrink: 0; padding: 12px 16px; border: 0; border-bottom: 2px solid transparent; color: var(--text-secondary); background: none; font: var(--font-body-md); cursor: pointer; }
-.preview-tab[aria-selected="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+button.preview-tab { flex-shrink: 0; padding: 12px 16px; border: 0; border-bottom: 2px solid transparent; color: var(--text-secondary); background: none; font: var(--font-body-md); cursor: pointer; }
+button.preview-tab[aria-selected="true"] { font-weight: var(--font-weight-bold); color: var(--brand); border-bottom-color: var(--brand); }
 .preview-panel-title { margin: 0 0 12px; font: var(--font-title-md); }
-.preview-theme:focus-visible, .preview-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.preview-theme:focus-visible, button.preview-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 @media (max-width: 600px) { .preview-toolbar { padding: 24px 16px 0; } .gallery-library-label { font-size: 12px; } }
 </style>
 </head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="glass-xs"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="8" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-sm"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="15" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-md"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="25" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-lg"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="35" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-xl"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="50" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg><div id="root"></div>
@@ -14094,11 +14130,11 @@ const SHAPES = [{
 const SIZES = [{
   value: "large",
   label: "Large",
-  spec: "40px 高 · 16px 字号 · 500 字重"
+  spec: "40px 高 · 16px 字号 · Medium · 20px 图标"
 }, {
   value: "medium",
   label: "Medium",
-  spec: "32px 高 · 14px 字号 · 500 字重"
+  spec: "32px 高 · 14px 字号 · Medium · 16px 图标"
 }];
 const STATES = [{
   value: "default",
@@ -14415,13 +14451,13 @@ function Demo() {
     className: "btn-table-wrap"
   }, _react.default.createElement("table", {
     className: "btn-table btn-table--roomy"
-  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "size"), _react.default.createElement("th", null, "height"), _react.default.createElement("th", null, "font-size"), _react.default.createElement("th", null, "icon-size"), _react.default.createElement("th", null, "padding-inline"), _react.default.createElement("th", null, "icon-gap"), _react.default.createElement("th", null, "radius"))), _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("td", {
+  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "size"), _react.default.createElement("th", null, "height"), _react.default.createElement("th", null, "font-size / line-height"), _react.default.createElement("th", null, "icon-size"), _react.default.createElement("th", null, "padding-inline"), _react.default.createElement("th", null, "icon-gap"), _react.default.createElement("th", null, "radius"))), _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("td", {
     className: "btn-table-strong"
-  }, "large"), _react.default.createElement("td", null, "40px"), _react.default.createElement("td", null, "16px"), _react.default.createElement("td", null, "20px"), _react.default.createElement("td", null, "16px"), _react.default.createElement("td", null, "8px"), _react.default.createElement("td", null, _react.default.createElement("span", {
+  }, "large"), _react.default.createElement("td", null, "40px"), _react.default.createElement("td", null, "16px / 24px"), _react.default.createElement("td", null, "20px"), _react.default.createElement("td", null, "16px"), _react.default.createElement("td", null, "8px"), _react.default.createElement("td", null, _react.default.createElement("span", {
     className: "btn-table-src"
   }, "\u7531 shape \u51B3\u5B9A \u2193"))), _react.default.createElement("tr", null, _react.default.createElement("td", {
     className: "btn-table-strong"
-  }, "medium"), _react.default.createElement("td", null, "32px"), _react.default.createElement("td", null, "14px"), _react.default.createElement("td", null, "16px"), _react.default.createElement("td", null, "12px"), _react.default.createElement("td", null, "4px"), _react.default.createElement("td", null, _react.default.createElement("span", {
+  }, "medium"), _react.default.createElement("td", null, "32px"), _react.default.createElement("td", null, "14px / 22px"), _react.default.createElement("td", null, "16px"), _react.default.createElement("td", null, "12px"), _react.default.createElement("td", null, "4px"), _react.default.createElement("td", null, _react.default.createElement("span", {
     className: "btn-table-src"
   }, "\u7531 shape \u51B3\u5B9A \u2193")))))), _react.default.createElement("div", {
     className: "btn-table-wrap btn-table-wrap--spaced"
@@ -15221,17 +15257,17 @@ function Demo() {
     className: "btn-table-wrap"
   }, _react.default.createElement("table", {
     className: "btn-table btn-table--roomy"
-  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "size"), _react.default.createElement("th", null, "height"), _react.default.createElement("th", null, "font-size"), _react.default.createElement("th", null, "icon-size"), _react.default.createElement("th", null, "padding-left / right"), _react.default.createElement("th", null, "icon-gap"), _react.default.createElement("th", null, "radius"))), _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("td", {
+  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "size"), _react.default.createElement("th", null, "height"), _react.default.createElement("th", null, "font-size / line-height"), _react.default.createElement("th", null, "icon-size"), _react.default.createElement("th", null, "padding-left / right"), _react.default.createElement("th", null, "icon-gap"), _react.default.createElement("th", null, "radius"))), _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("td", {
     className: "btn-table-strong"
-  }, "large"), _react.default.createElement("td", null, "40px"), _react.default.createElement("td", null, "16px"), _react.default.createElement("td", null, "20px"), _react.default.createElement("td", null, "16px / 12px"), _react.default.createElement("td", null, "8px"), _react.default.createElement("td", null, _react.default.createElement("span", {
+  }, "large"), _react.default.createElement("td", null, "40px"), _react.default.createElement("td", null, "16px / 24px"), _react.default.createElement("td", null, "20px"), _react.default.createElement("td", null, "16px / 12px"), _react.default.createElement("td", null, "8px"), _react.default.createElement("td", null, _react.default.createElement("span", {
     className: "btn-table-src"
   }, "\u7531 shape \u51B3\u5B9A \u2193"))), _react.default.createElement("tr", null, _react.default.createElement("td", {
     className: "btn-table-strong"
-  }, "medium"), _react.default.createElement("td", null, "32px"), _react.default.createElement("td", null, "14px"), _react.default.createElement("td", null, "16px"), _react.default.createElement("td", null, "12px / 8px"), _react.default.createElement("td", null, "4px"), _react.default.createElement("td", null, _react.default.createElement("span", {
+  }, "medium"), _react.default.createElement("td", null, "32px"), _react.default.createElement("td", null, "14px / 22px"), _react.default.createElement("td", null, "16px"), _react.default.createElement("td", null, "12px / 8px"), _react.default.createElement("td", null, "4px"), _react.default.createElement("td", null, _react.default.createElement("span", {
     className: "btn-table-src"
   }, "\u7531 shape \u51B3\u5B9A \u2193"))), _react.default.createElement("tr", null, _react.default.createElement("td", {
     className: "btn-table-strong"
-  }, "small"), _react.default.createElement("td", null, "28px"), _react.default.createElement("td", null, "12px"), _react.default.createElement("td", null, "16px"), _react.default.createElement("td", null, "8px / 8px"), _react.default.createElement("td", null, "4px"), _react.default.createElement("td", null, _react.default.createElement("span", {
+  }, "small"), _react.default.createElement("td", null, "28px"), _react.default.createElement("td", null, "12px / 18px"), _react.default.createElement("td", null, "16px"), _react.default.createElement("td", null, "8px / 8px"), _react.default.createElement("td", null, "4px"), _react.default.createElement("td", null, _react.default.createElement("span", {
     className: "btn-table-src"
   }, "\u7531 shape \u51B3\u5B9A")))))), _react.default.createElement("p", {
     className: "demo-section-desc"
@@ -15557,7 +15593,7 @@ function Demo() {
     options: kind === "icon" ? ICON_OPTIONS : kind === "prefix" ? withIcons(TEXT_OPTIONS) : TEXT_OPTIONS
   })))))))), _react.default.createElement(Section, {
     title: "Width examples",
-    description: "\u9ED8\u8BA4\u968F\u5185\u5BB9\uFF1Bblock \u586B\u6EE1\u5BB9\u5668\uFF1Bstyle.width \u624B\u52A8\u6307\u5B9A\u3002Text \u5206\u6BB5\u7B49\u5206\uFF1BIcon \u6BCF\u6BB5\u56FA\u5B9A 36px\uFF0C\u4E0D\u968F\u5BB9\u5668\u62C9\u4F38\u6216\u538B\u7F29\uFF0C\u663E\u5F0F style \u4F18\u5148\u3002"
+    description: "\u9ED8\u8BA4\u968F\u5185\u5BB9\uFF1Bblock \u586B\u6EE1\u5BB9\u5668\uFF1Bstyle.width \u624B\u52A8\u6307\u5B9A\u3002Text \u4E0E Icon \u5206\u6BB5\u5747\u7B49\u5206\u53EF\u7528\u5BBD\u5EA6\uFF0C\u5185\u5BB9\u5C45\u4E2D\uFF1BIcon \u9ED8\u8BA4\u6BCF\u6BB5 36px\uFF0C\u6307\u5B9A\u5BBD\u5EA6\u540E\u81EA\u52A8\u4F38\u7F29\uFF0C\u663E\u5F0F style \u4F18\u5148\u3002"
   }, _react.default.createElement("div", {
     className: "seg-demo-gallery"
   }, ["text", "icon"].flatMap(variant => ["auto", "block", "manual"].map(mode => _react.default.createElement("article", {
@@ -15628,9 +15664,9 @@ function Demo() {
     className: "btn-table-wrap"
   }, _react.default.createElement("table", {
     className: "btn-table btn-table--roomy"
-  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Variant / height"), _react.default.createElement("th", null, "Track padding"), _react.default.createElement("th", null, "Inner height"), _react.default.createElement("th", null, "Font"), _react.default.createElement("th", null, "Text icon / Icon only"), _react.default.createElement("th", null, "Shapes"))), _react.default.createElement("tbody", null, [32, 36, 44].map(height => _react.default.createElement("tr", {
+  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Variant / height"), _react.default.createElement("th", null, "Track padding"), _react.default.createElement("th", null, "Inner height"), _react.default.createElement("th", null, "Font size / line-height"), _react.default.createElement("th", null, "Text icon / Icon only"), _react.default.createElement("th", null, "Shapes"))), _react.default.createElement("tbody", null, [32, 36, 44].map(height => _react.default.createElement("tr", {
     key: height
-  }, _react.default.createElement("th", null, height === 32 ? "Icon" : "Text", " / ", height, "px"), _react.default.createElement("td", null, height === 44 ? 4 : 2, "px"), _react.default.createElement("td", null, height - (height === 44 ? 8 : 4), "px"), _react.default.createElement("td", null, height === 32 ? "—" : "14px"), _react.default.createElement("td", null, height === 32 ? "14px" : "16px"), _react.default.createElement("td", null, "Round / Square")))))), _react.default.createElement("div", {
+  }, _react.default.createElement("th", null, height === 32 ? "Icon" : "Text", " / ", height, "px"), _react.default.createElement("td", null, height === 44 ? 4 : 2, "px"), _react.default.createElement("td", null, height - (height === 44 ? 8 : 4), "px"), _react.default.createElement("td", null, height === 32 ? "—" : "14px / 22px"), _react.default.createElement("td", null, height === 32 ? "14px" : "16px"), _react.default.createElement("td", null, "Round / Square")))))), _react.default.createElement("div", {
     className: "btn-table-wrap"
   }, _react.default.createElement("table", {
     className: "btn-table btn-table--roomy"
@@ -15641,7 +15677,7 @@ function Demo() {
     className: "btn-table-wrap"
   }, _react.default.createElement("table", {
     className: "btn-table btn-table--roomy"
-  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Props"), _react.default.createElement("th", null, "Contract"))), _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "options"), _react.default.createElement("td", null, "\u9ED8\u8BA4 []\u3002\u4F7F\u7528 data.map(item => ({ value: item.id, label: item.name }))\uFF1Bvalue \u552F\u4E00\u4E14\u7A33\u5B9A\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "shape / size"), _react.default.createElement("td", null, "round / square \u4E0E\u5C3A\u5BF8\u72EC\u7ACB\u3002Text\uFF1Alarge \u4E3A 44px\uFF08\u9ED8\u8BA4\uFF09\uFF0Cmedium \u4E3A 36px\uFF1BIcon \u5FFD\u7565 size\uFF0C\u56FA\u5B9A 32px\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "variant"), _react.default.createElement("td", null, "text / icon\uFF0C\u9ED8\u8BA4 text\u3002\u6BCF\u9879 icon \u63D0\u4F9B\u56FE\u6807\uFF1BIcon \u65E0\u56FE\u6807\u65F6\u4FDD\u7559\u6807\u7B7E\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "block / style.width"), _react.default.createElement("td", null, "\u9ED8\u8BA4\u968F\u5185\u5BB9\uFF0Cblock \u4E3A 100%\uFF1Bstyle.width \u53EF\u4F20\u6570\u5B57\u6216 CSS \u5BBD\u5EA6\uFF0C\u4F18\u5148\u4E8E block\u3002Icon \u6BCF\u4E2A\u6309\u94AE\u56FA\u5B9A 36px\uFF0C\u9ED8\u8BA4\u603B\u5BBD\u4E3A 36 \xD7 \u6570\u91CF + 4px\uFF1B\u4FEE\u6539\u8F68\u9053\u5BBD\u5EA6\u4E0D\u6539\u53D8\u6309\u94AE\u5BBD\u5EA6\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "value / defaultValue"), _react.default.createElement("td", null, "\u53D7\u63A7 / \u975E\u53D7\u63A7\u9009\u4E2D\u503C\uFF1B\u672A\u6307\u5B9A\u65F6\u9009\u4E2D\u9996\u9879\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "disabled / options[].disabled"), _react.default.createElement("td", null, "\u6574\u7EC4 / \u5355\u9879\u7981\u7528\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "onChange / onSegmentClick"), _react.default.createElement("td", null, "\u9009\u4E2D\u503C\u6539\u53D8\u56DE\u8C03 value\uFF1B\u70B9\u51FB\u53EF\u7528\u9879\u56DE\u8C03 (value, index)\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "id / className / style"), _react.default.createElement("td", null, "\u4F5C\u7528\u4E8E\u6839\u8282\u70B9\uFF1B\u8FFD\u52A0\u7C7B\u540D\uFF0C\u8C03\u7528\u65B9\u884C\u5185\u6837\u5F0F\u4F18\u5148\u3002"))))), _react.default.createElement("pre", {
+  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Props"), _react.default.createElement("th", null, "Contract"))), _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "options"), _react.default.createElement("td", null, "\u9ED8\u8BA4 []\u3002\u4F7F\u7528 data.map(item => ({ value: item.id, label: item.name }))\uFF1Bvalue \u552F\u4E00\u4E14\u7A33\u5B9A\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "shape / size"), _react.default.createElement("td", null, "round / square \u4E0E\u5C3A\u5BF8\u72EC\u7ACB\u3002Text\uFF1Alarge \u4E3A 44px\uFF08\u9ED8\u8BA4\uFF09\uFF0Cmedium \u4E3A 36px\uFF1BIcon \u5FFD\u7565 size\uFF0C\u56FA\u5B9A 32px\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "variant"), _react.default.createElement("td", null, "text / icon\uFF0C\u9ED8\u8BA4 text\u3002\u6BCF\u9879 icon \u63D0\u4F9B\u56FE\u6807\uFF1BIcon \u65E0\u56FE\u6807\u65F6\u4FDD\u7559\u6807\u7B7E\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "block / style.width"), _react.default.createElement("td", null, "\u9ED8\u8BA4\u968F\u5185\u5BB9\uFF0Cblock \u4E3A 100%\uFF1Bstyle.width \u53EF\u4F20\u6570\u5B57\u6216 CSS \u5BBD\u5EA6\uFF0C\u4F18\u5148\u4E8E block\u3002Text \u4E0E Icon \u5206\u6BB5\u5747\u7B49\u5206\u53EF\u7528\u5BBD\u5EA6\u3002Icon \u9ED8\u8BA4\u6BCF\u6BB5 36px\uFF0C\u603B\u5BBD\u4E3A 36 \xD7 \u6570\u91CF + 4px\uFF1B\u6307\u5B9A\u8F68\u9053\u5BBD\u5EA6\u540E\u5404\u6BB5\u81EA\u52A8\u4F38\u7F29\uFF0C\u56FE\u6807\u5C45\u4E2D\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "value / defaultValue"), _react.default.createElement("td", null, "\u53D7\u63A7 / \u975E\u53D7\u63A7\u9009\u4E2D\u503C\uFF1B\u672A\u6307\u5B9A\u65F6\u9009\u4E2D\u9996\u9879\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "disabled / options[].disabled"), _react.default.createElement("td", null, "\u6574\u7EC4 / \u5355\u9879\u7981\u7528\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "onChange / onSegmentClick"), _react.default.createElement("td", null, "\u9009\u4E2D\u503C\u6539\u53D8\u56DE\u8C03 value\uFF1B\u70B9\u51FB\u53EF\u7528\u9879\u56DE\u8C03 (value, index)\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "id / className / style"), _react.default.createElement("td", null, "\u4F5C\u7528\u4E8E\u6839\u8282\u70B9\uFF1B\u8FFD\u52A0\u7C7B\u540D\uFF0C\u8C03\u7528\u65B9\u884C\u5185\u6837\u5F0F\u4F18\u5148\u3002"))))), _react.default.createElement("pre", {
     className: "seg-demo-code"
   }, _react.default.createElement("code", null, `const options = data.map(item => ({ value: item.id, label: item.name }));
 <Segmented options={options} shape="square" size="large" />
@@ -16692,8 +16728,8 @@ function Demo() {
     className: "btn-table-wrap"
   }, _react.default.createElement("table", {
     className: "btn-table"
-  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Size"), _react.default.createElement("th", null, "Height"), _react.default.createElement("th", null, "Font size / line-height"))), _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "medium"), _react.default.createElement("td", null, "40px"), _react.default.createElement("td", null, "--font-size-base \xB7 14px / 22px")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "small"), _react.default.createElement("td", null, "36px"), _react.default.createElement("td", null, "--font-size-sm \xB7 12px / 18px"))))), _react.default.createElement("p", {
-    className: "demo-section-desc search-demo-footnote"
+  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Size"), _react.default.createElement("th", null, "Height"), _react.default.createElement("th", null, "Font size / line-height"))), _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "medium"), _react.default.createElement("td", null, "40px"), _react.default.createElement("td", null, "--font-body-md \xB7 14px / 22px")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "small"), _react.default.createElement("td", null, "36px"), _react.default.createElement("td", null, "--font-body-sm \xB7 12px / 18px"))))), _react.default.createElement("p", {
+    className: "demo-section-desc"
   }, "Filled\uFF1A\u5706\u89D2 24px\uFF0C\u80CC\u666F --surface-container\uFF1BUnfilled\uFF1A\u5706\u89D2 --radius-md\uFF086px\uFF09\uFF0C\u80CC\u666F\u900F\u660E\u3002\u5BBD\u5EA6\u4E3A\u7236\u5BB9\u5668\u7684 100%\uFF0Cstyle \u53EF\u8C03\u6574\u5E03\u5C40\u3002")), _react.default.createElement(Section, {
     title: "API contract",
     description: "\u8F93\u5165\u3001\u6E05\u7A7A\u4E0E\u56DE\u8F66\u5747\u7531\u771F\u5B9E\u7EC4\u4EF6\u5904\u7406\u3002\u56FE\u6807\u4E3A\u56FA\u5B9A\u8D44\u6E90\uFF0C\u4E0D\u63D0\u4F9B\u66FF\u6362\u5C5E\u6027\u3002"
@@ -16942,7 +16978,7 @@ function Demo() {
     className: "demo-section-name"
   }, "Token contract"), _react.default.createElement(Table, {
     heads: ["Property", "Value", "Token / rule"]
-  }, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Height"), _react.default.createElement("td", null, "24px"), _react.default.createElement("td", null, "\u56FA\u5B9A\u9AD8\u5EA6")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Typography"), _react.default.createElement("td", null, "12px / 20px \xB7 Medium"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-size-sm / --font-weight-medium"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Icon / gap"), _react.default.createElement("td", null, "14px / 4px"), _react.default.createElement("td", null, "\u524D\u7F6E\u56FE\u6807\u59CB\u7EC8\u4FDD\u7559\uFF1Bclose \u539F\u4F4D\u66FF\u6362")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Padding / radius"), _react.default.createElement("td", null, "0 8px / full"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--radius-full"))))), _react.default.createElement("section", {
+  }, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Height"), _react.default.createElement("td", null, "24px"), _react.default.createElement("td", null, "\u56FA\u5B9A\u9AD8\u5EA6")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Typography"), _react.default.createElement("td", null, "12px / 18px \xB7 Medium"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-body-sm / --font-weight-medium"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Icon / gap"), _react.default.createElement("td", null, "14px / 4px"), _react.default.createElement("td", null, "\u524D\u7F6E\u56FE\u6807\u59CB\u7EC8\u4FDD\u7559\uFF1Bclose \u539F\u4F4D\u66FF\u6362")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Padding / radius"), _react.default.createElement("td", null, "0 8px / full"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--radius-full"))))), _react.default.createElement("section", {
     className: "demo-section preview-contract"
   }, _react.default.createElement("h2", {
     className: "demo-section-name"
@@ -17166,7 +17202,7 @@ function TagDemo() {
   }, _react.default.createElement("h2", {
     className: "demo-section-name"
   }, "Token contract"), _react.default.createElement(_controls.ContractTable, {
-    rows: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "medium"), _react.default.createElement("td", null, "14px / 20px \xB7 \u9AD8 24px"), _react.default.createElement("td", null, "\u5DE6\u53F3 8px \xB7 \u56FE\u6807 14px")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "small"), _react.default.createElement("td", null, "12px / 16px \xB7 \u9AD8 20px"), _react.default.createElement("td", null, "\u5DE6\u53F3 6px \xB7 \u56FE\u6807 12px")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "shape"), _react.default.createElement("td", null, "round / square"), _react.default.createElement("td", null, "--radius-full / --radius-badge\uFF084px\uFF09")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "gap"), _react.default.createElement("td", null, "4px"), _react.default.createElement("td", null, "\u56FE\u6587\u95F4\u8DDD")))
+    rows: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "medium"), _react.default.createElement("td", null, "14px / 22px \xB7 \u9AD8 24px"), _react.default.createElement("td", null, "\u5DE6\u53F3 8px \xB7 \u56FE\u6807 14px")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "small"), _react.default.createElement("td", null, "12px / 18px \xB7 \u9AD8 20px"), _react.default.createElement("td", null, "\u5DE6\u53F3 6px \xB7 \u56FE\u6807 12px")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "shape"), _react.default.createElement("td", null, "round / square"), _react.default.createElement("td", null, "--radius-full / --radius-badge\uFF084px\uFF09")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "gap"), _react.default.createElement("td", null, "4px"), _react.default.createElement("td", null, "\u56FE\u6587\u95F4\u8DDD")))
   })), _react.default.createElement("section", {
     className: "demo-section"
   }, _react.default.createElement("h2", {
@@ -17397,7 +17433,7 @@ function ChipDemo() {
   }, _react.default.createElement("h2", {
     className: "demo-section-name"
   }, "Token contract"), _react.default.createElement(_controls.ContractTable, {
-    rows: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "\u5C3A\u5BF8"), _react.default.createElement("td", null, "36px \u9AD8 \xB7 16px / 20px \u6587\u5B57 \xB7 16px \u56FE\u6807"), _react.default.createElement("td", null, "\u5DE6\u53F3 16px \xB7 \u4E0A\u4E0B 8px \xB7 gap 6px")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "\u5F62\u72B6"), _react.default.createElement("td", null, "20px \u5706\u89D2"), _react.default.createElement("td", null, "--radius-3xl")))
+    rows: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "\u5C3A\u5BF8"), _react.default.createElement("td", null, "36px \u9AD8 \xB7 16px / 24px \u6587\u5B57 \xB7 16px \u56FE\u6807"), _react.default.createElement("td", null, "--font-body-lg \xB7 \u5DE6\u53F3 16px \xB7 \u5782\u76F4\u5C45\u4E2D \xB7 gap 6px")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "\u5F62\u72B6"), _react.default.createElement("td", null, "20px \u5706\u89D2"), _react.default.createElement("td", null, "--radius-3xl")))
   })), _react.default.createElement("section", {
     className: "demo-section"
   }, _react.default.createElement("h2", {
@@ -17658,7 +17694,7 @@ function TabDemo() {
   }, _react.default.createElement("h2", {
     className: "demo-section-name"
   }, "Token contract"), _react.default.createElement(_controls.ContractTable, {
-    rows: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "large"), _react.default.createElement("td", null, "\u5B57\u53F7 18px \xB7 \u95F4\u8DDD 24px"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-size-lg / --spacing-6"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "medium"), _react.default.createElement("td", null, "\u5B57\u53F7 16px \xB7 \u95F4\u8DDD 20px"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-size-md / --spacing-5"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Icon"), _react.default.createElement("td", null, "large 18px / medium 16px \xB7 \u56FE\u6587\u95F4\u8DDD 8px"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--spacing-2"), " \xB7 \u8DDF\u968F currentColor")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Content placeholder"), _react.default.createElement("td", null, "brand-10 \u5E95\u8272 \xB7 brand 100% / 2px dashed"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--brand-10 / --brand"), " \xB7 \u4EC5\u9884\u89C8\u793A\u4F8B")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Item width"), _react.default.createElement("td", null, "fit-content \xB7 \u65E0\u5185\u8FB9\u8DDD"), _react.default.createElement("td", null, "\u8D34\u5408\u5F53\u524D\u6587\u5B57\u5BBD\u5EA6\uFF0C\u5355\u884C\u663E\u793A")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Unselected / Hover"), _react.default.createElement("td", null, "Regular"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--text-placeholder / --text-secondary"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Selected"), _react.default.createElement("td", null, "Bold \xB7 \u6D45\u8272\u9ED1 / \u6DF1\u8272\u767D"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-weight-bold"))))
+    rows: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "large"), _react.default.createElement("td", null, "\u5B57\u53F7 18px / \u884C\u9AD8 28px \xB7 \u95F4\u8DDD 24px"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-subtitle-lg / --spacing-6"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "medium"), _react.default.createElement("td", null, "\u5B57\u53F7 16px / \u884C\u9AD8 24px \xB7 \u95F4\u8DDD 20px"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-subtitle-md / --spacing-5"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Icon"), _react.default.createElement("td", null, "large 18px / medium 16px \xB7 \u56FE\u6587\u95F4\u8DDD 8px"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--spacing-2"), " \xB7 \u8DDF\u968F currentColor")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Content placeholder"), _react.default.createElement("td", null, "brand-10 \u5E95\u8272 \xB7 brand 100% / 2px dashed"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--brand-10 / --brand"), " \xB7 \u4EC5\u9884\u89C8\u793A\u4F8B")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Item width"), _react.default.createElement("td", null, "fit-content \xB7 \u65E0\u5185\u8FB9\u8DDD"), _react.default.createElement("td", null, "\u8D34\u5408\u5F53\u524D\u6587\u5B57\u5BBD\u5EA6\uFF0C\u5355\u884C\u663E\u793A")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Unselected / Hover"), _react.default.createElement("td", null, "Regular"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--text-placeholder / --text-secondary"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Selected"), _react.default.createElement("td", null, "Bold \xB7 \u6D45\u8272\u9ED1 / \u6DF1\u8272\u767D"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-weight-bold"))))
   })), _react.default.createElement("section", {
     className: "demo-section preview-contract"
   }, _react.default.createElement("h2", {
@@ -17993,7 +18029,9 @@ function SwitchDemo() {
   }, _react.default.createElement(_index.default, {
     checked: on,
     disabled: off
-  }), _react.default.createElement("span", null, label))))), _react.default.createElement(_colorSpec.default, {
+  }), _react.default.createElement("span", {
+    className: "preview-state-caption"
+  }, label))))), _react.default.createElement(_colorSpec.default, {
     textHeading: "Text / Knob",
     description: "Off / On \u5206\u7EC4\uFF1BPressed \u662F\u8F68\u9053\u53E0\u5C42\uFF0CDisabled \u5BF9\u6574\u4E2A\u7EC4\u4EF6\u5E94\u7528 50% \u4E0D\u900F\u660E\u5EA6\u3002",
     groups: [false, true].map(on => ({
@@ -18930,7 +18968,7 @@ function Demo() {
   }), _react.default.createElement(Table, {
     title: "Token contract",
     headers: ["Size / Property", "Height / Icon", "Spacing / Typography", "Radius"],
-    rows: [["large", "40px / 16px", "左右 12px；gap 8px；文字 14px / 21px · Regular 400", "--radius-container · 8px"], ["medium", "36px / 16px", "左右 12px；gap 8px；文字 14px / 21px · Regular 400", "--radius-md · 6px"], ["small", "32px / 14px", "左右 12px；gap 8px；文字 12px / 18px · Regular 400", "--radius-md · 6px"], ["level-2", "保留当前 size 的箭头占位", "关闭箭头时左距 36 / 36 / 34px；开启箭头再增加 24 / 24 / 22px", "同尺寸定义"], ["long text", "右侧 24px 渐隐；仅溢出时启用", "悬浮以 35px/s 循环滚动，两段文字间隔 32px；离开复位", "—"], ["rename input", "上下右距外框 2px；1px brand 描边及品牌色光标", "文字沿用 size；外框维持 Hover；brand 即 100% 品牌主色", "外框圆角减 2px：6 / 4 / 4px"], ["width / rows", "宽度跟随父容器，默认 100%", "条目间距默认 0；容器 style 可设置 gap", "—"]]
+    rows: [["large", "40px / 16px", "左右 12px；gap 8px；文字 14px / 22px · Regular 400", "--radius-container · 8px"], ["medium", "36px / 16px", "左右 12px；gap 8px；文字 14px / 22px · Regular 400", "--radius-md · 6px"], ["small", "32px / 14px", "左右 12px；gap 8px；文字 12px / 18px · Regular 400", "--radius-md · 6px"], ["level-2", "保留当前 size 的箭头占位", "关闭箭头时左距 36 / 36 / 34px；开启箭头再增加 24 / 24 / 22px", "同尺寸定义"], ["long text", "右侧 24px 渐隐；仅溢出时启用", "悬浮以 35px/s 循环滚动，两段文字间隔 32px；离开复位", "—"], ["rename input", "上下右距外框 2px；1px brand 描边及品牌色光标", "文字沿用 size；外框维持 Hover；brand 即 100% 品牌主色", "外框圆角减 2px：6 / 4 / 4px"], ["width / rows", "宽度跟随父容器，默认 100%", "条目间距默认 0；容器 style 可设置 gap", "—"]]
   }), _react.default.createElement(Table, {
     title: "Asset contract",
     headers: ["部位", "资源", "行为"],

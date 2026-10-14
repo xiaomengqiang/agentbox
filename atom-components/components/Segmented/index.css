@@ -33,8 +33,7 @@
   border: none;
   border-radius: 24px;
   background-color: transparent;
-  font: var(--font-body-md); /* 14px/1.5 + family */
-  line-height: 19px;
+  font: var(--font-body-md); /* 14px / 22px（字体 token 向上取偶数） */
   font-weight: var(--font-weight-medium);
   color: var(--color-font-secondary);
   cursor: pointer;
@@ -48,7 +47,7 @@
 .sb-root.sb-height-44 { height: 44px; padding: 4px; }
 .sb-root.sb-icon-only .sb-segment {
   box-sizing: border-box;
-  flex: 0 0 36px;
+  flex: 1 1 36px;
   width: 36px;
   min-width: 0;
   padding: 0;

@@ -27,6 +27,14 @@ Keep prose short and operational. The page should help a designer inspect behavi
 - Keep panel configuration when switching tabs. Use one shared theme control; remove duplicate global “组件预览” titles and theme buttons, but retain each panel’s bilingual heading.
 - Scope preview styles to their component panel so a local correction does not change Button, Dropdown Button, or another established reference.
 
+## Page geometry and style isolation
+
+- Page geometry belongs to shared preview CSS, not individual component styles. Keep header and body maximum width and horizontal gutters aligned in standalone and gallery modes. Component-scoped `preview.css` must not reintroduce a different page width or responsive breakpoint; keep specimen sizing separate from page sizing.
+- Agentbox atom baseline lives in `tooling/preview/atom.css` with the shared shell in `shell.css`: body maximum width 1400px; body padding 48px 24px 96px, changing to 32px 16px 64px at 600px. Configurators collapse to one column at 980px; control grids use two flexible columns, then one at 520px. Reuse the shared implementation rather than copying these values into each preview. These are the atom library's current conventions, not mandatory dimensions for unrelated projects or the large-component library.
+- Give shell navigation and component panels distinct selectors. A panel such as `.preview-tab` can collide with a same-named navigation class even when both definitions seem locally reasonable. Scope navigation styles to their actual element or shell ancestry (currently `button.preview-tab`), including selected, hover and focus states; check matches before introducing new shared selectors.
+- When diagnosing inconsistent HTML, trace the preview source, shared CSS, `@scope`, specificity and load order. Inspect computed width, max-width, padding and grid columns; successful generation alone does not establish matching layout. Fix the source layer that owns the rule and rebuild only the authorized output scope.
+- For responsive or shared-shell changes, compare affected pages at the same viewport and theme, including desktop, narrow mobile and both sides of changed breakpoints. Check header/body edges, control wrapping and document overflow; wide tables may scroll inside their wrappers. In gallery scope, switch affected panels and check navigation hover/focus so shell styles cannot leak onto a panel. Report browser verification separately from runtime smoke checks.
+
 ## Component panel title
 
 Every tab panel starts with one visible `English name 中文名称` heading above its key-prop summary and Configurator. Use a dedicated class such as `.preview-panel-title` so legacy `.demo-title` hiding rules do not remove it. Keep the font-size hierarchy strict: shared page title > panel title > section title. Agentbox uses `--font-title-lg` (30px), `--font-title-md` (24px), and `--font-title-sm` (20px), respectively. Preserve this order in responsive layouts. Panel titles must use the same `--font-weight-bold` as Configurator section headings, while retaining their larger font size. Declare font-weight after the font shorthand and ensure later shell styles cannot reset it; prefer a shared selector with sufficient specificity over per-component overrides. Check the target panel on a standalone edit; when changing the shared shell or aggregating, check affected registry tabs for missing or duplicate panel headings.
@@ -100,6 +108,7 @@ Agentbox 的组件预览采用以下间距基线；用户给出的具体排版�
 - 章节标题到卡片、表格或正文 24px；有章节说明时，标题到说明 8px，说明到内容 24px。
 - 卡片内小标题到标本 16px；章节之间 48px（窄屏 40px）。
 - 统一从一个元素设置相邻间距，避免 margin 叠加、折叠或用空段落占位。检查最终层叠值，不能只凭源码中的 margin 判断。
+- 表格下方的辅助说明与表格统一间隔 16px（宽窄屏一致），覆盖普通契约表与 Color spec；由说明元素的上边距承担，不叠加表格下边距。与表格上方的章节说明区分，后者仍遵循说明到内容 24px。Agentbox atom 通过 `tooling/preview/atom.css` 的表格容器相邻说明规则统一管理，不在各组件重复设置 0 / 20px 等局部间距；新增说明需确认实际 DOM 命中共享规则。
 - Interactive gallery、Shape 及独立的状态标本区域使用共享 `.demo-card` 容器：`--surface-container-lowest` 背景、无边框、`--shadow-card`、24px 内边距（窄屏 20px）。Shape 即使只有一行也保留底卡；契约表沿用表格容器，不额外套卡。
 - Agentbox 可在目标 `preview.css` 中导入 `tooling/preview/section-layout.css` 复用间距，底卡沿用现有共享样式。组件级不重复复制整套卡片 CSS。聚焦修改只构建目标预览，不因共享规范更新擅自重建总览。
 - 浏览器验收需查看标题及其下方内容的实际边界、Shape 底卡、卡片内边距和窄屏换行；运行 smoke check 不能代替这项视觉检查。
@@ -181,7 +190,7 @@ Document exceptions next to the affected table instead of hiding them in prose e
 - Let the page use available width while keeping a comfortable maximum width.
 - Use equal flexible columns for parallel specimen cards; they should expand when the viewport widens.
 - Allow the Configurator to collapse from split view to one column.
-- Preserve minimum control widths and reduce the control grid from three columns to two and then one as needed.
+- Preserve usable control widths and follow the shared library control-grid breakpoints; do not add component-specific column counts that make otherwise equivalent configurators wrap differently. Use `minmax(0, 1fr)` for flexible tracks and `min-width: 0` for shrinkable children where needed.
 - Wrap every wide table in an `overflow-x: auto` container. Give the table a content-appropriate `min-width` so narrow pages show a horizontal scrollbar instead of crushing cells.
 - Keep swatches fixed-size and prevent tokens from forcing the entire page wider than the viewport.
 

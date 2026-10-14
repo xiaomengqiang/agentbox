@@ -35,8 +35,8 @@ export default function TabDemo() {
  {name:'Preview placeholder',rows:[{label:'Default',background:'--brand-10',outline:color('--brand','2px dashed'),text:'--brand'}]},
  ]}><p className="color-spec-footnote">溢出使用透明度遮罩：边缘 32px 全透明，至 56px 渐变为不透明；不叠加背景色，箭头不受影响。</p></ColorSpecTable>
     <section className="demo-section preview-contract"><h2 className="demo-section-name">Token contract</h2><ContractTable rows={<>
-      <tr><th>large</th><td>字号 18px · 间距 24px</td><td><code>--font-size-lg / --spacing-6</code></td></tr>
-      <tr><th>medium</th><td>字号 16px · 间距 20px</td><td><code>--font-size-md / --spacing-5</code></td></tr>
+      <tr><th>large</th><td>字号 18px / 行高 28px · 间距 24px</td><td><code>--font-subtitle-lg / --spacing-6</code></td></tr>
+      <tr><th>medium</th><td>字号 16px / 行高 24px · 间距 20px</td><td><code>--font-subtitle-md / --spacing-5</code></td></tr>
       <tr><th>Icon</th><td>large 18px / medium 16px · 图文间距 8px</td><td><code>--spacing-2</code> · 跟随 currentColor</td></tr>
       <tr><th>Content placeholder</th><td>brand-10 底色 · brand 100% / 2px dashed</td><td><code>--brand-10 / --brand</code> · 仅预览示例</td></tr>
       <tr><th>Item width</th><td>fit-content · 无内边距</td><td>贴合当前文字宽度，单行显示</td></tr>

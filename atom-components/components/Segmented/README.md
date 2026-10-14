@@ -17,7 +17,7 @@
 - `size`：Text 支持 `large`（44px，默认）和 `medium`（36px），轨道内边距分别为 4 / 2px；Icon 固定 32px，内边距 2px。
 - `shape`：`round` 外/内圆角 24px；`square` 外圆角 8px、内圆角 6px。
 - 形状与高度独立：两种形状均支持 Text 的 36 / 44px 和 Icon 的 32px。
-- 默认宽度随内容；`block` 填满容器；`style.width` 手动设置，优先于 block。Text 分段等分，容器不足时允许收缩。Icon 每个按钮固定 36px，不拉伸、不压缩，可用空间充足时总宽为 `36 × options.length + 4px`；设置轨道宽度不改变按钮宽度。
+- 默认宽度随内容；`block` 填满容器；`style.width` 手动设置，优先于 block。Text 与 Icon 分段均等分可用宽度，容器不足时允许收缩，内容居中。Icon 默认每段 36px，总宽为 `36 × options.length + 4px`；设置 block 或 style.width 后，各段随轨道等比伸缩。
 
 #### 图标
 
@@ -36,7 +36,7 @@ Text 图标 16px，Icon 图标 14px。图标支持共享图标名称或 ReactNod
 | variant | `text / icon` | `text` | 内容类型 |
 | shape | `round / square` | `round` | 仅决定圆角 |
 | size | `large / medium` | `large` | Text：large 高 44px，medium 高 36px；Icon 忽略此值，固定 32px |
-| block | `boolean` | `false` | 轨道填满父容器；省略时随内容。Icon 按钮仍固定 36px |
+| block | `boolean` | `false` | 轨道填满父容器，Text 与 Icon 分段均等分可用宽度；省略时随内容 |
 | value | `string / number` | — | 受控选中值 |
 | defaultValue | `string / number` | — | 非受控初始值；未指定 value 和 defaultValue 时显示选中首项 |
 | disabled | `boolean` | `false` | 整组禁用；options 单项可独立禁用 |

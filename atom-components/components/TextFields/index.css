@@ -5,7 +5,7 @@
 .tf-root:not(.tf-disabled):not(.tf-editing):not(.tf-error):not(:has(.tf-password:focus-visible)):hover .tf-box { box-shadow: inset 0 0 0 1px var(--color-comp-border-hover); }
 .tf-root.tf-editing .tf-box { box-shadow: inset 0 0 0 1px var(--brand), 0 0 0 2px var(--brand-10); }
 .tf-field { position: relative; flex: 1 1 auto; min-width: 0; clip-path: inset(-2px 0 -2px -2px); }
-.tf-input { display: block; box-sizing: border-box; width: 100%; min-width: 0; padding: 0; margin: 0; border: 0; outline: none; background: transparent; font: inherit; line-height: 22px; color: var(--text-primary); caret-color: var(--text-primary); }
+.tf-input { display: block; box-sizing: border-box; width: 100%; min-width: 0; padding: 0; margin: 0; border: 0; outline: none; background: transparent; font: inherit; color: var(--text-primary); caret-color: var(--text-primary); }
 .tf-input::placeholder { color: var(--text-tertiary); opacity: 1; }
 .tf-multiline .tf-box { position: relative; box-sizing: border-box; flex-direction: column; align-items: stretch; gap: 0; padding: 0; overflow: hidden; border-radius: var(--tf-radius, var(--radius-container)); resize: vertical; }
 .tf-multiline .tf-field { flex: 1 1 auto; min-height: 0; margin-inline: var(--spacing-4); clip-path: inset(0 0 0 -2px); }
@@ -37,7 +37,7 @@
 .tf-root, .tf-label, .tf-box, .tf-input, .tf-input::placeholder, .tf-helper, .tf-support, .tf-counter { font-weight: var(--font-weight-regular); }
 .tf-support { display: flex; align-items: flex-start; gap: var(--spacing-4); margin-top: var(--spacing-1); padding: 0; box-sizing: border-box; }
 .tf-helper { flex: 1 1 auto; min-width: 0; }
-.tf-counter { flex: 0 0 auto; margin-left: auto; text-align: right; white-space: nowrap; font: var(--font-caption-lg); font-weight: var(--font-weight-regular); line-height: 18px; font-variant-numeric: tabular-nums; color: var(--text-tertiary); }
+.tf-counter { flex: 0 0 auto; margin-left: auto; text-align: right; white-space: nowrap; font: var(--font-caption-lg); font-weight: var(--font-weight-regular); font-variant-numeric: tabular-nums; color: var(--text-tertiary); }
 .tf-counter-over, .tf-error .tf-counter { color: var(--text-error); }
 .tf-disabled .tf-counter { color: var(--text-disabled); }
 

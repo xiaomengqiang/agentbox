@@ -106,12 +106,12 @@ const SIZES = [
   {
     value: "large",
     label: "Large",
-    spec: "40px 高 · 16px 字号 · 500 字重",
+    spec: "40px 高 · 16px 字号 · Medium · 20px 图标",
   },
   {
     value: "medium",
     label: "Medium",
-    spec: "32px 高 · 14px 字号 · 500 字重",
+    spec: "32px 高 · 14px 字号 · Medium · 16px 图标",
   },
 ];
 
@@ -413,7 +413,7 @@ export default function Demo() {
             <tr>
               <th>size</th>
               <th>height</th>
-              <th>font-size</th>
+              <th>font-size / line-height</th>
               <th>icon-size</th>
               <th>padding-inline</th>
               <th>icon-gap</th>
@@ -424,7 +424,7 @@ export default function Demo() {
             <tr>
               <td className="btn-table-strong">large</td>
               <td>40px</td>
-              <td>16px</td>
+              <td>16px / 24px</td>
               <td>20px</td>
               <td>16px</td>
               <td>8px</td>
@@ -435,7 +435,7 @@ export default function Demo() {
             <tr>
               <td className="btn-table-strong">medium</td>
               <td>32px</td>
-              <td>14px</td>
+              <td>14px / 22px</td>
               <td>16px</td>
               <td>12px</td>
               <td>4px</td>

@@ -50,9 +50,6 @@ pointer-events:none;
 }
 
 
-.search-demo-footnote {
-margin-top:20px;
-}
 
 @media(max-width:760px) {
 .search-demo-live { padding:24px; }

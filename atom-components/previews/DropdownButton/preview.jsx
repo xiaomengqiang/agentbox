@@ -503,7 +503,7 @@ export default function Demo() {
             <tr>
               <th>size</th>
               <th>height</th>
-              <th>font-size</th>
+              <th>font-size / line-height</th>
               <th>icon-size</th>
               <th>padding-left / right</th>
               <th>icon-gap</th>
@@ -514,7 +514,7 @@ export default function Demo() {
             <tr>
               <td className="btn-table-strong">large</td>
               <td>40px</td>
-              <td>16px</td>
+              <td>16px / 24px</td>
               <td>20px</td>
               <td>16px / 12px</td>
               <td>8px</td>
@@ -525,7 +525,7 @@ export default function Demo() {
             <tr>
               <td className="btn-table-strong">medium</td>
               <td>32px</td>
-              <td>14px</td>
+              <td>14px / 22px</td>
               <td>16px</td>
               <td>12px / 8px</td>
               <td>4px</td>
@@ -536,7 +536,7 @@ export default function Demo() {
             <tr>
               <td className="btn-table-strong">small</td>
               <td>28px</td>
-              <td>12px</td>
+              <td>12px / 18px</td>
               <td>16px</td>
               <td>8px / 8px</td>
               <td>4px</td>

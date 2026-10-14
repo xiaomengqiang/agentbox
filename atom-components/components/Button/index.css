@@ -71,7 +71,7 @@
   /* ── 尺寸契约（由 .btn--large / .btn--medium 覆写）── */
   --btn-height: 40px;
   --btn-padding-inline: 16px;
-  --btn-font-size: var(--font-size-md);
+  --btn-font: var(--font-body-lg);
   --btn-font-weight: var(--font-weight-medium);
   --btn-icon-size: 20px;
   --btn-icon-gap: 8px;
@@ -108,10 +108,8 @@
   border-radius: var(--btn-radius);
   background-color: var(--btn-container);
   color: var(--btn-label);
-  font-family: var(--font-family);
-  font-size: var(--btn-font-size);
+  font: var(--btn-font);
   font-weight: var(--btn-font-weight);
-  line-height: var(--line-height-none);
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
@@ -192,7 +190,7 @@
 .btn--large {
   --btn-height: 40px;
   --btn-padding-inline: 16px;
-  --btn-font-size: var(--font-size-md); /* 16px */
+  --btn-font: var(--font-body-lg); /* 16px */
   --btn-font-weight: var(--font-weight-medium); /* 500 */
   --btn-icon-size: 20px;
   --btn-icon-gap: 8px;
@@ -201,7 +199,7 @@
 .btn--medium {
   --btn-height: 32px;
   --btn-padding-inline: 12px;
-  --btn-font-size: var(--font-size-base); /* 14px */
+  --btn-font: var(--font-body-md); /* 14px */
   --btn-font-weight: var(--font-weight-medium); /* 500 */
   --btn-icon-size: 16px;
   --btn-icon-gap: 4px;
@@ -292,7 +290,4 @@
 
 .btn__label {
   display: inline-block;
-  /* 当前字体的中文字形略高于行盒中心；仅校正文字的视觉位置。 */
-  position: relative;
-  top: 1px;
 }

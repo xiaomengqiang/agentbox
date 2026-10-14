@@ -118,8 +118,8 @@ export default function Demo() {
       { label: "Renaming", background: [color(value === "error" ? "--color-error-container" : "--color-interactive-hover", "条目保持 Hover"), color("transparent", "输入框无填充")], outline: color("--brand", "输入框 1px 描边 · 100% 品牌色"), text: [color("--on-surface", "输入文字"), color("--brand", "原生光标"), color(value === "error" ? "--color-error" : "--color-icon-primary", "左侧图标保持原色")] },
     ] }))} />
     <Table title="Token contract" headers={["Size / Property", "Height / Icon", "Spacing / Typography", "Radius"]} rows={[
-      ["large", "40px / 16px", "左右 12px；gap 8px；文字 14px / 21px · Regular 400", "--radius-container · 8px"],
-      ["medium", "36px / 16px", "左右 12px；gap 8px；文字 14px / 21px · Regular 400", "--radius-md · 6px"],
+      ["large", "40px / 16px", "左右 12px；gap 8px；文字 14px / 22px · Regular 400", "--radius-container · 8px"],
+      ["medium", "36px / 16px", "左右 12px；gap 8px；文字 14px / 22px · Regular 400", "--radius-md · 6px"],
       ["small", "32px / 14px", "左右 12px；gap 8px；文字 12px / 18px · Regular 400", "--radius-md · 6px"],
       ["level-2", "保留当前 size 的箭头占位", "关闭箭头时左距 36 / 36 / 34px；开启箭头再增加 24 / 24 / 22px", "同尺寸定义"],
       ["long text", "右侧 24px 渐隐；仅溢出时启用", "悬浮以 35px/s 循环滚动，两段文字间隔 32px；离开复位", "—"],

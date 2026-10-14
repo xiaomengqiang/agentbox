@@ -1,5 +1,5 @@
 .demo-page {
-  max-width: 1160px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 48px 24px 96px;
 }
@@ -360,7 +360,7 @@
 .preview-state-card {
  display: flex; min-width: 0; min-height: 96px; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: var(--radius-container); background: var(--surface-container-lowest); box-shadow: var(--shadow-card); 
 }
-.preview-state-card span {
+.preview-state-caption {
  font: var(--font-caption-lg); color: var(--text-secondary); text-align: center; 
 }
 .preview-api {
@@ -387,16 +387,16 @@
 .preview-tabs {
  display:flex; gap:8px; width:100%; min-width:0; overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:thin; border-bottom:1px solid var(--color-comp-border); 
 }
-.preview-tab {
+button.preview-tab {
  flex:0 0 auto; font:inherit; font-size:14px; cursor:pointer; border:0; border-bottom:2px solid transparent; padding:12px 16px; color:var(--text-secondary); background:transparent; white-space:nowrap; 
 }
-.preview-tab[aria-selected="true"] {
- border-bottom-color:var(--brand); color:var(--brand); font-weight:600; 
+button.preview-tab[aria-selected="true"] {
+ border-bottom-color:var(--brand); color:var(--brand); font-weight:var(--font-weight-bold);
 }
-.preview-tab:hover {
+button.preview-tab:hover {
  background:var(--color-comp-background-tertiary); 
 }
-.preview-tab:focus-visible, .preview-theme:focus-visible {
+button.preview-tab:focus-visible, .preview-theme:focus-visible {
  outline:2px solid var(--brand); outline-offset:-2px; 
 }
 [role="tabpanel"][hidden] {
@@ -672,4 +672,44 @@
 
 @media(max-width: 600px) {
  :is(.preview-iconstate,.preview-menuitem) .inspection-live { padding: 24px; }
+}
+
+/* Atom page geometry is shared by every standalone preview and gallery panel.
+   Keep these selectors above component-scoped documentation specificity. */
+main > .demo-page {
+  width: 100%;
+  max-width: 1400px;
+  min-width: 0;
+  margin-inline: auto;
+  padding: 48px 24px 96px;
+}
+.demo-page :is(.button-controls, .dropdown-controls) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.demo-page :is(.button-configurator, .dropdown-configurator, .preview-configurator) > * {
+  min-width: 0;
+}
+@media (max-width: 980px) {
+  .demo-page :is(.button-configurator, .dropdown-configurator, .preview-configurator) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  main > .demo-page { padding: 32px 16px 64px; }
+  .demo-page :is(.button-configurator, .dropdown-configurator, .preview-configurator) { padding: 16px; }
+}
+@media (max-width: 520px) {
+  .demo-page :is(.button-controls, .dropdown-controls, .preview-controls) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 360px) {
+  .preview-heading { flex-wrap: wrap; }
+  .preview-heading h1 { flex-shrink: 0; }
+  .gallery-library-label { flex-basis: 100%; }
+}
+
+/* Table footnotes share one gap; section introductions keep their own rhythm. */
+.demo-page .demo-section > :is(.btn-table-wrap, .preview-table-wrap) + p {
+  margin: 16px 0 0;
 }

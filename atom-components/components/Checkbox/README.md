@@ -15,7 +15,7 @@ Checkbox 用于切换独立的布尔选项，或在一组选项中进行多选�
 
 - 选择框容器为 24 × 24px，可视框为 20 × 20px。
 - 方形圆角为 `--radius-sm`（4px），圆形使用 `--radius-full`。
-- 右侧文字使用 `--font-body-md`，与选择框间距为 `--spacing-2`（8px）。
+- 右侧文字使用 `--font-body-md`（14px / 22px，Regular 400），与选择框间距为 `--spacing-2`（8px）。
 
 #### 图标
 

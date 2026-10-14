@@ -17,7 +17,7 @@ export default function TagDemo() {
  {name:'Green',rows:[{label:'Default',background:'--color-success-container',outline:'none',text:'--color-success'}]},
  {name:'Red',rows:[{label:'Default',background:'--color-error-container',outline:'none',text:'--color-error'}]},
  ]} />
- <section className="demo-section"><h2 className="demo-section-name">Token contract</h2><ContractTable rows={<><tr><th>medium</th><td>14px / 20px · 高 24px</td><td>左右 8px · 图标 14px</td></tr><tr><th>small</th><td>12px / 16px · 高 20px</td><td>左右 6px · 图标 12px</td></tr><tr><th>shape</th><td>round / square</td><td>--radius-full / --radius-badge（4px）</td></tr><tr><th>gap</th><td>4px</td><td>图文间距</td></tr></>}/></section>
+ <section className="demo-section"><h2 className="demo-section-name">Token contract</h2><ContractTable rows={<><tr><th>medium</th><td>14px / 22px · 高 24px</td><td>左右 8px · 图标 14px</td></tr><tr><th>small</th><td>12px / 18px · 高 20px</td><td>左右 6px · 图标 12px</td></tr><tr><th>shape</th><td>round / square</td><td>--radius-full / --radius-badge（4px）</td></tr><tr><th>gap</th><td>4px</td><td>图文间距</td></tr></>}/></section>
  <section className="demo-section"><h2 className="demo-section-name">Asset contract</h2><p>icon 接收 assets/uploads/icon/FileType/outlined/ 下的 SVG 资源 URL；省略时隐藏，使用 currentColor。</p></section>
  </div>;
 }

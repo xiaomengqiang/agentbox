@@ -14,7 +14,7 @@
   --btn-padding-inline: 8px;
   padding-inline-start: 8px;
   --dropdown-btn-padding-end: 8px;
-  --btn-font-size: var(--font-size-sm); /* 12px */
+  --btn-font: var(--font-body-sm); /* 12px */
   --btn-font-weight: var(--font-weight-regular); /* 400 */
   --btn-icon-size: 16px;
   --btn-icon-gap: 4px;

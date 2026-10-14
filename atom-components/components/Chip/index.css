@@ -7,13 +7,13 @@
   --chip-bg-selected-hover: var(--container-80);
 
   gap: 6px;
-  padding: 8px 16px;
+  height: 36px;
+  padding: 0 16px;
   border: none;
   border-radius: var(--radius-3xl); /* 20px */
   background-color: var(--chip-bg);
   color: var(--color-font-secondary);
   font: var(--font-body-lg); /* 16px / 1.5 */
-  line-height: 20px; /* 规格：行高 20px */
   font-weight: var(--font-weight-regular);
   cursor: pointer;
 }

@@ -16,8 +16,8 @@ MenuItem 用于显示可操作菜单条目。通过 `items` 提供条目内容�
 
 | size | 条目高度 | 全部图标尺寸 | 字号 / 行高 | 圆角 |
 | --- | --- | --- | --- | --- |
-| `large` | 40px | 16px | 14px / 21px | 8px |
-| `medium` | 36px | 16px | 14px / 21px | 6px |
+| `large` | 40px | 16px | 14px / 22px | 8px |
+| `medium` | 36px | 16px | 14px / 22px | 6px |
 | `small` | 32px | 14px | 12px / 18px | 6px |
 
 所有尺寸文字字重均为 Regular（400）；左右内边距 12px，内容 gap 8px。宽度跟随父容器；条目默认紧贴，可通过根容器 `style` 设置宽度或行间距。

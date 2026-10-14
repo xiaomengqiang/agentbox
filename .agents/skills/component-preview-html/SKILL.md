@@ -30,6 +30,7 @@ description: 创建或精修 UI 组件的交互 HTML 文档，包含配置器、
 - Configurator 字段标题采用「中文说明 · API 名称」双语形式；英文必须与组件 README 暴露的 prop 完全一致，保留大小写与拼写，例如「类型 · variant」「圆角 · radius」「占位文字 · placeholder」。单位和提示与 API 名称分开标注。组件视觉类型轴使用 variant；若同时有强调层级，使用独立 API（如 emphasis），并同步实现、README 与配置器，避免只改标签。
 - 沿用 Button / DropdownButton 的配置器和表格样式，包括 select 包装、箭头、焦点与禁用态。通过共享预览 CSS 引用复用，不复制整套样式；确认样式在目标 `@scope` 内生效。
 - 独立页使用共享标题与主题开关，无需其他组件的 Tab；总览使用独立的可扩展 Tab 行，切换后保留已访问面板状态。
+- 页面最大宽度、横向边距与配置器断点由共享预览样式统一管理，组件级样式只处理内容差异；页面壳选择器不得误匹配组件面板。涉及页面自适应或跨组件一致性时，读取[页面几何与样式隔离规则](references/preview-contract.md#page-geometry-and-style-isolation)。
 - 所有组件独立页及两层总览的 Light / Dark 切换统一为标题旁的滑动 toggle：同时显示太阳与月亮，滑块左侧为 Light、右侧为 Dark。使用原生 button、role="switch"、稳定的无障碍名称和 aria-checked，支持键盘操作、可见焦点与减少动态效果，并记忆主题选择。Agentbox 统一由 tooling/preview/Gallery.jsx 与 shell.css 实现，避免库级样式覆盖为圆形图标按钮；修改共享开关后按用户范围重建页面。
 - 每个面板保留可见双语组件标题、关键 prop 概要及准确的状态描述；标题层级参考契约，不移除面板标题来解决重复全局标题。
 - 组件标题（`.preview-panel-title`）与 Configurator 等章节标题使用相同的 `--font-weight-bold` 字重；字号仍保留标题层级。注意后加载样式中的 `font` 简写会重置字重，应在共享预览样式中保证最终层叠结果，避免逐组件重复覆盖。

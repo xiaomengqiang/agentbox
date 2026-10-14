@@ -106,7 +106,8 @@
   /* 9. Font Weight（字重） */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
-  --font-weight-bold: 600;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   /* 10. Line Height（行高） */
   --line-height-none: 1;
@@ -279,6 +280,14 @@
   font-family: 'HarmonyOS Sans';
   src: url('../font/HarmonyOS_SansSC/Medium.woff2') format('woff2');
   font-weight: 500;
+  font-style: normal;
+}
+
+/* Semibold */
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: url('../font/HarmonyOS_SansSC/Semibold.ttf') format('truetype');
+  font-weight: 600;
   font-style: normal;
 }
 

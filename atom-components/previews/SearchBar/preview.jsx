@@ -60,8 +60,8 @@ export default function Demo(){
  {label:'Disabled',text:[color('--text-disabled','占位 / 输入文字'),color('--color-icon-fourth','搜索图标；隐藏清空按钮')]},
  ]}))} />
  <Section title="Token contract" description="size × variant 独立组合；所有尺寸文字字重为 regular（400），图标 16px，间距 8px，水平内边距 12px。">
- <div className="btn-table-wrap"><table className="btn-table"><thead><tr><th>Size</th><th>Height</th><th>Font size / line-height</th></tr></thead><tbody><tr><th>medium</th><td>40px</td><td>--font-size-base · 14px / 22px</td></tr><tr><th>small</th><td>36px</td><td>--font-size-sm · 12px / 18px</td></tr></tbody></table></div>
- <p className="demo-section-desc search-demo-footnote">Filled：圆角 24px，背景 --surface-container；Unfilled：圆角 --radius-md（6px），背景透明。宽度为父容器的 100%，style 可调整布局。</p></Section>
+ <div className="btn-table-wrap"><table className="btn-table"><thead><tr><th>Size</th><th>Height</th><th>Font size / line-height</th></tr></thead><tbody><tr><th>medium</th><td>40px</td><td>--font-body-md · 14px / 22px</td></tr><tr><th>small</th><td>36px</td><td>--font-body-sm · 12px / 18px</td></tr></tbody></table></div>
+ <p className="demo-section-desc">Filled：圆角 24px，背景 --surface-container；Unfilled：圆角 --radius-md（6px），背景透明。宽度为父容器的 100%，style 可调整布局。</p></Section>
  <Section title="API contract" description="输入、清空与回车均由真实组件处理。图标为固定资源，不提供替换属性。">
  <div className="btn-table-wrap"><table className="btn-table search-demo-api"><thead><tr><th>Props</th><th>契约</th></tr></thead><tbody><tr><th>value / onChange</th><td>受控值；输入和清空通过 onChange(value) 更新。</td></tr><tr><th>size / variant</th><td>medium 14px、small 12px；均支持 filled / unfilled，无独立字号属性。</td></tr><tr><th>defaultValue</th><td>非受控初始值，不与 value 同时传入。</td></tr><tr><th>onSearch / onClear</th><td>Enter 返回当前值；输入法组字期间不提交；清空后触发 onClear 并恢复输入焦点。</td></tr><tr><th>clearable</th><td>固定右侧，仅使用 close.svg；所有尺寸均支持；有内容且未禁用时显示清空按钮。所有尺寸默认开启。</td></tr><tr><th>disabled / placeholder</th><td>禁用输入与清空；placeholder 支持空字符串。</td></tr><tr><th>id / className / style</th><td>应用于根 div；追加类名，调用方行内样式优先。</td></tr></tbody></table></div></Section>
  </div>;

@@ -111,7 +111,8 @@
   /* 9. Font Weight（字重） */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
-  --font-weight-bold: 600;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   /* 10. Line Height（行高） */
   --line-height-none: 1;
@@ -284,6 +285,14 @@
   font-family: 'HarmonyOS Sans';
   src: url("../../../assets/font/HarmonyOS_SansSC/Medium.woff2") format('woff2');
   font-weight: 500;
+  font-style: normal;
+}
+
+/* Semibold */
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: url("../../../assets/font/HarmonyOS_SansSC/Semibold.ttf") format('truetype');
+  font-weight: 600;
   font-style: normal;
 }
 
@@ -524,29 +533,31 @@ body {
   --outline-offset-gap: 2px;
 
   /* ── typography → --font-*（排印角色：字号+行高+字体族绑定，字重在其后组合）── */
+  /* Line boxes follow each role ratio, rounded upward to a 2px grid.
+     Use em so size overrides keep the same ratio (e.g. Tab large / medium). */
   /* Display（展示文本）*/
-  --font-display-sm: var(--font-size-4xl)/var(--line-height-tight) var(--font-family); /* 38px/1.25 */
-  --font-display-md: var(--font-size-5xl)/var(--line-height-tight) var(--font-family); /* 48px/1.25 */
-  --font-display-lg: var(--font-size-6xl)/var(--line-height-tight) var(--font-family); /* 56px/1.25 */
+  --font-display-sm: var(--font-size-4xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 38px/1.25 */
+  --font-display-md: var(--font-size-5xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 48px/1.25 */
+  --font-display-lg: var(--font-size-6xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 56px/1.25 */
 
   /* Title（标题）*/
-  --font-title-sm: var(--font-size-xl)/var(--line-height-snug) var(--font-family); /* 20px/1.375 */
-  --font-title-md: var(--font-size-2xl)/var(--line-height-snug) var(--font-family); /* 24px/1.375 */
-  --font-title-lg: var(--font-size-3xl)/var(--line-height-snug) var(--font-family); /* 30px/1.375 */
+  --font-title-sm: var(--font-size-xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 20px/1.375 */
+  --font-title-md: var(--font-size-2xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 24px/1.375 */
+  --font-title-lg: var(--font-size-3xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 30px/1.375 */
 
   /* Subtitle（副标题）*/
-  --font-subtitle-sm: var(--font-size-base)/var(--line-height-base) var(--font-family); /* 14px/1.5 */
-  --font-subtitle-md: var(--font-size-md)/var(--line-height-base) var(--font-family); /* 16px/1.5 */
-  --font-subtitle-lg: var(--font-size-lg)/var(--line-height-base) var(--font-family); /* 18px/1.5 */
+  --font-subtitle-sm: var(--font-size-base)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 14px/1.5 */
+  --font-subtitle-md: var(--font-size-md)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 16px/1.5 */
+  --font-subtitle-lg: var(--font-size-lg)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 18px/1.5 */
 
   /* Body（正文）*/
-  --font-body-sm: var(--font-size-sm)/var(--line-height-base) var(--font-family); /* 12px/1.5 */
-  --font-body-md: var(--font-size-base)/var(--line-height-base) var(--font-family); /* 14px/1.5 */
-  --font-body-lg: var(--font-size-md)/var(--line-height-base) var(--font-family); /* 16px/1.5 */
+  --font-body-sm: var(--font-size-sm)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 12px/1.5 */
+  --font-body-md: var(--font-size-base)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 14px/1.5 */
+  --font-body-lg: var(--font-size-md)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 16px/1.5 */
 
   /* Caption（注释，源表仅 m/l 两档）*/
-  --font-caption-md: var(--font-size-xs)/var(--line-height-base) var(--font-family); /* 10px/1.5 */
-  --font-caption-lg: var(--font-size-sm)/var(--line-height-base) var(--font-family); /* 12px/1.5 */
+  --font-caption-md: var(--font-size-xs)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 10px/1.5 */
+  --font-caption-lg: var(--font-size-sm)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 12px/1.5 */
 
   /* ── fontFamily（已在 base 定义，此处保留兼容）── */
   --font-family: 'HarmonyOS Sans', 'Microsoft YaHei', Arial, 'PingFang SC', 'San Francisco', sans-serif;
@@ -650,7 +661,7 @@ body {
 }
 
 .demo-page {
-  max-width: 1160px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 48px 24px 96px;
 }
@@ -1011,7 +1022,7 @@ body {
 .preview-state-card {
  display: flex; min-width: 0; min-height: 96px; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: var(--radius-container); background: var(--surface-container-lowest); box-shadow: var(--shadow-card); 
 }
-.preview-state-card span {
+.preview-state-caption {
  font: var(--font-caption-lg); color: var(--text-secondary); text-align: center; 
 }
 .preview-api {
@@ -1038,16 +1049,16 @@ body {
 .preview-tabs {
  display:flex; gap:8px; width:100%; min-width:0; overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:thin; border-bottom:1px solid var(--color-comp-border); 
 }
-.preview-tab {
+button.preview-tab {
  flex:0 0 auto; font:inherit; font-size:14px; cursor:pointer; border:0; border-bottom:2px solid transparent; padding:12px 16px; color:var(--text-secondary); background:transparent; white-space:nowrap; 
 }
-.preview-tab[aria-selected="true"] {
- border-bottom-color:var(--brand); color:var(--brand); font-weight:600; 
+button.preview-tab[aria-selected="true"] {
+ border-bottom-color:var(--brand); color:var(--brand); font-weight:var(--font-weight-bold);
 }
-.preview-tab:hover {
+button.preview-tab:hover {
  background:var(--color-comp-background-tertiary); 
 }
-.preview-tab:focus-visible, .preview-theme:focus-visible {
+button.preview-tab:focus-visible, .preview-theme:focus-visible {
  outline:2px solid var(--brand); outline-offset:-2px; 
 }
 [role="tabpanel"][hidden] {
@@ -1325,6 +1336,46 @@ body {
  :is(.preview-iconstate,.preview-menuitem) .inspection-live { padding: 24px; }
 }
 
+/* Atom page geometry is shared by every standalone preview and gallery panel.
+   Keep these selectors above component-scoped documentation specificity. */
+main > .demo-page {
+  width: 100%;
+  max-width: 1400px;
+  min-width: 0;
+  margin-inline: auto;
+  padding: 48px 24px 96px;
+}
+.demo-page :is(.button-controls, .dropdown-controls) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.demo-page :is(.button-configurator, .dropdown-configurator, .preview-configurator) > * {
+  min-width: 0;
+}
+@media (max-width: 980px) {
+  .demo-page :is(.button-configurator, .dropdown-configurator, .preview-configurator) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  main > .demo-page { padding: 32px 16px 64px; }
+  .demo-page :is(.button-configurator, .dropdown-configurator, .preview-configurator) { padding: 16px; }
+}
+@media (max-width: 520px) {
+  .demo-page :is(.button-controls, .dropdown-controls, .preview-controls) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 360px) {
+  .preview-heading { flex-wrap: wrap; }
+  .preview-heading h1 { flex-shrink: 0; }
+  .gallery-library-label { flex-basis: 100%; }
+}
+
+/* Table footnotes share one gap; section introductions keep their own rhythm. */
+.demo-page .demo-section > :is(.btn-table-wrap, .preview-table-wrap) + p {
+  margin: 16px 0 0;
+}
+
 @scope (.preview-segmented) {
 /* 分割按钮根轨道：胶囊形、浅色容器底色（comp_background_tertiary） */
 .sb-root {
@@ -1361,8 +1412,7 @@ body {
   border: none;
   border-radius: 24px;
   background-color: transparent;
-  font: var(--font-body-md); /* 14px/1.5 + family */
-  line-height: 19px;
+  font: var(--font-body-md); /* 14px / 22px（字体 token 向上取偶数） */
   font-weight: var(--font-weight-medium);
   color: var(--color-font-secondary);
   cursor: pointer;
@@ -1376,7 +1426,7 @@ body {
 .sb-root.sb-height-44 { height: 44px; padding: 4px; }
 .sb-root.sb-icon-only .sb-segment {
   box-sizing: border-box;
-  flex: 0 0 36px;
+  flex: 1 1 36px;
   width: 36px;
   min-width: 0;
   padding: 0;
@@ -2496,7 +2546,7 @@ body { background: var(--surface); color: var(--on-surface); font-family: var(--
 [hidden] { display: none !important; }
 .preview-toolbar { max-width: 1400px; margin: 0 auto; padding: 32px 24px 0; }
 .preview-heading { display: flex; align-items: center; gap: 14px; }
-.preview-heading h1 { margin: 0; font: var(--font-title-lg); }
+.preview-heading h1 { margin: 0; font: var(--font-title-lg); font-weight: var(--font-weight-bold); }
 .gallery-library-label { margin-left: auto; color: var(--text-secondary); font: var(--font-body-md); }
 /* Shared by standalone previews and both component galleries. */
 .preview-theme { position: relative; flex: 0 0 auto; width: 68px; height: 36px; padding: 3px; border: 1px solid var(--divider); border-radius: 999px; display: inline-flex; align-items: center; justify-content: space-around; color: var(--text-secondary); background: var(--surface-container); cursor: pointer; }
@@ -2507,10 +2557,10 @@ body { background: var(--surface); color: var(--on-surface); font-family: var(--
 @media (prefers-reduced-motion: reduce) { .preview-theme::before { transition: none; } }
 
 .preview-tabs { display: flex; gap: 24px; margin-top: 24px; overflow-x: auto; border-bottom: 1px solid var(--divider); }
-.preview-tab { flex-shrink: 0; padding: 12px 16px; border: 0; border-bottom: 2px solid transparent; color: var(--text-secondary); background: none; font: var(--font-body-md); cursor: pointer; }
-.preview-tab[aria-selected="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+button.preview-tab { flex-shrink: 0; padding: 12px 16px; border: 0; border-bottom: 2px solid transparent; color: var(--text-secondary); background: none; font: var(--font-body-md); cursor: pointer; }
+button.preview-tab[aria-selected="true"] { font-weight: var(--font-weight-bold); color: var(--brand); border-bottom-color: var(--brand); }
 .preview-panel-title { margin: 0 0 12px; font: var(--font-title-md); }
-.preview-theme:focus-visible, .preview-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.preview-theme:focus-visible, button.preview-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 @media (max-width: 600px) { .preview-toolbar { padding: 24px 16px 0; } .gallery-library-label { font-size: 12px; } }
 </style>
 </head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="glass-xs"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="8" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-sm"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="15" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-md"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="25" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-lg"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="35" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-xl"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="50" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg><div id="root"></div>
@@ -3336,7 +3386,7 @@ function Demo() {
     options: kind === "icon" ? ICON_OPTIONS : kind === "prefix" ? withIcons(TEXT_OPTIONS) : TEXT_OPTIONS
   })))))))), _react.default.createElement(Section, {
     title: "Width examples",
-    description: "\u9ED8\u8BA4\u968F\u5185\u5BB9\uFF1Bblock \u586B\u6EE1\u5BB9\u5668\uFF1Bstyle.width \u624B\u52A8\u6307\u5B9A\u3002Text \u5206\u6BB5\u7B49\u5206\uFF1BIcon \u6BCF\u6BB5\u56FA\u5B9A 36px\uFF0C\u4E0D\u968F\u5BB9\u5668\u62C9\u4F38\u6216\u538B\u7F29\uFF0C\u663E\u5F0F style \u4F18\u5148\u3002"
+    description: "\u9ED8\u8BA4\u968F\u5185\u5BB9\uFF1Bblock \u586B\u6EE1\u5BB9\u5668\uFF1Bstyle.width \u624B\u52A8\u6307\u5B9A\u3002Text \u4E0E Icon \u5206\u6BB5\u5747\u7B49\u5206\u53EF\u7528\u5BBD\u5EA6\uFF0C\u5185\u5BB9\u5C45\u4E2D\uFF1BIcon \u9ED8\u8BA4\u6BCF\u6BB5 36px\uFF0C\u6307\u5B9A\u5BBD\u5EA6\u540E\u81EA\u52A8\u4F38\u7F29\uFF0C\u663E\u5F0F style \u4F18\u5148\u3002"
   }, _react.default.createElement("div", {
     className: "seg-demo-gallery"
   }, ["text", "icon"].flatMap(variant => ["auto", "block", "manual"].map(mode => _react.default.createElement("article", {
@@ -3407,9 +3457,9 @@ function Demo() {
     className: "btn-table-wrap"
   }, _react.default.createElement("table", {
     className: "btn-table btn-table--roomy"
-  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Variant / height"), _react.default.createElement("th", null, "Track padding"), _react.default.createElement("th", null, "Inner height"), _react.default.createElement("th", null, "Font"), _react.default.createElement("th", null, "Text icon / Icon only"), _react.default.createElement("th", null, "Shapes"))), _react.default.createElement("tbody", null, [32, 36, 44].map(height => _react.default.createElement("tr", {
+  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Variant / height"), _react.default.createElement("th", null, "Track padding"), _react.default.createElement("th", null, "Inner height"), _react.default.createElement("th", null, "Font size / line-height"), _react.default.createElement("th", null, "Text icon / Icon only"), _react.default.createElement("th", null, "Shapes"))), _react.default.createElement("tbody", null, [32, 36, 44].map(height => _react.default.createElement("tr", {
     key: height
-  }, _react.default.createElement("th", null, height === 32 ? "Icon" : "Text", " / ", height, "px"), _react.default.createElement("td", null, height === 44 ? 4 : 2, "px"), _react.default.createElement("td", null, height - (height === 44 ? 8 : 4), "px"), _react.default.createElement("td", null, height === 32 ? "—" : "14px"), _react.default.createElement("td", null, height === 32 ? "14px" : "16px"), _react.default.createElement("td", null, "Round / Square")))))), _react.default.createElement("div", {
+  }, _react.default.createElement("th", null, height === 32 ? "Icon" : "Text", " / ", height, "px"), _react.default.createElement("td", null, height === 44 ? 4 : 2, "px"), _react.default.createElement("td", null, height - (height === 44 ? 8 : 4), "px"), _react.default.createElement("td", null, height === 32 ? "—" : "14px / 22px"), _react.default.createElement("td", null, height === 32 ? "14px" : "16px"), _react.default.createElement("td", null, "Round / Square")))))), _react.default.createElement("div", {
     className: "btn-table-wrap"
   }, _react.default.createElement("table", {
     className: "btn-table btn-table--roomy"
@@ -3420,7 +3470,7 @@ function Demo() {
     className: "btn-table-wrap"
   }, _react.default.createElement("table", {
     className: "btn-table btn-table--roomy"
-  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Props"), _react.default.createElement("th", null, "Contract"))), _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "options"), _react.default.createElement("td", null, "\u9ED8\u8BA4 []\u3002\u4F7F\u7528 data.map(item => ({ value: item.id, label: item.name }))\uFF1Bvalue \u552F\u4E00\u4E14\u7A33\u5B9A\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "shape / size"), _react.default.createElement("td", null, "round / square \u4E0E\u5C3A\u5BF8\u72EC\u7ACB\u3002Text\uFF1Alarge \u4E3A 44px\uFF08\u9ED8\u8BA4\uFF09\uFF0Cmedium \u4E3A 36px\uFF1BIcon \u5FFD\u7565 size\uFF0C\u56FA\u5B9A 32px\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "variant"), _react.default.createElement("td", null, "text / icon\uFF0C\u9ED8\u8BA4 text\u3002\u6BCF\u9879 icon \u63D0\u4F9B\u56FE\u6807\uFF1BIcon \u65E0\u56FE\u6807\u65F6\u4FDD\u7559\u6807\u7B7E\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "block / style.width"), _react.default.createElement("td", null, "\u9ED8\u8BA4\u968F\u5185\u5BB9\uFF0Cblock \u4E3A 100%\uFF1Bstyle.width \u53EF\u4F20\u6570\u5B57\u6216 CSS \u5BBD\u5EA6\uFF0C\u4F18\u5148\u4E8E block\u3002Icon \u6BCF\u4E2A\u6309\u94AE\u56FA\u5B9A 36px\uFF0C\u9ED8\u8BA4\u603B\u5BBD\u4E3A 36 \xD7 \u6570\u91CF + 4px\uFF1B\u4FEE\u6539\u8F68\u9053\u5BBD\u5EA6\u4E0D\u6539\u53D8\u6309\u94AE\u5BBD\u5EA6\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "value / defaultValue"), _react.default.createElement("td", null, "\u53D7\u63A7 / \u975E\u53D7\u63A7\u9009\u4E2D\u503C\uFF1B\u672A\u6307\u5B9A\u65F6\u9009\u4E2D\u9996\u9879\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "disabled / options[].disabled"), _react.default.createElement("td", null, "\u6574\u7EC4 / \u5355\u9879\u7981\u7528\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "onChange / onSegmentClick"), _react.default.createElement("td", null, "\u9009\u4E2D\u503C\u6539\u53D8\u56DE\u8C03 value\uFF1B\u70B9\u51FB\u53EF\u7528\u9879\u56DE\u8C03 (value, index)\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "id / className / style"), _react.default.createElement("td", null, "\u4F5C\u7528\u4E8E\u6839\u8282\u70B9\uFF1B\u8FFD\u52A0\u7C7B\u540D\uFF0C\u8C03\u7528\u65B9\u884C\u5185\u6837\u5F0F\u4F18\u5148\u3002"))))), _react.default.createElement("pre", {
+  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Props"), _react.default.createElement("th", null, "Contract"))), _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "options"), _react.default.createElement("td", null, "\u9ED8\u8BA4 []\u3002\u4F7F\u7528 data.map(item => ({ value: item.id, label: item.name }))\uFF1Bvalue \u552F\u4E00\u4E14\u7A33\u5B9A\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "shape / size"), _react.default.createElement("td", null, "round / square \u4E0E\u5C3A\u5BF8\u72EC\u7ACB\u3002Text\uFF1Alarge \u4E3A 44px\uFF08\u9ED8\u8BA4\uFF09\uFF0Cmedium \u4E3A 36px\uFF1BIcon \u5FFD\u7565 size\uFF0C\u56FA\u5B9A 32px\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "variant"), _react.default.createElement("td", null, "text / icon\uFF0C\u9ED8\u8BA4 text\u3002\u6BCF\u9879 icon \u63D0\u4F9B\u56FE\u6807\uFF1BIcon \u65E0\u56FE\u6807\u65F6\u4FDD\u7559\u6807\u7B7E\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "block / style.width"), _react.default.createElement("td", null, "\u9ED8\u8BA4\u968F\u5185\u5BB9\uFF0Cblock \u4E3A 100%\uFF1Bstyle.width \u53EF\u4F20\u6570\u5B57\u6216 CSS \u5BBD\u5EA6\uFF0C\u4F18\u5148\u4E8E block\u3002Text \u4E0E Icon \u5206\u6BB5\u5747\u7B49\u5206\u53EF\u7528\u5BBD\u5EA6\u3002Icon \u9ED8\u8BA4\u6BCF\u6BB5 36px\uFF0C\u603B\u5BBD\u4E3A 36 \xD7 \u6570\u91CF + 4px\uFF1B\u6307\u5B9A\u8F68\u9053\u5BBD\u5EA6\u540E\u5404\u6BB5\u81EA\u52A8\u4F38\u7F29\uFF0C\u56FE\u6807\u5C45\u4E2D\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "value / defaultValue"), _react.default.createElement("td", null, "\u53D7\u63A7 / \u975E\u53D7\u63A7\u9009\u4E2D\u503C\uFF1B\u672A\u6307\u5B9A\u65F6\u9009\u4E2D\u9996\u9879\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "disabled / options[].disabled"), _react.default.createElement("td", null, "\u6574\u7EC4 / \u5355\u9879\u7981\u7528\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "onChange / onSegmentClick"), _react.default.createElement("td", null, "\u9009\u4E2D\u503C\u6539\u53D8\u56DE\u8C03 value\uFF1B\u70B9\u51FB\u53EF\u7528\u9879\u56DE\u8C03 (value, index)\u3002")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "id / className / style"), _react.default.createElement("td", null, "\u4F5C\u7528\u4E8E\u6839\u8282\u70B9\uFF1B\u8FFD\u52A0\u7C7B\u540D\uFF0C\u8C03\u7528\u65B9\u884C\u5185\u6837\u5F0F\u4F18\u5148\u3002"))))), _react.default.createElement("pre", {
     className: "seg-demo-code"
   }, _react.default.createElement("code", null, `const options = data.map(item => ({ value: item.id, label: item.name }));
 <Segmented options={options} shape="square" size="large" />

@@ -9,8 +9,8 @@
 }
 
 .sb-root { padding: 9px 12px; gap: 8px; }
-.sb-medium { height: 40px; font: var(--font-body-md); font-size: var(--font-size-base); line-height: 22px; font-weight: var(--font-weight-regular); }
-.sb-small { height: 36px; font: var(--font-body-sm); font-size: var(--font-size-sm); line-height: 18px; font-weight: var(--font-weight-regular); }
+.sb-medium { height: 40px; font: var(--font-body-md); font-weight: var(--font-weight-regular); }
+.sb-small { height: 36px; font: var(--font-body-sm); font-weight: var(--font-weight-regular); }
 .sb-filled { border-radius: 24px; background-color: var(--surface-container); }
 .sb-unfilled { border-radius: var(--radius-md); background-color: transparent; }
 

@@ -107,7 +107,7 @@ export default function Demo() {
           </div>
         </React.Fragment>)}
       </Section>
-      <Section title="Width examples" description="默认随内容；block 填满容器；style.width 手动指定。Text 分段等分；Icon 每段固定 36px，不随容器拉伸或压缩，显式 style 优先。">
+      <Section title="Width examples" description="默认随内容；block 填满容器；style.width 手动指定。Text 与 Icon 分段均等分可用宽度，内容居中；Icon 默认每段 36px，指定宽度后自动伸缩，显式 style 优先。">
         <div className="seg-demo-gallery">
           {["text", "icon"].flatMap(variant => ["auto", "block", "manual"].map(mode => <article className="seg-demo-card" key={`${variant}-${mode}`}>
             <h3>{variant === "text" ? "Text" : "Icon"} · {mode === "auto" ? "随内容" : mode === "block" ? "填满容器" : "手动 240px"}</h3>
@@ -139,8 +139,8 @@ export default function Demo() {
  ]} />
       <Section title="Token contract" description="Text 高度为 36 / 44px，Icon 固定 32px；形状只决定圆角。">
         <div className="btn-table-wrap"><table className="btn-table btn-table--roomy">
-          <thead><tr><th>Variant / height</th><th>Track padding</th><th>Inner height</th><th>Font</th><th>Text icon / Icon only</th><th>Shapes</th></tr></thead>
-          <tbody>{[32, 36, 44].map(height => <tr key={height}><th>{height === 32 ? "Icon" : "Text"} / {height}px</th><td>{height === 44 ? 4 : 2}px</td><td>{height - (height === 44 ? 8 : 4)}px</td><td>{height === 32 ? "—" : "14px"}</td><td>{height === 32 ? "14px" : "16px"}</td><td>Round / Square</td></tr>)}</tbody>
+          <thead><tr><th>Variant / height</th><th>Track padding</th><th>Inner height</th><th>Font size / line-height</th><th>Text icon / Icon only</th><th>Shapes</th></tr></thead>
+          <tbody>{[32, 36, 44].map(height => <tr key={height}><th>{height === 32 ? "Icon" : "Text"} / {height}px</th><td>{height === 44 ? 4 : 2}px</td><td>{height - (height === 44 ? 8 : 4)}px</td><td>{height === 32 ? "—" : "14px / 22px"}</td><td>{height === 32 ? "14px" : "16px"}</td><td>Round / Square</td></tr>)}</tbody>
         </table></div>
         <div className="btn-table-wrap"><table className="btn-table btn-table--roomy">
           <thead><tr><th>shape</th><th>Track radius</th><th>Segment radius</th><th>Combinations</th></tr></thead>
@@ -154,7 +154,7 @@ export default function Demo() {
             <tr><th>options</th><td>默认 []。使用 data.map(item =&gt; (&#123; value: item.id, label: item.name &#125;))；value 唯一且稳定。</td></tr>
             <tr><th>shape / size</th><td>round / square 与尺寸独立。Text：large 为 44px（默认），medium 为 36px；Icon 忽略 size，固定 32px。</td></tr>
             <tr><th>variant</th><td>text / icon，默认 text。每项 icon 提供图标；Icon 无图标时保留标签。</td></tr>
-            <tr><th>block / style.width</th><td>默认随内容，block 为 100%；style.width 可传数字或 CSS 宽度，优先于 block。Icon 每个按钮固定 36px，默认总宽为 36 × 数量 + 4px；修改轨道宽度不改变按钮宽度。</td></tr>
+            <tr><th>block / style.width</th><td>默认随内容，block 为 100%；style.width 可传数字或 CSS 宽度，优先于 block。Text 与 Icon 分段均等分可用宽度。Icon 默认每段 36px，总宽为 36 × 数量 + 4px；指定轨道宽度后各段自动伸缩，图标居中。</td></tr>
             <tr><th>value / defaultValue</th><td>受控 / 非受控选中值；未指定时选中首项。</td></tr>
             <tr><th>disabled / options[].disabled</th><td>整组 / 单项禁用。</td></tr>
             <tr><th>onChange / onSegmentClick</th><td>选中值改变回调 value；点击可用项回调 (value, index)。</td></tr>

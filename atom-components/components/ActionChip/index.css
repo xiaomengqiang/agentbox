@@ -11,9 +11,7 @@
   box-sizing: border-box;
   border: none;
   border-radius: var(--radius-full);
-  font-family: var(--font-family);
-  font-size: var(--font-size-sm);
-  line-height: 20px;
+  font: var(--font-body-sm);
   font-weight: var(--font-weight-medium);
   color: var(--color-icon-emphasize);
   background-color: var(--color-comp-emphasize-tertiary);

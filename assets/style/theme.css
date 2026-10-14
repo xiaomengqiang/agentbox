@@ -102,29 +102,31 @@
   --outline-offset-gap: 2px;
 
   /* ── typography → --font-*（排印角色：字号+行高+字体族绑定，字重在其后组合）── */
+  /* Line boxes follow each role ratio, rounded upward to a 2px grid.
+     Use em so size overrides keep the same ratio (e.g. Tab large / medium). */
   /* Display（展示文本）*/
-  --font-display-sm: var(--font-size-4xl)/var(--line-height-tight) var(--font-family); /* 38px/1.25 */
-  --font-display-md: var(--font-size-5xl)/var(--line-height-tight) var(--font-family); /* 48px/1.25 */
-  --font-display-lg: var(--font-size-6xl)/var(--line-height-tight) var(--font-family); /* 56px/1.25 */
+  --font-display-sm: var(--font-size-4xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 38px/1.25 */
+  --font-display-md: var(--font-size-5xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 48px/1.25 */
+  --font-display-lg: var(--font-size-6xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 56px/1.25 */
 
   /* Title（标题）*/
-  --font-title-sm: var(--font-size-xl)/var(--line-height-snug) var(--font-family); /* 20px/1.375 */
-  --font-title-md: var(--font-size-2xl)/var(--line-height-snug) var(--font-family); /* 24px/1.375 */
-  --font-title-lg: var(--font-size-3xl)/var(--line-height-snug) var(--font-family); /* 30px/1.375 */
+  --font-title-sm: var(--font-size-xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 20px/1.375 */
+  --font-title-md: var(--font-size-2xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 24px/1.375 */
+  --font-title-lg: var(--font-size-3xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 30px/1.375 */
 
   /* Subtitle（副标题）*/
-  --font-subtitle-sm: var(--font-size-base)/var(--line-height-base) var(--font-family); /* 14px/1.5 */
-  --font-subtitle-md: var(--font-size-md)/var(--line-height-base) var(--font-family); /* 16px/1.5 */
-  --font-subtitle-lg: var(--font-size-lg)/var(--line-height-base) var(--font-family); /* 18px/1.5 */
+  --font-subtitle-sm: var(--font-size-base)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 14px/1.5 */
+  --font-subtitle-md: var(--font-size-md)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 16px/1.5 */
+  --font-subtitle-lg: var(--font-size-lg)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 18px/1.5 */
 
   /* Body（正文）*/
-  --font-body-sm: var(--font-size-sm)/var(--line-height-base) var(--font-family); /* 12px/1.5 */
-  --font-body-md: var(--font-size-base)/var(--line-height-base) var(--font-family); /* 14px/1.5 */
-  --font-body-lg: var(--font-size-md)/var(--line-height-base) var(--font-family); /* 16px/1.5 */
+  --font-body-sm: var(--font-size-sm)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 12px/1.5 */
+  --font-body-md: var(--font-size-base)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 14px/1.5 */
+  --font-body-lg: var(--font-size-md)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 16px/1.5 */
 
   /* Caption（注释，源表仅 m/l 两档）*/
-  --font-caption-md: var(--font-size-xs)/var(--line-height-base) var(--font-family); /* 10px/1.5 */
-  --font-caption-lg: var(--font-size-sm)/var(--line-height-base) var(--font-family); /* 12px/1.5 */
+  --font-caption-md: var(--font-size-xs)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 10px/1.5 */
+  --font-caption-lg: var(--font-size-sm)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 12px/1.5 */
 
   /* ── fontFamily（已在 base 定义，此处保留兼容）── */
   --font-family: 'HarmonyOS Sans', 'Microsoft YaHei', Arial, 'PingFang SC', 'San Francisco', sans-serif;

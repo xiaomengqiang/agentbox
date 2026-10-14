@@ -111,7 +111,8 @@
   /* 9. Font Weight（字重） */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
-  --font-weight-bold: 600;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   /* 10. Line Height（行高） */
   --line-height-none: 1;
@@ -284,6 +285,14 @@
   font-family: 'HarmonyOS Sans';
   src: url("../../../assets/font/HarmonyOS_SansSC/Medium.woff2") format('woff2');
   font-weight: 500;
+  font-style: normal;
+}
+
+/* Semibold */
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: url("../../../assets/font/HarmonyOS_SansSC/Semibold.ttf") format('truetype');
+  font-weight: 600;
   font-style: normal;
 }
 
@@ -524,29 +533,31 @@ body {
   --outline-offset-gap: 2px;
 
   /* ── typography → --font-*（排印角色：字号+行高+字体族绑定，字重在其后组合）── */
+  /* Line boxes follow each role ratio, rounded upward to a 2px grid.
+     Use em so size overrides keep the same ratio (e.g. Tab large / medium). */
   /* Display（展示文本）*/
-  --font-display-sm: var(--font-size-4xl)/var(--line-height-tight) var(--font-family); /* 38px/1.25 */
-  --font-display-md: var(--font-size-5xl)/var(--line-height-tight) var(--font-family); /* 48px/1.25 */
-  --font-display-lg: var(--font-size-6xl)/var(--line-height-tight) var(--font-family); /* 56px/1.25 */
+  --font-display-sm: var(--font-size-4xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 38px/1.25 */
+  --font-display-md: var(--font-size-5xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 48px/1.25 */
+  --font-display-lg: var(--font-size-6xl)/round(up, calc(1em * var(--line-height-tight)), 2px) var(--font-family); /* 56px/1.25 */
 
   /* Title（标题）*/
-  --font-title-sm: var(--font-size-xl)/var(--line-height-snug) var(--font-family); /* 20px/1.375 */
-  --font-title-md: var(--font-size-2xl)/var(--line-height-snug) var(--font-family); /* 24px/1.375 */
-  --font-title-lg: var(--font-size-3xl)/var(--line-height-snug) var(--font-family); /* 30px/1.375 */
+  --font-title-sm: var(--font-size-xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 20px/1.375 */
+  --font-title-md: var(--font-size-2xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 24px/1.375 */
+  --font-title-lg: var(--font-size-3xl)/round(up, calc(1em * var(--line-height-snug)), 2px) var(--font-family); /* 30px/1.375 */
 
   /* Subtitle（副标题）*/
-  --font-subtitle-sm: var(--font-size-base)/var(--line-height-base) var(--font-family); /* 14px/1.5 */
-  --font-subtitle-md: var(--font-size-md)/var(--line-height-base) var(--font-family); /* 16px/1.5 */
-  --font-subtitle-lg: var(--font-size-lg)/var(--line-height-base) var(--font-family); /* 18px/1.5 */
+  --font-subtitle-sm: var(--font-size-base)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 14px/1.5 */
+  --font-subtitle-md: var(--font-size-md)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 16px/1.5 */
+  --font-subtitle-lg: var(--font-size-lg)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 18px/1.5 */
 
   /* Body（正文）*/
-  --font-body-sm: var(--font-size-sm)/var(--line-height-base) var(--font-family); /* 12px/1.5 */
-  --font-body-md: var(--font-size-base)/var(--line-height-base) var(--font-family); /* 14px/1.5 */
-  --font-body-lg: var(--font-size-md)/var(--line-height-base) var(--font-family); /* 16px/1.5 */
+  --font-body-sm: var(--font-size-sm)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 12px/1.5 */
+  --font-body-md: var(--font-size-base)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 14px/1.5 */
+  --font-body-lg: var(--font-size-md)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 16px/1.5 */
 
   /* Caption（注释，源表仅 m/l 两档）*/
-  --font-caption-md: var(--font-size-xs)/var(--line-height-base) var(--font-family); /* 10px/1.5 */
-  --font-caption-lg: var(--font-size-sm)/var(--line-height-base) var(--font-family); /* 12px/1.5 */
+  --font-caption-md: var(--font-size-xs)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 10px/1.5 */
+  --font-caption-lg: var(--font-size-sm)/round(up, calc(1em * var(--line-height-base)), 2px) var(--font-family); /* 12px/1.5 */
 
   /* ── fontFamily（已在 base 定义，此处保留兼容）── */
   --font-family: 'HarmonyOS Sans', 'Microsoft YaHei', Arial, 'PingFang SC', 'San Francisco', sans-serif;
@@ -650,7 +661,7 @@ body {
 }
 
 .demo-page {
-  max-width: 1160px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 48px 24px 96px;
 }
@@ -1011,7 +1022,7 @@ body {
 .preview-state-card {
  display: flex; min-width: 0; min-height: 96px; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: var(--radius-container); background: var(--surface-container-lowest); box-shadow: var(--shadow-card); 
 }
-.preview-state-card span {
+.preview-state-caption {
  font: var(--font-caption-lg); color: var(--text-secondary); text-align: center; 
 }
 .preview-api {
@@ -1038,16 +1049,16 @@ body {
 .preview-tabs {
  display:flex; gap:8px; width:100%; min-width:0; overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:thin; border-bottom:1px solid var(--color-comp-border); 
 }
-.preview-tab {
+button.preview-tab {
  flex:0 0 auto; font:inherit; font-size:14px; cursor:pointer; border:0; border-bottom:2px solid transparent; padding:12px 16px; color:var(--text-secondary); background:transparent; white-space:nowrap; 
 }
-.preview-tab[aria-selected="true"] {
- border-bottom-color:var(--brand); color:var(--brand); font-weight:600; 
+button.preview-tab[aria-selected="true"] {
+ border-bottom-color:var(--brand); color:var(--brand); font-weight:var(--font-weight-bold);
 }
-.preview-tab:hover {
+button.preview-tab:hover {
  background:var(--color-comp-background-tertiary); 
 }
-.preview-tab:focus-visible, .preview-theme:focus-visible {
+button.preview-tab:focus-visible, .preview-theme:focus-visible {
  outline:2px solid var(--brand); outline-offset:-2px; 
 }
 [role="tabpanel"][hidden] {
@@ -1325,6 +1336,46 @@ body {
  :is(.preview-iconstate,.preview-menuitem) .inspection-live { padding: 24px; }
 }
 
+/* Atom page geometry is shared by every standalone preview and gallery panel.
+   Keep these selectors above component-scoped documentation specificity. */
+main > .demo-page {
+  width: 100%;
+  max-width: 1400px;
+  min-width: 0;
+  margin-inline: auto;
+  padding: 48px 24px 96px;
+}
+.demo-page :is(.button-controls, .dropdown-controls) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.demo-page :is(.button-configurator, .dropdown-configurator, .preview-configurator) > * {
+  min-width: 0;
+}
+@media (max-width: 980px) {
+  .demo-page :is(.button-configurator, .dropdown-configurator, .preview-configurator) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  main > .demo-page { padding: 32px 16px 64px; }
+  .demo-page :is(.button-configurator, .dropdown-configurator, .preview-configurator) { padding: 16px; }
+}
+@media (max-width: 520px) {
+  .demo-page :is(.button-controls, .dropdown-controls, .preview-controls) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 360px) {
+  .preview-heading { flex-wrap: wrap; }
+  .preview-heading h1 { flex-shrink: 0; }
+  .gallery-library-label { flex-basis: 100%; }
+}
+
+/* Table footnotes share one gap; section introductions keep their own rhythm. */
+.demo-page .demo-section > :is(.btn-table-wrap, .preview-table-wrap) + p {
+  margin: 16px 0 0;
+}
+
 @scope (.preview-tab) {
 .icon-button {
   --icon-color: var(--color-icon-primary);
@@ -1425,8 +1476,7 @@ body {
 
 .tt-label {
   display: inline-block;
-  font: var(--font-subtitle-lg); /* 18px / 1.5 */
-  font-size: var(--tt-font-size, var(--font-size-lg));
+  font: var(--tt-font, var(--font-subtitle-lg));
   font-weight: var(--font-weight-regular);
   color: inherit;
   white-space: nowrap;
@@ -1454,11 +1504,13 @@ body {
 }
 
 .tt-size-large {
+  --tt-font: var(--font-subtitle-lg);
   --tt-font-size: var(--font-size-lg);
   --tt-gap: var(--spacing-6);
 }
 
 .tt-size-medium {
+  --tt-font: var(--font-subtitle-md);
   --tt-font-size: var(--font-size-md);
   --tt-gap: var(--spacing-5);
 }
@@ -1880,7 +1932,7 @@ body { background: var(--surface); color: var(--on-surface); font-family: var(--
 [hidden] { display: none !important; }
 .preview-toolbar { max-width: 1400px; margin: 0 auto; padding: 32px 24px 0; }
 .preview-heading { display: flex; align-items: center; gap: 14px; }
-.preview-heading h1 { margin: 0; font: var(--font-title-lg); }
+.preview-heading h1 { margin: 0; font: var(--font-title-lg); font-weight: var(--font-weight-bold); }
 .gallery-library-label { margin-left: auto; color: var(--text-secondary); font: var(--font-body-md); }
 /* Shared by standalone previews and both component galleries. */
 .preview-theme { position: relative; flex: 0 0 auto; width: 68px; height: 36px; padding: 3px; border: 1px solid var(--divider); border-radius: 999px; display: inline-flex; align-items: center; justify-content: space-around; color: var(--text-secondary); background: var(--surface-container); cursor: pointer; }
@@ -1891,10 +1943,10 @@ body { background: var(--surface); color: var(--on-surface); font-family: var(--
 @media (prefers-reduced-motion: reduce) { .preview-theme::before { transition: none; } }
 
 .preview-tabs { display: flex; gap: 24px; margin-top: 24px; overflow-x: auto; border-bottom: 1px solid var(--divider); }
-.preview-tab { flex-shrink: 0; padding: 12px 16px; border: 0; border-bottom: 2px solid transparent; color: var(--text-secondary); background: none; font: var(--font-body-md); cursor: pointer; }
-.preview-tab[aria-selected="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+button.preview-tab { flex-shrink: 0; padding: 12px 16px; border: 0; border-bottom: 2px solid transparent; color: var(--text-secondary); background: none; font: var(--font-body-md); cursor: pointer; }
+button.preview-tab[aria-selected="true"] { font-weight: var(--font-weight-bold); color: var(--brand); border-bottom-color: var(--brand); }
 .preview-panel-title { margin: 0 0 12px; font: var(--font-title-md); }
-.preview-theme:focus-visible, .preview-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.preview-theme:focus-visible, button.preview-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 @media (max-width: 600px) { .preview-toolbar { padding: 24px 16px 0; } .gallery-library-label { font-size: 12px; } }
 </style>
 </head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="glass-xs"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="8" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-sm"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="15" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-md"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="25" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-lg"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="35" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="glass-xl"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="smooth"/><feDisplacementMap in="SourceGraphic" in2="smooth" scale="50" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg><div id="root"></div>
@@ -2668,7 +2720,7 @@ function TabDemo() {
   }, _react.default.createElement("h2", {
     className: "demo-section-name"
   }, "Token contract"), _react.default.createElement(_controls.ContractTable, {
-    rows: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "large"), _react.default.createElement("td", null, "\u5B57\u53F7 18px \xB7 \u95F4\u8DDD 24px"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-size-lg / --spacing-6"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "medium"), _react.default.createElement("td", null, "\u5B57\u53F7 16px \xB7 \u95F4\u8DDD 20px"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-size-md / --spacing-5"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Icon"), _react.default.createElement("td", null, "large 18px / medium 16px \xB7 \u56FE\u6587\u95F4\u8DDD 8px"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--spacing-2"), " \xB7 \u8DDF\u968F currentColor")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Content placeholder"), _react.default.createElement("td", null, "brand-10 \u5E95\u8272 \xB7 brand 100% / 2px dashed"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--brand-10 / --brand"), " \xB7 \u4EC5\u9884\u89C8\u793A\u4F8B")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Item width"), _react.default.createElement("td", null, "fit-content \xB7 \u65E0\u5185\u8FB9\u8DDD"), _react.default.createElement("td", null, "\u8D34\u5408\u5F53\u524D\u6587\u5B57\u5BBD\u5EA6\uFF0C\u5355\u884C\u663E\u793A")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Unselected / Hover"), _react.default.createElement("td", null, "Regular"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--text-placeholder / --text-secondary"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Selected"), _react.default.createElement("td", null, "Bold \xB7 \u6D45\u8272\u9ED1 / \u6DF1\u8272\u767D"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-weight-bold"))))
+    rows: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "large"), _react.default.createElement("td", null, "\u5B57\u53F7 18px / \u884C\u9AD8 28px \xB7 \u95F4\u8DDD 24px"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-subtitle-lg / --spacing-6"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "medium"), _react.default.createElement("td", null, "\u5B57\u53F7 16px / \u884C\u9AD8 24px \xB7 \u95F4\u8DDD 20px"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-subtitle-md / --spacing-5"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Icon"), _react.default.createElement("td", null, "large 18px / medium 16px \xB7 \u56FE\u6587\u95F4\u8DDD 8px"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--spacing-2"), " \xB7 \u8DDF\u968F currentColor")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Content placeholder"), _react.default.createElement("td", null, "brand-10 \u5E95\u8272 \xB7 brand 100% / 2px dashed"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--brand-10 / --brand"), " \xB7 \u4EC5\u9884\u89C8\u793A\u4F8B")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Item width"), _react.default.createElement("td", null, "fit-content \xB7 \u65E0\u5185\u8FB9\u8DDD"), _react.default.createElement("td", null, "\u8D34\u5408\u5F53\u524D\u6587\u5B57\u5BBD\u5EA6\uFF0C\u5355\u884C\u663E\u793A")), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Unselected / Hover"), _react.default.createElement("td", null, "Regular"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--text-placeholder / --text-secondary"))), _react.default.createElement("tr", null, _react.default.createElement("th", null, "Selected"), _react.default.createElement("td", null, "Bold \xB7 \u6D45\u8272\u9ED1 / \u6DF1\u8272\u767D"), _react.default.createElement("td", null, _react.default.createElement("code", null, "--font-weight-bold"))))
   })), _react.default.createElement("section", {
     className: "demo-section preview-contract"
   }, _react.default.createElement("h2", {
