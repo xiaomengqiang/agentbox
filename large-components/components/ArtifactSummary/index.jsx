@@ -7,13 +7,13 @@ import { DiffTags } from "../../../atom-components/components/Tag/index.jsx";
 import "./index.css";
 
 const FILE_TYPE_ICONS = {
-  PDF: "./assets/uploads/icon/file_type/pdf.svg",
-  DOCX: "./assets/uploads/icon/file_type/docx.svg",
-  XLSX: "./assets/uploads/icon/file_type/excel.svg",
-  PPTX: "./assets/uploads/icon/file_type/ppt.svg",
-  CSV: "./assets/uploads/icon/file_type/cvs.svg",
-  MD: "./assets/uploads/icon/file_type/markdown.svg",
-  TXT: "./assets/uploads/icon/file_type/txt.svg",
+  PDF: "./assets/uploads/icon/FileType/filled/pdf.svg",
+  DOCX: "./assets/uploads/icon/FileType/filled/docx.svg",
+  XLSX: "./assets/uploads/icon/FileType/filled/sheet.svg",
+  PPTX: "./assets/uploads/icon/FileType/filled/ppt.svg",
+  CSV: "./assets/uploads/icon/FileType/filled/cvs.svg",
+  MD: "./assets/uploads/icon/FileType/filled/markdown.svg",
+  TXT: "./assets/uploads/icon/FileType/filled/txt.svg",
 };
 
 const CODE_ICON_SRC = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgiIGhlaWdodD0iMjgiIHZpZXdCb3g9IjAgMCAyOCAyOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBjbGlwLXBhdGg9InVybCgjY2xpcDBfMjAzN18yKSI+PHBhdGggZD0iTTI1Ljk1ODUgMTIuMDczNEwyNS45NTg0IDIxLjI5MTVDMjUuOTU4NCAyMy44Njg5IDIzLjg2OTEgMjUuOTU4MiAyMS4yOTE4IDI1Ljk1ODJINi43MDg0MUM0LjEzMTA5IDI1Ljk1ODIgMi4wNDE3NSAyMy44Njg4IDIuMDQxNzUgMjEuMjkxNVY2LjcwODE3QzIuMDQxNzUgNC4xMzA4NCA0LjEzMTA5IDIuMDQxNSA2LjcwODQxIDIuMDQxNUgyMS4yOTE3QzIzLjg2OTEgMi4wNDE1IDI1Ljk1ODQgNC4xMzA4NCAyNS45NTg0IDYuNzA4MTdWOC4wMjA2NyIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLW9wYWNpdHk9IjAuNiIgc3Ryb2tlLXdpZHRoPSIxLjc1Ii8+PHBhdGggZD0iTTkuNDAwMzkgOS43NUw2Ljg5NjU2IDEyLjI1MDdDNi4wMDc5NCAxMy4xMzgyIDUuOTgxMjEgMTQuNTY5OSA2LjgzNjA4IDE1LjQ4OTlMOS40MDAzOSAxOC4yNDk3IiBzdHJva2U9ImJsYWNrIiBzdHJva2Utb3BhY2l0eT0iMC42IiBzdHJva2Utd2lkdGg9IjEuNzUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xOC42NTA2IDkuNzVMMjEuMTU0NSAxMi4yNTA3QzIyLjA0MzEgMTMuMTM4MiAyMi4wNjk4IDE0LjU2OTkgMjEuMjE0OSAxNS40ODk5TDE4LjY1MDYgMTguMjQ5NyIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLW9wYWNpdHk9IjAuNiIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMTIuMjAxNyAyMC4yMzI0TDE2LjQxMTcgNy4xMTMyMyIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLW9wYWNpdHk9IjAuNiIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L2c+PGRlZnM+PGNsaXBQYXRoIGlkPSJjbGlwMF8yMDM3XzIiPjxyZWN0IHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgZmlsbD0id2hpdGUiLz48L2NsaXBQYXRoPjwvZGVmcz48L3N2Zz4=";
