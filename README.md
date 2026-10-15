@@ -137,7 +137,7 @@ node scripts/build.mjs --all --check
 import Button from '../../../atom-components/components/Button/index.jsx';
 ```
 
-共用组件图标从 `../../../assets/shared/icons.js` 导入。组合组件当前使用 `large-icons.js` 保留原有定制时钟外观；两个文件共用相同资源目录。此前组合工程中两份有差异的 prompt-input SVG 保存在 `assets/large/uploads/`，未覆盖基础库资源。
+原子组件共用图标模块位于 `atom-components/components/Icon/index.jsx`，组件内从 `../Icon/index.jsx` 导入。组合组件当前使用 `large-icons.js` 保留原有定制时钟外观；两个文件共用相同资源目录。此前组合工程中两份有差异的 prompt-input SVG 保存在 `assets/large/uploads/`，未覆盖基础库资源。
 
 ## 低上下文编辑约定
 

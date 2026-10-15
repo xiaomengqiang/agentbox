@@ -24,7 +24,7 @@ index.html                        工程导航
 
 HTML 是输出；独立页面与总览使用同一份 `preview.jsx` 和组件源码。总览重新汇总源码，不拼接独立 HTML，也不要求独立 HTML 已生成。不要复制一份“总览专用组件实现”。
 
-预览从 `../../components/<Name>/index.jsx` 导入真实实现；共享模块仍使用 `../../../assets/…` 或 `../../../tooling/preview/…`。三个 preview 文件不得放回 components。交付前端时提供 components 与必要的共享 assets、atom 依赖，不需提供 previews 或预览工具。README 采用 Overview、Props、Usage；Color Spec 留在交互预览。
+预览从 `../../components/<Name>/index.jsx` 导入真实实现；原子库预览中的 Icon 从 `../../components/Icon/index.jsx` 导入；其他共享资源和预览工具使用 `../../../assets/…` 或 `../../../tooling/preview/…`。三个 preview 文件不得放回 components。交付前端时提供 components 与必要的共享 assets、atom 依赖，不需提供 previews 或预览工具。README 采用 Overview、Props、Usage；Color Spec 留在交互预览。
 
 组合组件引用示例：
 
@@ -32,7 +32,7 @@ HTML 是输出；独立页面与总览使用同一份 `preview.jsx` 和组件源
 import Button from '../../../atom-components/components/Button/index.jsx';
 ```
 
-两层的组件均使用 `../../../assets/…` 导入共享模块。保留实际使用的图标模块，例如组合库现有的 `large-icons.js`；不要在结构整理时顺带替换视觉资源。JSX 中资源 URL 的约定由现有构建器处理，不因预览 HTML 位于深层目录而修改每个组件的运行时 URL。
+原子库图标模块位于 `atom-components/components/Icon/index.jsx`，原子组件从 `../Icon/index.jsx` 导入；组合组件如需该模块，使用 `../../../atom-components/components/Icon/index.jsx`。其他共享资源仍位于 `assets/`。保留实际使用的图标模块，例如组合库现有的 `large-icons.js`；不要在结构整理时顺带替换视觉资源。JSX 中资源 URL 的约定由现有构建器处理，不因预览 HTML 位于深层目录而修改每个组件的运行时 URL。
 
 ## 按任务选择构建范围
 

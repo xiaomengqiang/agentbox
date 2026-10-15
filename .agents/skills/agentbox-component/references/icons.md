@@ -4,10 +4,10 @@ Agentbox 功能图标优先且统一使用 `assets/uploads/icon/function/` 对�
 
 ## Usage
 
-The import below assumes `<library>/components/<Name>/`. Adapt it to the actual source location; preserve a project-specific icon module when already used.
+The shared Icon module lives at `atom-components/components/Icon/index.jsx`, which imports its sibling `index.css`. The import below assumes `atom-components/components/<Name>/`. From `atom-components/previews/<Name>/`, use `../../components/Icon/index.jsx`. From large components, use `../../../atom-components/components/Icon/index.jsx` when needed; preserve existing imports of `../../../assets/shared/large-icons.js` for the custom clock artwork.
 
 ```jsx
-import { Icon } from "../../../assets/shared/icons.js";
+import { Icon } from "../Icon/index.jsx";
 
 <Icon name="chevron-down" size={16} color="#0A59F7" className="chev"/>
 
@@ -17,7 +17,7 @@ const item = { icon: "home", label: "首页" };
 let open = true;
 <Icon name={open ? "chevron-up" : "chevron-down"} />
 
-<Icon src="./assets/uploads/logo.svg" size={32} />
+<Icon src="./assets/uploads/icon/function/search.svg" size={32} />
 ```
 
 ## Props
@@ -47,5 +47,5 @@ Shared Icon 的既有能力；Agentbox 功能图标不使用此模式。
 
 Agentbox 功能图标使用项目提供的对应 SVG。 Place them in the existing project’s shared `assets/uploads/`. In the dual-library project, the builder resolves the source URL below and rewrites it for both standalone and gallery output; do not copy assets into each component. Legacy scaffolds keep their own existing asset root:
 
-1. `<Icon src="./assets/uploads/logo.svg" size={28} />`
+1. `<Icon src="./assets/uploads/icon/function/search.svg" size={28} />`
 2. `<img src="./assets/uploads/banner.png" />`

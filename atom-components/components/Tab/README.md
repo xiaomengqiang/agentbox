@@ -95,3 +95,19 @@ export function WithIconExample({ searchIcon }) {
 `searchIcon` 应为使用项目功能图标资源的 React 节点。内容区由 `children` 决定，预览中的蓝底虚线框只是示例样式。
 
 Tab 直接依赖同层 `IconButton` 组件及其箭头资源，交付时需一起提供。
+
+接入新 SVG 时，通过 `items[].icon` 传入自定义节点，无需增加共享图标名称或修改组件：
+
+```jsx
+// 将新文件放入资源目录；也可使用构建工具导入得到的 URL。
+const iconUrl = "/assets/uploads/icon/function/my-icon.svg";
+const customIcon = <span style={{
+  display: "block", width: "1em", height: "1em",
+  backgroundColor: "currentColor",
+  mask: `url("${iconUrl}") center / contain no-repeat`,
+  WebkitMask: `url("${iconUrl}") center / contain no-repeat`,
+}} />;
+<Tab items={[{ id: "custom", label: "自定义", icon: customIcon }]} />
+```
+
+`my-icon.svg` 是待添加的示例文件。URL 相对于应用页面；使用 CSS mask 可让新图标跟随组件状态变色。

@@ -21,7 +21,7 @@ Tag 是静态展示标签。可选中标签由独立的 Chip 组件提供；Diff
 
 #### 图标
 
-可选前置 SVG 图标，传入SVG 资源 URL（预览使用 FileType/outlined），以 currentColor 着色；medium 为 14px，small 为 12px，图文间距 4px。
+可选前置 SVG 图标，传入SVG 资源 URL（预览使用 file-type/outlined），以 currentColor 着色；medium 为 14px，small 为 12px，图文间距 4px。
 
 ## Props
 
@@ -59,7 +59,7 @@ Tag 是静态展示标签。可选中标签由独立的 Chip 组件提供；Diff
 ```jsx
 import Tag, { DiffTags } from "./components/Tag/index.jsx";
 
-<Tag variant="green" size="medium" shape="square" icon="./assets/uploads/icon/FileType/outlined/code.svg">已完成</Tag>
+<Tag variant="green" size="medium" shape="square" icon="./assets/uploads/icon/file-type/outlined/code.svg">已完成</Tag>
 <Tag size="small">标签</Tag>
 <DiffTags added={1280} removed={64} />
 ```

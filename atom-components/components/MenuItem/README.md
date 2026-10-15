@@ -24,10 +24,10 @@ MenuItem 用于显示可操作菜单条目。通过 `items` 提供条目内容�
 
 #### 图标
 
-- `leadingIcon` 控制文字前的内容图标，资源由 `items[].iconSrc` 提供，默认使用 `sidebar/new_chat.svg`。
+- `leadingIcon` 控制文字前的内容图标，资源由 `items[].iconSrc` 提供，默认使用 `sidebar/new-chat.svg`。
 - `level` 只控制缩进：`level-1` 不额外缩进；`level-2` 保留一个图标位与 8px gap 的缩进。
 - `dropdownIcon` 独立控制展开箭头，两个层级都可以开启或关闭。一级带箭头与二级不带箭头时，前置图标对齐；一级关闭箭头后内容直接靠左。
-- `trailingIcon` 控制右侧独立区域，目前固定显示 `sidebar/More.svg`，开启后常驻显示。热区为 24×24px，默认 secondary 图标色，仅悬浮该热区时变为 primary；点击 More 不触发行展开或选择。Error 在配置器中默认关闭此开关，仍可手动开启。
+- `trailingIcon` 控制右侧独立区域，目前固定显示 `sidebar/more.svg`，开启后常驻显示。热区为 24×24px，默认 secondary 图标色，仅悬浮该热区时变为 primary；点击 More 不触发行展开或选择。Error 在配置器中默认关闭此开关，仍可手动开启。
 - 所有图标使用原始 SVG 作为 mask，尺寸统一由 `size` 决定。`error` 只改变样式，不会自动替换前置图标；删除图标需通过 `items[].iconSrc` 提供。
 - 一级带展开箭头时，整行（包括文字、图标和空白区域）触发展开；More 为独立操作区。
 
@@ -79,7 +79,7 @@ import MenuItem from "./MenuItem/index.jsx";
   renameable
   onRename={(item, newName) => console.log("rename", item.id, newName)}
   style={{ width: 300 }}
-  items={[{ id: "folder", label: "文件夹", iconSrc: "./assets/uploads/icon/sidebar/folder_close.svg" }]}
+  items={[{ id: "folder", label: "文件夹", iconSrc: "./assets/uploads/icon/sidebar/folder-close.svg" }]}
   onSelect={item => console.log("select", item.id)}
   onToggle={item => console.log("expanded", item.expanded)}
   onTrailingAction={item => console.log("more", item.id)}

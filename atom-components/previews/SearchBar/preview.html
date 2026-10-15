@@ -2544,7 +2544,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = Gallery;
 var _react = _interopRequireWildcard(require("react"));
-var _icons = require("../../assets/shared/icons.js");
+var _index = require("../../atom-components/components/Icon/index.jsx");
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function Gallery({
@@ -2607,13 +2607,13 @@ function Gallery({
   }, _react.default.createElement("span", {
     className: "theme-sun",
     "aria-hidden": "true"
-  }, _react.default.createElement(_icons.Icon, {
+  }, _react.default.createElement(_index.Icon, {
     name: "sun",
     size: 18
   })), _react.default.createElement("span", {
     className: "theme-moon",
     "aria-hidden": "true"
-  }, _react.default.createElement(_icons.Icon, {
+  }, _react.default.createElement(_index.Icon, {
     name: "moon",
     size: 18
   }))), _react.default.createElement("span", {
@@ -2647,7 +2647,7 @@ function Gallery({
   }, visited.has(id) ? _react.default.createElement(Demo, null) : null)));
 }
 },
-"assets/shared/icons.js": function(module, exports, require) {
+"atom-components/components/Icon/index.jsx": function(module, exports, require) {
 const LUCIDE = {"eye-off":[["path",{"d":"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"}],["path",{"d":"M14.084 14.158a3 3 0 0 1-4.242-4.242"}],["path",{"d":"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"}],["path",{"d":"m2 2 20 20"}]],"moon":[["path",{"d":"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"}]],"search":[["path",{"d":"m21 21-4.34-4.34"}],["circle",{"cx":"11","cy":"11","r":"8"}]],"sun":[["circle",{"cx":"12","cy":"12","r":"4"}],["path",{"d":"M12 2v2"}],["path",{"d":"M12 20v2"}],["path",{"d":"m4.93 4.93 1.41 1.41"}],["path",{"d":"m17.66 17.66 1.41 1.41"}],["path",{"d":"M2 12h2"}],["path",{"d":"M20 12h2"}],["path",{"d":"m6.34 17.66-1.41 1.41"}],["path",{"d":"m19.07 4.93-1.41 1.41"}]]};
 "use strict";
 
@@ -2656,6 +2656,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Icon = Icon;
 var _react = _interopRequireWildcard(require("react"));
+require("./index.css");
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 const ICONS = typeof LUCIDE !== "undefined" ? LUCIDE : {};
@@ -3059,7 +3060,7 @@ function Icon({
       strokeWidth
     })
   };
-  if (name && CUSTOM_ICONS[name]) {
+  if (!src && name && CUSTOM_ICONS[name]) {
     return _react.default.createElement(CUSTOM_ICONS[name], {
       size,
       color,
@@ -3077,11 +3078,7 @@ function Icon({
       className: className,
       alt: "",
       "aria-hidden": true,
-      style: {
-        ...style,
-        display: "inline-block",
-        verticalAlign: "middle"
-      }
+      style
     });
   }
   if (plus === null) return null;
@@ -3642,7 +3639,7 @@ function SearchBar(props) {
   })), clearButton);
 }
 }};
-const imports = {"tooling/preview/Gallery.jsx":{"react":"react","../../assets/shared/icons.js":"assets/shared/icons.js"},"assets/shared/icons.js":{"react":"react"},"atom-components/previews/SearchBar/preview.jsx":{"../../../tooling/preview/color-spec.jsx":"tooling/preview/color-spec.jsx","react":"react","../../components/SearchBar/index.jsx":"atom-components/components/SearchBar/index.jsx"},"tooling/preview/color-spec.jsx":{"react":"react"},"atom-components/components/SearchBar/index.jsx":{"react":"react","./index.css":"css"}};
+const imports = {"tooling/preview/Gallery.jsx":{"react":"react","../../atom-components/components/Icon/index.jsx":"atom-components/components/Icon/index.jsx"},"atom-components/components/Icon/index.jsx":{"react":"react","./index.css":"css"},"atom-components/previews/SearchBar/preview.jsx":{"../../../tooling/preview/color-spec.jsx":"tooling/preview/color-spec.jsx","react":"react","../../components/SearchBar/index.jsx":"atom-components/components/SearchBar/index.jsx"},"tooling/preview/color-spec.jsx":{"react":"react"},"atom-components/components/SearchBar/index.jsx":{"react":"react","./index.css":"css"}};
 const cache = {};
 function load(id) {
   if (id === 'react') return React;

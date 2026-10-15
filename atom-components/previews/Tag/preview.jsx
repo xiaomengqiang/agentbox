@@ -2,7 +2,7 @@ import ColorSpecTable from "../../../tooling/preview/color-spec.jsx";
 import React, { useState } from "react";
 import Tag from "../../components/Tag/index.jsx";
 import { CompactBoolean, ContractTable } from "../../../tooling/preview/controls.jsx";
-const icons = {"Audio_list": "./assets/uploads/icon/FileType/outlined/Audio_list.svg", "code": "./assets/uploads/icon/FileType/outlined/code.svg", "docx": "./assets/uploads/icon/FileType/outlined/docx.svg", "folder": "./assets/uploads/icon/FileType/outlined/folder.svg", "image": "./assets/uploads/icon/FileType/outlined/image.svg", "markdown": "./assets/uploads/icon/FileType/outlined/markdown.svg", "pdf": "./assets/uploads/icon/FileType/outlined/pdf.svg", "ppt": "./assets/uploads/icon/FileType/outlined/ppt.svg", "sheet": "./assets/uploads/icon/FileType/outlined/sheet.svg", "txt": "./assets/uploads/icon/FileType/outlined/txt.svg", "video": "./assets/uploads/icon/FileType/outlined/video.svg", "zip": "./assets/uploads/icon/FileType/outlined/zip.svg"};
+const icons = {"audio-list": "./assets/uploads/icon/file-type/outlined/audio-list.svg", "code": "./assets/uploads/icon/file-type/outlined/code.svg", "docx": "./assets/uploads/icon/file-type/outlined/docx.svg", "folder": "./assets/uploads/icon/file-type/outlined/folder.svg", "image": "./assets/uploads/icon/file-type/outlined/image.svg", "markdown": "./assets/uploads/icon/file-type/outlined/markdown.svg", "pdf": "./assets/uploads/icon/file-type/outlined/pdf.svg", "ppt": "./assets/uploads/icon/file-type/outlined/ppt.svg", "sheet": "./assets/uploads/icon/file-type/outlined/sheet.svg", "txt": "./assets/uploads/icon/file-type/outlined/txt.svg", "video": "./assets/uploads/icon/file-type/outlined/video.svg", "zip": "./assets/uploads/icon/file-type/outlined/zip.svg"};
 function Select({label,value,onChange,options}) { return <label className="button-control"><span>{label}</span><span className="button-select-wrap"><select value={value} onChange={e=>onChange(e.target.value)}>{options.map(v=><option key={v}>{v}</option>)}</select></span></label>; }
 export default function TagDemo() {
  const [variant,setVariant]=useState("default"),[size,setSize]=useState("medium"),[shape,setShape]=useState("round"),[icon,setIcon]=useState(false),[iconName,setIconName]=useState("code");
@@ -18,6 +18,6 @@ export default function TagDemo() {
  {name:'Red',rows:[{label:'Default',background:'--color-error-container',outline:'none',text:'--color-error'}]},
  ]} />
  <section className="demo-section"><h2 className="demo-section-name">Token contract</h2><ContractTable rows={<><tr><th>medium</th><td>14px / 22px · 高 24px</td><td>左右 8px · 图标 14px</td></tr><tr><th>small</th><td>12px / 18px · 高 20px</td><td>左右 6px · 图标 12px</td></tr><tr><th>shape</th><td>round / square</td><td>--radius-full / --radius-badge（4px）</td></tr><tr><th>gap</th><td>4px</td><td>图文间距</td></tr></>}/></section>
- <section className="demo-section"><h2 className="demo-section-name">Asset contract</h2><p>icon 接收 assets/uploads/icon/FileType/outlined/ 下的 SVG 资源 URL；省略时隐藏，使用 currentColor。</p></section>
+ <section className="demo-section"><h2 className="demo-section-name">Asset contract</h2><p>icon 接收 assets/uploads/icon/file-type/outlined/ 下的 SVG 资源 URL；省略时隐藏，使用 currentColor。</p></section>
  </div>;
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Icon } from "../../../assets/shared/icons.js";
+import { Icon } from "../Icon/index.jsx";
 import "./index.css";
 
 // 勾的几何参数（方框容器/边长见 index.css；Lucide 图标 viewBox 为 24）

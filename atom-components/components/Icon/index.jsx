@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useId } from "react";
+import "./index.css";
 
 // ---- Lucide (offline fallback, table injected at build time) ----
 const ICONS = typeof LUCIDE !== "undefined" ? LUCIDE : {};
@@ -473,8 +474,8 @@ export function Icon({
     "data-props": JSON.stringify({ name, src, size, color, variant, strokeWidth }),
   };
 
-  // Exact InputBox artwork takes priority over network and Lucide fallbacks.
-  if (name && CUSTOM_ICONS[name]) {
+  // Explicit assets take priority over built-in artwork and name-based fallbacks.
+  if (!src && name && CUSTOM_ICONS[name]) {
     return React.createElement(CUSTOM_ICONS[name], {
       size, color, className, style, ...dataAttrs,
     });
@@ -490,7 +491,7 @@ export function Icon({
       className: className,
       alt: "",
       "aria-hidden": true,
-      style: { ...style, display: "inline-block", verticalAlign: "middle" },
+      style,
     });
   }
 

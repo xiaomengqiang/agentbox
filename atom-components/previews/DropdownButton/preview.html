@@ -1760,6 +1760,12 @@ main > .demo-page {
   opacity: 0;
 }
 
+/* Image assets share the same inline alignment as the original Icon renderer. */
+img[data-component="Icon"] {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .demo-page {
 max-width: 1400px;
   margin: 0 auto;
@@ -2992,7 +2998,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = Gallery;
 var _react = _interopRequireWildcard(require("react"));
-var _icons = require("../../assets/shared/icons.js");
+var _index = require("../../atom-components/components/Icon/index.jsx");
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function Gallery({
@@ -3055,13 +3061,13 @@ function Gallery({
   }, _react.default.createElement("span", {
     className: "theme-sun",
     "aria-hidden": "true"
-  }, _react.default.createElement(_icons.Icon, {
+  }, _react.default.createElement(_index.Icon, {
     name: "sun",
     size: 18
   })), _react.default.createElement("span", {
     className: "theme-moon",
     "aria-hidden": "true"
-  }, _react.default.createElement(_icons.Icon, {
+  }, _react.default.createElement(_index.Icon, {
     name: "moon",
     size: 18
   }))), _react.default.createElement("span", {
@@ -3095,7 +3101,7 @@ function Gallery({
   }, visited.has(id) ? _react.default.createElement(Demo, null) : null)));
 }
 },
-"assets/shared/icons.js": function(module, exports, require) {
+"atom-components/components/Icon/index.jsx": function(module, exports, require) {
 const LUCIDE = {"braces":[["path",{"d":"M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"}],["path",{"d":"M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"}]],"chevron-down":[["path",{"d":"m6 9 6 6 6-6"}]],"code":[["path",{"d":"m16 18 6-6-6-6"}],["path",{"d":"m8 6-6 6 6 6"}]],"eye-off":[["path",{"d":"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"}],["path",{"d":"M14.084 14.158a3 3 0 0 1-4.242-4.242"}],["path",{"d":"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"}],["path",{"d":"m2 2 20 20"}]],"focus":[["circle",{"cx":"12","cy":"12","r":"3"}],["path",{"d":"M3 7V5a2 2 0 0 1 2-2h2"}],["path",{"d":"M17 3h2a2 2 0 0 1 2 2v2"}],["path",{"d":"M21 17v2a2 2 0 0 1-2 2h-2"}],["path",{"d":"M7 21H5a2 2 0 0 1-2-2v-2"}]],"folder":[["path",{"d":"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"}]],"moon":[["path",{"d":"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"}]],"square":[["rect",{"width":"18","height":"18","x":"3","y":"3","rx":"2"}]],"sun":[["circle",{"cx":"12","cy":"12","r":"4"}],["path",{"d":"M12 2v2"}],["path",{"d":"M12 20v2"}],["path",{"d":"m4.93 4.93 1.41 1.41"}],["path",{"d":"m17.66 17.66 1.41 1.41"}],["path",{"d":"M2 12h2"}],["path",{"d":"M20 12h2"}],["path",{"d":"m6.34 17.66-1.41 1.41"}],["path",{"d":"m19.07 4.93-1.41 1.41"}]],"table":[["path",{"d":"M12 3v18"}],["rect",{"width":"18","height":"18","x":"3","y":"3","rx":"2"}],["path",{"d":"M3 9h18"}],["path",{"d":"M3 15h18"}]]};
 "use strict";
 
@@ -3104,6 +3110,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Icon = Icon;
 var _react = _interopRequireWildcard(require("react"));
+require("./index.css");
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 const ICONS = typeof LUCIDE !== "undefined" ? LUCIDE : {};
@@ -3507,7 +3514,7 @@ function Icon({
       strokeWidth
     })
   };
-  if (name && CUSTOM_ICONS[name]) {
+  if (!src && name && CUSTOM_ICONS[name]) {
     return _react.default.createElement(CUSTOM_ICONS[name], {
       size,
       color,
@@ -3525,11 +3532,7 @@ function Icon({
       className: className,
       alt: "",
       "aria-hidden": true,
-      style: {
-        ...style,
-        display: "inline-block",
-        verticalAlign: "middle"
-      }
+      style
     });
   }
   if (plus === null) return null;
@@ -3594,7 +3597,7 @@ exports.default = Demo;
 var _colorSpec = _interopRequireDefault(require("../../../tooling/preview/color-spec.jsx"));
 var _react = _interopRequireDefault(require("react"));
 var _index = _interopRequireDefault(require("../../components/DropdownButton/index.jsx"));
-var _icons = require("../../../assets/shared/icons.js");
+var _index2 = require("../../components/Icon/index.jsx");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 const VARIANTS = [{
   value: "primary",
@@ -4031,7 +4034,7 @@ function Demo() {
     className: "demo-section-name"
   }, "State matrix"), _react.default.createElement("span", {
     className: "demo-section-tag"
-  }, _react.default.createElement(_icons.Icon, {
+  }, _react.default.createElement(_index2.Icon, {
     name: "table",
     size: 12
   }), "\u8D70\u67E5\u7528")), _react.default.createElement("p", {
@@ -4091,7 +4094,7 @@ function Demo() {
     className: "demo-section-name"
   }, "Token contract"), _react.default.createElement("span", {
     className: "demo-section-tag"
-  }, _react.default.createElement(_icons.Icon, {
+  }, _react.default.createElement(_index2.Icon, {
     name: "braces",
     size: 12
   }), "\u590D\u7528\u8D44\u4EA7")), _react.default.createElement("p", {
@@ -4421,7 +4424,7 @@ function resolveSize(size) {
   return BUTTON_SIZES.indexOf(size) > -1 ? size : "large";
 }
 }};
-const imports = {"tooling/preview/Gallery.jsx":{"react":"react","../../assets/shared/icons.js":"assets/shared/icons.js"},"assets/shared/icons.js":{"react":"react"},"atom-components/previews/DropdownButton/preview.jsx":{"../../../tooling/preview/color-spec.jsx":"tooling/preview/color-spec.jsx","react":"react","../../components/DropdownButton/index.jsx":"atom-components/components/DropdownButton/index.jsx","../../../assets/shared/icons.js":"assets/shared/icons.js"},"tooling/preview/color-spec.jsx":{"react":"react"},"atom-components/components/DropdownButton/index.jsx":{"react":"react","../Button/presets.js":"atom-components/components/Button/presets.js","./index.css":"css"},"atom-components/components/Button/presets.js":{}};
+const imports = {"tooling/preview/Gallery.jsx":{"react":"react","../../atom-components/components/Icon/index.jsx":"atom-components/components/Icon/index.jsx"},"atom-components/components/Icon/index.jsx":{"react":"react","./index.css":"css"},"atom-components/previews/DropdownButton/preview.jsx":{"../../../tooling/preview/color-spec.jsx":"tooling/preview/color-spec.jsx","react":"react","../../components/DropdownButton/index.jsx":"atom-components/components/DropdownButton/index.jsx","../../components/Icon/index.jsx":"atom-components/components/Icon/index.jsx"},"tooling/preview/color-spec.jsx":{"react":"react"},"atom-components/components/DropdownButton/index.jsx":{"react":"react","../Button/presets.js":"atom-components/components/Button/presets.js","./index.css":"css"},"atom-components/components/Button/presets.js":{}};
 const cache = {};
 function load(id) {
   if (id === 'react') return React;

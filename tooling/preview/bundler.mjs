@@ -88,7 +88,7 @@ export function buildPage(level, entries, output, standalone) {
   }).join('\n');
   const icons = Object.fromEntries([...iconNames].sort().map(name => [name, iconTable[name]]));
   const wrappers = [...modules].map(([file, record]) => {
-    const prelude = /assets\/shared\/(?:large-)?icons\.js$/.test(relative(file)) ? `const LUCIDE = ${JSON.stringify(icons)};\n` : '';
+    const prelude = /^(?:atom-components\/components\/Icon\/index\.jsx|assets\/shared\/large-icons\.js)$/.test(relative(file)) ? `const LUCIDE = ${JSON.stringify(icons)};\n` : '';
     return `${JSON.stringify(relative(file))}: function(module, exports, require) {\n${prelude}${record.code}\n}`;
   }).join(',\n');
   const maps = Object.fromEntries([...modules].map(([file, record]) => [relative(file), record.imports]));

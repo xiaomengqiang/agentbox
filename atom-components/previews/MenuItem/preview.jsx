@@ -10,13 +10,13 @@ const DELETE_ICON = "./assets/uploads/icon/function/delete.svg";
 const ICON_COLUMNS = [{ leading: true, trailing: true }, { leading: true, trailing: false }, { leading: false, trailing: true }, { leading: false, trailing: false }];
 const STATES = ["default", "hover", "renaming"];
 const ICONS = [
-  { value: "./assets/uploads/icon/sidebar/new_chat.svg", label: "new_chat" },
-  { value: "./assets/uploads/icon/sidebar/folder_close.svg", label: "folder_close" },
-  { value: "./assets/uploads/icon/sidebar/folder_open.svg", label: "folder_open" },
-  { value: "./assets/uploads/icon/sidebar/scheduled_task.svg", label: "scheduled_task" },
+  { value: "./assets/uploads/icon/sidebar/new-chat.svg", label: "new-chat" },
+  { value: "./assets/uploads/icon/sidebar/folder-close.svg", label: "folder-close" },
+  { value: "./assets/uploads/icon/sidebar/folder-open.svg", label: "folder-open" },
+  { value: "./assets/uploads/icon/sidebar/scheduled-task.svg", label: "scheduled-task" },
   { value: "./assets/uploads/icon/sidebar/plugin.svg", label: "plugin" },
-  { value: "./assets/uploads/icon/sidebar/more_round.svg", label: "more_round" },
-  { value: "./assets/uploads/icon/sidebar/More.svg", label: "More" },
+  { value: "./assets/uploads/icon/sidebar/more-round.svg", label: "more-round" },
+  { value: "./assets/uploads/icon/sidebar/more.svg", label: "more" },
   { value: "./assets/uploads/icon/function/delete.svg", label: "delete" },
   { value: "./assets/uploads/icon/function/add.svg", label: "add" },
 ];
@@ -127,9 +127,9 @@ export default function Demo() {
       ["width / rows", "宽度跟随父容器，默认 100%", "条目间距默认 0；容器 style 可设置 gap", "—"],
     ]} />
     <Table title="Asset contract" headers={["部位", "资源", "行为"]} rows={[
-      ["前置图标", "items[].iconSrc；默认 sidebar/new_chat.svg", "CSS mask：icon-primary；Error 使用 color-error；关闭时移除"],
-      ["展开图标", "function/arrow_right.svg / arrow_down.svg", "dropdownIcon 独立控制；两个层级均可开启或关闭"],
-      ["右侧图标区域", "assets/uploads/icon/sidebar/More.svg", "24×24px 热区；默认 icon-secondary，仅悬浮 More 时 icon-primary；独立点击回调"],
+      ["前置图标", "items[].iconSrc；默认 sidebar/new-chat.svg", "CSS mask：icon-primary；Error 使用 color-error；关闭时移除"],
+      ["展开图标", "function/arrow-right.svg / arrow-down.svg", "dropdownIcon 独立控制；两个层级均可开启或关闭"],
+      ["右侧图标区域", "assets/uploads/icon/sidebar/more.svg", "24×24px 热区；默认 icon-secondary，仅悬浮 More 时 icon-primary；独立点击回调"],
     ]} />
     <Table title="API contract" headers={["API", "Contract"]} rows={[
       ["size / variant / level / dropdownIcon / leadingIcon / trailingIcon", "独立属性轴，所有 96 种组合均支持；更改一项不重置其他项"],

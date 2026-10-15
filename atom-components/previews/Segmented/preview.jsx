@@ -10,7 +10,7 @@ const SHAPES = [{ value: "round", label: "Round" }, { value: "square", label: "S
 const SIZES = [{ value: "large", label: "Large" }, { value: "medium", label: "Medium" }];
 const ICONS = ["layout-grid", "list", "code", "columns-2", "image"];
 const VIEW_ICONS = [
-  <span style={{ width: 14, height: 14, display: "block", backgroundColor: "currentColor", mask: 'url("./assets/uploads/icon/view/code_preview.svg") center / contain no-repeat', WebkitMask: 'url("./assets/uploads/icon/view/code_preview.svg") center / contain no-repeat' }} />,
+  <span style={{ width: 14, height: 14, display: "block", backgroundColor: "currentColor", mask: 'url("./assets/uploads/icon/view/code-preview.svg") center / contain no-repeat', WebkitMask: 'url("./assets/uploads/icon/view/code-preview.svg") center / contain no-repeat' }} />,
   <span style={{ width: 14, height: 14, display: "block", backgroundColor: "currentColor", mask: 'url("./assets/uploads/icon/view/code.svg") center / contain no-repeat', WebkitMask: 'url("./assets/uploads/icon/view/code.svg") center / contain no-repeat' }} />,
 ];
 const INTERACTION_STATES = ["Default", "Hover", "Pressed", "Disabled"];

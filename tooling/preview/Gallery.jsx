@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Icon } from '../../assets/shared/icons.js';
+import { Icon } from '../../atom-components/components/Icon/index.jsx';
 
 export default function Gallery({ entries, title, standalone = false, panelClassName = "" }) {
   const [active, setActive] = useState(() => entries.find(item => item.id === location.hash.slice(1))?.id || entries[0].id);

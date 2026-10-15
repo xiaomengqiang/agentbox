@@ -3,30 +3,29 @@ import "./index.css";
 
 export const FUNCTION_ICONS = {
   "add": "./assets/uploads/icon/function/add.svg",
-  "arrow_down": "./assets/uploads/icon/function/arrow_down.svg",
-  "arrow_left": "./assets/uploads/icon/function/arrow_left.svg",
-  "arrow_right": "./assets/uploads/icon/function/arrow_right.svg",
-  "arrow_up": "./assets/uploads/icon/function/arrow_up.svg",
+  "arrow-down": "./assets/uploads/icon/function/arrow-down.svg",
+  "arrow-left": "./assets/uploads/icon/function/arrow-left.svg",
+  "arrow-right": "./assets/uploads/icon/function/arrow-right.svg",
+  "arrow-up": "./assets/uploads/icon/function/arrow-up.svg",
   "check": "./assets/uploads/icon/function/check.svg",
   "close": "./assets/uploads/icon/function/close.svg",
-  "collapse_sidebar": "./assets/uploads/icon/function/collapse_sidebar.svg",
+  "collapse-sidebar": "./assets/uploads/icon/function/collapse-sidebar.svg",
   "delete": "./assets/uploads/icon/function/delete.svg",
-  "download_list": "./assets/uploads/icon/function/download_list.svg",
+  "download": "./assets/uploads/icon/function/download.svg",
   "edit": "./assets/uploads/icon/function/edit.svg",
-  "open_local": "./assets/uploads/icon/function/open_local.svg",
+  "open-local": "./assets/uploads/icon/function/open-local.svg",
   "pin": "./assets/uploads/icon/function/pin.svg",
-  "quote_to_chat": "./assets/uploads/icon/function/quote_to_chat.svg",
+  "quote-to-chat": "./assets/uploads/icon/function/quote-to-chat.svg",
   "refresh": "./assets/uploads/icon/function/refresh.svg",
-  "right_list": "./assets/uploads/icon/function/right_list.svg",
   "search": "./assets/uploads/icon/function/search.svg",
   "setting": "./assets/uploads/icon/function/setting.svg",
   "unpin": "./assets/uploads/icon/function/unpin.svg"
 };
 export const DIALOG_ICONS = {
-  "add": "./assets/uploads/icon/send button/add.svg",
-  "ariplane": "./assets/uploads/icon/send button/ariplane.svg",
-  "pause": "./assets/uploads/icon/send button/pause.svg",
-  "resume": "./assets/uploads/icon/send button/resume.svg"
+  "add": "./assets/uploads/icon/send-button/add.svg",
+  "ariplane": "./assets/uploads/icon/send-button/ariplane.svg",
+  "pause": "./assets/uploads/icon/send-button/pause.svg",
+  "resume": "./assets/uploads/icon/send-button/resume.svg"
 };
 
 export const ICONS = { ...DIALOG_ICONS, ...FUNCTION_ICONS };

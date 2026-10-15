@@ -2,13 +2,13 @@ import React from "react";
 import "./index.css";
 
 export const actionChipIcons = {
-  skill: "./assets/uploads/icon/prompt input/skill.svg",
-  connector: "./assets/uploads/icon/prompt input/connector.svg",
-  expert: "./assets/uploads/icon/prompt input/expert.svg",
+  skill: "./assets/uploads/icon/prompt-input/skill.svg",
+  connector: "./assets/uploads/icon/prompt-input/connector.svg",
+  expert: "./assets/uploads/icon/prompt-input/expert.svg",
 };
 
-export default function ActionChip({ label, icon = "skill", onClick, id, style, className = "" }) {
-  const source = actionChipIcons[icon] || actionChipIcons.skill;
+export default function ActionChip({ label, icon = "skill", src, onClick, id, style, className = "" }) {
+  const source = src || actionChipIcons[icon] || actionChipIcons.skill;
   return (
     <button type="button" id={id} style={style} className={`ac-chip ${className}`} onClick={onClick}>
       <span className="ac-chip-icon" aria-hidden="true">

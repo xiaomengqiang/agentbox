@@ -21,13 +21,13 @@ ActionChip 用于展示技能、连接器或专家条目，并提供轻量的移
 
 #### 图标
 
-前置图标始终显示，`icon` 可省略，默认使用 `skill`。
+前置图标始终显示，`icon` 可省略，默认使用 `skill`。通过 `src` 可直接传入任意新增 SVG 的 URL，优先于内置 `icon`，无需修改组件或图标映射。
 
 | 取值 | 含义 | 默认状态资源 |
 |------|------|--------------|
-| `skill` | 技能 | `assets/uploads/icon/prompt input/skill.svg` |
-| `connector` | 连接器 | `assets/uploads/icon/prompt input/connector.svg` |
-| `expert` | 专家 | `assets/uploads/icon/prompt input/expert.svg` |
+| `skill` | 技能 | `assets/uploads/icon/prompt-input/skill.svg` |
+| `connector` | 连接器 | `assets/uploads/icon/prompt-input/connector.svg` |
+| `expert` | 专家 | `assets/uploads/icon/prompt-input/expert.svg` |
 
 Hover 统一使用 `assets/uploads/icon/function/close.svg`。资源通过 SVG mask 着色，替换图标时占位尺寸不变。
 
@@ -43,6 +43,7 @@ Hover 统一使用 `assets/uploads/icon/function/close.svg`。资源通过 SVG m
 |------|------|---------|-------------|
 | `label` | `string` | — | 条目名称；使用时应提供非空文案，组件不补充默认标签。 |
 | `icon` | `"skill" \| "connector" \| "expert"` | `"skill"` | 前置图标类型；省略、传入空字符串或 `null` 时使用 skill。 |
+| `src` | `string` | — | 自定义前置图标 URL，优先于 icon；空值使用内置图标。仅替换内容图标，Hover 的 close 不变。 |
 | `onClick` | `(event: React.MouseEvent<HTMLButtonElement>) => void` | — | 整个按钮的点击回调；移除等业务逻辑由宿主实现。 |
 | `className` | `string` | `""` | 追加到根按钮的样式类名。 |
 | `id` | `string` | — | 可选的根按钮元素标识。 |
@@ -85,3 +86,11 @@ export default function SelectedItems() {
   );
 }
 ```
+
+接入新增图标（URL 相对于应用页面，或传入构建工具导入的资源 URL）：
+
+```jsx
+<ActionChip label="自定义条目" src="/assets/uploads/icon/prompt-input/my-icon.svg" />
+```
+
+`my-icon.svg` 为新增资源示例，需先将文件放入对应目录。

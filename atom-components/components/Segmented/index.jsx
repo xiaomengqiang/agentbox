@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Icon } from "../../../assets/shared/icons.js";
+import { Icon } from "../Icon/index.jsx";
 import "./index.css";
 
 /** Segmented — options determines the items; shape and layout are independent; Text is 36/44px, Icon is 32px. */

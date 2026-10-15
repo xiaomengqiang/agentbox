@@ -96,3 +96,19 @@ export default function Example() {
 ```
 
 options 数据模型参考 [Ant Design Segmented](https://ant.design/components/segmented/)；配置器不提供宽度控件。Count 和 Text 前缀图标开关仅用于生成演示 options，组件 API 仍直接接收数组；切换类型保留 Text 的尺寸与图标开关设置。
+
+接入新 SVG 时，通过 `options[].icon` 传入自定义节点，无需增加共享图标名称或修改组件：
+
+```jsx
+// 将新文件放入资源目录；也可使用构建工具导入得到的 URL。
+const iconUrl = "/assets/uploads/icon/function/my-icon.svg";
+const customIcon = <span style={{
+  display: "block", width: "1em", height: "1em",
+  backgroundColor: "currentColor",
+  mask: `url("${iconUrl}") center / contain no-repeat`,
+  WebkitMask: `url("${iconUrl}") center / contain no-repeat`,
+}} />;
+<Segmented options={[{ value: "custom", label: "自定义", icon: customIcon }]} />
+```
+
+`my-icon.svg` 是待添加的示例文件。URL 相对于应用页面；使用 CSS mask 可让新图标跟随组件状态变色。

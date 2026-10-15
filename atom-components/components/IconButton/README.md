@@ -20,7 +20,7 @@
 
 #### 图标
 
-所有组合共享 `ICONS` 图标集，默认 `search`。功能图标来自 `assets/uploads/icon/function/`；额外的 `ariplane`、`pause`、`resume` 来自 `assets/uploads/icon/send button/`。名称与资源文件名一致，未知名称回退到 `search`。`src` 优先于 `icon`；CSS mask 使图标跟随状态色。
+所有组合共享 `ICONS` 图标集，默认 `search`。功能图标来自 `assets/uploads/icon/function/`；额外的 `ariplane`、`pause`、`resume` 来自 `assets/uploads/icon/send-button/`。名称与资源文件名一致，未知名称回退到 `search`。`src` 优先于 `icon`；CSS mask 使图标跟随状态色。
 
 #### 状态
 

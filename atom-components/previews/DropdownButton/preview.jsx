@@ -1,7 +1,7 @@
 import ColorSpecTable from "../../../tooling/preview/color-spec.jsx";
 import React from "react";
 import DropdownButton from "../../components/DropdownButton/index.jsx";
-import { Icon } from "../../../assets/shared/icons.js";
+import { Icon } from "../../components/Icon/index.jsx";
 
 // 规范 API 取值与状态定义
 // container/border/label = 背景色 / 描边色 / 文字色；hover/pressed 为叠加层或文字色；disabled 为禁用态

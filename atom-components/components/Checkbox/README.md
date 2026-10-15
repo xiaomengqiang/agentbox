@@ -19,7 +19,7 @@ Checkbox 用于切换独立的布尔选项，或在一组选项中进行多选�
 
 #### 图标
 
-- 使用共享模块 `assets/shared/icons.js` 中的 Lucide `check`，不提供替换图标的 prop。
+- 使用共享模块 `atom-components/components/Icon/index.jsx` 中的 Lucide `check`，不提供替换图标的 prop。
 - 对勾尺寸为 15px，由底层描边和上层白色对勾叠加；白色线宽为 2px，并带阴影与 0.5px 向下位置补偿。
 
 #### 使用原则

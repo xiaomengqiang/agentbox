@@ -65,7 +65,7 @@ import DropdownButton from "./components/DropdownButton/index.jsx";
 <DropdownButton
   variant="tertiary"
   size="small"
-  contentIconSrc="./assets/uploads/icon/file_type/pdf.svg"
+  contentIconSrc="./assets/uploads/icon/file-type/filled/pdf.svg"
 >
   描边操作
 </DropdownButton>
@@ -73,7 +73,7 @@ import DropdownButton from "./components/DropdownButton/index.jsx";
 <DropdownButton
   variant="text"
   size="small"
-  leadingIconSrc="./assets/uploads/icon/prompt input/agent.svg"
+  leadingIconSrc="./assets/uploads/icon/prompt-input/agent.svg"
 >
   文字操作
 </DropdownButton>

@@ -36,7 +36,7 @@ export default function Demo() {
  {label:'Disabled',note:'整体 opacity 50%'},
  ]}))} />
     <Table title="Token contract" headers={["size","外框","Icon","颜色 / 形状"]} rows={[["large","32 × 32px","16px","独立由 variant / shape 决定"],["small","28 × 28px","16px","独立由 variant / shape 决定"]]}/>
-    <Table title="Asset contract" headers={["icon","资源目录","规则"]} rows={[["search（默认）、add、edit 等","assets/uploads/icon/function/","名称与文件名一致，所有组合可用"],["ariplane、pause、resume","assets/uploads/icon/send button/","名称与文件名一致，所有组合可用"],["src","自定义 SVG URL / data URL","优先于 icon；CSS mask 跟随状态色"]]}/>
+    <Table title="Asset contract" headers={["icon","资源目录","规则"]} rows={[["search（默认）、add、edit 等","assets/uploads/icon/function/","名称与文件名一致，所有组合可用"],["ariplane、pause、resume","assets/uploads/icon/send-button/","名称与文件名一致，所有组合可用"],["src","自定义 SVG URL / data URL","优先于 icon；CSS mask 跟随状态色"]]}/>
     <Table title="API contract" headers={["Props","默认值","说明"]} rows={[["variant","unfilled","filled / unfilled"],["size","large","large 外框 32px / small 外框 28px，图标均为 16px"],["shape","square","round / square，使用圆角 token"],["icon / src","search / 未设置","统一图标集；未知名称回退 search"],["disabled","false","禁用按钮并阻止点击；hover / pressed 由原生交互触发"],["id / className / style","未设置 / 空字符串 / 未设置","作用于根 button；保留内部类名，调用方行内样式优先"],["onClick","未设置","原生点击回调；其余原生按钮属性透传"]]}/>
   </div>;
 }

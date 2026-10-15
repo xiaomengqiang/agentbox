@@ -119,7 +119,7 @@ export default function Tab(props) {
   return (
     <div id={props.id} style={props.style} className={["tt-root", `tt-size-${size}`, props.className].filter(Boolean).join(" ")}>
       <div className={`tt-nav${overflow ? " tt-nav-overflow" : ""}`} ref={navRef}>
-      {overflow && <IconButton icon="arrow_left" size="small" shape="round" variant="unfilled" ariaLabel="向左滚动标签" className={`tt-scroll-button tt-scroll-left${edges.left ? "" : " tt-scroll-hidden"}`} tabIndex={edges.left ? 0 : -1} onClick={() => scrollTabs(-1)} />}
+      {overflow && <IconButton icon="arrow-left" size="small" shape="round" variant="unfilled" ariaLabel="向左滚动标签" className={`tt-scroll-button tt-scroll-left${edges.left ? "" : " tt-scroll-hidden"}`} tabIndex={edges.left ? 0 : -1} onClick={() => scrollTabs(-1)} />}
       <div
         className={`tt-list${overflow && edges.left ? " tt-fade-left" : ""}${overflow && edges.right ? " tt-fade-right" : ""}`}
         onScroll={updateEdges}
@@ -150,7 +150,7 @@ export default function Tab(props) {
         })}
         </div>
       </div>
-      {overflow && <IconButton icon="arrow_right" size="small" shape="round" variant="unfilled" ariaLabel="向右滚动标签" className={`tt-scroll-button tt-scroll-right${edges.right ? "" : " tt-scroll-hidden"}`} tabIndex={edges.right ? 0 : -1} onClick={() => scrollTabs(1)} />}
+      {overflow && <IconButton icon="arrow-right" size="small" shape="round" variant="unfilled" ariaLabel="向右滚动标签" className={`tt-scroll-button tt-scroll-right${edges.right ? "" : " tt-scroll-hidden"}`} tabIndex={edges.right ? 0 : -1} onClick={() => scrollTabs(1)} />}
       </div>
       {activeItem?.children != null && (
         <div key={activeItem.id} className="tt-panel" role="tabpanel">

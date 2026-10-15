@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./index.css";
 
-const DEFAULT_ICON = "./assets/uploads/icon/sidebar/new_chat.svg";
-const MORE_ICON = "./assets/uploads/icon/sidebar/More.svg";
-const COLLAPSED_ICON = "./assets/uploads/icon/function/arrow_right.svg";
-const EXPANDED_ICON = "./assets/uploads/icon/function/arrow_down.svg";
+const DEFAULT_ICON = "./assets/uploads/icon/sidebar/new-chat.svg";
+const MORE_ICON = "./assets/uploads/icon/sidebar/more.svg";
+const COLLAPSED_ICON = "./assets/uploads/icon/function/arrow-right.svg";
+const EXPANDED_ICON = "./assets/uploads/icon/function/arrow-down.svg";
 
 function MenuIcon({ src, className = "" }) {
   return <span className={`mi-icon ${className}`} aria-hidden="true" style={{
