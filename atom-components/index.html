@@ -7652,7 +7652,6 @@ opacity: 0.5;
   text-overflow: ellipsis;
   color: var(--color-font-emphasize);
 }
-.ac-chip:hover { background-image: linear-gradient(var(--color-interactive-hover), var(--color-interactive-hover)); }
 .ac-chip:hover .ac-chip-glyph-default { opacity: 0; }
 .ac-chip:hover .ac-chip-glyph-close { opacity: 1; }
 /* Keyboard navigation retains an accessible focus indicator, not a separate visual variant. */
@@ -7826,7 +7825,6 @@ outline: var(--outline-width-focus) solid var(--focus-ring);
 }
 .preview-live { min-width: 0; padding: 32px; box-sizing: border-box; }
 .ac-static .ac-chip { pointer-events: none; }
-.ac-force-hover .ac-chip { background-image: linear-gradient(var(--color-interactive-hover), var(--color-interactive-hover)); }
 .ac-force-hover .ac-chip-glyph-default { opacity: 0; }
 .ac-force-hover .ac-chip-glyph-close { opacity: 1; }
 @media (max-width: 640px) { .ac-gallery { grid-template-columns: 1fr; } .preview-live { padding: 24px; } }
@@ -16965,8 +16963,7 @@ function Demo() {
         text: [(0, _colorSpec.color)('--color-font-emphasize', '文字'), (0, _colorSpec.color)('--color-icon-emphasize', '图标')]
       }, {
         label: 'Hover',
-        note: '图标原位切换为 close',
-        background: (0, _colorSpec.color)('--color-interactive-hover', '叠加于 Default 背景')
+        note: '背景保持不变，图标原位切换为 close'
       }, {
         label: 'Focus',
         outline: (0, _colorSpec.color)('--focus-ring', '键盘焦点描边；保留当前背景及文字')

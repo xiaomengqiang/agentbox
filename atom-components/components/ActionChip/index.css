@@ -39,7 +39,6 @@
   text-overflow: ellipsis;
   color: var(--color-font-emphasize);
 }
-.ac-chip:hover { background-image: linear-gradient(var(--color-interactive-hover), var(--color-interactive-hover)); }
 .ac-chip:hover .ac-chip-glyph-default { opacity: 0; }
 .ac-chip:hover .ac-chip-glyph-close { opacity: 1; }
 /* Keyboard navigation retains an accessible focus indicator, not a separate visual variant. */

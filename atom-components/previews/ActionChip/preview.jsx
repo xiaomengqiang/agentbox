@@ -23,7 +23,7 @@ export default function Demo() {
     <section className="demo-section preview-contract"><h2 className="demo-section-name">State matrix</h2><p className="preview-summary">仅 Default 与 Hover 两种视觉状态；静态标本不响应鼠标。</p><Table heads={["Icon", "Default", "Hover"]}>{examples.map(item => <tr key={item.icon}><th>{item.icon}</th><td className="ac-static" inert=""><ActionChip {...item} /></td><td className="ac-static ac-force-hover" inert=""><ActionChip {...item} /></td></tr>)}</Table></section>
     <ColorSpecTable textHeading="Text / Icon" groups={[{name:'ActionChip',rows:[
  {label:'Default',background:'--color-comp-emphasize-tertiary',outline:'none',text:[color('--color-font-emphasize','文字'),color('--color-icon-emphasize','图标')]},
- {label:'Hover',note:'图标原位切换为 close',background:color('--color-interactive-hover','叠加于 Default 背景')},
+ {label:'Hover',note:'背景保持不变，图标原位切换为 close'},
  {label:'Focus',outline:color('--focus-ring','键盘焦点描边；保留当前背景及文字')},
  ]}]} />
     <section className="demo-section preview-contract"><h2 className="demo-section-name">Token contract</h2><Table heads={["Property", "Value", "Token / rule"]}>
