@@ -1613,6 +1613,72 @@ outline: var(--outline-width-focus) solid var(--focus-ring);
   outline-offset: var(--outline-offset-gap);
 }
 
+/* Configurator layout primitives (previously injected by the legacy preview builder;
+   restored here so .preview-configurator / .preview-controls / .preview-live render
+   as a two-column configurator instead of stacked full-width blocks) */
+.preview-configurator {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.8fr);
+  gap: 24px;
+  margin-top: 24px;
+  padding: 24px;
+  border-radius: var(--radius-xl);
+  background: var(--surface-container-lowest);
+  box-shadow: var(--shadow-card);
+}
+
+.preview-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 20px;
+  align-content: start;
+}
+
+.preview-live {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 220px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-container-low);
+}
+
+.preview-state-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.preview-state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 16px;
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+.preview-state-caption {
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 980px) {
+  .preview-configurator {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .preview-controls {
+    grid-template-columns: 1fr;
+  }
+}
+
 
 
 /* Opt-in documentation rhythm; import inside the component preview scope. */
@@ -2459,7 +2525,7 @@ border-top: 1px solid var(--divider);
 
 
 @media (max-width: 600px) {
-.preview-live {
+.tt-live {
 padding: 24px;
 }
 
@@ -2471,24 +2537,23 @@ padding: 24px;
 .tt-demo-content { box-sizing: border-box; display: flex; align-items: center; justify-content: center; min-height: 112px; padding: 24px; border: 2px dashed var(--brand); border-radius: var(--radius-container); background: var(--brand-10); }
 .tt-demo-content p { margin: 0; color: var(--brand); text-align: center; overflow-wrap: anywhere; }
 .tt-demo-icon { display: block; background: currentColor; mask: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF8yMTM1XzM4KSI+DQo8bWFzayBpZD0ibWFzazBfMjEzNV8zOCIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+DQo8cGF0aCBkPSJNMTYgMEgwVjE2SDE2VjBaIiBmaWxsPSJ3aGl0ZSIvPg0KPC9tYXNrPg0KPGcgbWFzaz0idXJsKCNtYXNrMF8yMTM1XzM4KSI+DQo8cGF0aCBkPSJNMTEuNDU3IDEwLjY0MDZDMTEuODYwNyAxMC4xMzggMTIuMTc3MSA5LjU3ODEyIDEyLjQwNjIgOC45NjA5NEMxMi42MzggOC4zNDExNSAxMi43NTM5IDcuNzAwNTIgMTIuNzUzOSA3LjAzOTA2QzEyLjc1MzkgNi4wMTU2MiAxMi40OTc0IDUuMDY5MDEgMTEuOTg0NCA0LjE5OTIyQzExLjQ3MTQgMy4zMjk0MyAxMC43Nzk5IDIuNjQxOTMgOS45MTAxNiAyLjEzNjcyQzkuMDQyOTcgMS42Mjg5MSA4LjA5NjM1IDEuMzc1IDcuMDcwMzEgMS4zNzVDNi4wNDY4OCAxLjM3NSA1LjEwMDI2IDEuNjI4OTEgNC4yMzA0NyAyLjEzNjcyQzMuMzYzMjggMi42NDE5MyAyLjY3NTc4IDMuMzI5NDMgMi4xNjc5NyA0LjE5OTIyQzEuNjYwMTYgNS4wNjkwMSAxLjQwNjI1IDYuMDE1NjIgMS40MDYyNSA3LjAzOTA2QzEuNDA2MjUgOC4wNjI1IDEuNjYwMTYgOS4wMDkxMiAyLjE2Nzk3IDkuODc4OTFDMi42NzU3OCAxMC43NDg3IDMuMzYzMjggMTEuNDM3NSA0LjIzMDQ3IDExLjk0NTNDNS4xMDAyNiAxMi40NTA1IDYuMDQ2ODggMTIuNzAzMSA3LjA3MDMxIDEyLjcwMzFDNy43NjU2MiAxMi43MDMxIDguNDI0NDggMTIuNTg1OSA5LjA0Njg4IDEyLjM1MTZDOS42NzE4OCAxMi4xMTcyIDEwLjI0MDkgMTEuNzg2NSAxMC43NTM5IDExLjM1OTRMMTMuNzI2NiAxNC4zMjAzQzEzLjgyMjkgMTQuNDE2NyAxMy45NDAxIDE0LjQ2NDggMTQuMDc4MSAxNC40NjQ4QzE0LjIxODggMTQuNDY0OCAxNC4zMzcyIDE0LjQxNjcgMTQuNDMzNiAxNC4zMjAzQzE0LjUyNzMgMTQuMjI0IDE0LjU3NDIgMTQuMTA2OCAxNC41NzQyIDEzLjk2ODhDMTQuNTc0MiAxMy44MzA3IDE0LjUyNzMgMTMuNzEzNSAxNC40MzM2IDEzLjYxNzJMMTEuNDU3IDEwLjY0MDZaTTIuNDE3OTcgNy4wMzkwNkMyLjQxNzk3IDYuMTk3OTIgMi42Mjc2IDUuNDIwNTcgMy4wNDY4OCA0LjcwNzAzQzMuNDY4NzUgMy45OTA4OSA0LjAzMzg1IDMuNDIxODggNC43NDIxOSAzQzUuNDUzMTIgMi41NzgxMiA2LjIyOTE3IDIuMzY3MTkgNy4wNzAzMSAyLjM2NzE5QzcuOTE0MDYgMi4zNjcxOSA4LjY5MjcxIDIuNTc4MTIgOS40MDYyNSAzQzEwLjEyMjQgMy40MjE4OCAxMC42OTAxIDMuOTkwODkgMTEuMTA5NCA0LjcwNzAzQzExLjUzMTIgNS40MjA1NyAxMS43NDIyIDYuMTk3OTIgMTEuNzQyMiA3LjAzOTA2QzExLjc0MjIgNy44ODI4MSAxMS41MzEyIDguNjYyNzYgMTEuMTA5NCA5LjM3ODkxQzEwLjY5MDEgMTAuMDkyNCAxMC4xMjI0IDEwLjY2MDIgOS40MDYyNSAxMS4wODJDOC42OTI3MSAxMS41MDEzIDcuOTE0MDYgMTEuNzEwOSA3LjA3MDMxIDExLjcxMDlDNi4yMjkxNyAxMS43MTA5IDUuNDUzMTIgMTEuNTAxMyA0Ljc0MjE5IDExLjA4MkM0LjAzMzg1IDEwLjY2MDIgMy40Njg3NSAxMC4wOTI0IDMuMDQ2ODggOS4zNzg5MUMyLjYyNzYgOC42NjI3NiAyLjQxNzk3IDcuODgyODEgMi40MTc5NyA3LjAzOTA2WiIgZmlsbD0iYmxhY2siLz4NCjwvZz4NCjwvZz4NCjxkZWZzPg0KPGNsaXBQYXRoIGlkPSJjbGlwMF8yMTM1XzM4Ij4NCjxyZWN0IHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0id2hpdGUiLz4NCjwvY2xpcFBhdGg+DQo8L2RlZnM+DQo8L3N2Zz4NCg==") center / contain no-repeat; -webkit-mask: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF8yMTM1XzM4KSI+DQo8bWFzayBpZD0ibWFzazBfMjEzNV8zOCIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+DQo8cGF0aCBkPSJNMTYgMEgwVjE2SDE2VjBaIiBmaWxsPSJ3aGl0ZSIvPg0KPC9tYXNrPg0KPGcgbWFzaz0idXJsKCNtYXNrMF8yMTM1XzM4KSI+DQo8cGF0aCBkPSJNMTEuNDU3IDEwLjY0MDZDMTEuODYwNyAxMC4xMzggMTIuMTc3MSA5LjU3ODEyIDEyLjQwNjIgOC45NjA5NEMxMi42MzggOC4zNDExNSAxMi43NTM5IDcuNzAwNTIgMTIuNzUzOSA3LjAzOTA2QzEyLjc1MzkgNi4wMTU2MiAxMi40OTc0IDUuMDY5MDEgMTEuOTg0NCA0LjE5OTIyQzExLjQ3MTQgMy4zMjk0MyAxMC43Nzk5IDIuNjQxOTMgOS45MTAxNiAyLjEzNjcyQzkuMDQyOTcgMS42Mjg5MSA4LjA5NjM1IDEuMzc1IDcuMDcwMzEgMS4zNzVDNi4wNDY4OCAxLjM3NSA1LjEwMDI2IDEuNjI4OTEgNC4yMzA0NyAyLjEzNjcyQzMuMzYzMjggMi42NDE5MyAyLjY3NTc4IDMuMzI5NDMgMi4xNjc5NyA0LjE5OTIyQzEuNjYwMTYgNS4wNjkwMSAxLjQwNjI1IDYuMDE1NjIgMS40MDYyNSA3LjAzOTA2QzEuNDA2MjUgOC4wNjI1IDEuNjYwMTYgOS4wMDkxMiAyLjE2Nzk3IDkuODc4OTFDMi42NzU3OCAxMC43NDg3IDMuMzYzMjggMTEuNDM3NSA0LjIzMDQ3IDExLjk0NTNDNS4xMDAyNiAxMi40NTA1IDYuMDQ2ODggMTIuNzAzMSA3LjA3MDMxIDEyLjcwMzFDNy43NjU2MiAxMi43MDMxIDguNDI0NDggMTIuNTg1OSA5LjA0Njg4IDEyLjM1MTZDOS42NzE4OCAxMi4xMTcyIDEwLjI0MDkgMTEuNzg2NSAxMC43NTM5IDExLjM1OTRMMTMuNzI2NiAxNC4zMjAzQzEzLjgyMjkgMTQuNDE2NyAxMy45NDAxIDE0LjQ2NDggMTQuMDc4MSAxNC40NjQ4QzE0LjIxODggMTQuNDY0OCAxNC4zMzcyIDE0LjQxNjcgMTQuNDMzNiAxNC4zMjAzQzE0LjUyNzMgMTQuMjI0IDE0LjU3NDIgMTQuMTA2OCAxNC41NzQyIDEzLjk2ODhDMTQuNTc0MiAxMy44MzA3IDE0LjUyNzMgMTMuNzEzNSAxNC40MzM2IDEzLjYxNzJMMTEuNDU3IDEwLjY0MDZaTTIuNDE3OTcgNy4wMzkwNkMyLjQxNzk3IDYuMTk3OTIgMi42Mjc2IDUuNDIwNTcgMy4wNDY4OCA0LjcwNzAzQzMuNDY4NzUgMy45OTA4OSA0LjAzMzg1IDMuNDIxODggNC43NDIxOSAzQzUuNDUzMTIgMi41NzgxMiA2LjIyOTE3IDIuMzY3MTkgNy4wNzAzMSAyLjM2NzE5QzcuOTE0MDYgMi4zNjcxOSA4LjY5MjcxIDIuNTc4MTIgOS40MDYyNSAzQzEwLjEyMjQgMy40MjE4OCAxMC42OTAxIDMuOTkwODkgMTEuMTA5NCA0LjcwNzAzQzExLjUzMTIgNS40MjA1NyAxMS43NDIyIDYuMTk3OTIgMTEuNzQyMiA3LjAzOTA2QzExLjc0MjIgNy44ODI4MSAxMS41MzEyIDguNjYyNzYgMTEuMTA5NCA5LjM3ODkxQzEwLjY5MDEgMTAuMDkyNCAxMC4xMjI0IDEwLjY2MDIgOS40MDYyNSAxMS4wODJDOC42OTI3MSAxMS41MDEzIDcuOTE0MDYgMTEuNzEwOSA3LjA3MDMxIDExLjcxMDlDNi4yMjkxNyAxMS43MTA5IDUuNDUzMTIgMTEuNTAxMyA0Ljc0MjE5IDExLjA4MkM0LjAzMzg1IDEwLjY2MDIgMy40Njg3NSAxMC4wOTI0IDMuMDQ2ODggOS4zNzg5MUMyLjYyNzYgOC42NjI3NiAyLjQxNzk3IDcuODgyODEgMi40MTc5NyA3LjAzOTA2WiIgZmlsbD0iYmxhY2siLz4NCjwvZz4NCjwvZz4NCjxkZWZzPg0KPGNsaXBQYXRoIGlkPSJjbGlwMF8yMTM1XzM4Ij4NCjxyZWN0IHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0id2hpdGUiLz4NCjwvY2xpcFBhdGg+DQo8L2RlZnM+DQo8L3N2Zz4NCg==") center / contain no-repeat; }
-.preview-live { min-width: 0; }
-.preview-live > .tt-root { width: 100%; }
+.tt-live { min-width: 0; }
+.tt-live > .tt-root { width: 100%; }
 .tt-demo-code { padding: 24px; overflow-x: auto; background: var(--surface-container-low); border-radius: var(--radius-container); }
-.preview-configurator { grid-template-columns: minmax(200px, 240px) minmax(0, 1fr); align-items: start; }
-.preview-controls { grid-template-columns: minmax(0, 1fr); }
-.preview-live { align-items: flex-start; }
+.tt-configurator { grid-template-columns: minmax(200px, 240px) minmax(0, 1fr); align-items: start; }
+.tt-controls { grid-template-columns: minmax(0, 1fr); }
+.tt-live { align-items: flex-start; }
 @media (max-width: 760px) {
-  .preview-configurator { grid-template-columns: minmax(0, 1fr); }
-  .preview-live { padding: 24px; }
+  .tt-configurator { grid-template-columns: minmax(0, 1fr); }
+  .tt-live { padding: 24px; }
 }
 @media (max-width: 420px) {
-  .preview-configurator, .tt-demo-card { padding: 16px; }
-  .preview-live { padding: 16px; }
+  .tt-configurator, .tt-demo-card { padding: 16px; }
+  .tt-live { padding: 16px; }
   .tt-demo-content { padding: 16px; }
 }
 
 .tt-config-description { margin: 8px 0 24px; color: var(--text-secondary); font: var(--font-body-md); }
-
 
 
 .tg-demo-matrix {
@@ -7373,11 +7438,11 @@ function TabPreview() {
     <header className="demo-header"><h2 className="preview-panel-title">Tab 标签</h2><p className="demo-subtitle">Large / Medium · 可选前置图标 · 文字自适应宽度 · 标签与内容联动</p></header>
     <section className="demo-section"><h2 className="demo-section-name">Configurator</h2>
       <p className="tt-config-description">调整尺寸、标签数量和前置图标，点击标签切换下方内容。</p>
-      <div className="preview-configurator"><div className="preview-controls">
+      <div className="preview-configurator tt-configurator"><div className="preview-controls tt-controls">
         <label className="button-control"><span>尺寸 · size</span><span className="button-select-wrap"><select value={size} onChange={event => setSize(event.target.value)}>{['large', 'medium'].map(value => <option key={value} value={value}>{value}</option>)}</select></span></label>
         <label className="button-control"><span>标签数量 · count</span><span className="button-select-wrap"><select value={count} onChange={event => setCount(Number(event.target.value))}>{[2, 3, 4, 5, 6, 7, 8, 12, 16].map(value => <option key={value} value={value}>{value}</option>)}</select></span></label>
         <CompactBoolean label="前置图标 · items[].icon" value={withIcon} onChange={setWithIcon} />
-      </div><div className="preview-live"><Tab items={makeItems(count, withIcon)} size={size} /></div></div>
+      </div><div className="preview-live tt-live"><Tab items={makeItems(count, withIcon)} size={size} /></div></div>
     </section>
     <section className="demo-section"><h2 className="demo-section-name">Interactive gallery</h2><div className="tt-demo-gallery">{['large', 'medium'].flatMap(value => [false, true].map(icon => <article className="tt-demo-card" key={`${value}-${icon}`}><h3>{value} · {icon ? '前置图标' : '纯文字'}</h3><Tab size={value} items={makeItems(3, icon)} /></article>))}</div></section>
     <section className="demo-section"><h2 className="demo-section-name">Overflow · 标签溢出</h2><p className="tt-config-description">点击左右箭头滚动标签；到达边缘后对应箭头和渐变隐藏。滚动不会切换当前内容。</p><div className="tt-demo-card"><Tab items={makeItems(16, true)} /></div></section>

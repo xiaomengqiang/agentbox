@@ -137,3 +137,69 @@ outline: var(--outline-width-focus) solid var(--focus-ring);
   outline-offset: var(--outline-offset-gap);
 }
 
+/* Configurator layout primitives (previously injected by the legacy preview builder;
+   restored here so .preview-configurator / .preview-controls / .preview-live render
+   as a two-column configurator instead of stacked full-width blocks) */
+.preview-configurator {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.8fr);
+  gap: 24px;
+  margin-top: 24px;
+  padding: 24px;
+  border-radius: var(--radius-xl);
+  background: var(--surface-container-lowest);
+  box-shadow: var(--shadow-card);
+}
+
+.preview-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 20px;
+  align-content: start;
+}
+
+.preview-live {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 220px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-container-low);
+}
+
+.preview-state-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.preview-state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 16px;
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+.preview-state-caption {
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 980px) {
+  .preview-configurator {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .preview-controls {
+    grid-template-columns: 1fr;
+  }
+}
+

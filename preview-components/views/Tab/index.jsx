@@ -19,11 +19,11 @@ export default function TabPreview() {
     <header className="demo-header"><h2 className="preview-panel-title">Tab 标签</h2><p className="demo-subtitle">Large / Medium · 可选前置图标 · 文字自适应宽度 · 标签与内容联动</p></header>
     <section className="demo-section"><h2 className="demo-section-name">Configurator</h2>
       <p className="tt-config-description">调整尺寸、标签数量和前置图标，点击标签切换下方内容。</p>
-      <div className="preview-configurator"><div className="preview-controls">
+      <div className="preview-configurator tt-configurator"><div className="preview-controls tt-controls">
         <label className="button-control"><span>尺寸 · size</span><span className="button-select-wrap"><select value={size} onChange={event => setSize(event.target.value)}>{['large', 'medium'].map(value => <option key={value} value={value}>{value}</option>)}</select></span></label>
         <label className="button-control"><span>标签数量 · count</span><span className="button-select-wrap"><select value={count} onChange={event => setCount(Number(event.target.value))}>{[2, 3, 4, 5, 6, 7, 8, 12, 16].map(value => <option key={value} value={value}>{value}</option>)}</select></span></label>
         <CompactBoolean label="前置图标 · items[].icon" value={withIcon} onChange={setWithIcon} />
-      </div><div className="preview-live"><Tab items={makeItems(count, withIcon)} size={size} /></div></div>
+      </div><div className="preview-live tt-live"><Tab items={makeItems(count, withIcon)} size={size} /></div></div>
     </section>
     <section className="demo-section"><h2 className="demo-section-name">Interactive gallery</h2><div className="tt-demo-gallery">{['large', 'medium'].flatMap(value => [false, true].map(icon => <article className="tt-demo-card" key={`${value}-${icon}`}><h3>{value} · {icon ? '前置图标' : '纯文字'}</h3><Tab size={value} items={makeItems(3, icon)} /></article>))}</div></section>
     <section className="demo-section"><h2 className="demo-section-name">Overflow · 标签溢出</h2><p className="tt-config-description">点击左右箭头滚动标签；到达边缘后对应箭头和渐变隐藏。滚动不会切换当前内容。</p><div className="tt-demo-card"><Tab items={makeItems(16, true)} /></div></section>
