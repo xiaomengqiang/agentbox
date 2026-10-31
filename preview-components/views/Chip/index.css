@@ -1,0 +1,5 @@
+.chip-state-table { min-width:640px; }
+.chip-state-table td { pointer-events:none; }
+.chip-demo-hover { background:var(--chip-bg-hover); }
+.chip-demo-hover.chip--selected { background:var(--chip-bg-selected-hover); }
+

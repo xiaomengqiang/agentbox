@@ -1,0 +1,125 @@
+/* 总览页骨架:顶部导航栏 + 左侧菜单 + 右侧内容 */
+.demo-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.demo-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  height: 56px;
+  padding: 0 24px;
+  background: var(--color-background-primary);
+  border-bottom: 1px solid var(--divider);
+}
+
+.demo-topbar__title {
+  font: var(--font-title-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.demo-body {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: stretch;
+}
+
+/* DemoMenu:左侧贴边导航面板 */
+.demo-menu {
+  position: sticky;
+  top: 56px;
+  display: flex;
+  flex: 0 0 auto;
+  width: 224px;
+  box-sizing: border-box;
+  flex-direction: column;
+  gap: 2px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  padding: 16px 12px;
+  background: var(--color-background-primary);
+  border-right: 1px solid var(--divider);
+  scrollbar-width: none;
+}
+
+.demo-menu::-webkit-scrollbar {
+  display: none;
+}
+
+.demo-menu__item {
+  border: 0;
+  padding: 9px 14px;
+  background: transparent;
+  border-radius: var(--radius-container);
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-secondary);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+
+.demo-menu__item:hover {
+  color: var(--on-surface);
+  background: var(--color-interactive-hover);
+}
+
+.demo-menu__item--active {
+  font-weight: var(--font-weight-bold);
+  color: var(--primary);
+  background: var(--primary-container);
+}
+
+.demo-menu__item:focus-visible {
+  outline: var(--outline-width-focus) solid var(--focus-ring);
+  outline-offset: var(--outline-offset-gap);
+}
+
+/* 右侧内容区 */
+.demo-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 32px 40px 96px;
+}
+
+.components-content {
+  max-width: 1400px;
+}
+
+/* 内容区:重置 view 自带的页面级容器样式,布局由总览页骨架承担 */
+.components-content .demo-page {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.components-content .demo-header {
+  margin-bottom: 32px;
+}
+
+@media (max-width: 960px) {
+  .demo-body {
+    flex-direction: column;
+  }
+
+  .demo-menu {
+    position: static;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .demo-main {
+    padding: 24px 16px 64px;
+  }
+}

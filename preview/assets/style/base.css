@@ -1,0 +1,333 @@
+:root {
+  /* 1. 颜色全量 Token — Brand（品牌色）Light Mode */
+  --brand: #0A59F7;
+  --brand-font: #0A59F7;
+  --brand-05: rgba(10, 89, 247, 0.05);
+  --brand-10: rgba(10, 89, 247, 0.1);
+  --brand-15: rgba(10, 89, 247, 0.15);
+  --brand-20: rgba(10, 89, 247, 0.2);
+  --brand-30: rgba(10, 89, 247, 0.3);
+  --brand-40: rgba(10, 89, 247, 0.4);
+  --brand-50: rgba(10, 89, 247, 0.5);
+  --brand-60: rgba(10, 89, 247, 0.6);
+  --brand-70: rgba(10, 89, 247, 0.7);
+  --brand-80: rgba(10, 89, 247, 0.8);
+  --brand-90: rgba(10, 89, 247, 0.9);
+
+  /* 2. 颜色全量 Token — Primary（主色）Light Mode */
+  --primary: #000000;
+  --primary-05: rgba(0, 0, 0, 0.05);
+  --primary-10: rgba(0, 0, 0, 0.1);
+  --primary-15: rgba(0, 0, 0, 0.15);
+  --primary-20: rgba(0, 0, 0, 0.2);
+  --primary-30: rgba(0, 0, 0, 0.3);
+  --primary-40: rgba(0, 0, 0, 0.4);
+  --primary-50: rgba(0, 0, 0, 0.5);
+  --primary-60: rgba(0, 0, 0, 0.6);
+  --primary-70: rgba(0, 0, 0, 0.7);
+  --primary-80: rgba(0, 0, 0, 0.8);
+  --primary-90: rgba(0, 0, 0, 0.9);
+
+  /* 3. 颜色全量 Token — On Primary（主色上的颜色）Light Mode */
+  --on-primary: #FFFFFF;
+  --on-primary-05: rgba(255, 255, 255, 0.05);
+  --on-primary-10: rgba(255, 255, 255, 0.1);
+  --on-primary-15: rgba(255, 255, 255, 0.15);
+  --on-primary-20: rgba(255, 255, 255, 0.2);
+  --on-primary-30: rgba(255, 255, 255, 0.3);
+  --on-primary-40: rgba(255, 255, 255, 0.4);
+  --on-primary-50: rgba(255, 255, 255, 0.5);
+  --on-primary-60: rgba(255, 255, 255, 0.6);
+  --on-primary-70: rgba(255, 255, 255, 0.7);
+  --on-primary-80: rgba(255, 255, 255, 0.8);
+  --on-primary-90: rgba(255, 255, 255, 0.9);
+
+  /* 4. 颜色全量 Token — Container（容器色）Light Mode */
+  --container: #000000;
+  --container-05: rgba(0, 0, 0, 0.05);
+  --container-10: rgba(0, 0, 0, 0.1);
+  --container-15: rgba(0, 0, 0, 0.15);
+  --container-20: rgba(0, 0, 0, 0.2);
+  --container-30: rgba(0, 0, 0, 0.3);
+  --container-40: rgba(0, 0, 0, 0.4);
+  --container-50: rgba(0, 0, 0, 0.5);
+  --container-60: rgba(0, 0, 0, 0.6);
+  --container-70: rgba(0, 0, 0, 0.7);
+  --container-80: rgba(0, 0, 0, 0.8);
+  --container-90: rgba(0, 0, 0, 0.9);
+
+  /* 5. Black & White（黑白，明暗模式通用） */
+  --black: #000000;
+  --white: #FFFFFF;
+
+  /* 6. Gray Color（灰色）Light Mode */
+  --gray-01: #F1F3F5;
+  --gray-02: #E5E5EA;
+  --gray-03: #D1D1D6;
+  --gray-04: #C7C7CC;
+
+  /* 7. Multi Color（系统多色）Light Mode */
+  --multi-color-01: #564AF7;
+  --multi-color-02: #46B1E3;
+  --multi-color-03: #61CFBE;
+  --multi-color-04: #64BB5C;
+  --multi-color-05: #A5D61D;
+  --multi-color-06: #AC49F5;
+  --multi-color-07: #E64566;
+  --multi-color-08: #E84026;
+  --multi-color-09: #ED6F21;
+  --multi-color-10: #F9A01E;
+  --multi-color-11: #F7CE00;
+  --multi-color-aux-01: #8981F7;
+  --multi-color-aux-02: #86C5E3;
+  --multi-color-aux-03: #92D6CC;
+  --multi-color-aux-04: #92C48D;
+  --multi-color-aux-05: #BDDB69;
+  --multi-color-aux-06: #C386F0;
+  --multi-color-aux-07: #E67C92;
+  --multi-color-aux-08: #E87361;
+  --multi-color-aux-09: #ED955F;
+  --multi-color-aux-10: #F9BC64;
+  --multi-color-aux-11: #F5DC62;
+
+  /* 8. Font Size（字号，px） */
+  --font-size-xs: 10px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+  --font-size-4xl: 38px;
+  --font-size-5xl: 48px;
+  --font-size-6xl: 56px;
+
+  /* 9. Font Weight（字重） */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+
+  /* 10. Line Height（行高） */
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-base: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+
+  /* 11. Radius（圆角，px） */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 20px;
+  --radius-full: 9999px;
+
+  /* 12. Spacing（间距，N × 4px，N-5 为半步长） */
+  --spacing-0: 0px;
+  --spacing-0-5: 2px;
+  --spacing-1: 4px;
+  --spacing-1-5: 6px;
+  --spacing-2: 8px;
+  --spacing-2-5: 10px;
+  --spacing-3: 12px;
+  --spacing-3-5: 14px;
+  --spacing-4: 16px;
+  --spacing-4-5: 18px;
+  --spacing-5: 20px;
+  --spacing-5-5: 22px;
+  --spacing-6: 24px;
+  --spacing-7: 28px;
+  --spacing-8: 32px;
+  --spacing-9: 36px;
+  --spacing-10: 40px;
+
+  /* 13. Border Width（边框宽度，px） */
+  --border-width-none: 0px;
+  --border-width-base: 1px;
+  --border-width-medium: 2px;
+
+  /* 14. Outline Width（轮廓宽度，px） */
+  --outline-width-none: 0px;
+  --outline-width-base: 1px;
+  --outline-width-medium: 2px;
+
+  /* 15. Motion（动效） */
+  --duration-fast: 150ms;
+  --duration-medium: 250ms;
+  --duration-slow: 400ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in: cubic-bezier(0.3, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.38, 0.9);
+
+  /* Font Family */
+  --font-family: 'HarmonyOS Sans', 'Microsoft YaHei', Arial, 'PingFang SC', 'San Francisco', sans-serif;
+}
+
+/* Dark Mode — 颜色类全量 Token 翻转 */   
+.dark {
+  /* Brand（品牌色）Dark Mode */
+  --brand: #317AF7;
+  --brand-font: #5291FF;
+  --brand-05: rgba(49, 122, 247, 0.05);
+  --brand-10: rgba(49, 122, 247, 0.1);
+  --brand-15: rgba(49, 122, 247, 0.15);
+  --brand-20: rgba(49, 122, 247, 0.2);
+  --brand-30: rgba(49, 122, 247, 0.3);
+  --brand-40: rgba(49, 122, 247, 0.4);
+  --brand-50: rgba(49, 122, 247, 0.5);
+  --brand-60: rgba(49, 122, 247, 0.6);
+  --brand-70: rgba(49, 122, 247, 0.7);
+  --brand-80: rgba(49, 122, 247, 0.8);
+  --brand-90: rgba(49, 122, 247, 0.9);
+
+  /* Primary（主色）Dark Mode */
+  --primary: #FFFFFF;
+  --primary-05: rgba(255, 255, 255, 0.05);
+  --primary-10: rgba(255, 255, 255, 0.1);
+  --primary-15: rgba(255, 255, 255, 0.15);
+  --primary-20: rgba(255, 255, 255, 0.2);
+  --primary-30: rgba(255, 255, 255, 0.3);
+  --primary-40: rgba(255, 255, 255, 0.4);
+  --primary-50: rgba(255, 255, 255, 0.5);
+  --primary-60: rgba(255, 255, 255, 0.6);
+  --primary-70: rgba(255, 255, 255, 0.7);
+  --primary-80: rgba(255, 255, 255, 0.8);
+  --primary-90: rgba(255, 255, 255, 0.9);
+
+  /* On Primary（主色上的颜色）Dark Mode */
+  --on-primary: #000000;
+  --on-primary-05: rgba(0, 0, 0, 0.05);
+  --on-primary-10: rgba(0, 0, 0, 0.1);
+  --on-primary-15: rgba(0, 0, 0, 0.15);
+  --on-primary-20: rgba(0, 0, 0, 0.2);
+  --on-primary-30: rgba(0, 0, 0, 0.3);
+  --on-primary-40: rgba(0, 0, 0, 0.4);
+  --on-primary-50: rgba(0, 0, 0, 0.5);
+  --on-primary-60: rgba(0, 0, 0, 0.6);
+  --on-primary-70: rgba(0, 0, 0, 0.7);
+  --on-primary-80: rgba(0, 0, 0, 0.8);
+  --on-primary-90: rgba(0, 0, 0, 0.9);
+
+  /* Container（容器色）Dark Mode */
+  --container: #FFFFFF;
+  --container-05: rgba(255, 255, 255, 0.05);
+  --container-10: rgba(255, 255, 255, 0.1);
+  --container-15: rgba(255, 255, 255, 0.15);
+  --container-20: rgba(255, 255, 255, 0.2);
+  --container-30: rgba(255, 255, 255, 0.3);
+  --container-40: rgba(255, 255, 255, 0.4);
+  --container-50: rgba(255, 255, 255, 0.5);
+  --container-60: rgba(255, 255, 255, 0.6);
+  --container-70: rgba(255, 255, 255, 0.7);
+  --container-80: rgba(255, 255, 255, 0.8);
+  --container-90: rgba(255, 255, 255, 0.9);
+
+  /* Gray Color（灰色）Dark Mode */
+  --gray-01: #000000;
+  --gray-02: #202224;
+  --gray-03: #2E3033;
+  --gray-04: #46484D;
+
+  /* Multi Color（系统多色）Dark Mode */
+  --multi-color-01: #5F58C7;
+  --multi-color-02: #4796C4;
+  --multi-color-03: #5AADA0;
+  --multi-color-04: #5BA854;
+  --multi-color-05: #86AD53;
+  --multi-color-06: #8C55C2;
+  --multi-color-07: #D64966;
+  --multi-color-08: #D94838;
+  --multi-color-09: #DB6B42;
+  --multi-color-10: #E08C3A;
+  --multi-color-11: #D1A738;
+  --multi-color-aux-01: #5550A6;
+  --multi-color-aux-02: #467794;
+  --multi-color-aux-03: #4C7A73;
+  --multi-color-aux-04: #5C8059;
+  --multi-color-aux-05: #6B8052;
+  --multi-color-aux-06: #634794;
+  --multi-color-aux-07: #A14A5C;
+  --multi-color-aux-08: #9C554B;
+  --multi-color-aux-09: #9E644F;
+  --multi-color-aux-10: #9E7349;
+  --multi-color-aux-11: #997E39;
+}
+
+/* Light */
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: url('../font/HarmonyOS_SansSC/Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
+/* Regular */
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: url('../font/HarmonyOS_SansSC/Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Medium */
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: url('../font/HarmonyOS_SansSC/Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Bold */
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: url('../font/HarmonyOS_SansSC/Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* ── body base ── */
+body {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--on-surface);
+  font-family: var(--font-family);
+  background-color: var(--surface);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Standard scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: var(--color-comp-divider);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary-40);
+}

@@ -1,0 +1,1058 @@
+/* ===================== ChatComposer ===================== */
+
+/* ---- 灰色外框 800 × 188（左右包裹距离 4px） ---- */
+.cc-shell {
+  position: relative;
+  box-sizing: border-box;
+  width: 800px;
+  height: 188px;
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  border-radius: var(--radius-3xl);
+  background-color: var(--surface-container-low);
+  color: var(--on-surface);
+  font-family: var(--font-family);
+}
+
+/* ---- 白色输入卡片 792 × 140 ----
+   注意：不设 z-index，避免把内部弹出的菜单关进自己的堆叠上下文，
+   导致其层级反而低于下方其它卡片 */
+.cc-card {
+  position: relative;
+  box-sizing: border-box;
+  flex: 0 0 140px;
+  width: 100%;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface-container-lowest);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-2xl);
+}
+
+/* ---- 正文输入区 ---- */
+.cc-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px 2px;
+}
+
+.cc-input {
+  display: block;
+  flex: 1;
+  width: 100%;
+  border: 0;
+  outline: none;
+  resize: none;
+  background-color: transparent;
+  color: var(--on-surface);
+  font: var(--font-body-md);
+  line-height: 1.7;
+  caret-color: var(--primary);
+}
+
+.cc-input::placeholder {
+  color: var(--text-placeholder);
+}
+
+/* ---- 底部工具栏 ---- */
+.cc-toolbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 10px 9px;
+}
+
+.cc-tool-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* ---- 幽灵图标按钮（加号） ---- */
+.cc-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: var(--surface-container);
+  color: var(--color-icon-secondary);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-ghost:hover,
+.cc-ghost.is-active {
+  background-color: var(--surface-container-high);
+  color: var(--color-icon-primary);
+}
+
+/* ---- 图标 + 文字的下拉按钮（chip）----
+   默认无灰底，悬停/展开时才出现浅色底 */
+.cc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 7px 0 8px;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: var(--color-font-primary);
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-chip:hover,
+.cc-chip.is-active {
+  background-color: var(--color-interactive-hover);
+}
+
+.cc-chip .cc-chev,
+.cc-space .cc-chev {
+  color: var(--color-icon-tertiary);
+}
+
+/* 完全访问被选中：红色告警态 */
+.cc-chip-danger,
+.cc-chip-danger .cc-chev {
+  color: var(--error);
+}
+
+.cc-chip-danger:hover,
+.cc-chip-danger.is-active {
+  background-color: var(--error-container);
+  color: var(--on-error-container);
+}
+
+.cc-chip-danger:hover .cc-chev,
+.cc-chip-danger.is-active .cc-chev {
+  color: var(--on-error-container);
+}
+
+.cc-chip-label {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* ---- 发送按钮 ---- */
+.cc-send {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-left: 2px;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: var(--primary);
+  color: var(--on-primary);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.cc-send:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+}
+
+.cc-send:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.cc-send:disabled {
+  background-color: var(--color-comp-background-tertiary);
+  color: var(--color-icon-fourth);
+  cursor: default;
+}
+
+.cc-send.is-sent {
+  background-color: var(--success);
+  color: var(--on-success);
+}
+
+/* 纸飞机扶正为向上，并整体下移使其视觉居中 */
+.cc-send-plane {
+  position: relative;
+  top: 1.5px;
+  transform: rotate(-45deg);
+}
+
+/* ---- 下拉容器与面板 ---- */
+.cc-drop {
+  position: relative;
+}
+
+.cc-menu {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 8px);
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: max-content;
+  min-width: 240px;
+  padding: 6px;
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-dropdown);
+}
+
+/* 向上的面板（底部控件使用） */
+.cc-drop-up .cc-menu {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
+/* 靠右对齐的面板（右侧控件使用） */
+.cc-drop-right .cc-menu {
+  left: auto;
+  right: 0;
+}
+
+/* ---- 菜单项 ---- */
+.cc-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 8px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-font-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-menu-item:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+.cc-mitem-icon {
+  flex-shrink: 0;
+  color: var(--color-icon-secondary);
+}
+
+.cc-mitem-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cc-mitem-label {
+  display: block;
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.is-selected .cc-mitem-label {
+  color: var(--color-font-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.cc-mitem-desc {
+  display: block;
+  margin-top: 1px;
+  color: var(--color-font-tertiary);
+  font: var(--font-caption-md);
+  line-height: 1.45;
+  white-space: nowrap;
+}
+
+.cc-menu-check {
+  flex: 0 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 18px;
+  height: 18px;
+  margin-left: 8px;
+  color: var(--color-icon-primary);
+}
+
+/* ---- 灰色外框下方：选择项目空间 ---- */
+.cc-footer {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.cc-space {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 10px 0 8px;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: var(--color-font-primary);
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-space:hover,
+.cc-space.is-active {
+  background-color: var(--color-interactive-hover);
+}
+
+/* ---- 空间面板：搜索行 / 分割线 / 空态 ---- */
+.cc-space-menu {
+  width: max-content;
+  min-width: 240px;
+}
+
+.cc-menu-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px 6px 6px;
+  margin-bottom: 2px;
+  border-radius: var(--radius-sm);
+  color: var(--color-icon-secondary);
+}
+
+.cc-search-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.cc-search-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: var(--color-font-primary);
+  font: var(--font-body-md);
+  line-height: 1.5;
+}
+
+.cc-search-input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.cc-space-empty {
+  padding: 6px 8px;
+  color: var(--text-placeholder);
+  font: var(--font-caption-lg);
+}
+
+.cc-menu-divider {
+  height: 1px;
+  margin: 6px 2px;
+  background-color: var(--color-comp-divider);
+}
+
+/* 键盘可访问性：焦点描边 */
+.cc-chip:focus-visible,
+.cc-ghost:focus-visible,
+.cc-send:focus-visible,
+.cc-space:focus-visible,
+.cc-menu-item:focus-visible,
+.cc-modal-close:focus-visible,
+.cc-field-input:focus-visible,
+.cc-btn:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+/* ============ 新建项目 · 居中弹窗 ============ */
+.cc-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-color: var(--scrim);
+}
+
+.cc-modal {
+  box-sizing: border-box;
+  width: 420px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-overlay);
+  box-shadow: var(--shadow-modal);
+}
+
+.cc-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cc-modal-title {
+  margin: 0;
+  font: var(--font-title-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+}
+
+.cc-modal-confirm {
+  width: 400px;
+}
+
+.cc-modal-head-warn {
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.cc-confirm-warn {
+  flex-shrink: 0;
+  color: var(--error);
+}
+
+.cc-confirm-body {
+  margin: 0;
+  color: var(--color-font-secondary);
+  font: var(--font-body-md);
+  line-height: 1.7;
+}
+
+.cc-confirm-body-risk {
+  margin-top: 8px;
+  color: var(--color-font-primary);
+}
+
+.cc-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: var(--color-icon-secondary);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-modal-close:hover {
+  background-color: var(--color-interactive-hover);
+  color: var(--color-icon-primary);
+}
+
+.cc-modal-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.cc-field-label {
+  margin-bottom: 6px;
+  font: var(--font-body-md);
+  color: var(--color-font-primary);
+}
+
+.cc-required {
+  margin-left: 2px;
+  color: var(--error);
+}
+
+.cc-field-input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 38px;
+  margin-bottom: 14px;
+  padding: 0 14px;
+  border: 1px solid var(--color-comp-border);
+  border-radius: var(--radius-full);
+  outline: none;
+  background-color: var(--surface-container-lowest);
+  color: var(--on-surface);
+  font: var(--font-body-md);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-field-input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.cc-field-input:focus {
+  border-color: var(--focus-ring);
+}
+
+.cc-path-wrap {
+  position: relative;
+}
+
+.cc-path-input {
+  padding-right: 14px;
+  padding-left: 38px;
+  cursor: pointer;
+}
+
+.cc-path-pick-icon {
+  position: absolute;
+  top: 10px;
+  left: 13px;
+  color: var(--color-icon-secondary);
+  pointer-events: none;
+}
+
+/* 模拟目录选择器 */
+.cc-path-pop {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-dropdown);
+}
+
+.cc-path-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 8px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-font-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-path-option:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+.cc-path-name {
+  min-width: 0;
+  overflow: hidden;
+  font: var(--font-body-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cc-path-note {
+  margin: 4px 0 0;
+  font: var(--font-caption-lg);
+  color: var(--text-placeholder);
+}
+
+/* ============ 指令胶囊 ============ */
+.cc-cmd-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 58px;
+  margin-bottom: 4px;
+  overflow: auto;
+}
+
+.cc-cmd-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 24px;
+  padding: 0 4px 0 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--brand-15);
+  color: var(--primary);
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-medium);
+}
+
+.cc-cmd-chip-label {
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.cc-cmd-chip-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: var(--primary);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-cmd-chip-x:hover {
+  background-color: var(--brand-30);
+}
+
+/* ============ 本地文件卡片 184 × 58 ============ */
+.cc-file-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+  /* 不裁切：让卡片 hover 阴影可正常向外扩散 */
+  overflow: visible;
+}
+
+.cc-file-card {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 184px;
+  height: 58px;
+  padding: 6px 8px 6px 10px;
+  background-color: var(--surface-container-lowest);
+  border: 1px solid var(--color-comp-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+/* hover：无边框 + 卡片阴影，右上角浮现 X */
+.cc-file-card:hover {
+  border-color: transparent;
+  box-shadow: var(--shadow-card);
+}
+
+.cc-file-icon {
+  flex: 0 0 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  /* 图标为内置彩色贴片，自带底色，无需额外容器背景 */
+}
+
+.cc-file-info {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cc-file-name {
+  overflow: hidden;
+  color: var(--on-surface);
+  font: var(--font-body-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cc-file-meta {
+  color: var(--text-placeholder);
+  font: var(--font-caption-md);
+  line-height: 1.4;
+}
+
+.cc-file-x {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: var(--color-interactive-hover);
+  color: var(--color-icon-primary);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-file-card:hover .cc-file-x {
+  opacity: 1;
+}
+
+.cc-file-x:hover {
+  background-color: var(--color-icon-secondary);
+  color: var(--surface-bright);
+}
+
+/* ============ “/” 快捷指令面板 ============ */
+/* 加号图标旋转 45°（展开附件时） */
+.cc-plus-icon {
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.cc-plus-icon.is-rot {
+  transform: rotate(45deg);
+}
+/* 锚定在灰色外框（cc-shell）下方，宽度与输入框一致（左右各 4px） */
+.cc-slash {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 4px;
+  right: 4px;
+  z-index: 60;
+  box-sizing: border-box;
+  max-height: 308px;
+  overflow: auto;
+  padding: 6px;
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-dropdown);
+}
+
+.cc-slash-group-label {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px 4px;
+  color: var(--text-placeholder);
+  font: var(--font-caption-lg);
+  letter-spacing: 0.08em;
+}
+
+.cc-slash-group-label:first-child {
+  padding-top: 4px;
+}
+
+.cc-slash-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-font-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-slash-row:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+.cc-slash-icon {
+  flex-shrink: 0;
+  color: var(--color-icon-secondary);
+}
+
+.cc-slash-title {
+  flex: 0 0 110px;
+  display: inline-flex;
+  align-items: center;
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-font-primary);
+}
+
+.cc-slash-desc {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 648px;
+  overflow: hidden;
+  color: var(--color-font-tertiary);
+  font: var(--font-body-sm);
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 一级菜单导航行 */
+.cc-slash-nav-title {
+  flex: 1 1 auto;
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-font-primary);
+}
+
+.cc-slash-nav-arrow {
+  flex-shrink: 0;
+  color: var(--color-icon-tertiary);
+}
+
+/* 二级菜单返回行 */
+.cc-slash-back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 2px 8px 6px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-font-secondary);
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-medium);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-slash-back:hover {
+  background-color: var(--color-interactive-hover);
+  color: var(--color-font-primary);
+}
+
+/* ============ 加号(+)下拉面板：hover 向右侧弹出二级 ============ */
+.cc-addmenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 55;
+  box-sizing: border-box;
+  width: 240px;
+  padding: 6px;
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-dropdown);
+}
+
+.cc-add-item {
+  position: relative;
+}
+
+/* 透明桥接，保证从一级行移向右侧二级面板时 hover 不断开 */
+.cc-add-item::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 100%;
+  width: 6px;
+}
+
+.cc-add-item.is-active > .cc-add-root {
+  background-color: var(--color-interactive-hover);
+}
+
+.cc-add-root {
+  width: 100%;
+}
+
+.cc-add-sub {
+  position: absolute;
+  top: 0;
+  left: calc(100% + 6px);
+  z-index: 60;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 320px;
+  max-height: 360px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 6px;
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-dropdown);
+}
+
+/* 二级里「主标题在上、正文在下」的选项行（无图标） */
+.cc-add-line {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 7px 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-add-line:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+.cc-add-line-title {
+  color: var(--color-font-primary);
+  font: var(--font-body-md);
+  line-height: 1.4;
+}
+
+.cc-add-line-desc {
+  overflow: hidden;
+  color: var(--color-font-tertiary);
+  font: var(--font-body-sm);
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 二级底部管理项：图标 + 标题 */
+.cc-add-manage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-font-primary);
+  font: var(--font-body-md);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-add-manage:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+/* 连接器行：图标 + 标题 + 行尾开关 */
+.cc-add-conn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-add-conn:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+.cc-add-conn-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--color-font-primary);
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-medium);
+}
+
+.cc-add-toggle {
+  position: relative;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  width: 34px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: var(--surface-container-high);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-add-toggle.is-on {
+  background-color: var(--primary);
+}
+
+.cc-add-toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  background-color: var(--surface-bright);
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.cc-add-toggle.is-on .cc-add-toggle-knob {
+  transform: translateX(14px);
+}
+
+/* 菜单行统一 border-box：width:100% + padding 才不会撑宽容器，避免右侧内容被挤出/裁剪 */
+.cc-menu-item,
+.cc-slash-row,
+.cc-add-line,
+.cc-add-manage,
+.cc-add-conn {
+  box-sizing: border-box;
+}
+
+/* 连接器开关：始终贴行末，不被其它内容挤出面板 */
+.cc-add-toggle {
+  margin-left: auto;
+}
+
+.cc-modal-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.cc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 144px;
+  height: 32px;
+  padding: 0 16px;
+  border: none;
+  border-radius: var(--radius-full);
+  font: var(--font-body-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-btn-ghost {
+  background-color: var(--surface-container);
+  color: var(--color-font-primary);
+}
+
+.cc-btn-ghost:hover {
+  background-color: var(--surface-container-high);
+}
+
+.cc-btn-primary {
+  background-color: var(--primary);
+  color: var(--on-primary);
+}
+
+.cc-btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+}
+
+.cc-btn-primary:disabled {
+  background-color: var(--primary-disabled);
+  cursor: default;
+}
