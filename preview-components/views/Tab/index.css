@@ -10,7 +10,7 @@ padding: 24px;
 .tt-demo-card > h3 { margin: 0 0 24px; font: var(--font-subtitle-sm); font-weight: var(--font-weight-bold); }
 .tt-demo-content { box-sizing: border-box; display: flex; align-items: center; justify-content: center; min-height: 112px; padding: 24px; border: 2px dashed var(--brand); border-radius: var(--radius-container); background: var(--brand-10); }
 .tt-demo-content p { margin: 0; color: var(--brand); text-align: center; overflow-wrap: anywhere; }
-.tt-demo-icon { display: block; background: currentColor; mask: url("../../../assets/uploads/icon/function/search.svg") center / contain no-repeat; -webkit-mask: url("../../../assets/uploads/icon/function/search.svg") center / contain no-repeat; }
+.tt-demo-icon { display: block; background: currentColor; mask: url("./assets/uploads/icon/function/search.svg") center / contain no-repeat; -webkit-mask: url("./assets/uploads/icon/function/search.svg") center / contain no-repeat; }
 .preview-live { min-width: 0; }
 .preview-live > .tt-root { width: 100%; }
 .tt-demo-code { padding: 24px; overflow-x: auto; background: var(--surface-container-low); border-radius: var(--radius-container); }

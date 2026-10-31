@@ -61,11 +61,11 @@
 }
 
 .dropdown-btn__indicator--caret-down-filled {
-  --dropdown-btn-icon: url('../../../assets/uploads/icon/dropdown/caret-down-filled.svg');
+  --dropdown-btn-icon: url('./assets/uploads/icon/dropdown/caret-down-filled.svg');
 }
 
 .dropdown-btn__indicator--chevron-down {
-  --dropdown-btn-icon: url('../../../assets/uploads/icon/dropdown/chevron-down.svg');
+  --dropdown-btn-icon: url('./assets/uploads/icon/dropdown/chevron-down.svg');
 }
 
 .dropdown-btn__asset img {

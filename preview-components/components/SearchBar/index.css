@@ -101,10 +101,10 @@
   -webkit-mask: var(--sb-icon-source) center / contain no-repeat;
 }
 .sb-icon {
-  --sb-icon-source: url("../../../assets/uploads/icon/function/search.svg");
+  --sb-icon-source: url("./assets/uploads/icon/function/search.svg");
 }
 .sb-close-icon {
-  --sb-icon-source: url("../../../assets/uploads/icon/function/close.svg");
+  --sb-icon-source: url("./assets/uploads/icon/function/close.svg");
 }
 
 .sb-clear:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }

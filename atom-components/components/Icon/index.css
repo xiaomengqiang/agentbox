@@ -1,5 +1,0 @@
-/* Image assets share the same inline alignment as the original Icon renderer. */
-img[data-component="Icon"] {
-  display: inline-block;
-  vertical-align: middle;
-}

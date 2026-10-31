@@ -28,8 +28,8 @@
   -webkit-mask: center / contain no-repeat;
 }
 .ac-chip-glyph-close {
-  mask-image: url("../../../assets/uploads/icon/function/close.svg");
-  -webkit-mask-image: url("../../../assets/uploads/icon/function/close.svg");
+  mask-image: url("./assets/uploads/icon/function/close.svg");
+  -webkit-mask-image: url("./assets/uploads/icon/function/close.svg");
   opacity: 0;
 }
 .ac-chip-label {

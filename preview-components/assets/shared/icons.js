@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 // ---- Lucide (offline fallback, table injected at build time) ----
 const ICONS = typeof LUCIDE !== "undefined" ? LUCIDE : {};
+export const LUCIDE_TABLE = typeof LUCIDE !== "undefined" ? LUCIDE : {};
 
 function camelToKebab(s) {
   return s.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();

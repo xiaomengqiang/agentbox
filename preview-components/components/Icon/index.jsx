@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useId } from "react";
+import { LUCIDE_TABLE } from "../../assets/shared/icons.js";
 import "./index.css";
 
-// ---- Lucide (offline fallback, table injected at build time) ----
-const ICONS = typeof LUCIDE !== "undefined" ? LUCIDE : {};
+// ---- Lucide (offline fallback, table from shared icons module) ----
+const ICONS = LUCIDE_TABLE;
 
 function camelToKebab(s) {
   return s.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();

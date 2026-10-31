@@ -1,10 +1,10 @@
-// 公共预览样式(scaffold 内 style/,side-effect 引入,由构建器内联;token 来自 assets/style)
-import "./style/documentation.css";
-import "./style/button-gallery.css";
-import "./style/button-tables.css";
-import "./style/compact.css";
-import "./style/section-layout.css";
-import "./style/color-spec.css";
+// 公共预览样式(scaffold 内 styles/,side-effect 引入,由构建器内联;token 来自 assets/style)
+import "./styles/documentation.css";
+import "./styles/button-gallery.css";
+import "./styles/button-tables.css";
+import "./styles/compact.css";
+import "./styles/section-layout.css";
+import "./styles/color-spec.css";
 import "./demo.css";
 
 import React, { useState } from "react";
