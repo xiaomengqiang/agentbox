@@ -27,6 +27,8 @@ Every scaffold shares the same structure — only the filling intent differs:
 ```
 {scaffold}/                    e.g. preview-components/  or  preview/
 ├── assets/                    shared runtime (React/Babel/fonts/tokens/icons) — copied from template
+├── styles/                    shared styles (CSS)
+├── util/                      shared JS/JSX helpers
 ├── components/{PascalCase}/   reusable atoms — imported by views
 ├── views/{PascalCase}/        composed views — mounted by demo.jsx
 ├── demo.jsx                   entry (build entry + root render)

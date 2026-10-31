@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 // ---- Lucide (offline fallback, table injected at build time) ----
 const ICONS = typeof LUCIDE !== "undefined" ? LUCIDE : {};
+export const LUCIDE_TABLE = typeof LUCIDE !== "undefined" ? LUCIDE : {};
 
 function camelToKebab(s) {
   return s.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
@@ -171,10 +172,17 @@ export function Icon({
     };
   }, [src, name, variant, color]);
 
+  // Debug/test hooks: component identity + props snapshot on the root element
+  const dataAttrs = {
+    "data-component": "Icon",
+    "data-props": JSON.stringify({ name, src, size, color, variant, strokeWidth }),
+  };
+
   // user-provided asset (svg/png/jpg) via relative path — overrides name when both are set
   if (src) {
     return React.createElement("img", {
       src: src,
+      ...dataAttrs,
       width: size,
       height: size,
       className: className,
@@ -195,6 +203,7 @@ export function Icon({
       "svg",
       {
         xmlns: "http://www.w3.org/2000/svg",
+        ...dataAttrs,
         width: size,
         height: size,
         viewBox: "0 0 24 24",
@@ -215,13 +224,15 @@ export function Icon({
   // icon-plus available → render fetched SVG text as-is (only width/height on the wrapper)
   if (!svg) {
     return React.createElement("span", {
+      ...dataAttrs,
       className,
       "aria-hidden": true,
       style: { ...style, width: size, height: size },
     });
   }
-  
+
   return React.createElement("span", {
+    ...dataAttrs,
     className,
     "aria-hidden": true,
     style: { ...style, width: size, height: size },

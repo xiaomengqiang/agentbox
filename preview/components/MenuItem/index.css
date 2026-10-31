@@ -1,0 +1,193 @@
+.mi-menu {
+  --mi-height: 40px;
+  --mi-font: var(--font-body-md);
+  --mi-icon-size: 16px;
+  --mi-radius: var(--radius-container);
+  --mi-scroll-duration: 6s;
+  --mi-scroll-distance: 0px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  color: var(--on-surface);
+}
+
+.mi-menu-medium {
+  --mi-height: 36px;
+  --mi-font: var(--font-body-md);
+  --mi-radius: var(--radius-md);
+}
+
+.mi-menu-small {
+  --mi-height: 32px;
+  --mi-font: var(--font-body-sm);
+  --mi-icon-size: 14px;
+  --mi-radius: var(--radius-md);
+}
+
+.mi-menu-error {
+  color: var(--color-error);
+}
+
+.mi-row {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-inline);
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: var(--mi-height);
+  padding: 0 12px;
+  border-radius: var(--mi-radius);
+  background: transparent;
+  color: inherit;
+  font: var(--mi-font);
+  font-weight: var(--font-weight-regular);
+}
+
+/* A single state layer overlays the transparent resting surface. */
+.mi-row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: transparent;
+  pointer-events: none;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.mi-row:hover::before {
+  background: var(--color-interactive-hover);
+}
+
+.mi-menu-error .mi-row:hover::before {
+  background: var(--color-error-container);
+}
+
+
+.mi-main,
+.mi-disclosure,
+.mi-trailing-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: none;
+  appearance: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mi-main {
+  flex: 1 1 0;
+  min-width: 0;
+  gap: var(--spacing-inline);
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.mi-disclosure,
+.mi-disclosure-space,
+.mi-trailing-region {
+  flex: 0 0 var(--mi-icon-size);
+  width: var(--mi-icon-size);
+  height: 100%;
+}
+
+.mi-trailing-region {
+  display: flex;
+  align-items: center;
+}
+
+.mi-icon {
+  display: block;
+  flex: 0 0 var(--mi-icon-size);
+  width: var(--mi-icon-size);
+  height: var(--mi-icon-size);
+  background: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.mi-label {
+  display: block;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transform: translateY(1px);
+}
+
+.mi-row-expandable { cursor: pointer; }
+
+/* Keep icon alignment while giving More a centered 24px interaction target. */
+.mi-trailing-action {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin-left: calc((var(--mi-icon-size) - 24px) / 2);
+  color: var(--color-icon-secondary);
+}
+
+.mi-trailing-action:hover {
+  color: var(--color-icon-primary);
+}
+
+
+.mi-row-editing::before { background: var(--color-interactive-hover); }
+.mi-menu-error .mi-row-editing::before { background: var(--color-error-container); }
+.mi-rename-input {
+  flex: 1 1 0;
+  min-width: 0;
+  box-sizing: border-box;
+  height: calc(100% - 4px);
+  margin: 0 -10px 0 0;
+  padding: 0 8px;
+  border: 1px solid var(--brand);
+  border-radius: max(0px, calc(var(--mi-radius) - 2px));
+  outline: none;
+  background: transparent;
+  color: var(--on-surface);
+  caret-color: var(--brand);
+  font: inherit;
+  font-weight: var(--font-weight-regular);
+  cursor: text;
+}
+
+.mi-leading-icon,
+.mi-disclosure .mi-icon {
+  color: var(--color-icon-primary);
+}
+.mi-menu-error .mi-leading-icon,
+.mi-menu-error .mi-disclosure .mi-icon {
+  color: var(--color-error);
+}
+
+.mi-label-track { display: flex; width: max-content; gap: 32px; }
+.mi-label-copy { display: block; flex: none; }
+.mi-label-overflow {
+  -webkit-mask-image: linear-gradient(to right, black 0%, black calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(to right, black 0%, black calc(100% - 24px), transparent 100%);
+}
+.mi-row:hover .mi-label-overflow .mi-label-track {
+  animation: mi-name-scroll var(--mi-scroll-duration) linear infinite;
+}
+@keyframes mi-name-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(var(--mi-scroll-distance)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mi-row:hover .mi-label-overflow .mi-label-track { animation: none; }
+}
