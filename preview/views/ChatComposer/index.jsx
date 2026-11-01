@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Icon } from "../../assets/shared/icons.js";
+import { Icon } from "../../components/Icon/index.jsx";
 import "./index.css";
 
 /* ================= 配置数据（下拉选项） ================= */

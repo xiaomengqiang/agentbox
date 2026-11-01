@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "../../components/Button/index.jsx";
 import SearchBar from "../../components/SearchBar/index.jsx";
-import { Icon } from "../../assets/shared/icons.js";
+import { Icon } from "../../components/Icon/index.jsx";
 
 const FEATURES = [
   { id: "chat", icon: "message-square", label: "智能对话" },
