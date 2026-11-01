@@ -1,0 +1,10 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+  <!-- 不使用项目 X：与 新建项目(new-project.svg) 加号同画布比例、同描边风格 -->
+  <path
+    d="M1.2 1.2 14.8 14.8M14.8 1.2 1.2 14.8"
+    stroke="currentColor"
+    stroke-width="1"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

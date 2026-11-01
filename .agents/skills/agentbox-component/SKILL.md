@@ -231,6 +231,17 @@ The `Icon` component lives at `components/Icon/index.jsx` (copied into every sca
 - Icon name usage rules (including the runtime-assembly pitfall the build cannot catch): see the Lucide name mode section in `references/icons.md`
 - `build.mjs` validates every name at build time; non-Lucide names trigger a WARN — keep only user-requested names, otherwise pick a valid Lucide name
 
+## Charts
+
+Charts default to **ECharts 6.1** — a local UMD at `assets/library/echarts.min.js`; `build.mjs` injects the script tag automatically when module code references `echarts`. Use the standard `Chart` component (init-provided at `components/Chart/`, SVG renderer):
+
+```jsx
+import Chart from "../../components/Chart/index.jsx";
+<Chart option={option} height={320} />
+```
+
+Never load ECharts from a CDN or import it as an npm package.
+
 ## References
 
 - **[references/design_system.md](references/design_system.md)** — full token tables, escape hatches, design rules

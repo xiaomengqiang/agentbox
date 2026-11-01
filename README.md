@@ -101,6 +101,7 @@ node .agents/skills/agentbox-component/scripts/verify-build.mjs --dir preview
 - **组件自包含**:组件样式只写在自己的 `index.css`,颜色一律使用 `assets/style` 的主题 token,不依赖外部公共样式
 - **公共样式/工具**:`styles/` 与 `util/` 只服务预览视图,不进组件;视图覆盖公共类必须用视图前缀类(如 `tt-configurator`),禁止重新声明公共类选择器
 - **图标**:统一使用 `components/Icon`,三条通路见下方[图标体系](#图标体系)
+- **图表**:优先 ECharts 6.1(SVG 渲染),使用 `components/Chart` 组件;构建器检测到 echarts 使用时自动注入本地库,禁止 CDN 引入或 npm import
 - **离线产物**:构建时本地图片自动内联为 data URL,产物不发起文件请求,`file://` 双击可用;字体保持外链(离线时回退系统字体,经 http 服务打开时生效)
 
 ## 组件硬约束

@@ -1,0 +1,7 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none">
+	<!-- 格式转换：上下双向箭头 -->
+	<path d="M2.5 4h8" stroke="rgb(0,0,0)" stroke-opacity="0.898" stroke-width="1" stroke-linecap="round" />
+	<path d="M10.5 1.8 13.5 4 10.5 6.2" stroke="rgb(0,0,0)" stroke-opacity="0.898" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+	<path d="M13.5 12h-8" stroke="rgb(0,0,0)" stroke-opacity="0.898" stroke-width="1" stroke-linecap="round" />
+	<path d="M5.5 9.8 2.5 12 5.5 14.2" stroke="rgb(0,0,0)" stroke-opacity="0.898" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

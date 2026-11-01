@@ -1,0 +1,42 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32.000000" height="32.000000" fill="none">
+	<defs>
+		<filter id="pixso_custom_mask_type_outline">
+			<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0 " />
+		</filter>
+		<linearGradient id="paint_linear_15" x1="15.9999685" x2="15.9999685" y1="0.333251953" y2="31.0608521" gradientUnits="userSpaceOnUse">
+			<stop stop-color="rgb(168,219,129)" offset="0" stop-opacity="1" />
+			<stop stop-color="rgb(99,213,168)" offset="1" stop-opacity="1" />
+		</linearGradient>
+		<linearGradient id="paint_linear_16" x1="20.44664" x2="29.5533104" y1="2.62340355" y2="12.1638622" gradientUnits="userSpaceOnUse">
+			<stop stop-color="rgb(255,255,255)" offset="0" stop-opacity="1" />
+			<stop stop-color="rgb(255,255,255)" offset="1" stop-opacity="0.0549019985" />
+			<stop stop-color="rgb(255,255,255)" offset="1" stop-opacity="0" />
+		</linearGradient>
+		<linearGradient id="paint_linear_17" x1="15.9999599" x2="15.9999599" y1="13.666748" y2="19.666748" gradientUnits="userSpaceOnUse">
+			<stop stop-color="rgb(255,255,255)" offset="0" stop-opacity="0.800000012" />
+			<stop stop-color="rgb(255,255,255)" offset="1" stop-opacity="0.5" />
+		</linearGradient>
+	</defs>
+	<mask id="mask_5" width="32.000000" height="32.000000" x="0.000000" y="0.000000" maskUnits="userSpaceOnUse">
+		<g filter="url(#pixso_custom_mask_type_outline)">
+			<g id="mask_4">
+				<g id="clip177_15094">
+					<rect id="ic_public_video_file_ textured-视频文件_质感" width="32.000000" height="32.000000" x="0.000000" y="0.000000" fill="rgb(255,255,255)" />
+				</g>
+			</g>
+		</g>
+	</mask>
+	<rect id="ic_public_cvs_file_textured" width="32.000000" height="32.000000" x="0.000000" y="0.000000" />
+	<rect id="ic_public_cvs_file_textured" width="32.000000" height="32.000000" x="0.000000" y="0.000000" />
+	<g id="mask" mask="url(#mask_5)">
+		<g id="clip path group">
+			<g id="组合 73151">
+				<path id="path3" d="M20.8667 0.333252L7.44 0.333252C4.68002 0.333252 2.44002 2.56659 2.44002 5.33325L2.44002 26.6666C2.44002 29.4266 4.68002 31.6666 7.44 31.6666L24.5533 31.6666C27.3133 31.6666 29.5533 29.4266 29.5533 26.6666L29.5533 9.01325C29.5533 8.65992 29.4067 8.31992 29.16 8.07325L21.8067 0.719919C21.56 0.473252 21.22 0.333252 20.8667 0.333252Z" fill="url(#paint_linear_15)" fill-rule="evenodd" />
+				<g id="组合 73152" opacity="0.600000024">
+					<path id="pah4" d="M20.8667 0.333252L20.44 0.333252C20.98 0.333252 21.4133 0.766585 21.4133 1.29992L21.4133 5.79992C21.4133 7.26659 22.6133 8.46659 24.08 8.46659L28.58 8.46659C29.1133 8.46659 29.5533 8.89992 29.5533 9.43325L29.5533 9.01325C29.5533 8.65992 29.4067 8.31992 29.16 8.07325L21.8067 0.719919C21.56 0.473252 21.22 0.333252 20.8667 0.333252Z" fill="url(#paint_linear_16)" fill-rule="evenodd" />
+				</g>
+			</g>
+		</g>
+	</g>
+	<path id="矢量 3038" d="M24.8968 14.6003C24.6473 14.0573 23.96 13.6667 23.1512 13.6667C22.1317 13.6667 21.3053 14.2865 21.3053 15.0509C21.3053 15.8152 21.9028 16.4063 23.1512 16.629C24.3995 16.8529 25.0741 17.2891 24.9955 18.2345C24.9169 19.1797 24.0409 19.5808 23.1575 19.5808C22.2742 19.5808 21.295 19.1576 21.084 18.2345M11.3691 14.5912C10.9071 14.0209 10.2567 13.6667 9.53627 13.6667C8.13453 13.6667 6.9982 15.0092 6.9982 16.6667C6.9982 18.323 8.13453 19.6654 9.53627 19.6654C10.257 19.6654 10.9075 19.3113 11.3695 18.7409M13.9109 13.6667C13.9109 13.6667 14.2906 14.6467 15.0499 16.6067C15.3753 17.4467 15.7704 18.4667 16.2353 19.6667C16.2797 19.5513 16.834 18.1098 17.3883 16.6683C17.9479 15.2133 18.5075 13.7582 18.5426 13.6667" fill-rule="evenodd" stroke="url(#paint_linear_17)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.666667" />
+</svg>
