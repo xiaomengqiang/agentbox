@@ -21,6 +21,7 @@ function lookupIcon(name) {
 export function Icon({
   name,
   src,
+  mask,
   size = 16,
   color,
   className = "",
@@ -31,8 +32,28 @@ export function Icon({
   // Debug/test hooks: component identity + props snapshot on the root element
   const dataAttrs = {
     "data-component": "Icon",
-    "data-props": JSON.stringify({ name, src, size, color, strokeWidth }),
+    "data-props": JSON.stringify({ name, src, mask, size, color, strokeWidth }),
   };
+
+  // file-based monochrome icon via CSS mask — follows currentColor (svg contributes shape only)
+  if (mask) {
+    return React.createElement("span", {
+      id,
+      ...dataAttrs,
+      className,
+      "aria-hidden": true,
+      style: {
+        ...style,
+        display: "inline-block",
+        verticalAlign: "middle",
+        width: size,
+        height: size,
+        backgroundColor: color || "currentColor",
+        mask: `url("${mask}") center / contain no-repeat`,
+        WebkitMask: `url("${mask}") center / contain no-repeat`,
+      },
+    });
+  }
 
   // user-provided asset (svg/png/jpg) via relative path — overrides name when both are set
   if (src) {

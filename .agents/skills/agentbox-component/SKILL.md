@@ -69,7 +69,7 @@ Analyze the request (purpose, data displayed, interactions), then create `{scaff
 1. **`index.jsx`** — standard, copy-paste-ready ES Module:
 - Imports:
   - `import { useState } from "react";` — destructure hooks as needed
-  - `import { Icon } from "../../assets/shared/icons.js";` — icon component
+  - `import { Icon } from "../../components/Icon/index.jsx";` — icon component
   - `import "./index.css";` — component styles
   - `import OtherAtom from "../../components/OtherAtom/index.jsx";` — (views) compose other components
 - `export default function ComponentName()` — must be a named function declaration
@@ -187,7 +187,7 @@ Components developed in `preview-components/` can be reused in `preview/` by cop
 2. Import it in `preview`'s `demo.jsx` or a view: `import Name from "./components/Name/index.jsx";`
 3. Rebuild `preview`: `node scripts/build.mjs --dir "{artifact-folder}/preview"`.
 
-**Why this works without path edits:** component-internal relative imports (`../../assets/shared/icons.js`, `./index.css`) resolve identically in both scaffolds because they share the same structure.
+**Why this works without path edits:** component-internal relative imports (`../Icon/index.jsx`, `./index.css`) resolve identically in both scaffolds because they share the same structure.
 
 - **Only `components/` folders are copy targets.** `views/` are scaffold-specific (a preview-grouping view is not useful as a page section, and vice versa) — never copy views across.
 - **`preview/components/` is also an active authoring location** — when a page needs a small, cross-view reusable atom that didn't come from `preview-components`, author it directly in `preview/components/`.

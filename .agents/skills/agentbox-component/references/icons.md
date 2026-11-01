@@ -1,6 +1,6 @@
 # Icon Component
 
-Default use **Lucide icon name** (`name` prop); only when the user explicitly provides image files, use `src` prop.
+Default use **Lucide icon name** (`name` prop). Use `mask` for file-based monochrome icons that must follow text color, and `src` only when the user explicitly provides multicolor image files.
 
 The Icon component lives at `components/Icon/index.jsx` and is copied into every scaffold by `init.mjs` (it is the build-time Lucide table injection target — do not delete it).
 
@@ -17,6 +17,8 @@ const item = { icon: "home", label: "首页" };
 let open = true;
 <Icon name={open ? "chevron-up" : "chevron-down"} />
 
+<Icon mask="./assets/uploads/icon/function/add.svg" size={20} />
+
 <Icon src="./assets/uploads/logo.svg" size={28} />
 ```
 
@@ -25,9 +27,10 @@ let open = true;
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | string | — | Lucide icon name (kebab-case) |
-| `src` | string | — | User-provided image path (svg/png/jpg); overrides `name` when both are set |
+| `mask` | string | — | Monochrome SVG path; CSS-mask rendering, follows `currentColor`; highest priority when several props are set |
+| `src` | string | — | User-provided image path (svg/png/jpg); renders as `<img>`, overrides `name` when both are set |
 | `size` | number | `16` | Icon size in px |
-| `color` | string | `currentColor` | Icon stroke color (name mode only) |
+| `color` | string | `currentColor` | Icon color (name mode stroke / mask mode background; no effect in src mode) |
 | `strokeWidth` | number | `2` | Stroke width (name mode only) |
 | `id` | string | — | Root element id |
 | `className` | string | `""` | CSS class (margin/hover effects belong here) |
@@ -48,16 +51,17 @@ The table itself is injected at build time: `build.mjs` scans all module sources
 
 ## src mode (`src`)
 
-Only when the user explicitly requires their own images (svg/png/jpg). Place them into `{scaffold}/assets/uploads/` — the path resolves from the scaffold root:
+Only when the user explicitly requires their own multicolor images (svg/png/jpg). Place them into `{scaffold}/assets/uploads/` — the path resolves from the scaffold root:
 
-1. `<Icon src="./assets/uploads/logo.svg" size={28} />`
+1. `<Icon src="./assets/uploads/banner.png" size={28} />`
 2. `<img src="./assets/uploads/banner.png" />`
 
-Note: `src` renders as an `<img>` — the image does NOT follow text color. Referenced local images are inlined as data URLs at build time (offline `file://` pages block cross-origin CSS/resource requests).
+Note: `src` renders as an `<img>` — the image does NOT follow text color (an `<img>` is an isolated document; page CSS cannot reach into it). Referenced local images are inlined as data URLs at build time (offline `file://` pages block cross-origin CSS/resource requests).
 
-## Custom precision artwork
+## mask mode (`mask`)
 
-Do NOT embed custom SVG artwork inside the Icon component. Put the SVG into `assets/uploads/icon/` (distribute via the project asset source), then reference it from the call site:
+For file-based monochrome icons that must follow text color (precision artwork Lucide does not have, stateful icons). The component renders a span with `background-color: currentColor` and uses the SVG as a CSS mask — the SVG contributes shape only, so the icon follows the caller's `color` / CSS `color` token across hover/pressed/light/dark states.
 
-- **CSS mask** (`mask: url(...) center / contain no-repeat` + `background-color: currentColor`) — follows text color, use for stateful monochrome icons.
-- **`src` prop** — plain image rendering, use for multicolor artwork.
+1. `<Icon mask="./assets/uploads/icon/function/add.svg" size={20} />`
+
+The SVG file should be a filled silhouette (alpha matters, color does not). Place custom artwork into `{scaffold}/assets/uploads/icon/` and reference it via `mask` (monochrome, color-following) or `src` (multicolor).
