@@ -26,6 +26,7 @@ export function Icon({
   className = "",
   style,
   strokeWidth = 2,
+  id,
 }) {
   // Debug/test hooks: component identity + props snapshot on the root element
   const dataAttrs = {
@@ -33,10 +34,10 @@ export function Icon({
     "data-props": JSON.stringify({ name, src, size, color, strokeWidth }),
   };
 
-
   // user-provided asset (svg/png/jpg) via relative path — overrides name when both are set
   if (src) {
     return React.createElement("img", {
+      id,
       src: src,
       ...dataAttrs,
       width: size,
@@ -55,6 +56,7 @@ export function Icon({
     "svg",
     {
       xmlns: "http://www.w3.org/2000/svg",
+      id,
       ...dataAttrs,
       width: size,
       height: size,

@@ -225,7 +225,7 @@ Key rules:
 
 ## Icons
 
-Read **`references/icons.md`** for the Icon component's full usage.
+The `Icon` component lives at `components/Icon/index.jsx` (copied into every scaffold by `init.mjs`). Read **`references/icons.md`** for the full usage.
 
 - Default to Lucide icon names (kebab-case) — never invent names, never hand-write SVG path data; use Icon `src` when the user provides image files
 - Icon name usage rules (including the runtime-assembly pitfall the build cannot catch): see the Lucide name mode section in `references/icons.md`
