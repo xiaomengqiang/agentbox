@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>资源预览</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.6 system-ui, "Microsoft YaHei", sans-serif; color: #202124; background: #fff; }
+  body.dark { background: #17181c; color: #e6e7eb; }
+  body.checker { background: repeating-conic-gradient(#e8e8ec 0% 25%, #ffffff 0% 50%) 0 0 / 24px 24px; }
+  header { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 16px; padding: 14px 24px; background: inherit; border-bottom: 1px solid rgba(128,128,140,.25); }
+  header h1 { font-size: 18px; margin: 0; }
+  header p { margin: 0; color: #7a7c85; font-size: 12px; }
+  .modes { margin-left: auto; display: flex; gap: 6px; }
+  .modes button { border: 1px solid rgba(128,128,140,.4); background: transparent; color: inherit; padding: 4px 12px; border-radius: 999px; cursor: pointer; font-size: 12px; }
+  .modes button.on { background: #0a59f7; border-color: #0a59f7; color: #fff; }
+  main { padding: 24px; }
+  .group { margin-bottom: 36px; }
+  .group h2 { font-size: 15px; margin: 0 0 12px; }
+  .group h2 small { margin-left: 8px; color: #7a7c85; font-weight: normal; font-size: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: 12px; }
+  .card { margin: 0; border: 1px solid rgba(128,128,140,.25); border-radius: 10px; overflow: hidden; cursor: zoom-in; background: rgba(255,255,255,.6); }
+  .thumb { height: 96px; display: flex; align-items: center; justify-content: center; padding: 8px; }
+  .thumb img, .thumb video { max-width: 100%; max-height: 100%; object-fit: contain; }
+  figcaption { display: flex; justify-content: space-between; gap: 8px; padding: 6px 8px; border-top: 1px solid rgba(128,128,140,.18); }
+  .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+  .meta { color: #7a7c85; font-size: 11px; flex: none; }
+  #lightbox { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.82); cursor: zoom-out; }
+  #lightbox.open { display: flex; }
+  #lightbox img { max-width: 92vw; max-height: 90vh; }
+  #lightbox .cap { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; color: #fff; font-size: 13px; }
+  footer { padding: 8px 24px 32px; color: #7a7c85; font-size: 12px; }
+</style>
+</head>
+<body class="checker">
+<header>
+  <h1>资源预览</h1>
+  <p>图片 246 · 视频 4 · 已跳过非媒体 11(字体/css/js 等)</p>
+  <div class="modes">
+    <button data-mode="checker" class="on">棋盘</button>
+    <button data-mode="">浅色</button>
+    <button data-mode="dark">深色</button>
+  </div>
+</header>
+<main>
+<section class="group"><h2>(根目录)<small>68</small></h2><div class="grid"><figure class="card" data-src="add-file-DS4sjBtR.svg" data-name="add-file-DS4sjBtR.svg">
+      <div class="thumb"><img src="add-file-DS4sjBtR.svg" alt="add-file-DS4sjBtR.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="add-file-DS4sjBtR.svg">add-file-DS4sjBtR.svg</span><span class="meta">4.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="add-skill-BtuBuVNg.svg" data-name="add-skill-BtuBuVNg.svg">
+      <div class="thumb"><img src="add-skill-BtuBuVNg.svg" alt="add-skill-BtuBuVNg.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="add-skill-BtuBuVNg.svg">add-skill-BtuBuVNg.svg</span><span class="meta">4.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="app-mascot-bird-D3s5aZPZ.svg" data-name="app-mascot-bird-D3s5aZPZ.svg">
+      <div class="thumb"><img src="app-mascot-bird-D3s5aZPZ.svg" alt="app-mascot-bird-D3s5aZPZ.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="app-mascot-bird-D3s5aZPZ.svg">app-mascot-bird-D3s5aZPZ.svg</span><span class="meta">997.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="audio-C3DUXjOd.svg" data-name="audio-C3DUXjOd.svg">
+      <div class="thumb"><img src="audio-C3DUXjOd.svg" alt="audio-C3DUXjOd.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="audio-C3DUXjOd.svg">audio-C3DUXjOd.svg</span><span class="meta">5.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="avatar-design-XqKKOH_H.svg" data-name="avatar-design-XqKKOH_H.svg">
+      <div class="thumb"><img src="avatar-design-XqKKOH_H.svg" alt="avatar-design-XqKKOH_H.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="avatar-design-XqKKOH_H.svg">avatar-design-XqKKOH_H.svg</span><span class="meta">29.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="avatar-develop-BfLu2d5V.svg" data-name="avatar-develop-BfLu2d5V.svg">
+      <div class="thumb"><img src="avatar-develop-BfLu2d5V.svg" alt="avatar-develop-BfLu2d5V.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="avatar-develop-BfLu2d5V.svg">avatar-develop-BfLu2d5V.svg</span><span class="meta">33.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="avatar-director-CeHRW9Kb.svg" data-name="avatar-director-CeHRW9Kb.svg">
+      <div class="thumb"><img src="avatar-director-CeHRW9Kb.svg" alt="avatar-director-CeHRW9Kb.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="avatar-director-CeHRW9Kb.svg">avatar-director-CeHRW9Kb.svg</span><span class="meta">25.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="avatar-extra-BcpLNKF5.svg" data-name="avatar-extra-BcpLNKF5.svg">
+      <div class="thumb"><img src="avatar-extra-BcpLNKF5.svg" alt="avatar-extra-BcpLNKF5.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="avatar-extra-BcpLNKF5.svg">avatar-extra-BcpLNKF5.svg</span><span class="meta">23.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="avatar-research-pCX_2XNT.svg" data-name="avatar-research-pCX_2XNT.svg">
+      <div class="thumb"><img src="avatar-research-pCX_2XNT.svg" alt="avatar-research-pCX_2XNT.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="avatar-research-pCX_2XNT.svg">avatar-research-pCX_2XNT.svg</span><span class="meta">25.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="avatar-test-Cv0h1MV8.svg" data-name="avatar-test-Cv0h1MV8.svg">
+      <div class="thumb"><img src="avatar-test-Cv0h1MV8.svg" alt="avatar-test-Cv0h1MV8.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="avatar-test-Cv0h1MV8.svg">avatar-test-Cv0h1MV8.svg</span><span class="meta">28.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="changes-Bx_f7jOx.svg" data-name="changes-Bx_f7jOx.svg">
+      <div class="thumb"><img src="changes-Bx_f7jOx.svg" alt="changes-Bx_f7jOx.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="changes-Bx_f7jOx.svg">changes-Bx_f7jOx.svg</span><span class="meta">6.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="code-active-CQWF-XkB.svg" data-name="code-active-CQWF-XkB.svg">
+      <div class="thumb"><img src="code-active-CQWF-XkB.svg" alt="code-active-CQWF-XkB.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="code-active-CQWF-XkB.svg">code-active-CQWF-XkB.svg</span><span class="meta">8.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="code-inactive-BOfUHNt7.svg" data-name="code-inactive-BOfUHNt7.svg">
+      <div class="thumb"><img src="code-inactive-BOfUHNt7.svg" alt="code-inactive-BOfUHNt7.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="code-inactive-BOfUHNt7.svg">code-inactive-BOfUHNt7.svg</span><span class="meta">8.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="coding-slogan-DwsnvmVP.svg" data-name="coding-slogan-DwsnvmVP.svg">
+      <div class="thumb"><img src="coding-slogan-DwsnvmVP.svg" alt="coding-slogan-DwsnvmVP.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="coding-slogan-DwsnvmVP.svg">coding-slogan-DwsnvmVP.svg</span><span class="meta">568.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="connect-success-jump-DKmROWq_.webp" data-name="connect-success-jump-DKmROWq_.webp">
+      <div class="thumb"><img src="connect-success-jump-DKmROWq_.webp" alt="connect-success-jump-DKmROWq_.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="connect-success-jump-DKmROWq_.webp">connect-success-jump-DKmROWq_.webp</span><span class="meta">6474.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="connector-Ciag7n83.svg" data-name="connector-Ciag7n83.svg">
+      <div class="thumb"><img src="connector-Ciag7n83.svg" alt="connector-Ciag7n83.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="connector-Ciag7n83.svg">connector-Ciag7n83.svg</span><span class="meta">7.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="cursor-CIGLc6wV.webp" data-name="cursor-CIGLc6wV.webp">
+      <div class="thumb"><img src="cursor-CIGLc6wV.webp" alt="cursor-CIGLc6wV.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="cursor-CIGLc6wV.webp">cursor-CIGLc6wV.webp</span><span class="meta">101.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="deepseek-uLywT1hi.svg" data-name="deepseek-uLywT1hi.svg">
+      <div class="thumb"><img src="deepseek-uLywT1hi.svg" alt="deepseek-uLywT1hi.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="deepseek-uLywT1hi.svg">deepseek-uLywT1hi.svg</span><span class="meta">48.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="empty-bird-BPxHyuKU.webp" data-name="empty-bird-BPxHyuKU.webp">
+      <div class="thumb"><img src="empty-bird-BPxHyuKU.webp" alt="empty-bird-BPxHyuKU.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="empty-bird-BPxHyuKU.webp">empty-bird-BPxHyuKU.webp</span><span class="meta">133 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="generating-CIUIi3PV.webp" data-name="generating-CIUIi3PV.webp">
+      <div class="thumb"><img src="generating-CIUIi3PV.webp" alt="generating-CIUIi3PV.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="generating-CIUIi3PV.webp">generating-CIUIi3PV.webp</span><span class="meta">182.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="generating-YTWfAkd-.svg" data-name="generating-YTWfAkd-.svg">
+      <div class="thumb"><img src="generating-YTWfAkd-.svg" alt="generating-YTWfAkd-.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="generating-YTWfAkd-.svg">generating-YTWfAkd-.svg</span><span class="meta">4.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="glm-DlTSLHUI.svg" data-name="glm-DlTSLHUI.svg">
+      <div class="thumb"><img src="glm-DlTSLHUI.svg" alt="glm-DlTSLHUI.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="glm-DlTSLHUI.svg">glm-DlTSLHUI.svg</span><span class="meta">35.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="home-mascot-code-NQVEpXUR.mp4" data-name="home-mascot-code-NQVEpXUR.mp4">
+      <div class="thumb"><video src="home-mascot-code-NQVEpXUR.mp4" preload="metadata" controls muted></video></div>
+      <figcaption><span class="name" title="home-mascot-code-NQVEpXUR.mp4">home-mascot-code-NQVEpXUR.mp4</span><span class="meta">133 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="home-mascot-work-Ds7Lxcda.mp4" data-name="home-mascot-work-Ds7Lxcda.mp4">
+      <div class="thumb"><video src="home-mascot-work-Ds7Lxcda.mp4" preload="metadata" controls muted></video></div>
+      <figcaption><span class="name" title="home-mascot-work-Ds7Lxcda.mp4">home-mascot-work-Ds7Lxcda.mp4</span><span class="meta">4098.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="home-mascot-work-still-ppzsftH4.png" data-name="home-mascot-work-still-ppzsftH4.png">
+      <div class="thumb"><img src="home-mascot-work-still-ppzsftH4.png" alt="home-mascot-work-still-ppzsftH4.png" loading="lazy"></div>
+      <figcaption><span class="name" title="home-mascot-work-still-ppzsftH4.png">home-mascot-work-still-ppzsftH4.png</span><span class="meta">1886.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="image858-ByTWeti1.png" data-name="image858-ByTWeti1.png">
+      <div class="thumb"><img src="image858-ByTWeti1.png" alt="image858-ByTWeti1.png" loading="lazy"></div>
+      <figcaption><span class="name" title="image858-ByTWeti1.png">image858-ByTWeti1.png</span><span class="meta">19.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="image859-z54h-tIN.png" data-name="image859-z54h-tIN.png">
+      <div class="thumb"><img src="image859-z54h-tIN.png" alt="image859-z54h-tIN.png" loading="lazy"></div>
+      <figcaption><span class="name" title="image859-z54h-tIN.png">image859-z54h-tIN.png</span><span class="meta">20.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="image860-DimT61-t.png" data-name="image860-DimT61-t.png">
+      <div class="thumb"><img src="image860-DimT61-t.png" alt="image860-DimT61-t.png" loading="lazy"></div>
+      <figcaption><span class="name" title="image860-DimT61-t.png">image860-DimT61-t.png</span><span class="meta">19.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="internlm-color-Bz71-c6v.svg" data-name="internlm-color-Bz71-c6v.svg">
+      <div class="thumb"><img src="internlm-color-Bz71-c6v.svg" alt="internlm-color-Bz71-c6v.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="internlm-color-Bz71-c6v.svg">internlm-color-Bz71-c6v.svg</span><span class="meta">8.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="interview-prep-BMyWUedj.svg" data-name="interview-prep-BMyWUedj.svg">
+      <div class="thumb"><img src="interview-prep-BMyWUedj.svg" alt="interview-prep-BMyWUedj.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="interview-prep-BMyWUedj.svg">interview-prep-BMyWUedj.svg</span><span class="meta">5.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="IP-DOgmEBmc.svg" data-name="IP-DOgmEBmc.svg">
+      <div class="thumb"><img src="IP-DOgmEBmc.svg" alt="IP-DOgmEBmc.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="IP-DOgmEBmc.svg">IP-DOgmEBmc.svg</span><span class="meta">412.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="login-animation-BUN-9bp5.webp" data-name="login-animation-BUN-9bp5.webp">
+      <div class="thumb"><img src="login-animation-BUN-9bp5.webp" alt="login-animation-BUN-9bp5.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="login-animation-BUN-9bp5.webp">login-animation-BUN-9bp5.webp</span><span class="meta">133 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="login-logo-DTIvt3sZ.svg" data-name="login-logo-DTIvt3sZ.svg">
+      <div class="thumb"><img src="login-logo-DTIvt3sZ.svg" alt="login-logo-DTIvt3sZ.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="login-logo-DTIvt3sZ.svg">login-logo-DTIvt3sZ.svg</span><span class="meta">998.9 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="manage-skill-_Aruw7yg.svg" data-name="manage-skill-_Aruw7yg.svg">
+      <div class="thumb"><img src="manage-skill-_Aruw7yg.svg" alt="manage-skill-_Aruw7yg.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="manage-skill-_Aruw7yg.svg">manage-skill-_Aruw7yg.svg</span><span class="meta">4.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="minimax-CZizYyr_.svg" data-name="minimax-CZizYyr_.svg">
+      <div class="thumb"><img src="minimax-CZizYyr_.svg" alt="minimax-CZizYyr_.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="minimax-CZizYyr_.svg">minimax-CZizYyr_.svg</span><span class="meta">31.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="multi-agent-mode-DH-gUe0O.svg" data-name="multi-agent-mode-DH-gUe0O.svg">
+      <div class="thumb"><img src="multi-agent-mode-DH-gUe0O.svg" alt="multi-agent-mode-DH-gUe0O.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="multi-agent-mode-DH-gUe0O.svg">multi-agent-mode-DH-gUe0O.svg</span><span class="meta">6.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="pdf-CBE5iUW8.svg" data-name="pdf-CBE5iUW8.svg">
+      <div class="thumb"><img src="pdf-CBE5iUW8.svg" alt="pdf-CBE5iUW8.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="pdf-CBE5iUW8.svg">pdf-CBE5iUW8.svg</span><span class="meta">5.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="plugins-banner-BN7KePPx.svg" data-name="plugins-banner-BN7KePPx.svg">
+      <div class="thumb"><img src="plugins-banner-BN7KePPx.svg" alt="plugins-banner-BN7KePPx.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="plugins-banner-BN7KePPx.svg">plugins-banner-BN7KePPx.svg</span><span class="meta">2411.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="plus-COIeC5A9.svg" data-name="plus-COIeC5A9.svg">
+      <div class="thumb"><img src="plus-COIeC5A9.svg" alt="plus-COIeC5A9.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="plus-COIeC5A9.svg">plus-COIeC5A9.svg</span><span class="meta">5.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="plus-r93bJ7b6.svg" data-name="plus-r93bJ7b6.svg">
+      <div class="thumb"><img src="plus-r93bJ7b6.svg" alt="plus-r93bJ7b6.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="plus-r93bJ7b6.svg">plus-r93bJ7b6.svg</span><span class="meta">4.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="powerpoint-DeTZu8AC.svg" data-name="powerpoint-DeTZu8AC.svg">
+      <div class="thumb"><img src="powerpoint-DeTZu8AC.svg" alt="powerpoint-DeTZu8AC.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="powerpoint-DeTZu8AC.svg">powerpoint-DeTZu8AC.svg</span><span class="meta">4.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="progress-bird-auth-COg8vgV0.svg" data-name="progress-bird-auth-COg8vgV0.svg">
+      <div class="thumb"><img src="progress-bird-auth-COg8vgV0.svg" alt="progress-bird-auth-COg8vgV0.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="progress-bird-auth-COg8vgV0.svg">progress-bird-auth-COg8vgV0.svg</span><span class="meta">8.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="progress-bird-complete-Dtr1JMgT.svg" data-name="progress-bird-complete-Dtr1JMgT.svg">
+      <div class="thumb"><img src="progress-bird-complete-Dtr1JMgT.svg" alt="progress-bird-complete-Dtr1JMgT.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="progress-bird-complete-Dtr1JMgT.svg">progress-bird-complete-Dtr1JMgT.svg</span><span class="meta">10.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="progress-bird-CoZWwlyz.webp" data-name="progress-bird-CoZWwlyz.webp">
+      <div class="thumb"><img src="progress-bird-CoZWwlyz.webp" alt="progress-bird-CoZWwlyz.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="progress-bird-CoZWwlyz.webp">progress-bird-CoZWwlyz.webp</span><span class="meta">2685.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="progress-bird-error-CSypS_Kx.svg" data-name="progress-bird-error-CSypS_Kx.svg">
+      <div class="thumb"><img src="progress-bird-error-CSypS_Kx.svg" alt="progress-bird-error-CSypS_Kx.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="progress-bird-error-CSypS_Kx.svg">progress-bird-error-CSypS_Kx.svg</span><span class="meta">9.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="publish-DwlN9TzM.svg" data-name="publish-DwlN9TzM.svg">
+      <div class="thumb"><img src="publish-DwlN9TzM.svg" alt="publish-DwlN9TzM.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="publish-DwlN9TzM.svg">publish-DwlN9TzM.svg</span><span class="meta">4.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="reconnect-loading-XE_qlEkf.webp" data-name="reconnect-loading-XE_qlEkf.webp">
+      <div class="thumb"><img src="reconnect-loading-XE_qlEkf.webp" alt="reconnect-loading-XE_qlEkf.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="reconnect-loading-XE_qlEkf.webp">reconnect-loading-XE_qlEkf.webp</span><span class="meta">2763.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="request-permission-Dm0XKTfb.svg" data-name="request-permission-Dm0XKTfb.svg">
+      <div class="thumb"><img src="request-permission-Dm0XKTfb.svg" alt="request-permission-Dm0XKTfb.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="request-permission-Dm0XKTfb.svg">request-permission-Dm0XKTfb.svg</span><span class="meta">5.9 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="research-report-DC3OTlq3.svg" data-name="research-report-DC3OTlq3.svg">
+      <div class="thumb"><img src="research-report-DC3OTlq3.svg" alt="research-report-DC3OTlq3.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="research-report-DC3OTlq3.svg">research-report-DC3OTlq3.svg</span><span class="meta">4.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="review-fold-BoJ9O1ay.svg" data-name="review-fold-BoJ9O1ay.svg">
+      <div class="thumb"><img src="review-fold-BoJ9O1ay.svg" alt="review-fold-BoJ9O1ay.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="review-fold-BoJ9O1ay.svg">review-fold-BoJ9O1ay.svg</span><span class="meta">4.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="review-fold2-BVdydcUr.svg" data-name="review-fold2-BVdydcUr.svg">
+      <div class="thumb"><img src="review-fold2-BVdydcUr.svg" alt="review-fold2-BVdydcUr.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="review-fold2-BVdydcUr.svg">review-fold2-BVdydcUr.svg</span><span class="meta">4.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="review-layout-B8wznjV7.svg" data-name="review-layout-B8wznjV7.svg">
+      <div class="thumb"><img src="review-layout-B8wznjV7.svg" alt="review-layout-B8wznjV7.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="review-layout-B8wznjV7.svg">review-layout-B8wznjV7.svg</span><span class="meta">8.3 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="review-layout2-COeff0eD.svg" data-name="review-layout2-COeff0eD.svg">
+      <div class="thumb"><img src="review-layout2-COeff0eD.svg" alt="review-layout2-COeff0eD.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="review-layout2-COeff0eD.svg">review-layout2-COeff0eD.svg</span><span class="meta">8.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="review-refresh-7N3uY8GM.svg" data-name="review-refresh-7N3uY8GM.svg">
+      <div class="thumb"><img src="review-refresh-7N3uY8GM.svg" alt="review-refresh-7N3uY8GM.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="review-refresh-7N3uY8GM.svg">review-refresh-7N3uY8GM.svg</span><span class="meta">5.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="review-tab-kxZ2dWXz.svg" data-name="review-tab-kxZ2dWXz.svg">
+      <div class="thumb"><img src="review-tab-kxZ2dWXz.svg" alt="review-tab-kxZ2dWXz.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="review-tab-kxZ2dWXz.svg">review-tab-kxZ2dWXz.svg</span><span class="meta">4.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="sidebar-logo-BLviia-2.svg" data-name="sidebar-logo-BLviia-2.svg">
+      <div class="thumb"><img src="sidebar-logo-BLviia-2.svg" alt="sidebar-logo-BLviia-2.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="sidebar-logo-BLviia-2.svg">sidebar-logo-BLviia-2.svg</span><span class="meta">2221.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="sidebar-user-avatar-B13-Cu7X.svg" data-name="sidebar-user-avatar-B13-Cu7X.svg">
+      <div class="thumb"><img src="sidebar-user-avatar-B13-Cu7X.svg" alt="sidebar-user-avatar-B13-Cu7X.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="sidebar-user-avatar-B13-Cu7X.svg">sidebar-user-avatar-B13-Cu7X.svg</span><span class="meta">1499.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="single-agent-mode-DB014_2f.svg" data-name="single-agent-mode-DB014_2f.svg">
+      <div class="thumb"><img src="single-agent-mode-DB014_2f.svg" alt="single-agent-mode-DB014_2f.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="single-agent-mode-DB014_2f.svg">single-agent-mode-DB014_2f.svg</span><span class="meta">6.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="slides-DWLNwlpL.svg" data-name="slides-DWLNwlpL.svg">
+      <div class="thumb"><img src="slides-DWLNwlpL.svg" alt="slides-DWLNwlpL.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="slides-DWLNwlpL.svg">slides-DWLNwlpL.svg</span><span class="meta">7.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="slogan-C64StfzK.png" data-name="slogan-C64StfzK.png">
+      <div class="thumb"><img src="slogan-C64StfzK.png" alt="slogan-C64StfzK.png" loading="lazy"></div>
+      <figcaption><span class="name" title="slogan-C64StfzK.png">slogan-C64StfzK.png</span><span class="meta">40.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="table-CSGH25Tx.svg" data-name="table-CSGH25Tx.svg">
+      <div class="thumb"><img src="table-CSGH25Tx.svg" alt="table-CSGH25Tx.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="table-CSGH25Tx.svg">table-CSGH25Tx.svg</span><span class="meta">7.9 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="text-DnhFJ7Ob.svg" data-name="text-DnhFJ7Ob.svg">
+      <div class="thumb"><img src="text-DnhFJ7Ob.svg" alt="text-DnhFJ7Ob.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="text-DnhFJ7Ob.svg">text-DnhFJ7Ob.svg</span><span class="meta">4.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="unknown-YCw_855j.svg" data-name="unknown-YCw_855j.svg">
+      <div class="thumb"><img src="unknown-YCw_855j.svg" alt="unknown-YCw_855j.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="unknown-YCw_855j.svg">unknown-YCw_855j.svg</span><span class="meta">9.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="user-avatar-_SmE_lz-.svg" data-name="user-avatar-_SmE_lz-.svg">
+      <div class="thumb"><img src="user-avatar-_SmE_lz-.svg" alt="user-avatar-_SmE_lz-.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="user-avatar-_SmE_lz-.svg">user-avatar-_SmE_lz-.svg</span><span class="meta">2293.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="video-D5V2SBSg.svg" data-name="video-D5V2SBSg.svg">
+      <div class="thumb"><img src="video-D5V2SBSg.svg" alt="video-D5V2SBSg.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="video-D5V2SBSg.svg">video-D5V2SBSg.svg</span><span class="meta">7.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="work-active-D6qpkwgU.svg" data-name="work-active-D6qpkwgU.svg">
+      <div class="thumb"><img src="work-active-D6qpkwgU.svg" alt="work-active-D6qpkwgU.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="work-active-D6qpkwgU.svg">work-active-D6qpkwgU.svg</span><span class="meta">9.3 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="work-inactive-Evo7kqGv.svg" data-name="work-inactive-Evo7kqGv.svg">
+      <div class="thumb"><img src="work-inactive-Evo7kqGv.svg" alt="work-inactive-Evo7kqGv.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="work-inactive-Evo7kqGv.svg">work-inactive-Evo7kqGv.svg</span><span class="meta">9.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="workflow-C1tZQ_UO.svg" data-name="workflow-C1tZQ_UO.svg">
+      <div class="thumb"><img src="workflow-C1tZQ_UO.svg" alt="workflow-C1tZQ_UO.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="workflow-C1tZQ_UO.svg">workflow-C1tZQ_UO.svg</span><span class="meta">5.7 KB</span></figcaption>
+    </figure></div></section>
+<section class="group"><h2>assets/code-mode<small>17</small></h2><div class="grid"><figure class="card" data-src="assets/code-mode/branch.svg" data-name="branch.svg">
+      <div class="thumb"><img src="assets/code-mode/branch.svg" alt="branch.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="branch.svg">branch.svg</span><span class="meta">3.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/changes.svg" data-name="changes.svg">
+      <div class="thumb"><img src="assets/code-mode/changes.svg" alt="changes.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="changes.svg">changes.svg</span><span class="meta">6.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/CheckBox-2.svg" data-name="CheckBox-2.svg">
+      <div class="thumb"><img src="assets/code-mode/CheckBox-2.svg" alt="CheckBox-2.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="CheckBox-2.svg">CheckBox-2.svg</span><span class="meta">800 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/checkbox-on.svg" data-name="checkbox-on.svg">
+      <div class="thumb"><img src="assets/code-mode/checkbox-on.svg" alt="checkbox-on.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="checkbox-on.svg">checkbox-on.svg</span><span class="meta">3.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/close.svg" data-name="close.svg">
+      <div class="thumb"><img src="assets/code-mode/close.svg" alt="close.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="close.svg">close.svg</span><span class="meta">384 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/plus.svg" data-name="plus.svg">
+      <div class="thumb"><img src="assets/code-mode/plus.svg" alt="plus.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="plus.svg">plus.svg</span><span class="meta">4.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/publish.svg" data-name="publish.svg">
+      <div class="thumb"><img src="assets/code-mode/publish.svg" alt="publish.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="publish.svg">publish.svg</span><span class="meta">4.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/radio-on.svg" data-name="radio-on.svg">
+      <div class="thumb"><img src="assets/code-mode/radio-on.svg" alt="radio-on.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="radio-on.svg">radio-on.svg</span><span class="meta">3.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/radio.svg" data-name="radio.svg">
+      <div class="thumb"><img src="assets/code-mode/radio.svg" alt="radio.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="radio.svg">radio.svg</span><span class="meta">696 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/review-files.svg" data-name="review-files.svg">
+      <div class="thumb"><img src="assets/code-mode/review-files.svg" alt="review-files.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="review-files.svg">review-files.svg</span><span class="meta">3.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/review-fold.svg" data-name="review-fold.svg">
+      <div class="thumb"><img src="assets/code-mode/review-fold.svg" alt="review-fold.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="review-fold.svg">review-fold.svg</span><span class="meta">4.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/review-fold2.svg" data-name="review-fold2.svg">
+      <div class="thumb"><img src="assets/code-mode/review-fold2.svg" alt="review-fold2.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="review-fold2.svg">review-fold2.svg</span><span class="meta">4.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/review-layout.svg" data-name="review-layout.svg">
+      <div class="thumb"><img src="assets/code-mode/review-layout.svg" alt="review-layout.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="review-layout.svg">review-layout.svg</span><span class="meta">8.3 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/review-layout2.svg" data-name="review-layout2.svg">
+      <div class="thumb"><img src="assets/code-mode/review-layout2.svg" alt="review-layout2.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="review-layout2.svg">review-layout2.svg</span><span class="meta">8.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/review-refresh.svg" data-name="review-refresh.svg">
+      <div class="thumb"><img src="assets/code-mode/review-refresh.svg" alt="review-refresh.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="review-refresh.svg">review-refresh.svg</span><span class="meta">5.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/review-tab.svg" data-name="review-tab.svg">
+      <div class="thumb"><img src="assets/code-mode/review-tab.svg" alt="review-tab.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="review-tab.svg">review-tab.svg</span><span class="meta">4.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/code-mode/toast-success.svg" data-name="toast-success.svg">
+      <div class="thumb"><img src="assets/code-mode/toast-success.svg" alt="toast-success.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="toast-success.svg">toast-success.svg</span><span class="meta">1.2 KB</span></figcaption>
+    </figure></div></section>
+<section class="group"><h2>assets/cron<small>1</small></h2><div class="grid"><figure class="card" data-src="assets/cron/empty-bird.webp" data-name="empty-bird.webp">
+      <div class="thumb"><img src="assets/cron/empty-bird.webp" alt="empty-bird.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="empty-bird.webp">empty-bird.webp</span><span class="meta">133 B</span></figcaption>
+    </figure></div></section>
+<section class="group"><h2>assets/cron/icons<small>24</small></h2><div class="grid"><figure class="card" data-src="assets/cron/icons/calendar-left.svg" data-name="calendar-left.svg">
+      <div class="thumb"><img src="assets/cron/icons/calendar-left.svg" alt="calendar-left.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="calendar-left.svg">calendar-left.svg</span><span class="meta">741 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/calendar-right.svg" data-name="calendar-right.svg">
+      <div class="thumb"><img src="assets/cron/icons/calendar-right.svg" alt="calendar-right.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="calendar-right.svg">calendar-right.svg</span><span class="meta">696 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/chev-down.svg" data-name="chev-down.svg">
+      <div class="thumb"><img src="assets/cron/icons/chev-down.svg" alt="chev-down.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="chev-down.svg">chev-down.svg</span><span class="meta">766 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/chevron-down.svg" data-name="chevron-down.svg">
+      <div class="thumb"><img src="assets/cron/icons/chevron-down.svg" alt="chevron-down.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="chevron-down.svg">chevron-down.svg</span><span class="meta">228 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/clock.svg" data-name="clock.svg">
+      <div class="thumb"><img src="assets/cron/icons/clock.svg" alt="clock.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="clock.svg">clock.svg</span><span class="meta">321 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/close.svg" data-name="close.svg">
+      <div class="thumb"><img src="assets/cron/icons/close.svg" alt="close.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="close.svg">close.svg</span><span class="meta">1.3 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/ellipsis.svg" data-name="ellipsis.svg">
+      <div class="thumb"><img src="assets/cron/icons/ellipsis.svg" alt="ellipsis.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="ellipsis.svg">ellipsis.svg</span><span class="meta">253 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/folder.svg" data-name="folder.svg">
+      <div class="thumb"><img src="assets/cron/icons/folder.svg" alt="folder.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="folder.svg">folder.svg</span><span class="meta">717 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/history-delete.svg" data-name="history-delete.svg">
+      <div class="thumb"><img src="assets/cron/icons/history-delete.svg" alt="history-delete.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="history-delete.svg">history-delete.svg</span><span class="meta">3.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/history-detail.svg" data-name="history-detail.svg">
+      <div class="thumb"><img src="assets/cron/icons/history-detail.svg" alt="history-detail.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="history-detail.svg">history-detail.svg</span><span class="meta">3.3 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/menu-delete.svg" data-name="menu-delete.svg">
+      <div class="thumb"><img src="assets/cron/icons/menu-delete.svg" alt="menu-delete.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="menu-delete.svg">menu-delete.svg</span><span class="meta">744 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/menu-play.svg" data-name="menu-play.svg">
+      <div class="thumb"><img src="assets/cron/icons/menu-play.svg" alt="menu-play.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="menu-play.svg">menu-play.svg</span><span class="meta">219 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/menu-view.svg" data-name="menu-view.svg">
+      <div class="thumb"><img src="assets/cron/icons/menu-view.svg" alt="menu-view.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="menu-view.svg">menu-view.svg</span><span class="meta">777 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/modal-alert.svg" data-name="modal-alert.svg">
+      <div class="thumb"><img src="assets/cron/icons/modal-alert.svg" alt="modal-alert.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="modal-alert.svg">modal-alert.svg</span><span class="meta">617 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/modal-close.svg" data-name="modal-close.svg">
+      <div class="thumb"><img src="assets/cron/icons/modal-close.svg" alt="modal-close.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="modal-close.svg">modal-close.svg</span><span class="meta">1.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/pager-left.svg" data-name="pager-left.svg">
+      <div class="thumb"><img src="assets/cron/icons/pager-left.svg" alt="pager-left.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="pager-left.svg">pager-left.svg</span><span class="meta">836 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/pager-right.svg" data-name="pager-right.svg">
+      <div class="thumb"><img src="assets/cron/icons/pager-right.svg" alt="pager-right.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="pager-right.svg">pager-right.svg</span><span class="meta">791 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/plus.svg" data-name="plus.svg">
+      <div class="thumb"><img src="assets/cron/icons/plus.svg" alt="plus.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="plus.svg">plus.svg</span><span class="meta">203 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/redcross.svg" data-name="redcross.svg">
+      <div class="thumb"><img src="assets/cron/icons/redcross.svg" alt="redcross.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="redcross.svg">redcross.svg</span><span class="meta">169 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/search.svg" data-name="search.svg">
+      <div class="thumb"><img src="assets/cron/icons/search.svg" alt="search.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="search.svg">search.svg</span><span class="meta">1.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/stepper-down.svg" data-name="stepper-down.svg">
+      <div class="thumb"><img src="assets/cron/icons/stepper-down.svg" alt="stepper-down.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="stepper-down.svg">stepper-down.svg</span><span class="meta">803 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/stepper-up.svg" data-name="stepper-up.svg">
+      <div class="thumb"><img src="assets/cron/icons/stepper-up.svg" alt="stepper-up.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="stepper-up.svg">stepper-up.svg</span><span class="meta">810 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/view-grid.svg" data-name="view-grid.svg">
+      <div class="thumb"><img src="assets/cron/icons/view-grid.svg" alt="view-grid.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="view-grid.svg">view-grid.svg</span><span class="meta">2.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/icons/view-list.svg" data-name="view-list.svg">
+      <div class="thumb"><img src="assets/cron/icons/view-list.svg" alt="view-list.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="view-list.svg">view-list.svg</span><span class="meta">7.3 KB</span></figcaption>
+    </figure></div></section>
+<section class="group"><h2>assets/cron/templates<small>6</small></h2><div class="grid"><figure class="card" data-src="assets/cron/templates/industry-news.svg" data-name="industry-news.svg">
+      <div class="thumb"><img src="assets/cron/templates/industry-news.svg" alt="industry-news.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="industry-news.svg">industry-news.svg</span><span class="meta">1.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/templates/interview-prep.svg" data-name="interview-prep.svg">
+      <div class="thumb"><img src="assets/cron/templates/interview-prep.svg" alt="interview-prep.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="interview-prep.svg">interview-prep.svg</span><span class="meta">5.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/templates/meeting-notes.svg" data-name="meeting-notes.svg">
+      <div class="thumb"><img src="assets/cron/templates/meeting-notes.svg" alt="meeting-notes.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="meeting-notes.svg">meeting-notes.svg</span><span class="meta">1.3 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/templates/opinion-tracking.svg" data-name="opinion-tracking.svg">
+      <div class="thumb"><img src="assets/cron/templates/opinion-tracking.svg" alt="opinion-tracking.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="opinion-tracking.svg">opinion-tracking.svg</span><span class="meta">1.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/templates/stock-briefing.svg" data-name="stock-briefing.svg">
+      <div class="thumb"><img src="assets/cron/templates/stock-briefing.svg" alt="stock-briefing.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="stock-briefing.svg">stock-briefing.svg</span><span class="meta">1.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/cron/templates/weekly-report.svg" data-name="weekly-report.svg">
+      <div class="thumb"><img src="assets/cron/templates/weekly-report.svg" alt="weekly-report.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="weekly-report.svg">weekly-report.svg</span><span class="meta">1.3 KB</span></figcaption>
+    </figure></div></section>
+<section class="group"><h2>assets/design<small>9</small></h2><div class="grid"><figure class="card" data-src="assets/design/app-icon-rounded.ico" data-name="app-icon-rounded.ico">
+      <div class="thumb"><img src="assets/design/app-icon-rounded.ico" alt="app-icon-rounded.ico" loading="lazy"></div>
+      <figcaption><span class="name" title="app-icon-rounded.ico">app-icon-rounded.ico</span><span class="meta">121.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/app-mascot-bird.svg" data-name="app-mascot-bird.svg">
+      <div class="thumb"><img src="assets/design/app-mascot-bird.svg" alt="app-mascot-bird.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="app-mascot-bird.svg">app-mascot-bird.svg</span><span class="meta">997.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/connect-success-jump.webp" data-name="connect-success-jump.webp">
+      <div class="thumb"><img src="assets/design/connect-success-jump.webp" alt="connect-success-jump.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="connect-success-jump.webp">connect-success-jump.webp</span><span class="meta">6474.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/IP.svg" data-name="IP.svg">
+      <div class="thumb"><img src="assets/design/IP.svg" alt="IP.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="IP.svg">IP.svg</span><span class="meta">412.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/login-animation.webp" data-name="login-animation.webp">
+      <div class="thumb"><img src="assets/design/login-animation.webp" alt="login-animation.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="login-animation.webp">login-animation.webp</span><span class="meta">133 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/login-eye-hidden.svg" data-name="login-eye-hidden.svg">
+      <div class="thumb"><img src="assets/design/login-eye-hidden.svg" alt="login-eye-hidden.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="login-eye-hidden.svg">login-eye-hidden.svg</span><span class="meta">3.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/login-eye-visible.svg" data-name="login-eye-visible.svg">
+      <div class="thumb"><img src="assets/design/login-eye-visible.svg" alt="login-eye-visible.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="login-eye-visible.svg">login-eye-visible.svg</span><span class="meta">2.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/login-logo.svg" data-name="login-logo.svg">
+      <div class="thumb"><img src="assets/design/login-logo.svg" alt="login-logo.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="login-logo.svg">login-logo.svg</span><span class="meta">998.9 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/reconnect-loading.webp" data-name="reconnect-loading.webp">
+      <div class="thumb"><img src="assets/design/reconnect-loading.webp" alt="reconnect-loading.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="reconnect-loading.webp">reconnect-loading.webp</span><span class="meta">2763.4 KB</span></figcaption>
+    </figure></div></section>
+<section class="group"><h2>assets/design/home<small>53</small></h2><div class="grid"><figure class="card" data-src="assets/design/home/add-file.svg" data-name="add-file.svg">
+      <div class="thumb"><img src="assets/design/home/add-file.svg" alt="add-file.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="add-file.svg">add-file.svg</span><span class="meta">4.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/add-skill.svg" data-name="add-skill.svg">
+      <div class="thumb"><img src="assets/design/home/add-skill.svg" alt="add-skill.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="add-skill.svg">add-skill.svg</span><span class="meta">4.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/auto-select-model.svg" data-name="auto-select-model.svg">
+      <div class="thumb"><img src="assets/design/home/auto-select-model.svg" alt="auto-select-model.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="auto-select-model.svg">auto-select-model.svg</span><span class="meta">2.9 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/clear-project.svg" data-name="clear-project.svg">
+      <div class="thumb"><img src="assets/design/home/clear-project.svg" alt="clear-project.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="clear-project.svg">clear-project.svg</span><span class="meta">364 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/close.svg" data-name="close.svg">
+      <div class="thumb"><img src="assets/design/home/close.svg" alt="close.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="close.svg">close.svg</span><span class="meta">2.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/code-active.svg" data-name="code-active.svg">
+      <div class="thumb"><img src="assets/design/home/code-active.svg" alt="code-active.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="code-active.svg">code-active.svg</span><span class="meta">8.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/code-inactive.svg" data-name="code-inactive.svg">
+      <div class="thumb"><img src="assets/design/home/code-inactive.svg" alt="code-inactive.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="code-inactive.svg">code-inactive.svg</span><span class="meta">8.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/coding-slogan.svg" data-name="coding-slogan.svg">
+      <div class="thumb"><img src="assets/design/home/coding-slogan.svg" alt="coding-slogan.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="coding-slogan.svg">coding-slogan.svg</span><span class="meta">568.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/connector.svg" data-name="connector.svg">
+      <div class="thumb"><img src="assets/design/home/connector.svg" alt="connector.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="connector.svg">connector.svg</span><span class="meta">7.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/convert.svg" data-name="convert.svg">
+      <div class="thumb"><img src="assets/design/home/convert.svg" alt="convert.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="convert.svg">convert.svg</span><span class="meta">655 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/default-permission.svg" data-name="default-permission.svg">
+      <div class="thumb"><img src="assets/design/home/default-permission.svg" alt="default-permission.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="default-permission.svg">default-permission.svg</span><span class="meta">1.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/document.svg" data-name="document.svg">
+      <div class="thumb"><img src="assets/design/home/document.svg" alt="document.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="document.svg">document.svg</span><span class="meta">4.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/full-access.svg" data-name="full-access.svg">
+      <div class="thumb"><img src="assets/design/home/full-access.svg" alt="full-access.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="full-access.svg">full-access.svg</span><span class="meta">1.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/generating.svg" data-name="generating.svg">
+      <div class="thumb"><img src="assets/design/home/generating.svg" alt="generating.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="generating.svg">generating.svg</span><span class="meta">4.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/home-mascot-code.mp4" data-name="home-mascot-code.mp4">
+      <div class="thumb"><video src="assets/design/home/home-mascot-code.mp4" preload="metadata" controls muted></video></div>
+      <figcaption><span class="name" title="home-mascot-code.mp4">home-mascot-code.mp4</span><span class="meta">133 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/home-mascot-work-still.png" data-name="home-mascot-work-still.png">
+      <div class="thumb"><img src="assets/design/home/home-mascot-work-still.png" alt="home-mascot-work-still.png" loading="lazy"></div>
+      <figcaption><span class="name" title="home-mascot-work-still.png">home-mascot-work-still.png</span><span class="meta">1886.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/home-mascot-work.mp4" data-name="home-mascot-work.mp4">
+      <div class="thumb"><video src="assets/design/home/home-mascot-work.mp4" preload="metadata" controls muted></video></div>
+      <figcaption><span class="name" title="home-mascot-work.mp4">home-mascot-work.mp4</span><span class="meta">4098.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/manage-skill.svg" data-name="manage-skill.svg">
+      <div class="thumb"><img src="assets/design/home/manage-skill.svg" alt="manage-skill.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="manage-skill.svg">manage-skill.svg</span><span class="meta">4.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/more.svg" data-name="more.svg">
+      <div class="thumb"><img src="assets/design/home/more.svg" alt="more.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="more.svg">more.svg</span><span class="meta">1.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/multi-agent-mode.svg" data-name="multi-agent-mode.svg">
+      <div class="thumb"><img src="assets/design/home/multi-agent-mode.svg" alt="multi-agent-mode.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="multi-agent-mode.svg">multi-agent-mode.svg</span><span class="meta">6.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/new-chat.svg" data-name="new-chat.svg">
+      <div class="thumb"><img src="assets/design/home/new-chat.svg" alt="new-chat.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="new-chat.svg">new-chat.svg</span><span class="meta">1.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/new-project.svg" data-name="new-project.svg">
+      <div class="thumb"><img src="assets/design/home/new-project.svg" alt="new-project.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="new-project.svg">new-project.svg</span><span class="meta">222 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/news.svg" data-name="news.svg">
+      <div class="thumb"><img src="assets/design/home/news.svg" alt="news.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="news.svg">news.svg</span><span class="meta">710 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/plus.svg" data-name="plus.svg">
+      <div class="thumb"><img src="assets/design/home/plus.svg" alt="plus.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="plus.svg">plus.svg</span><span class="meta">5.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/project-collapsed.svg" data-name="project-collapsed.svg">
+      <div class="thumb"><img src="assets/design/home/project-collapsed.svg" alt="project-collapsed.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="project-collapsed.svg">project-collapsed.svg</span><span class="meta">655 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/project-expanded.svg" data-name="project-expanded.svg">
+      <div class="thumb"><img src="assets/design/home/project-expanded.svg" alt="project-expanded.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="project-expanded.svg">project-expanded.svg</span><span class="meta">1014 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/project-new-chat.svg" data-name="project-new-chat.svg">
+      <div class="thumb"><img src="assets/design/home/project-new-chat.svg" alt="project-new-chat.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="project-new-chat.svg">project-new-chat.svg</span><span class="meta">842 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/request-permission.svg" data-name="request-permission.svg">
+      <div class="thumb"><img src="assets/design/home/request-permission.svg" alt="request-permission.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="request-permission.svg">request-permission.svg</span><span class="meta">5.9 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/research-report.svg" data-name="research-report.svg">
+      <div class="thumb"><img src="assets/design/home/research-report.svg" alt="research-report.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="research-report.svg">research-report.svg</span><span class="meta">4.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/scheduled-task.svg" data-name="scheduled-task.svg">
+      <div class="thumb"><img src="assets/design/home/scheduled-task.svg" alt="scheduled-task.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="scheduled-task.svg">scheduled-task.svg</span><span class="meta">870 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/section-toggle.svg" data-name="section-toggle.svg">
+      <div class="thumb"><img src="assets/design/home/section-toggle.svg" alt="section-toggle.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="section-toggle.svg">section-toggle.svg</span><span class="meta">263 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/select-project-space.svg" data-name="select-project-space.svg">
+      <div class="thumb"><img src="assets/design/home/select-project-space.svg" alt="select-project-space.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="select-project-space.svg">select-project-space.svg</span><span class="meta">6.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/send-active.svg" data-name="send-active.svg">
+      <div class="thumb"><img src="assets/design/home/send-active.svg" alt="send-active.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="send-active.svg">send-active.svg</span><span class="meta">2.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/send-inactive.svg" data-name="send-inactive.svg">
+      <div class="thumb"><img src="assets/design/home/send-inactive.svg" alt="send-inactive.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="send-inactive.svg">send-inactive.svg</span><span class="meta">2.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/sidebar-delete.svg" data-name="sidebar-delete.svg">
+      <div class="thumb"><img src="assets/design/home/sidebar-delete.svg" alt="sidebar-delete.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="sidebar-delete.svg">sidebar-delete.svg</span><span class="meta">834 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/sidebar-logo.svg" data-name="sidebar-logo.svg">
+      <div class="thumb"><img src="assets/design/home/sidebar-logo.svg" alt="sidebar-logo.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="sidebar-logo.svg">sidebar-logo.svg</span><span class="meta">2221.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/sidebar-more.svg" data-name="sidebar-more.svg">
+      <div class="thumb"><img src="assets/design/home/sidebar-more.svg" alt="sidebar-more.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="sidebar-more.svg">sidebar-more.svg</span><span class="meta">2.3 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/sidebar-pin.svg" data-name="sidebar-pin.svg">
+      <div class="thumb"><img src="assets/design/home/sidebar-pin.svg" alt="sidebar-pin.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="sidebar-pin.svg">sidebar-pin.svg</span><span class="meta">3.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/sidebar-rename.svg" data-name="sidebar-rename.svg">
+      <div class="thumb"><img src="assets/design/home/sidebar-rename.svg" alt="sidebar-rename.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="sidebar-rename.svg">sidebar-rename.svg</span><span class="meta">697 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/sidebar-unpin.svg" data-name="sidebar-unpin.svg">
+      <div class="thumb"><img src="assets/design/home/sidebar-unpin.svg" alt="sidebar-unpin.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="sidebar-unpin.svg">sidebar-unpin.svg</span><span class="meta">2.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/sidebar-user-avatar.svg" data-name="sidebar-user-avatar.svg">
+      <div class="thumb"><img src="assets/design/home/sidebar-user-avatar.svg" alt="sidebar-user-avatar.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="sidebar-user-avatar.svg">sidebar-user-avatar.svg</span><span class="meta">1499.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/single-agent-mode.svg" data-name="single-agent-mode.svg">
+      <div class="thumb"><img src="assets/design/home/single-agent-mode.svg" alt="single-agent-mode.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="single-agent-mode.svg">single-agent-mode.svg</span><span class="meta">6.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/skill.svg" data-name="skill.svg">
+      <div class="thumb"><img src="assets/design/home/skill.svg" alt="skill.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="skill.svg">skill.svg</span><span class="meta">1.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/slides.svg" data-name="slides.svg">
+      <div class="thumb"><img src="assets/design/home/slides.svg" alt="slides.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="slides.svg">slides.svg</span><span class="meta">7.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/slogan.png" data-name="slogan.png">
+      <div class="thumb"><img src="assets/design/home/slogan.png" alt="slogan.png" loading="lazy"></div>
+      <figcaption><span class="name" title="slogan.png">slogan.png</span><span class="meta">40.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/table.svg" data-name="table.svg">
+      <div class="thumb"><img src="assets/design/home/table.svg" alt="table.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="table.svg">table.svg</span><span class="meta">7.9 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/toast-close.svg" data-name="toast-close.svg">
+      <div class="thumb"><img src="assets/design/home/toast-close.svg" alt="toast-close.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="toast-close.svg">toast-close.svg</span><span class="meta">909 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/toast-error.svg" data-name="toast-error.svg">
+      <div class="thumb"><img src="assets/design/home/toast-error.svg" alt="toast-error.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="toast-error.svg">toast-error.svg</span><span class="meta">857 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/toast-success.svg" data-name="toast-success.svg">
+      <div class="thumb"><img src="assets/design/home/toast-success.svg" alt="toast-success.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="toast-success.svg">toast-success.svg</span><span class="meta">994 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/token.svg" data-name="token.svg">
+      <div class="thumb"><img src="assets/design/home/token.svg" alt="token.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="token.svg">token.svg</span><span class="meta">802 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/user-avatar.svg" data-name="user-avatar.svg">
+      <div class="thumb"><img src="assets/design/home/user-avatar.svg" alt="user-avatar.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="user-avatar.svg">user-avatar.svg</span><span class="meta">2293.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/work-active.svg" data-name="work-active.svg">
+      <div class="thumb"><img src="assets/design/home/work-active.svg" alt="work-active.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="work-active.svg">work-active.svg</span><span class="meta">9.3 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/home/work-inactive.svg" data-name="work-inactive.svg">
+      <div class="thumb"><img src="assets/design/home/work-inactive.svg" alt="work-inactive.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="work-inactive.svg">work-inactive.svg</span><span class="meta">9.4 KB</span></figcaption>
+    </figure></div></section>
+<section class="group"><h2>assets/design/stream<small>5</small></h2><div class="grid"><figure class="card" data-src="assets/design/stream/cursor.webp" data-name="cursor.webp">
+      <div class="thumb"><img src="assets/design/stream/cursor.webp" alt="cursor.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="cursor.webp">cursor.webp</span><span class="meta">101.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/stream/generating.webp" data-name="generating.webp">
+      <div class="thumb"><img src="assets/design/stream/generating.webp" alt="generating.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="generating.webp">generating.webp</span><span class="meta">182.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/stream/image858.png" data-name="image858.png">
+      <div class="thumb"><img src="assets/design/stream/image858.png" alt="image858.png" loading="lazy"></div>
+      <figcaption><span class="name" title="image858.png">image858.png</span><span class="meta">19.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/stream/image859.png" data-name="image859.png">
+      <div class="thumb"><img src="assets/design/stream/image859.png" alt="image859.png" loading="lazy"></div>
+      <figcaption><span class="name" title="image859.png">image859.png</span><span class="meta">20.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/design/stream/image860.png" data-name="image860.png">
+      <div class="thumb"><img src="assets/design/stream/image860.png" alt="image860.png" loading="lazy"></div>
+      <figcaption><span class="name" title="image860.png">image860.png</span><span class="meta">19.5 KB</span></figcaption>
+    </figure></div></section>
+<section class="group"><h2>assets/file-types<small>12</small></h2><div class="grid"><figure class="card" data-src="assets/file-types/audio.svg" data-name="audio.svg">
+      <div class="thumb"><img src="assets/file-types/audio.svg" alt="audio.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="audio.svg">audio.svg</span><span class="meta">5.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/file-types/compressed.svg" data-name="compressed.svg">
+      <div class="thumb"><img src="assets/file-types/compressed.svg" alt="compressed.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="compressed.svg">compressed.svg</span><span class="meta">3.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/file-types/csv.svg" data-name="csv.svg">
+      <div class="thumb"><img src="assets/file-types/csv.svg" alt="csv.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="csv.svg">csv.svg</span><span class="meta">3.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/file-types/excel.svg" data-name="excel.svg">
+      <div class="thumb"><img src="assets/file-types/excel.svg" alt="excel.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="excel.svg">excel.svg</span><span class="meta">3.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/file-types/folder.svg" data-name="folder.svg">
+      <div class="thumb"><img src="assets/file-types/folder.svg" alt="folder.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="folder.svg">folder.svg</span><span class="meta">1.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/file-types/pdf.svg" data-name="pdf.svg">
+      <div class="thumb"><img src="assets/file-types/pdf.svg" alt="pdf.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="pdf.svg">pdf.svg</span><span class="meta">5.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/file-types/powerpoint.svg" data-name="powerpoint.svg">
+      <div class="thumb"><img src="assets/file-types/powerpoint.svg" alt="powerpoint.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="powerpoint.svg">powerpoint.svg</span><span class="meta">4.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/file-types/text.svg" data-name="text.svg">
+      <div class="thumb"><img src="assets/file-types/text.svg" alt="text.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="text.svg">text.svg</span><span class="meta">4.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/file-types/unknown.svg" data-name="unknown.svg">
+      <div class="thumb"><img src="assets/file-types/unknown.svg" alt="unknown.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="unknown.svg">unknown.svg</span><span class="meta">9.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/file-types/video.svg" data-name="video.svg">
+      <div class="thumb"><img src="assets/file-types/video.svg" alt="video.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="video.svg">video.svg</span><span class="meta">7.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/file-types/word.svg" data-name="word.svg">
+      <div class="thumb"><img src="assets/file-types/word.svg" alt="word.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="word.svg">word.svg</span><span class="meta">3.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/file-types/workflow.svg" data-name="workflow.svg">
+      <div class="thumb"><img src="assets/file-types/workflow.svg" alt="workflow.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="workflow.svg">workflow.svg</span><span class="meta">5.7 KB</span></figcaption>
+    </figure></div></section>
+<section class="group"><h2>assets/icons<small>5</small></h2><div class="grid"><figure class="card" data-src="assets/icons/check.svg" data-name="check.svg">
+      <div class="thumb"><img src="assets/icons/check.svg" alt="check.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="check.svg">check.svg</span><span class="meta">2.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/icons/chevron-down.svg" data-name="chevron-down.svg">
+      <div class="thumb"><img src="assets/icons/chevron-down.svg" alt="chevron-down.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="chevron-down.svg">chevron-down.svg</span><span class="meta">3.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/icons/plugin.svg" data-name="plugin.svg">
+      <div class="thumb"><img src="assets/icons/plugin.svg" alt="plugin.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="plugin.svg">plugin.svg</span><span class="meta">3.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/icons/search.svg" data-name="search.svg">
+      <div class="thumb"><img src="assets/icons/search.svg" alt="search.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="search.svg">search.svg</span><span class="meta">3.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/icons/select-project-path.svg" data-name="select-project-path.svg">
+      <div class="thumb"><img src="assets/icons/select-project-path.svg" alt="select-project-path.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="select-project-path.svg">select-project-path.svg</span><span class="meta">824 B</span></figcaption>
+    </figure></div></section>
+<section class="group"><h2>assets/models<small>3</small></h2><div class="grid"><figure class="card" data-src="assets/models/deepseek.svg" data-name="deepseek.svg">
+      <div class="thumb"><img src="assets/models/deepseek.svg" alt="deepseek.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="deepseek.svg">deepseek.svg</span><span class="meta">48.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/models/glm.svg" data-name="glm.svg">
+      <div class="thumb"><img src="assets/models/glm.svg" alt="glm.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="glm.svg">glm.svg</span><span class="meta">35.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/models/minimax.svg" data-name="minimax.svg">
+      <div class="thumb"><img src="assets/models/minimax.svg" alt="minimax.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="minimax.svg">minimax.svg</span><span class="meta">31.7 KB</span></figcaption>
+    </figure></div></section>
+<section class="group"><h2>assets/plugins<small>24</small></h2><div class="grid"><figure class="card" data-src="assets/plugins/alert.svg" data-name="alert.svg">
+      <div class="thumb"><img src="assets/plugins/alert.svg" alt="alert.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="alert.svg">alert.svg</span><span class="meta">356 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/arrow-left.svg" data-name="arrow-left.svg">
+      <div class="thumb"><img src="assets/plugins/arrow-left.svg" alt="arrow-left.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="arrow-left.svg">arrow-left.svg</span><span class="meta">222 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/category-all.svg" data-name="category-all.svg">
+      <div class="thumb"><img src="assets/plugins/category-all.svg" alt="category-all.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="category-all.svg">category-all.svg</span><span class="meta">4.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/category-content.svg" data-name="category-content.svg">
+      <div class="thumb"><img src="assets/plugins/category-content.svg" alt="category-content.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="category-content.svg">category-content.svg</span><span class="meta">7.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/category-data.svg" data-name="category-data.svg">
+      <div class="thumb"><img src="assets/plugins/category-data.svg" alt="category-data.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="category-data.svg">category-data.svg</span><span class="meta">4.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/category-dev.svg" data-name="category-dev.svg">
+      <div class="thumb"><img src="assets/plugins/category-dev.svg" alt="category-dev.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="category-dev.svg">category-dev.svg</span><span class="meta">6.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/category-finance.svg" data-name="category-finance.svg">
+      <div class="thumb"><img src="assets/plugins/category-finance.svg" alt="category-finance.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="category-finance.svg">category-finance.svg</span><span class="meta">5.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/category-health.svg" data-name="category-health.svg">
+      <div class="thumb"><img src="assets/plugins/category-health.svg" alt="category-health.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="category-health.svg">category-health.svg</span><span class="meta">11.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/category-legal.svg" data-name="category-legal.svg">
+      <div class="thumb"><img src="assets/plugins/category-legal.svg" alt="category-legal.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="category-legal.svg">category-legal.svg</span><span class="meta">6.3 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/category-media.svg" data-name="category-media.svg">
+      <div class="thumb"><img src="assets/plugins/category-media.svg" alt="category-media.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="category-media.svg">category-media.svg</span><span class="meta">9.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/category-office.svg" data-name="category-office.svg">
+      <div class="thumb"><img src="assets/plugins/category-office.svg" alt="category-office.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="category-office.svg">category-office.svg</span><span class="meta">8.3 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/chevron-down.svg" data-name="chevron-down.svg">
+      <div class="thumb"><img src="assets/plugins/chevron-down.svg" alt="chevron-down.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="chevron-down.svg">chevron-down.svg</span><span class="meta">516 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/close.svg" data-name="close.svg">
+      <div class="thumb"><img src="assets/plugins/close.svg" alt="close.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="close.svg">close.svg</span><span class="meta">203 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/connector-connect-dialog.svg" data-name="connector-connect-dialog.svg">
+      <div class="thumb"><img src="assets/plugins/connector-connect-dialog.svg" alt="connector-connect-dialog.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="connector-connect-dialog.svg">connector-connect-dialog.svg</span><span class="meta">7.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/connector-connect.svg" data-name="connector-connect.svg">
+      <div class="thumb"><img src="assets/plugins/connector-connect.svg" alt="connector-connect.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="connector-connect.svg">connector-connect.svg</span><span class="meta">7.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/connector-connected.svg" data-name="connector-connected.svg">
+      <div class="thumb"><img src="assets/plugins/connector-connected.svg" alt="connector-connected.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="connector-connected.svg">connector-connected.svg</span><span class="meta">2.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/connector-connecting.svg" data-name="connector-connecting.svg">
+      <div class="thumb"><img src="assets/plugins/connector-connecting.svg" alt="connector-connecting.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="connector-connecting.svg">connector-connecting.svg</span><span class="meta">8.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/connector-custom.svg" data-name="connector-custom.svg">
+      <div class="thumb"><img src="assets/plugins/connector-custom.svg" alt="connector-custom.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="connector-custom.svg">connector-custom.svg</span><span class="meta">6.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/connector-disconnect.svg" data-name="connector-disconnect.svg">
+      <div class="thumb"><img src="assets/plugins/connector-disconnect.svg" alt="connector-disconnect.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="connector-disconnect.svg">connector-disconnect.svg</span><span class="meta">3.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/connector-more.svg" data-name="connector-more.svg">
+      <div class="thumb"><img src="assets/plugins/connector-more.svg" alt="connector-more.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="connector-more.svg">connector-more.svg</span><span class="meta">4.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/connector-success.svg" data-name="connector-success.svg">
+      <div class="thumb"><img src="assets/plugins/connector-success.svg" alt="connector-success.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="connector-success.svg">connector-success.svg</span><span class="meta">2.9 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/ellipsis.svg" data-name="ellipsis.svg">
+      <div class="thumb"><img src="assets/plugins/ellipsis.svg" alt="ellipsis.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="ellipsis.svg">ellipsis.svg</span><span class="meta">4.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/plugins-banner.svg" data-name="plugins-banner.svg">
+      <div class="thumb"><img src="assets/plugins/plugins-banner.svg" alt="plugins-banner.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="plugins-banner.svg">plugins-banner.svg</span><span class="meta">2411.5 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/plugins/plus.svg" data-name="plus.svg">
+      <div class="thumb"><img src="assets/plugins/plus.svg" alt="plus.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="plus.svg">plus.svg</span><span class="meta">202 B</span></figcaption>
+    </figure></div></section>
+<section class="group"><h2>assets/team<small>17</small></h2><div class="grid"><figure class="card" data-src="assets/team/auth-hand.svg" data-name="auth-hand.svg">
+      <div class="thumb"><img src="assets/team/auth-hand.svg" alt="auth-hand.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="auth-hand.svg">auth-hand.svg</span><span class="meta">1.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/chat-preview-mascots.svg" data-name="chat-preview-mascots.svg">
+      <div class="thumb"><img src="assets/team/chat-preview-mascots.svg" alt="chat-preview-mascots.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="chat-preview-mascots.svg">chat-preview-mascots.svg</span><span class="meta">19.1 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/chevron-down.svg" data-name="chevron-down.svg">
+      <div class="thumb"><img src="assets/team/chevron-down.svg" alt="chevron-down.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="chevron-down.svg">chevron-down.svg</span><span class="meta">212 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/chip-loading.svg" data-name="chip-loading.svg">
+      <div class="thumb"><img src="assets/team/chip-loading.svg" alt="chip-loading.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="chip-loading.svg">chip-loading.svg</span><span class="meta">460 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/header-calendar.png" data-name="header-calendar.png">
+      <div class="thumb"><img src="assets/team/header-calendar.png" alt="header-calendar.png" loading="lazy"></div>
+      <figcaption><span class="name" title="header-calendar.png">header-calendar.png</span><span class="meta">1.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/header-expand.svg" data-name="header-expand.svg">
+      <div class="thumb"><img src="assets/team/header-expand.svg" alt="header-expand.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="header-expand.svg">header-expand.svg</span><span class="meta">1.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/progress-bird-auth.svg" data-name="progress-bird-auth.svg">
+      <div class="thumb"><img src="assets/team/progress-bird-auth.svg" alt="progress-bird-auth.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="progress-bird-auth.svg">progress-bird-auth.svg</span><span class="meta">8.2 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/progress-bird-complete.svg" data-name="progress-bird-complete.svg">
+      <div class="thumb"><img src="assets/team/progress-bird-complete.svg" alt="progress-bird-complete.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="progress-bird-complete.svg">progress-bird-complete.svg</span><span class="meta">10.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/progress-bird-error.svg" data-name="progress-bird-error.svg">
+      <div class="thumb"><img src="assets/team/progress-bird-error.svg" alt="progress-bird-error.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="progress-bird-error.svg">progress-bird-error.svg</span><span class="meta">9.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/progress-bird.webp" data-name="progress-bird.webp">
+      <div class="thumb"><img src="assets/team/progress-bird.webp" alt="progress-bird.webp" loading="lazy"></div>
+      <figcaption><span class="name" title="progress-bird.webp">progress-bird.webp</span><span class="meta">2685.6 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/section-arrow.svg" data-name="section-arrow.svg">
+      <div class="thumb"><img src="assets/team/section-arrow.svg" alt="section-arrow.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="section-arrow.svg">section-arrow.svg</span><span class="meta">244 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/step-done.svg" data-name="step-done.svg">
+      <div class="thumb"><img src="assets/team/step-done.svg" alt="step-done.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="step-done.svg">step-done.svg</span><span class="meta">369 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/step-error.svg" data-name="step-error.svg">
+      <div class="thumb"><img src="assets/team/step-error.svg" alt="step-error.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="step-error.svg">step-error.svg</span><span class="meta">398 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/step-loading.svg" data-name="step-loading.svg">
+      <div class="thumb"><img src="assets/team/step-loading.svg" alt="step-loading.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="step-loading.svg">step-loading.svg</span><span class="meta">460 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/step-pending.svg" data-name="step-pending.svg">
+      <div class="thumb"><img src="assets/team/step-pending.svg" alt="step-pending.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="step-pending.svg">step-pending.svg</span><span class="meta">477 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/tab-files.svg" data-name="tab-files.svg">
+      <div class="thumb"><img src="assets/team/tab-files.svg" alt="tab-files.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="tab-files.svg">tab-files.svg</span><span class="meta">626 B</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/tab-summary.svg" data-name="tab-summary.svg">
+      <div class="thumb"><img src="assets/team/tab-summary.svg" alt="tab-summary.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="tab-summary.svg">tab-summary.svg</span><span class="meta">826 B</span></figcaption>
+    </figure></div></section>
+<section class="group"><h2>assets/team/avatars<small>6</small></h2><div class="grid"><figure class="card" data-src="assets/team/avatars/avatar-design.svg" data-name="avatar-design.svg">
+      <div class="thumb"><img src="assets/team/avatars/avatar-design.svg" alt="avatar-design.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="avatar-design.svg">avatar-design.svg</span><span class="meta">29.0 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/avatars/avatar-develop.svg" data-name="avatar-develop.svg">
+      <div class="thumb"><img src="assets/team/avatars/avatar-develop.svg" alt="avatar-develop.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="avatar-develop.svg">avatar-develop.svg</span><span class="meta">33.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/avatars/avatar-director.svg" data-name="avatar-director.svg">
+      <div class="thumb"><img src="assets/team/avatars/avatar-director.svg" alt="avatar-director.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="avatar-director.svg">avatar-director.svg</span><span class="meta">25.4 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/avatars/avatar-extra.svg" data-name="avatar-extra.svg">
+      <div class="thumb"><img src="assets/team/avatars/avatar-extra.svg" alt="avatar-extra.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="avatar-extra.svg">avatar-extra.svg</span><span class="meta">23.8 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/avatars/avatar-research.svg" data-name="avatar-research.svg">
+      <div class="thumb"><img src="assets/team/avatars/avatar-research.svg" alt="avatar-research.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="avatar-research.svg">avatar-research.svg</span><span class="meta">25.7 KB</span></figcaption>
+    </figure>
+<figure class="card" data-src="assets/team/avatars/avatar-test.svg" data-name="avatar-test.svg">
+      <div class="thumb"><img src="assets/team/avatars/avatar-test.svg" alt="avatar-test.svg" loading="lazy"></div>
+      <figcaption><span class="name" title="avatar-test.svg">avatar-test.svg</span><span class="meta">28.6 KB</span></figcaption>
+    </figure></div></section>
+</main>
+<div id="lightbox"><img><div class="cap"></div></div>
+<footer>重新拷贝资源后执行 node make-preview.mjs 刷新本页 · 挑选后的资源请拷贝到工程 assets/ 后执行 sync-assets</footer>
+<script>
+  var body = document.body;
+  document.querySelectorAll(".modes button").forEach(function (b) {
+    b.onclick = function () {
+      document.querySelectorAll(".modes button").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      body.className = b.dataset.mode;
+    };
+  });
+  var lb = document.getElementById("lightbox");
+  var lbImg = lb.querySelector("img");
+  var lbCap = lb.querySelector(".cap");
+  document.querySelectorAll(".card").forEach(function (c) {
+    c.onclick = function () {
+      var v = c.querySelector("video");
+      if (v) return;
+      lbImg.src = c.dataset.src;
+      lbCap.textContent = c.dataset.name;
+      lb.classList.add("open");
+    };
+  });
+  lb.onclick = function () { lb.classList.remove("open"); lbImg.src = ""; };
+</script>
+</body>
+</html>
