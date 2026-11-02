@@ -797,13 +797,19 @@
   background-color: var(--color-interactive-hover);
   color: var(--black);
   cursor: pointer;
-  /* 叉号始终深色可见,不随 hover 显隐 */
-  transition: background-color var(--duration-fast) var(--ease-standard);
+  /* 叉号仅 hover 所在卡片时出现 */
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
 }
 
 /* 暗色模式下叉号反转为白色,保证可见 */
 .dark .cc-shell .cc-file-x {
   color: var(--white);
+}
+
+.cc-file-card:hover .cc-file-x {
+  opacity: 1;
 }
 
 .cc-file-x:hover {
@@ -1186,7 +1192,7 @@
   max-width: min(560px, calc(100vw - 48px));
   padding: 10px 12px 10px 14px;
   border-radius: var(--radius-lg);
-  background-color: var(--inverse-surface);
+  background-color: var(--gray-02);
   box-shadow: var(--shadow-popover);
   transform: translateX(-50%);
 }
@@ -1207,7 +1213,7 @@
 .cc-toast-text {
   min-width: 0;
   overflow: hidden;
-  color: var(--inverse-on-surface);
+  color: var(--on-surface);
   font: var(--font-body-sm);
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1224,11 +1230,11 @@
   border: none;
   border-radius: var(--radius-sm);
   background-color: transparent;
-  color: var(--inverse-on-surface-variant);
+  color: var(--color-icon-secondary);
   cursor: pointer;
 }
 
 .cc-toast-close:hover {
-  color: var(--inverse-on-surface);
-  background-color: var(--on-primary-10);
+  color: var(--on-surface);
+  background-color: var(--color-interactive-hover);
 }

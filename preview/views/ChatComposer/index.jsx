@@ -1217,7 +1217,7 @@ export default function ChatComposer(props) {
             onClick={() => setToast("")}
             aria-label="关闭提示"
           >
-            <Icon name="x" size={14} />
+            <Icon mask="./assets/uploads/icon/function/close.svg" size={14} />
           </button>
         </div>
       ) : null}
