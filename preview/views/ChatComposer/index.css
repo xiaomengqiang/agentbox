@@ -10,9 +10,14 @@
   flex-direction: column;
   padding: 4px;
   border-radius: var(--radius-3xl);
-  background-color: var(--surface-container-low);
+  background-color: #eff1f3;
   color: var(--on-surface);
   font-family: var(--font-family);
+}
+
+/* 暗色模式回退到语义容器色 */
+.dark .cc-shell {
+  background-color: var(--surface-container-low);
 }
 
 /* ---- 白色输入卡片 792 × 140 ----
