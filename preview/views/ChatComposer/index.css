@@ -31,6 +31,16 @@
   border-radius: var(--radius-2xl);
 }
 
+/* 输入框右上角外侧的吉祥鸟装饰插画(纯装饰,不拦截交互;整体悬于外框上方,不被卡片遮挡) */
+.cc-shell-mascot {
+  position: absolute;
+  top: -96px;
+  right: 24px;
+  width: 88px;
+  height: 88px;
+  pointer-events: none;
+}
+
 /* ---- 正文输入区 ---- */
 .cc-body {
   flex: 1 1 auto;
@@ -75,7 +85,7 @@
   min-width: 0;
 }
 
-/* ---- 幽灵图标按钮（加号） ---- */
+/* ---- 幽灵图标按钮（加号）：无底色，仅 hover 出现浅色底 ---- */
 .cc-ghost {
   display: inline-flex;
   align-items: center;
@@ -84,7 +94,7 @@
   height: 30px;
   border: none;
   border-radius: var(--radius-full);
-  background-color: var(--surface-container);
+  background-color: transparent;
   color: var(--color-icon-secondary);
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard),
@@ -93,7 +103,7 @@
 
 .cc-ghost:hover,
 .cc-ghost.is-active {
-  background-color: var(--surface-container-high);
+  background-color: var(--color-interactive-hover);
   color: var(--color-icon-primary);
 }
 
@@ -318,6 +328,33 @@
   background-color: var(--color-interactive-hover);
 }
 
+/* 行右侧:运行环境(本地/云端)下拉 */
+.cc-drop-local {
+  margin-left: auto;
+}
+
+.cc-local {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 10px 0 8px;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: var(--text-secondary);
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cc-local:hover,
+.cc-local.is-active {
+  background-color: var(--color-interactive-hover);
+  color: var(--on-surface);
+}
+
 /* ---- 空间面板：搜索行 / 分割线 / 空态 ---- */
 .cc-space-menu {
   width: max-content;
@@ -372,6 +409,7 @@
 .cc-ghost:focus-visible,
 .cc-send:focus-visible,
 .cc-space:focus-visible,
+.cc-local:focus-visible,
 .cc-menu-item:focus-visible,
 .cc-modal-close:focus-visible,
 .cc-field-input:focus-visible,

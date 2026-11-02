@@ -218,17 +218,12 @@
   text-align: center;
 }
 
-.cw-hero-title {
-  font: var(--font-title-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  margin: 0;
-}
-
-.cw-hero-sub {
-  font: var(--font-body-md);
-  color: var(--text-secondary);
-  margin: 0;
+/* 欢迎区 slogan 图片(源资源 421x68) */
+.cw-hero-slogan {
+  display: block;
+  width: 421px;
+  max-width: 100%;
+  height: auto;
 }
 
 .cw-composer {
@@ -236,10 +231,35 @@
   max-width: 820px;
 }
 
-.cw-footnote {
+/* 底部快捷能力胶囊 */
+.cw-capabilities {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cw-cap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--color-comp-border);
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: var(--text-secondary);
   font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-  margin: 0;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.cw-cap:hover {
+  background-color: var(--color-interactive-hover);
+  color: var(--on-surface);
 }
 
 @media (max-width: 960px) {

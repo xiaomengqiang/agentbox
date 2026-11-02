@@ -8,6 +8,7 @@ const AGENT_MODES = [
     id: "single",
     label: "单Agent模式",
     icon: "bot",
+    src: "./assets/uploads/single-agent-mode.svg",
     desc: "在安全沙箱内自动执行，超出范围时会请求你的允许",
   },
   {
@@ -23,6 +24,7 @@ const PERMISSIONS = [
     id: "request",
     label: "请求权限",
     icon: "hand",
+    src: "./assets/uploads/request-permission.svg",
     desc: "在安全沙箱内自动执行，超出范围时会请求你的允许",
   },
   {
@@ -30,6 +32,22 @@ const PERMISSIONS = [
     label: "完全访问",
     icon: "shield-alert",
     desc: "自动执行所有操作，可能涉及文件修改或外部执行等敏感操作",
+  },
+];
+
+/* 运行环境:本地/云端 */
+const RUNTIMES = [
+  {
+    id: "local",
+    label: "本地模式",
+    icon: "hard-drive",
+    desc: "项目运行于本地电脑，数据与文件存储在本地设备中",
+  },
+  {
+    id: "cloud",
+    label: "云端模式",
+    icon: "cloud",
+    desc: "项目运行于一体机云端环境，数据与文件存储在一体机中",
   },
 ];
 
@@ -202,7 +220,9 @@ export default function ChatComposer(props) {
   } = props;
 
   // auto 固定置于选项首位，其后拼接外部传入的模型列表
-  const modelOptions = [{ id: "auto", label: "Auto", icon: "zap" }].concat(models);
+  const modelOptions = [
+    { id: "auto", label: "Auto", icon: "zap", src: "./assets/uploads/auto-select-model.svg" },
+  ].concat(models);
 
   const [mode, setMode] = useState(AGENT_MODES.find((m) => m.id === modeId) || AGENT_MODES[0]);
   const [permission, setPermission] = useState(
@@ -212,6 +232,7 @@ export default function ChatComposer(props) {
     modelOptions.find((m) => m.id === modelId) || modelOptions[0]
   );
   const [space, setSpace] = useState(SPACES.find((s) => s.id === spaceId) || null);
+  const [runtime, setRuntime] = useState(RUNTIMES[0]);
 
   const [msg, setMsg] = useState(initialMessage);
   const [open, setOpen] = useState(null); // 当前展开的下拉：mode / permission / model / space / attach
@@ -591,6 +612,13 @@ export default function ChatComposer(props) {
 
   return (
     <div className="cc-shell">
+      {/* 输入框右上角外侧:吉祥鸟装饰(不参与交互) */}
+      <img
+        className="cc-shell-mascot"
+        src="./assets/uploads/mascot-bird.svg"
+        alt=""
+        aria-hidden="true"
+      />
       {/* ============ 输入卡片 792 × 140 ============ */}
       <div className="cc-card">
         {/* 正文输入区 */}
@@ -642,7 +670,7 @@ export default function ChatComposer(props) {
           ) : null}
           <textarea
             className="cc-input"
-            placeholder={cmdChips.length ? "继续输入你的需求…" : "输入 / 唤起快捷指令，或直接描述任务…"}
+            placeholder={cmdChips.length ? "继续输入你的需求…" : '需要帮你做些什么?输入"/"快速引用技能及指令'}
             value={msg}
             onChange={handleInput}
             onKeyDown={onKeyDown}
@@ -666,11 +694,7 @@ export default function ChatComposer(props) {
                 title="添加内容"
                 aria-label="添加内容"
               >
-                <Icon
-                  name="plus"
-                  size={16}
-                  className={"cc-plus-icon" + (open === "attach" ? " is-rot" : "")}
-                />
+                <Icon src="./assets/uploads/add-skill.svg" size={16} className="cc-plus-icon" />
               </button>
               {open === "attach" ? (
                 <div className="cc-addmenu" onMouseLeave={() => setHoverAdd(null)}>
@@ -689,7 +713,7 @@ export default function ChatComposer(props) {
                 className={"cc-chip" + (open === "mode" ? " is-active" : "")}
                 onClick={() => toggle("mode")}
               >
-                <Icon name={mode.icon} size={16} />
+                <Icon name={mode.icon} src={mode.src} size={16} />
                 <span className="cc-chip-label">{mode.label}</span>
                 <Icon name="chevron-down" size={13} className="cc-chev" />
               </button>
@@ -709,7 +733,7 @@ export default function ChatComposer(props) {
                 }
                 onClick={() => toggle("permission")}
               >
-                <Icon name={permission.icon} size={16} />
+                <Icon name={permission.icon} src={permission.src} size={16} />
                 <span className="cc-chip-label">{permission.label}</span>
                 <Icon name="chevron-down" size={13} className="cc-chev" />
               </button>
@@ -774,7 +798,7 @@ export default function ChatComposer(props) {
             className={"cc-space" + (open === "space" ? " is-active" : "")}
             onClick={() => toggle("space")}
           >
-            <Icon name="folder-open" size={14} />
+            <Icon src="./assets/uploads/select-project-space.svg" size={16} />
             <span className="cc-chip-label">{space ? space.name : "选择项目空间"}</span>
           </button>
           {open === "space" ? (
@@ -848,6 +872,27 @@ export default function ChatComposer(props) {
                 </span>
               </button>
             </div>
+          ) : null}
+        </div>
+
+        {/* 右侧:运行环境(本地/云端)下拉,面板向上弹出、右对齐 */}
+        <div
+          className={
+            "cc-drop cc-drop-up cc-drop-right cc-drop-local" +
+            (open === "runtime" ? " is-active" : "")
+          }
+          data-drop
+        >
+          <button
+            type="button"
+            className={"cc-local" + (open === "runtime" ? " is-active" : "")}
+            onClick={() => toggle("runtime")}
+          >
+            <Icon name={runtime.icon} size={14} />
+            <span className="cc-chip-label">{runtime.label}</span>
+          </button>
+          {open === "runtime" ? (
+            <DropMenu options={RUNTIMES} selectedId={runtime.id} onPick={pick(setRuntime)} />
           ) : null}
         </div>
       </div>
