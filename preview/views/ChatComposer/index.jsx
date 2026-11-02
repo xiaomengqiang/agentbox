@@ -15,6 +15,7 @@ const AGENT_MODES = [
     id: "swarm",
     label: "蜂群模式",
     icon: "network",
+    src: "./assets/uploads/multi-agent-mode.svg",
     desc: "由多个子Agent分工协作完成任务，适合结构复杂或需要协同处理的场景",
   },
 ];
@@ -79,6 +80,10 @@ const MOCK_DIRS = [
   { id: "dir-3", path: "C:\\Users\\demo\\Documents\\chat-agent" },
 ];
 
+/* 上传限制:单次对话最多 20 个附件,单个文件最大 100MB */
+const MAX_UPLOAD_FILES = 20;
+const MAX_UPLOAD_SIZE = 100 * 1024 * 1024;
+
 /* ============ 通用行渲染与文件工具 ============ */
 /* 文件卡片：取扩展名 / 图标 / 可读容量 */
 function fileTypeOf(name) {
@@ -86,14 +91,47 @@ function fileTypeOf(name) {
   return parts.length > 1 ? parts.pop().toUpperCase() : "FILE";
 }
 
-/* 文件类型 → 内置彩色图标（文件/图片/压缩包） */
+/* 文件类型 → filled 填充风格彩色图标(图片类型特殊:显示上传的具体图片) */
+const FILE_ICONS = {
+  word: "./assets/uploads/icon/file-type/filled/docx.svg",
+  sheet: "./assets/uploads/icon/file-type/filled/sheet.svg",
+  slide: "./assets/uploads/icon/file-type/filled/ppt.svg",
+  pdf: "./assets/uploads/icon/file-type/filled/pdf.svg",
+  csv: "./assets/uploads/icon/file-type/filled/cvs.svg",
+  markdown: "./assets/uploads/icon/file-type/filled/markdown.svg",
+  text: "./assets/uploads/icon/file-type/filled/txt.svg",
+  audio: "./assets/uploads/icon/file-type/filled/music.svg",
+  video: "./assets/uploads/icon/file-type/filled/video.svg",
+  zip: "./assets/uploads/icon/file-type/filled/zip.svg",
+  code: "./assets/uploads/icon/file-type/filled/code.svg",
+  unknown: "./assets/uploads/icon/file-type/filled/unkown.svg",
+};
+
+const IMAGE_EXTS = ["PNG", "JPG", "JPEG", "GIF", "WEBP", "SVG", "BMP"];
+
+/* 扩展名 → FILE_ICONS key */
+const EXT_ICON_KEYS = {
+  DOC: "word", DOCX: "word", DOT: "word", DOTX: "word", RTF: "word", ODT: "word",
+  XLS: "sheet", XLSX: "sheet", XLT: "sheet", ODS: "sheet",
+  PPT: "slide", PPTX: "slide", POT: "slide", POTX: "slide", ODP: "slide",
+  PDF: "pdf", CSV: "csv",
+  MD: "markdown", MDX: "markdown", MARKDOWN: "markdown",
+  TXT: "text", LOG: "text",
+  MP3: "audio", WAV: "audio", FLAC: "audio", AAC: "audio", OGG: "audio", M4A: "audio",
+  MP4: "video", AVI: "video", MOV: "video", MKV: "video", WEBM: "video", FLV: "video",
+  ZIP: "zip", RAR: "zip", "7Z": "zip", TAR: "zip", GZ: "zip", TGZ: "zip", BZ2: "zip",
+  JS: "code", TS: "code", JSX: "code", TSX: "code", JSON: "code", HTML: "code", CSS: "code",
+  SCSS: "code", PY: "code", JAVA: "code", C: "code", CPP: "code", H: "code", CS: "code",
+  GO: "code", RS: "code", PHP: "code", SH: "code", XML: "code", YML: "code", YAML: "code",
+};
+
+function isImageFile(name) {
+  return IMAGE_EXTS.includes(fileTypeOf(name));
+}
+
 function fileSrcOf(name) {
-  const ext = fileTypeOf(name);
-  if (["PNG", "JPG", "JPEG", "GIF", "WEBP", "SVG", "BMP"].includes(ext))
-    return "./assets/uploads/file-image.svg";
-  if (["ZIP", "RAR", "7Z", "TAR", "GZ", "TGZ", "BZ2"].includes(ext))
-    return "./assets/uploads/file-zip.svg";
-  return "./assets/uploads/file-doc.svg";
+  const key = EXT_ICON_KEYS[fileTypeOf(name)];
+  return FILE_ICONS[key || "unknown"];
 }
 
 function fmtSize(bytes) {
@@ -130,9 +168,9 @@ const SLASH_EXPERTS = [
 /* ============ 加号(+)下拉：两级结构 ============ */
 const ADD_ROOTS = [
   { key: "add-file", title: "添加文件", icon: "paperclip" },
-  { key: "skill", title: "技能", icon: "wrench" },
+  { key: "skill", title: "技能", icon: "wrench", src: "./assets/uploads/skill.svg" },
   { key: "expert", title: "专家", icon: "user-round" },
-  { key: "connector", title: "连接器", icon: "plug" },
+  { key: "connector", title: "连接器", icon: "plug", src: "./assets/uploads/connector.svg" },
 ];
 
 const ADD_CHILDREN = [
@@ -143,15 +181,29 @@ const ADD_CHILDREN = [
 
 /* 技能二级：含搜索 + 底部管理项 */
 const SKILL_CHILDREN = [
-  { id: "doc-summary", title: "文档总结", icon: "file-text", desc: "提炼文档要点并生成结构化总结" },
+  {
+    id: "doc-summary",
+    title: "文档总结",
+    icon: "file-text",
+    desc: "分析文档内容并提取核心信息，生成结构化摘要、关键结论和重点事项，帮助快速理解长篇资料。",
+  },
   {
     id: "doc-convert-2",
     title: "文档转换",
     icon: "file-output",
-    desc: "支持在 Word、Excel、PDF、Markdown 与图片之间批量互转，自动保留目录、表格与样式排版，转换结果可直接预览下载",
+    desc: "支持不同格式文档之间的转换与整理，保持原始内容结构并适配新的使用场景。",
   },
-  { id: "data-analyze-2", title: "数据分析", icon: "chart-column", desc: "透视数据并输出图表与业务洞察" },
+  {
+    id: "data-analyze-2",
+    title: "数据分析",
+    icon: "chart-column",
+    desc: "分析结构化数据并发现关键趋势，支持数据整理、统计分析和结果总结。",
+  },
 ];
+
+/* 技能类胶囊:图标固定为 skill.svg 的形状(经 mask 跟随胶囊蓝色),无关闭按钮 */
+const SKILL_CHIP_MASK = "./assets/uploads/skill.svg";
+const asSkillChip = (it) => ({ ...it, mask: SKILL_CHIP_MASK, closable: false });
 
 const EXPERT_CHILDREN = [
   { id: "dev-code-2", title: "软件开发", icon: "code-xml", desc: "理解需求并输出可运行的实现方案" },
@@ -252,6 +304,8 @@ export default function ChatComposer(props) {
   // 添加文件（本地选择 → 输入框卡片）
   const fileInputRef = useRef(null);
   const [files, setFiles] = useState([]);
+  // 顶部居中提示(超限/超大等)
+  const [toast, setToast] = useState("");
   // 加号(+)下拉：一级 hover 时向右侧弹出二级
   const [hoverAdd, setHoverAdd] = useState(null); // 当前悬停的一级 key
   const [attachSecQuery, setAttachSecQuery] = useState("");
@@ -259,6 +313,9 @@ export default function ChatComposer(props) {
   const [connOn, setConnOn] = useState({});
 
   const canSend = msg.trim().length > 0;
+
+  // 文件卡片行数(每行4个)驱动输入卡片高度:0文件=140 / 1行=210 / 2行及以上=280(超出滚动)
+  const fileCardHeight = files.length === 0 ? 140 : Math.ceil(files.length / 4) === 1 ? 210 : 280;
 
   // 点击组件外部任意位置时关闭下拉
   useEffect(() => {
@@ -281,6 +338,13 @@ export default function ChatComposer(props) {
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
   }, [slashOpen]);
+
+  // 提示 4 秒后自动消失
+  useEffect(() => {
+    if (!toast) return;
+    const t = window.setTimeout(() => setToast(""), 4000);
+    return () => window.clearTimeout(t);
+  }, [toast]);
 
   const toggle = (key) => setOpen(open === key ? null : key);
 
@@ -344,12 +408,22 @@ export default function ChatComposer(props) {
     setSlashOpen(i !== -1 && !/[ \n]/.test(after));
   };
 
-  // 添加胶囊（去重，支持多选）
+  // 添加胶囊（去重，支持多选；src/closable 随 item 透传）
   const addChip = (item) =>
     setCmdChips((cs) =>
       cs.some((c) => c.id === item.id)
         ? cs
-        : [...cs, { id: item.id, title: item.title, icon: item.icon }]
+        : [
+            ...cs,
+            {
+              id: item.id,
+              title: item.title,
+              icon: item.icon,
+              src: item.src,
+              mask: item.mask,
+              closable: item.closable,
+            },
+          ]
     );
 
   // 选择“/”指令：清掉已输入的“/查询串”，标题作为胶囊
@@ -404,27 +478,40 @@ export default function ChatComposer(props) {
               onChange={(e) => setAttachSecQuery(e.target.value)}
             />
           </label>
-          {skillFiltered.map((it) => (
-            <button
-              type="button"
-              key={it.id}
-              className="cc-add-line"
-              onClick={() => pickAddItem(it)}
-            >
-              <span className="cc-add-line-title">{it.title}</span>
-              <span className="cc-add-line-desc">{it.desc}</span>
-            </button>
-          ))}
+          {skillFiltered.map((it) => {
+            // 已选中的技能再点一次 = 取消(移除胶囊与对号);面板保持打开,支持多选
+            // 选中样式对齐请求权限菜单:标题不变色,对号固定占位于整行右侧
+            const picked = cmdChips.some((c) => c.id === it.id);
+            return (
+              <button
+                type="button"
+                key={it.id}
+                className={"cc-add-line" + (picked ? " is-picked" : "")}
+                aria-pressed={picked}
+                onClick={() => (picked ? removeChip(it.id) : addChip(asSkillChip(it)))}
+              >
+                <span className="cc-add-line-main">
+                  <span className="cc-add-line-title">{it.title}</span>
+                  <span className="cc-add-line-desc">{it.desc}</span>
+                </span>
+                {picked ? (
+                  <span className="cc-add-check">
+                    <Icon name="check" size={14} />
+                  </span>
+                ) : null}
+              </button>
+            );
+          })}
           {skillFiltered.length === 0 ? (
             <div className="cc-space-empty">未找到相关选项</div>
           ) : null}
           <div className="cc-menu-divider" />
           <button type="button" className="cc-add-manage" onClick={() => {}}>
-            <Icon name="plus" size={15} />
+            <Icon src="./assets/uploads/add-skill.svg" size={15} />
             <span>添加技能</span>
           </button>
           <button type="button" className="cc-add-manage" onClick={() => {}}>
-            <Icon name="settings-2" size={15} />
+            <Icon src="./assets/uploads/manage-skill.svg" size={15} />
             <span>管理技能</span>
           </button>
         </>
@@ -449,8 +536,10 @@ export default function ChatComposer(props) {
               className="cc-add-line"
               onClick={() => pickAddItem(it)}
             >
-              <span className="cc-add-line-title">{it.title}</span>
-              <span className="cc-add-line-desc">{it.desc}</span>
+              <span className="cc-add-line-main">
+                <span className="cc-add-line-title">{it.title}</span>
+                <span className="cc-add-line-desc">{it.desc}</span>
+              </span>
             </button>
           ))}
           {expertFiltered.length === 0 ? (
@@ -530,7 +619,7 @@ export default function ChatComposer(props) {
             className="cc-slash-row cc-slash-nav cc-add-root"
             onClick={handleAddFile}
           >
-            <Icon name={r.icon} size={16} className="cc-slash-icon" />
+            <Icon name={r.icon} src={r.src} size={16} className="cc-slash-icon" />
             <span className="cc-slash-nav-title">{r.title}</span>
             <Icon name="chevron-right" size={14} className="cc-slash-nav-arrow" />
           </button>
@@ -547,7 +636,7 @@ export default function ChatComposer(props) {
         }}
       >
         <button type="button" className="cc-slash-row cc-slash-nav cc-add-root">
-          <Icon name={r.icon} size={16} className="cc-slash-icon" />
+          <Icon name={r.icon} src={r.src} size={16} className="cc-slash-icon" />
           <span className="cc-slash-nav-title">{r.title}</span>
           <Icon name="chevron-right" size={14} className="cc-slash-nav-arrow" />
         </button>
@@ -569,21 +658,47 @@ export default function ChatComposer(props) {
   const handleFileChange = (e) => {
     const picked = Array.from(e.target.files || []);
     if (!picked.length) return;
-    setFiles((prev) => [
-      ...prev,
-      ...picked.map((f, i) => ({
+
+    // 20 个上限:超出部分直接拒收
+    const room = MAX_UPLOAD_FILES - files.length;
+    const accepted = picked.slice(0, Math.max(0, room));
+    const overflowCount = picked.length - accepted.length;
+
+    // 100MB 上限:超大的文件进入卡片但标记为上传失败
+    let firstOversized = null;
+    const additions = accepted.map((f, i) => {
+      const failed = f.size > MAX_UPLOAD_SIZE;
+      if (failed && !firstOversized) firstOversized = f;
+      return {
         id: "file-" + Date.now() + "-" + i,
         name: f.name,
         ext: fileTypeOf(f.name),
         src: fileSrcOf(f.name),
+        // 图片类型:生成缩略图预览
+        preview: isImageFile(f.name) ? URL.createObjectURL(f) : undefined,
         size: fmtSize(f.size),
-      })),
-    ]);
+        failed,
+      };
+    });
+
+    if (additions.length) setFiles((prev) => [...prev, ...additions]);
+
+    // 数量超限优先提示;其次提示第一个超大文件
+    if (overflowCount > 0) {
+      setToast("单次对话最多上传20个附件");
+    } else if (firstOversized) {
+      setToast(firstOversized.name + "（最大100MB）");
+    }
+
     // 允许再次选择同一文件
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const removeFile = (id) => setFiles((fs) => fs.filter((f) => f.id !== id));
+
+  // 重试上传(演示:重试即成功,清除失败态)
+  const retryFile = (id) =>
+    setFiles((fs) => fs.map((f) => (f.id === id ? { ...f, failed: false } : f)));
 
   // 新建项目：关闭菜单、重置表单并弹出居中弹窗
   const openNewProject = () => {
@@ -619,8 +734,11 @@ export default function ChatComposer(props) {
         alt=""
         aria-hidden="true"
       />
-      {/* ============ 输入卡片 792 × 140 ============ */}
-      <div className="cc-card">
+      {/* ============ 输入卡片(高度随已选文件行数自适应) ============ */}
+      <div
+        className="cc-card"
+        style={{ height: fileCardHeight, flexBasis: fileCardHeight }}
+      >
         {/* 正文输入区 */}
         <div className="cc-body">
           {files.length > 0 ? (
@@ -628,15 +746,32 @@ export default function ChatComposer(props) {
               {files.map((f) => (
                 <div className="cc-file-card" key={f.id}>
                   <span className="cc-file-icon">
-                    <Icon src={f.src} size={30} />
+                    {f.preview ? (
+                      <img className="cc-file-thumb" src={f.preview} alt={f.name} />
+                    ) : (
+                      <Icon src={f.src} size={30} />
+                    )}
                   </span>
                   <span className="cc-file-info">
                     <span className="cc-file-name" title={f.name}>
                       {f.name}
                     </span>
-                    <span className="cc-file-meta">
-                      {f.ext} · {f.size}
-                    </span>
+                    {f.failed ? (
+                      <span className="cc-file-meta cc-file-meta-failed">
+                        <span className="cc-file-failed">上传失败</span>
+                        <button
+                          type="button"
+                          className="cc-file-retry"
+                          onClick={() => retryFile(f.id)}
+                        >
+                          重试
+                        </button>
+                      </span>
+                    ) : (
+                      <span className="cc-file-meta">
+                        {f.ext} · {f.size}
+                      </span>
+                    )}
                   </span>
                   <button
                     type="button"
@@ -653,17 +788,24 @@ export default function ChatComposer(props) {
           {cmdChips.length > 0 ? (
             <div className="cc-cmd-chips">
               {cmdChips.map((c) => (
-                <span className="cc-cmd-chip" key={c.id}>
-                  <Icon name={c.icon} size={13} />
+                <span
+                  className={
+                    "cc-cmd-chip" + (c.closable === false ? " cc-cmd-chip--info" : "")
+                  }
+                  key={c.id}
+                >
+                  <Icon name={c.icon} src={c.src} mask={c.mask} size={13} />
                   <span className="cc-cmd-chip-label">{c.title}</span>
-                  <button
-                    type="button"
-                    className="cc-cmd-chip-x"
-                    onClick={() => removeChip(c.id)}
-                    aria-label={"移除" + c.title}
-                  >
-                    <Icon name="x" size={10} />
-                  </button>
+                  {c.closable === false ? null : (
+                    <button
+                      type="button"
+                      className="cc-cmd-chip-x"
+                      onClick={() => removeChip(c.id)}
+                      aria-label={"移除" + c.title}
+                    >
+                      <Icon name="x" size={10} />
+                    </button>
+                  )}
                 </span>
               ))}
             </div>
@@ -694,7 +836,13 @@ export default function ChatComposer(props) {
                 title="添加内容"
                 aria-label="添加内容"
               >
-                <Icon src="./assets/uploads/add-skill.svg" size={16} className="cc-plus-icon" />
+                {/* 展开时显示 ×(收起),收起时显示资源插画 */}
+                <Icon
+                  name={open === "attach" ? "x" : undefined}
+                  src={open === "attach" ? undefined : "./assets/uploads/add-skill.svg"}
+                  size={16}
+                  className="cc-plus-icon"
+                />
               </button>
               {open === "attach" ? (
                 <div className="cc-addmenu" onMouseLeave={() => setHoverAdd(null)}>
@@ -875,10 +1023,10 @@ export default function ChatComposer(props) {
           ) : null}
         </div>
 
-        {/* 右侧:运行环境(本地/云端)下拉,面板向上弹出、右对齐 */}
+        {/* 右侧:运行环境(本地/云端)下拉,面板向下弹出、右对齐 */}
         <div
           className={
-            "cc-drop cc-drop-up cc-drop-right cc-drop-local" +
+            "cc-drop cc-drop-right cc-drop-local" +
             (open === "runtime" ? " is-active" : "")
           }
           data-drop
@@ -915,7 +1063,7 @@ export default function ChatComposer(props) {
           {slashAdd.map((it) => cmdRow(it, pickSlash))}
           {/* 技能组 */}
           {slashSkills.length > 0 ? <div className="cc-slash-group-label">技能</div> : null}
-          {slashSkills.map((it) => cmdRow(it, pickSlash))}
+          {slashSkills.map((it) => cmdRow(asSkillChip(it), pickSlash))}
           {/* 专家组 */}
           {slashExperts.length > 0 ? <div className="cc-slash-group-label">专家</div> : null}
           {slashExperts.map((it) => cmdRow(it, pickSlash))}
@@ -1051,6 +1199,24 @@ export default function ChatComposer(props) {
               </button>
             </div>
           </div>
+        </div>
+      ) : null}
+
+      {/* ============ 顶部居中提示(toast) ============ */}
+      {toast ? (
+        <div className="cc-toast" role="status">
+          <span className="cc-toast-icon">
+            <Icon name="x" size={12} />
+          </span>
+          <span className="cc-toast-text">{toast}</span>
+          <button
+            type="button"
+            className="cc-toast-close"
+            onClick={() => setToast("")}
+            aria-label="关闭提示"
+          >
+            <Icon name="x" size={14} />
+          </button>
         </div>
       ) : null}
     </div>

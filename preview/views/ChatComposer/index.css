@@ -1,11 +1,11 @@
 /* ===================== ChatComposer ===================== */
 
-/* ---- 灰色外框 800 × 188（左右包裹距离 4px） ---- */
+/* ---- 灰色外框 800(高度随输入卡片自适应:无文件188 / 1行258 / 2行及以上328) ---- */
 .cc-shell {
   position: relative;
   box-sizing: border-box;
   width: 800px;
-  height: 188px;
+  height: auto;
   display: flex;
   flex-direction: column;
   padding: 4px;
@@ -300,8 +300,7 @@
 
 /* ---- 灰色外框下方：选择项目空间 ---- */
 .cc-footer {
-  flex: 1 1 0;
-  min-height: 0;
+  flex: 0 0 40px;
   display: flex;
   align-items: center;
   padding: 0 8px;
@@ -635,6 +634,11 @@
   white-space: nowrap;
 }
 
+/* 技能类胶囊:无关闭按钮,仅展示,右内边距补偿 */
+.cc-cmd-chip--info {
+  padding-right: 10px;
+}
+
 .cc-cmd-chip-x {
   display: inline-flex;
   align-items: center;
@@ -659,9 +663,30 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 6px;
-  /* 不裁切：让卡片 hover 阴影可正常向外扩散 */
-  overflow: visible;
+  /* 内衬+负边距(四向):给卡片四周 hover 阴影留空间;
+     右侧额外 -4px 余量抵消滚动条宽度,保证滚动态仍一行4个 */
+  padding: 4px;
+  margin: -4px -8px 2px;
+  /* 最多完整显示两行(2×58+间隙8=124),第三行起内部滚动 */
+  max-height: 124px;
+  overflow-y: auto;
+  /* 细滚动条(Firefox) */
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-04) transparent;
+}
+
+/* 细滚动条(Chromium):4px 宽,透明轨道,少占内容宽度 */
+.cc-file-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.cc-file-list::-webkit-scrollbar-thumb {
+  border-radius: var(--radius-full);
+  background-color: var(--gray-04);
+}
+
+.cc-file-list::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
 .cc-file-card {
@@ -674,7 +699,7 @@
   height: 58px;
   padding: 6px 8px 6px 10px;
   background-color: var(--surface-container-lowest);
-  border: 1px solid var(--color-comp-border);
+  border: 1px solid var(--gray-03);
   border-radius: var(--radius-md);
   transition: border-color var(--duration-fast) var(--ease-standard),
     box-shadow var(--duration-fast) var(--ease-standard);
@@ -694,6 +719,14 @@
   width: 34px;
   height: 34px;
   /* 图标为内置彩色贴片，自带底色，无需额外容器背景 */
+}
+
+/* 图片类型:直接显示上传的具体图片缩略图 */
+.cc-file-thumb {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
 }
 
 .cc-file-info {
@@ -720,6 +753,30 @@
   line-height: 1.4;
 }
 
+/* 上传失败态:左红文案 + 右蓝重试 */
+.cc-file-meta-failed {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cc-file-failed {
+  color: var(--error);
+}
+
+.cc-file-retry {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: var(--primary);
+  font: var(--font-caption-md);
+  cursor: pointer;
+}
+
+.cc-file-retry:hover {
+  color: var(--primary-hover);
+}
+
 .cc-file-x {
   position: absolute;
   top: 4px;
@@ -733,15 +790,15 @@
   border: none;
   border-radius: var(--radius-full);
   background-color: var(--color-interactive-hover);
-  color: var(--color-icon-primary);
+  color: var(--black);
   cursor: pointer;
-  opacity: 0;
-  transition: opacity var(--duration-fast) var(--ease-standard),
-    background-color var(--duration-fast) var(--ease-standard);
+  /* 叉号始终深色可见,不随 hover 显隐 */
+  transition: background-color var(--duration-fast) var(--ease-standard);
 }
 
-.cc-file-card:hover .cc-file-x {
-  opacity: 1;
+/* 暗色模式下叉号反转为白色,保证可见 */
+.dark .cc-shell .cc-file-x {
+  color: var(--white);
 }
 
 .cc-file-x:hover {
@@ -923,11 +980,11 @@
   box-shadow: var(--shadow-dropdown);
 }
 
-/* 二级里「主标题在上、正文在下」的选项行（无图标） */
+/* 二级里「主标题在上、正文在下」的选项行:主列 + 行尾对号列 */
 .cc-add-line {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 8px;
   width: 100%;
   padding: 7px 10px;
   border: none;
@@ -936,6 +993,15 @@
   text-align: left;
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+/* 主列:标题在上、正文在下 */
+.cc-add-line-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .cc-add-line:hover {
@@ -955,6 +1021,14 @@
   line-height: 1.4;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* 行尾对号列:仅在选中时渲染(未选中时文本占满整行宽度) */
+.cc-add-check {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-icon-primary);
 }
 
 /* 二级底部管理项：图标 + 标题 */
@@ -1093,4 +1167,63 @@
 .cc-btn-primary:disabled {
   background-color: var(--primary-disabled);
   cursor: default;
+}
+
+/* ============ 顶部居中提示(toast) ============ */
+.cc-toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(560px, calc(100vw - 48px));
+  padding: 10px 12px 10px 14px;
+  border-radius: var(--radius-lg);
+  background-color: var(--inverse-surface);
+  box-shadow: var(--shadow-popover);
+  transform: translateX(-50%);
+}
+
+/* 红色圆底叉号 */
+.cc-toast-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  background-color: var(--error);
+  color: var(--on-error);
+}
+
+.cc-toast-text {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--inverse-on-surface);
+  font: var(--font-body-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 最右侧关闭叉号 */
+.cc-toast-close {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--inverse-on-surface-variant);
+  cursor: pointer;
+}
+
+.cc-toast-close:hover {
+  color: var(--inverse-on-surface);
+  background-color: var(--on-primary-10);
 }
