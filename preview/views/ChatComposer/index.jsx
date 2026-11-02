@@ -42,12 +42,14 @@ const RUNTIMES = [
     id: "local",
     label: "本地模式",
     icon: "hard-drive",
+    src: "./assets/uploads/icon/prompt-input/local_mode.svg",
     desc: "项目运行于本地电脑，数据与文件存储在本地设备中",
   },
   {
     id: "cloud",
     label: "云端模式",
     icon: "cloud",
+    src: "./assets/uploads/icon/prompt-input/cloud_mode.svg",
     desc: "项目运行于一体机云端环境，数据与文件存储在一体机中",
   },
 ];
@@ -1036,7 +1038,7 @@ export default function ChatComposer(props) {
             className={"cc-local" + (open === "runtime" ? " is-active" : "")}
             onClick={() => toggle("runtime")}
           >
-            <Icon name={runtime.icon} size={14} />
+            <Icon name={runtime.icon} src={runtime.src} size={14} />
             <span className="cc-chip-label">{runtime.label}</span>
           </button>
           {open === "runtime" ? (
