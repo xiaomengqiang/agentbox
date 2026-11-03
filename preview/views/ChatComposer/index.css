@@ -164,7 +164,7 @@
   white-space: nowrap;
 }
 
-/* ---- 发送按钮 ---- */
+/* ---- 发送按钮:图标自带灰底白飞机圆底(send-inactive.svg),本体无底色 ---- */
 .cc-send {
   display: inline-flex;
   align-items: center;
@@ -174,15 +174,14 @@
   margin-left: 2px;
   border: none;
   border-radius: var(--radius-full);
-  background-color: var(--primary);
+  background-color: transparent;
   color: var(--on-primary);
   cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard),
-    transform var(--duration-fast) var(--ease-out);
+  transition: transform var(--duration-fast) var(--ease-out);
 }
 
 .cc-send:hover:not(:disabled) {
-  background-color: var(--primary-hover);
+  transform: scale(1.06);
 }
 
 .cc-send:active:not(:disabled) {
@@ -190,21 +189,13 @@
 }
 
 .cc-send:disabled {
-  background-color: var(--color-comp-background-tertiary);
-  color: var(--color-icon-fourth);
   cursor: default;
 }
 
+/* 发送成功态:恢复底色以衬托对号 */
 .cc-send.is-sent {
   background-color: var(--success);
   color: var(--on-success);
-}
-
-/* 纸飞机扶正为向上，并整体下移使其视觉居中 */
-.cc-send-plane {
-  position: relative;
-  top: 1.5px;
-  transform: rotate(-45deg);
 }
 
 /* ---- 下拉容器与面板 ---- */

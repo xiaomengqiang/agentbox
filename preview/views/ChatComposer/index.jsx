@@ -933,7 +933,8 @@ export default function ChatComposer(props) {
               {sent ? (
                 <Icon name="check" size={18} />
               ) : (
-                <Icon src="./assets/uploads/icon-send.svg" size={18} className="cc-send-plane" />
+                /* send-inactive 自带灰底白飞机圆形底,按钮本体无需底色与旋转扶正 */
+                <Icon src="./assets/uploads/send-inactive.svg" size={32} />
               )}
             </button>
           </div>
