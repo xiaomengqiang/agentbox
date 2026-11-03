@@ -314,7 +314,8 @@ export default function ChatComposer(props) {
   // 连接器开关状态
   const [connOn, setConnOn] = useState({});
 
-  const canSend = msg.trim().length > 0;
+  // 有内容(已传文件/指令胶囊/文字)即可发送,并驱动发送按钮激活态图标
+  const canSend = files.length > 0 || cmdChips.length > 0 || msg.trim().length > 0;
 
   // 文件卡片行数(每行4个)驱动输入卡片高度:0文件=140 / 1行=210 / 2行及以上=280(超出滚动)
   const fileCardHeight = files.length === 0 ? 140 : Math.ceil(files.length / 4) === 1 ? 210 : 280;
@@ -933,8 +934,15 @@ export default function ChatComposer(props) {
               {sent ? (
                 <Icon name="check" size={18} />
               ) : (
-                /* send-inactive 自带灰底白飞机圆形底,按钮本体无需底色与旋转扶正 */
-                <Icon src="./assets/uploads/send-inactive.svg" size={32} />
+                /* 有内容时切换 send-active(蓝底),否则 send-inactive(灰底);图形自带圆底 */
+                <Icon
+                  src={
+                    canSend
+                      ? "./assets/uploads/send-active.svg"
+                      : "./assets/uploads/send-inactive.svg"
+                  }
+                  size={32}
+                />
               )}
             </button>
           </div>

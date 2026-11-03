@@ -662,7 +662,7 @@
   /* 内衬+负边距(四向):给卡片四周 hover 阴影留空间;
      右侧额外 -4px 余量抵消滚动条宽度,保证滚动态仍一行4个 */
   padding: 4px;
-  margin: -4px -8px 2px;
+  margin: -4px -8px 8px;
   /* 最多完整显示两行(2×58+间隙8=124),第三行起内部滚动 */
   max-height: 124px;
   overflow-y: auto;
