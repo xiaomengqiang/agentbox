@@ -40,7 +40,7 @@ const PERMISSIONS = [
 const RUNTIMES = [
   {
     id: "local",
-    label: "本地模式",
+    label: "本地",
     icon: "hard-drive",
     src: "./assets/uploads/icon/prompt-input/local_mode.svg",
     desc: "项目运行于本地电脑，数据与文件存储在本地设备中",
