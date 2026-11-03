@@ -53,7 +53,7 @@ export default function ChatWorkspace() {
           <ChatSession
             messages={messages}
             onReset={() => setMessages([])}
-            composer={<ChatComposer onSend={handleSend} />}
+            composer={<ChatComposer onSend={handleSend} chatMode />}
           />
         ) : (
           /* ---- 欢迎页：Hero + 居中输入框 + 快捷能力胶囊 ---- */

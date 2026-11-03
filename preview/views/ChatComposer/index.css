@@ -20,6 +20,12 @@
   background-color: var(--surface-container-low);
 }
 
+/* 对话页模式:去掉灰色外框背景与内边距,仅保留输入卡片本体 */
+.cc-shell--chat {
+  padding: 0;
+  background-color: transparent;
+}
+
 /* ---- 白色输入卡片 792 × 140 ----
    注意：不设 z-index，避免把内部弹出的菜单关进自己的堆叠上下文，
    导致其层级反而低于下方其它卡片 */

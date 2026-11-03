@@ -272,6 +272,7 @@ export default function ChatComposer(props) {
     models = DEFAULT_MODELS,
     spaceId = "",
     onSend, // 发送回调：把输入内容与当前选择上报给父级（会话页据此追加消息）
+    chatMode = false, // 对话页模式:隐藏吉祥鸟/灰色外框/底部行,发送按钮显示生成中图标
   } = props;
 
   // auto 固定置于选项首位，其后拼接外部传入的模型列表
@@ -746,14 +747,16 @@ export default function ChatComposer(props) {
   };
 
   return (
-    <div className="cc-shell">
-      {/* 输入框右上角外侧:吉祥鸟装饰(不参与交互) */}
-      <img
-        className="cc-shell-mascot"
-        src="./assets/uploads/mascot-bird.svg"
-        alt=""
-        aria-hidden="true"
-      />
+    <div className={"cc-shell" + (chatMode ? " cc-shell--chat" : "")}>
+      {/* 输入框右上角外侧:吉祥鸟装饰(仅首页态显示) */}
+      {!chatMode ? (
+        <img
+          className="cc-shell-mascot"
+          src="./assets/uploads/mascot-bird.svg"
+          alt=""
+          aria-hidden="true"
+        />
+      ) : null}
       {/* ============ 输入卡片(高度随已选文件行数自适应) ============ */}
       <div
         className="cc-card"
@@ -947,12 +950,15 @@ export default function ChatComposer(props) {
             {/* 发送按钮 */}
             <button
               type="button"
-              className={"cc-send" + (sent ? " is-sent" : "")}
+              className={"cc-send" + (sent && !chatMode ? " is-sent" : "")}
               onClick={send}
               disabled={!canSend}
               aria-label="发送"
             >
-              {sent ? (
+              {chatMode ? (
+                /* 对话页:生成中图标常驻 */
+                <Icon src="./assets/uploads/generating.svg" size={32} />
+              ) : sent ? (
                 <Icon name="check" size={18} />
               ) : (
                 /* 有内容时切换 send-active(蓝底),否则 send-inactive(灰底);图形自带圆底 */
@@ -970,7 +976,8 @@ export default function ChatComposer(props) {
         </div>
       </div>
 
-      {/* ============ 灰色外框下方：选择项目空间 ============ */}
+      {/* ============ 灰色外框下方：选择项目空间(仅首页态显示) ============ */}
+      {!chatMode ? (
       <div className="cc-footer">
         <div className={"cc-drop" + (open === "space" ? " is-active" : "")} data-drop>
           <button
@@ -1076,6 +1083,7 @@ export default function ChatComposer(props) {
           ) : null}
         </div>
       </div>
+      ) : null}
 
       {/* 隐藏的原生文件选择器（纯浏览器可用） */}
       <input
