@@ -661,8 +661,6 @@ export default function ChatComposer(props) {
           <span className="cc-slash-nav-title">{r.title}</span>
           <Icon name="chevron-right" size={14} className="cc-slash-nav-arrow" />
         </button>
-        {/* 右侧悬浮二级面板 */}
-        {hoverAdd === r.key ? <div className="cc-add-sub">{addSub(r.key)}</div> : null}
       </div>
     );
   };
@@ -884,6 +882,8 @@ export default function ChatComposer(props) {
                   {ADD_ROOTS.slice(0, 1).map(renderAddRoot)}
                   <div className="cc-menu-divider" />
                   {ADD_ROOTS.slice(1).map(renderAddRoot)}
+                  {/* 二级面板锚定在菜单整体(而非所在行):切换选项时位置不跳动,避免抖动 */}
+                  {hoverAdd ? <div className="cc-add-sub">{addSub(hoverAdd)}</div> : null}
                 </div>
               ) : null}
             </div>

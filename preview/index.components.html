@@ -886,12 +886,17 @@ body {
   justify-content: center;
   gap: 36px;
   padding: 48px 40px;
-  background-color: #fff;
+  background-color: #fafafc;
 }
 
 /* 暗色模式回退到语义背景色 */
 .dark .cw-main {
   background-color: var(--color-background-primary);
+}
+
+/* 会话页恢复纯白背景(仅首页态使用 #fafafc) */
+.cw-main--session {
+  background-color: var(--surface-container-lowest);
 }
 
 /* 会话模式：占满整列，内部由 ChatSession 自行布局 */
@@ -2389,9 +2394,11 @@ img[data-component="Icon"] {
   width: 100%;
 }
 
+/* 锚定在菜单整体(非所在行):切换选项时面板位置稳定,消除抖动;
+   top:-6px 补偿菜单内边距,使面板与选项行顶部对齐 */
 .cc-add-sub {
   position: absolute;
-  top: 0;
+  top: -6px;
   left: calc(100% + 6px);
   z-index: 60;
   box-sizing: border-box;
@@ -2406,6 +2413,12 @@ img[data-component="Icon"] {
   background-color: var(--surface-container-lowest);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-dropdown);
+}
+
+/* 对话页(菜单向上弹出):二级面板改为向上展开,对齐菜单底部,避免被视口底部裁切 */
+.cc-drop-up .cc-add-sub {
+  top: auto;
+  bottom: -6px;
 }
 
 /* 二级里「主标题在上、正文在下」的选项行:主列 + 行尾对号列 */
@@ -4534,8 +4547,6 @@ function ChatComposer(props) {
           <span className="cc-slash-nav-title">{r.title}</span>
           <Icon name="chevron-right" size={14} className="cc-slash-nav-arrow" />
         </button>
-        {/* 右侧悬浮二级面板 */}
-        {hoverAdd === r.key ? <div className="cc-add-sub">{addSub(r.key)}</div> : null}
       </div>
     );
   };
@@ -4757,6 +4768,8 @@ function ChatComposer(props) {
                   {ADD_ROOTS.slice(0, 1).map(renderAddRoot)}
                   <div className="cc-menu-divider" />
                   {ADD_ROOTS.slice(1).map(renderAddRoot)}
+                  {/* 二级面板锚定在菜单整体(而非所在行):切换选项时位置不跳动,避免抖动 */}
+                  {hoverAdd ? <div className="cc-add-sub">{addSub(hoverAdd)}</div> : null}
                 </div>
               ) : null}
             </div>

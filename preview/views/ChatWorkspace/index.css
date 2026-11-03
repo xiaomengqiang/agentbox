@@ -208,12 +208,17 @@
   justify-content: center;
   gap: 36px;
   padding: 48px 40px;
-  background-color: #fff;
+  background-color: #fafafc;
 }
 
 /* 暗色模式回退到语义背景色 */
 .dark .cw-main {
   background-color: var(--color-background-primary);
+}
+
+/* 会话页恢复纯白背景(仅首页态使用 #fafafc) */
+.cw-main--session {
+  background-color: var(--surface-container-lowest);
 }
 
 /* 会话模式：占满整列，内部由 ChatSession 自行布局 */
