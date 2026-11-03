@@ -788,6 +788,8 @@ export default function ChatComposer(props) {
               ))}
             </div>
           ) : null}
+          {/* 胶囊与输入同行:文字紧跟标签后,单行不换行 */}
+          <div className="cc-input-row">
           {cmdChips.length > 0 ? (
             <div className="cc-cmd-chips">
               {cmdChips.map((c) => (
@@ -822,7 +824,9 @@ export default function ChatComposer(props) {
             rows={1}
             spellCheck={false}
             aria-label="消息输入"
+            wrap={cmdChips.length ? "off" : undefined}
           />
+          </div>
         </div>
 
         {/* “/”快捷指令面板位于灰色外框下方（见 shell 底部） */}

@@ -73,6 +73,26 @@
   color: var(--text-placeholder);
 }
 
+/* 胶囊与输入共享一行:文字紧跟标签,单行不换行(超出横向滚动) */
+.cc-input-row {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.cc-input-row .cc-input {
+  flex: 1 1 auto;
+  width: auto;
+  height: 100%;
+}
+
+.cc-input-row .cc-cmd-chips {
+  flex: 0 0 auto;
+  margin-bottom: 0;
+}
+
 /* ---- 底部工具栏 ---- */
 .cc-toolbar {
   flex: 0 0 auto;
