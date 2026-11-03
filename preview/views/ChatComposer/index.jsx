@@ -271,6 +271,7 @@ export default function ChatComposer(props) {
     modelId = "auto",
     models = DEFAULT_MODELS,
     spaceId = "",
+    onSend, // 发送回调：把输入内容与当前选择上报给父级（会话页据此追加消息）
   } = props;
 
   // auto 固定置于选项首位，其后拼接外部传入的模型列表
@@ -357,9 +358,25 @@ export default function ChatComposer(props) {
     setOpen(null);
   };
 
-  // 模拟发送：清空输入、指令胶囊与文件卡片 + 按钮闪现反馈
+  // 发送：清空输入、指令胶囊与文件卡片；若外部传入 onSend 则上报完整载荷 + 按钮闪现反馈
   const send = () => {
     if (!canSend || sent) return;
+    if (onSend) {
+      onSend({
+        text: msg.trim(),
+        chips: cmdChips.map((c) => ({ id: c.id, title: c.title, icon: c.icon })),
+        files: files.map((f) => ({ id: f.id, name: f.name, src: f.src })),
+        meta: {
+          modeId: mode.id,
+          modeLabel: mode.label,
+          permissionId: permission.id,
+          permissionLabel: permission.label,
+          modelId: model.id,
+          modelLabel: model.label,
+          space,
+        },
+      });
+    }
     setMsg("");
     setCmdChips([]);
     setFiles([]);
