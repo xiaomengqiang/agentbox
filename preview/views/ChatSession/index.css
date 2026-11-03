@@ -1,8 +1,17 @@
 /* ================= 会话页面骨架 ================= */
 .cs-wrap {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+/* 左侧主区：顶栏 + 消息流 + 输入区（与右侧预览面板等宽） */
+.cs-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
   min-width: 0;
   height: 100%;
 }
@@ -14,8 +23,10 @@
   justify-content: space-between;
   gap: 16px;
   flex: 0 0 auto;
-  padding: 12px 24px;
-  border-bottom: 1px solid var(--divider);
+  padding: 1.125rem 1.5rem;
+  font-size: 1rem;
+  /* #000 — 等价 var(--on-surface)，暗色模式自动翻转 */
+  color: var(--on-surface);
 }
 
 .cs-header-main {
@@ -23,7 +34,7 @@
 }
 
 .cs-title {
-  font: var(--font-subtitle-lg);
+  font-size: 1rem;
   font-weight: var(--font-weight-bold);
   color: var(--on-surface);
   margin: 0;
@@ -32,33 +43,12 @@
   text-overflow: ellipsis;
 }
 
-.cs-subtitle {
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-  margin: 2px 0 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
+/* 顶栏右侧图标（纯图片展示） */
 .cs-new {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display: block;
   flex: 0 0 auto;
-  padding: 7px 14px;
-  border: 0;
-  border-radius: var(--radius-full);
-  background: var(--surface-container);
-  color: var(--text-secondary);
-  font: var(--font-body-md);
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-new:hover {
-  background: var(--color-interactive-hover);
-  color: var(--on-surface);
+  width: 1rem;
+  height: 1rem;
 }
 
 /* ---- 消息流 ---- */
@@ -107,20 +97,38 @@
 }
 
 .cs-user-bubble {
-  padding: 10px 14px;
-  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-lg);
-  background: var(--primary-container);
-  color: var(--on-primary-container);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  /* #f1f3f5 — 等价 var(--color-background-secondary)，暗色模式自动翻转 */
+  background: var(--color-background-secondary);
+  color: var(--on-surface);
+}
+
+/* 气泡内标签：图标 + 文档总结 */
+.cs-user-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  height: 1.5rem;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  border-radius: 1rem;
+  /* rgba(10,89,247,0.1) — 等价 var(--brand-10) */
+  background: var(--brand-10);
+  /* #0A59F7 — 等价 var(--primary) */
+  color: var(--primary);
+  font: var(--font-caption-lg);
+}
+
+.cs-user-text {
   font: var(--font-body-md);
   line-height: var(--line-height-relaxed);
   white-space: pre-wrap;
   word-break: break-word;
-}
-
-.cs-user-meta {
-  font: var(--font-caption-md);
-  color: var(--text-placeholder);
-  margin: 0;
 }
 
 /* ---- Agent 消息 ---- */
@@ -536,7 +544,7 @@
   margin: 4px 0 0.5rem;
 }
 
-/* ---- 生成产物：产物文件卡片 ---- */
+/* ---- 生成产物：产物文件卡片（边框线替代阴影） ---- */
 .cs-files {
   display: flex;
   flex-direction: column;
@@ -547,10 +555,12 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px 10px 14px;
-  border-radius: var(--radius-container);
+  padding: 1rem;
+  box-sizing: border-box;
+  border-radius: 1rem;
   background: var(--surface-container-lowest);
-  box-shadow: var(--shadow-card);
+  /* #E5E5EA — 等价 var(--surface-container-high) */
+  border: 1px solid var(--surface-container-high);
 }
 
 .cs-file-icon {
@@ -558,10 +568,11 @@
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-sm);
-  background: var(--primary-container);
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  /* #f1f3f5 — 等价 var(--color-background-secondary)，暗色模式自动翻转 */
+  background: var(--color-background-secondary);
 }
 
 .cs-file-info {
@@ -589,25 +600,82 @@
   text-overflow: ellipsis;
 }
 
-.cs-file-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* 打开方式下拉（触发按钮 + 面板） */
+.cs-file-drop {
+  position: relative;
   flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-sm);
+}
+
+.cs-file-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 4px 10px;
+  box-sizing: border-box;
+  /* #E5E5EA — 等价 var(--surface-container-high) */
+  border: 1px solid var(--surface-container-high);
+  border-radius: 0.5rem;
   background: transparent;
-  color: var(--text-placeholder);
+  color: var(--text-secondary);
+  font: var(--font-body-sm);
+  white-space: nowrap;
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
 }
 
-.cs-file-btn:hover {
+.cs-file-more:hover {
   background: var(--color-interactive-hover);
   color: var(--on-surface);
+}
+
+/* 实心黑色倒三角（triangle 旋转 180° 并填充；展开时回正朝上） */
+.cs-file-caret {
+  transform: rotate(180deg);
+  /* #000 — 等价 var(--on-surface)，暗色模式自动翻转 */
+  color: var(--on-surface);
+  fill: currentColor;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.cs-file-caret.is-open {
+  transform: rotate(0deg);
+}
+
+/* 打开方式下拉面板：样式对齐 ChatComposer 的 cc-menu（绝对定位，脱离文档流） */
+.cs-file-menu {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 8px);
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: max-content;
+  padding: 6px;
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-dropdown);
+}
+
+.cs-file-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 8px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-font-primary);
+  font: var(--font-body-md);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-file-opt:hover {
+  background-color: var(--color-interactive-hover);
 }
 
 /* 打字机光标 */
@@ -636,6 +704,404 @@
   color: var(--text-placeholder);
   margin: 8px 0 0;
   text-align: center;
+}
+
+/* 会话页输入框贴底：加号菜单与“/”指令面板默认向下弹出会超出视口底部 —— 强制向上；
+   cc-chip 下拉（cc-menu）已由 DropMenu 自适应方向（底部不足时自动翻到上方） */
+.cs-composer .cc-addmenu,
+.cs-composer .cc-slash {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
+/* 会话页：输入框卡片宽度自适应（覆盖 ChatComposer 固定 800px） */
+.cw-main--session .cc-shell {
+  width: auto;
+}
+
+/* ---- 右侧预览面板：点击产物「在线预览」打开（与左侧主区等宽） ---- */
+.cs-preview {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+  border-left: 1px solid var(--container-10);
+  background: var(--white);
+}
+
+/* ---- 头部 ---- */
+.cs-preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex: 0 0 auto;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--container-10);
+}
+
+.cs-preview-head-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cs-preview-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font: var(--font-body-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-preview-tab:hover {
+  color: var(--on-surface);
+}
+
+.cs-preview-vline {
+  width: 1px;
+  height: 14px;
+  flex: 0 0 auto;
+  background: var(--divider);
+}
+
+.cs-preview-filetab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 0 auto;
+  height: 2rem;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  border-radius: var(--radius-sm);
+  background: var(--surface-container);
+  font: var(--font-body-sm);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.cs-preview-filetab-x {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-placeholder);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-preview-filetab-x:hover {
+  background: var(--color-interactive-hover);
+  color: var(--on-surface);
+}
+
+.cs-preview-head-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+
+/* 通用图标按钮 */
+.cs-preview-iconbtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-placeholder);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-preview-iconbtn img {
+  width: 100%;
+  height: 100%;
+}
+
+.cs-preview-iconbtn:hover {
+  background: var(--color-interactive-hover);
+  color: var(--on-surface);
+}
+
+/* 会话按钮：正方形 1.75rem */
+.cs-preview-toolbar .cs-preview-iconbtn[title="会话"] {
+  width: 1.75rem;
+}
+
+/* 工具栏「打开方式」按钮：覆盖固定尺寸以容纳文本 */
+.cs-toolbar-openwith {
+  width: auto;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
+  /* rgba(0,0,0,0.1) — 等价 var(--container-10) */
+  border: 1px solid var(--container-10);
+  border-radius: 0.5rem;
+  font: var(--font-body-sm);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.cs-toolbar-openwith:hover {
+  color: var(--on-surface);
+}
+
+/* 图标容器（非按钮，纯展示） */
+.cs-preview-iconbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+}
+
+.cs-preview-iconbox img {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- 操作栏 ---- */
+.cs-preview-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex: 0 0 auto;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--container-10);
+}
+
+.cs-preview-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* Segmented 组件 */
+.cs-segmented {
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+  flex: 0 0 auto;
+  padding: 2px;
+  border-radius: 0.5rem;
+  background: var(--surface-container);
+}
+
+.cs-seg-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: calc(0.5rem - 2px);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-seg-item.is-active {
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+}
+
+/* 地址栏 */
+.cs-address {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  font: var(--font-caption-lg);
+  color: var(--text-placeholder);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cs-preview-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+/* 缩放下拉 */
+.cs-zoom {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.cs-zoom-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font: var(--font-body-sm);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cs-zoom-btn:hover {
+  color: var(--on-surface);
+}
+
+.cs-zoom-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: max-content;
+  padding: 6px;
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-container-lowest);
+  box-shadow: var(--shadow-dropdown);
+}
+
+.cs-zoom-opt {
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-font-primary);
+  font: var(--font-body-sm);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-zoom-opt:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+.cs-zoom-opt.is-active {
+  font-weight: var(--font-weight-bold);
+  color: var(--primary);
+}
+
+/* 更多操作下拉 */
+.cs-more {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.cs-more-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: max-content;
+  padding: 6px;
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-container-lowest);
+  box-shadow: var(--shadow-dropdown);
+}
+
+.cs-more-opt {
+  display: block;
+  width: 100%;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-font-primary);
+  font: var(--font-body-md);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-more-opt:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+/* ---- 预览容器 ---- */
+.cs-preview-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.cs-preview-container {
+  margin: 1.5rem 2rem;
+  /* #E5E5EA — 等价 var(--surface-container-high) */
+  border: 1px solid var(--surface-container-high);
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+/* 模拟文档页面 */
+.cs-preview-page {
+  padding: 28px;
+  background: var(--surface-container-lowest);
+}
+
+.cs-preview-name {
+  font: var(--font-title-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.cs-preview-eyebrow {
+  font: var(--font-caption-lg);
+  color: var(--text-placeholder);
+  margin: 4px 0 0;
+}
+
+.cs-preview-sec {
+  margin-top: 20px;
+}
+
+.cs-preview-sec h3 {
+  font: var(--font-subtitle-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0 0 6px;
+}
+
+.cs-preview-sec p {
+  font: var(--font-body-sm);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+  margin: 0;
 }
 
 /* ================= 动画 ================= */
@@ -673,5 +1139,12 @@
 
   .cs-user-wrap {
     max-width: 92%;
+  }
+
+  .cs-preview {
+    flex: 1 1 auto;
+    flex-basis: 100%;
+    border-left: 0;
+    border-top: 1px solid var(--divider);
   }
 }

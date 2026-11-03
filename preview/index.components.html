@@ -1644,6 +1644,12 @@ img[data-component="Icon"] {
   bottom: calc(100% + 8px);
 }
 
+/* 自适应向上：底部空间不足时由 DropMenu 自动添加（cc-chip 下拉） */
+.cc-menu--up {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
 /* 对话页:加号的一级菜单同样向上弹出 */
 .cc-drop-up .cc-addmenu {
   top: auto;
@@ -2673,8 +2679,17 @@ img[data-component="Icon"] {
 /* ================= 会话页面骨架 ================= */
 .cs-wrap {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+/* 左侧主区：顶栏 + 消息流 + 输入区（与右侧预览面板等宽） */
+.cs-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
   min-width: 0;
   height: 100%;
 }
@@ -2686,8 +2701,10 @@ img[data-component="Icon"] {
   justify-content: space-between;
   gap: 16px;
   flex: 0 0 auto;
-  padding: 12px 24px;
-  border-bottom: 1px solid var(--divider);
+  padding: 1.125rem 1.5rem;
+  font-size: 1rem;
+  /* #000 — 等价 var(--on-surface)，暗色模式自动翻转 */
+  color: var(--on-surface);
 }
 
 .cs-header-main {
@@ -2695,7 +2712,7 @@ img[data-component="Icon"] {
 }
 
 .cs-title {
-  font: var(--font-subtitle-lg);
+  font-size: 1rem;
   font-weight: var(--font-weight-bold);
   color: var(--on-surface);
   margin: 0;
@@ -2704,33 +2721,12 @@ img[data-component="Icon"] {
   text-overflow: ellipsis;
 }
 
-.cs-subtitle {
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-  margin: 2px 0 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
+/* 顶栏右侧图标（纯图片展示） */
 .cs-new {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display: block;
   flex: 0 0 auto;
-  padding: 7px 14px;
-  border: 0;
-  border-radius: var(--radius-full);
-  background: var(--surface-container);
-  color: var(--text-secondary);
-  font: var(--font-body-md);
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-new:hover {
-  background: var(--color-interactive-hover);
-  color: var(--on-surface);
+  width: 1rem;
+  height: 1rem;
 }
 
 /* ---- 消息流 ---- */
@@ -2779,20 +2775,38 @@ img[data-component="Icon"] {
 }
 
 .cs-user-bubble {
-  padding: 10px 14px;
-  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-lg);
-  background: var(--primary-container);
-  color: var(--on-primary-container);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  /* #f1f3f5 — 等价 var(--color-background-secondary)，暗色模式自动翻转 */
+  background: var(--color-background-secondary);
+  color: var(--on-surface);
+}
+
+/* 气泡内标签：图标 + 文档总结 */
+.cs-user-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  height: 1.5rem;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  border-radius: 1rem;
+  /* rgba(10,89,247,0.1) — 等价 var(--brand-10) */
+  background: var(--brand-10);
+  /* #0A59F7 — 等价 var(--primary) */
+  color: var(--primary);
+  font: var(--font-caption-lg);
+}
+
+.cs-user-text {
   font: var(--font-body-md);
   line-height: var(--line-height-relaxed);
   white-space: pre-wrap;
   word-break: break-word;
-}
-
-.cs-user-meta {
-  font: var(--font-caption-md);
-  color: var(--text-placeholder);
-  margin: 0;
 }
 
 /* ---- Agent 消息 ---- */
@@ -3208,7 +3222,7 @@ img[data-component="Icon"] {
   margin: 4px 0 0.5rem;
 }
 
-/* ---- 生成产物：产物文件卡片 ---- */
+/* ---- 生成产物：产物文件卡片（边框线替代阴影） ---- */
 .cs-files {
   display: flex;
   flex-direction: column;
@@ -3219,10 +3233,12 @@ img[data-component="Icon"] {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px 10px 14px;
-  border-radius: var(--radius-container);
+  padding: 1rem;
+  box-sizing: border-box;
+  border-radius: 1rem;
   background: var(--surface-container-lowest);
-  box-shadow: var(--shadow-card);
+  /* #E5E5EA — 等价 var(--surface-container-high) */
+  border: 1px solid var(--surface-container-high);
 }
 
 .cs-file-icon {
@@ -3230,10 +3246,11 @@ img[data-component="Icon"] {
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-sm);
-  background: var(--primary-container);
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  /* #f1f3f5 — 等价 var(--color-background-secondary)，暗色模式自动翻转 */
+  background: var(--color-background-secondary);
 }
 
 .cs-file-info {
@@ -3261,25 +3278,82 @@ img[data-component="Icon"] {
   text-overflow: ellipsis;
 }
 
-.cs-file-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* 打开方式下拉（触发按钮 + 面板） */
+.cs-file-drop {
+  position: relative;
   flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-sm);
+}
+
+.cs-file-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 4px 10px;
+  box-sizing: border-box;
+  /* #E5E5EA — 等价 var(--surface-container-high) */
+  border: 1px solid var(--surface-container-high);
+  border-radius: 0.5rem;
   background: transparent;
-  color: var(--text-placeholder);
+  color: var(--text-secondary);
+  font: var(--font-body-sm);
+  white-space: nowrap;
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
 }
 
-.cs-file-btn:hover {
+.cs-file-more:hover {
   background: var(--color-interactive-hover);
   color: var(--on-surface);
+}
+
+/* 实心黑色倒三角（triangle 旋转 180° 并填充；展开时回正朝上） */
+.cs-file-caret {
+  transform: rotate(180deg);
+  /* #000 — 等价 var(--on-surface)，暗色模式自动翻转 */
+  color: var(--on-surface);
+  fill: currentColor;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.cs-file-caret.is-open {
+  transform: rotate(0deg);
+}
+
+/* 打开方式下拉面板：样式对齐 ChatComposer 的 cc-menu（绝对定位，脱离文档流） */
+.cs-file-menu {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 8px);
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: max-content;
+  padding: 6px;
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-dropdown);
+}
+
+.cs-file-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 8px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-font-primary);
+  font: var(--font-body-md);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-file-opt:hover {
+  background-color: var(--color-interactive-hover);
 }
 
 /* 打字机光标 */
@@ -3308,6 +3382,404 @@ img[data-component="Icon"] {
   color: var(--text-placeholder);
   margin: 8px 0 0;
   text-align: center;
+}
+
+/* 会话页输入框贴底：加号菜单与“/”指令面板默认向下弹出会超出视口底部 —— 强制向上；
+   cc-chip 下拉（cc-menu）已由 DropMenu 自适应方向（底部不足时自动翻到上方） */
+.cs-composer .cc-addmenu,
+.cs-composer .cc-slash {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
+/* 会话页：输入框卡片宽度自适应（覆盖 ChatComposer 固定 800px） */
+.cw-main--session .cc-shell {
+  width: auto;
+}
+
+/* ---- 右侧预览面板：点击产物「在线预览」打开（与左侧主区等宽） ---- */
+.cs-preview {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+  border-left: 1px solid var(--container-10);
+  background: var(--white);
+}
+
+/* ---- 头部 ---- */
+.cs-preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex: 0 0 auto;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--container-10);
+}
+
+.cs-preview-head-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cs-preview-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font: var(--font-body-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-preview-tab:hover {
+  color: var(--on-surface);
+}
+
+.cs-preview-vline {
+  width: 1px;
+  height: 14px;
+  flex: 0 0 auto;
+  background: var(--divider);
+}
+
+.cs-preview-filetab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 0 auto;
+  height: 2rem;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  border-radius: var(--radius-sm);
+  background: var(--surface-container);
+  font: var(--font-body-sm);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.cs-preview-filetab-x {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-placeholder);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-preview-filetab-x:hover {
+  background: var(--color-interactive-hover);
+  color: var(--on-surface);
+}
+
+.cs-preview-head-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+
+/* 通用图标按钮 */
+.cs-preview-iconbtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-placeholder);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-preview-iconbtn img {
+  width: 100%;
+  height: 100%;
+}
+
+.cs-preview-iconbtn:hover {
+  background: var(--color-interactive-hover);
+  color: var(--on-surface);
+}
+
+/* 会话按钮：正方形 1.75rem */
+.cs-preview-toolbar .cs-preview-iconbtn[title="会话"] {
+  width: 1.75rem;
+}
+
+/* 工具栏「打开方式」按钮：覆盖固定尺寸以容纳文本 */
+.cs-toolbar-openwith {
+  width: auto;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
+  /* rgba(0,0,0,0.1) — 等价 var(--container-10) */
+  border: 1px solid var(--container-10);
+  border-radius: 0.5rem;
+  font: var(--font-body-sm);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.cs-toolbar-openwith:hover {
+  color: var(--on-surface);
+}
+
+/* 图标容器（非按钮，纯展示） */
+.cs-preview-iconbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+}
+
+.cs-preview-iconbox img {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- 操作栏 ---- */
+.cs-preview-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex: 0 0 auto;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--container-10);
+}
+
+.cs-preview-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* Segmented 组件 */
+.cs-segmented {
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+  flex: 0 0 auto;
+  padding: 2px;
+  border-radius: 0.5rem;
+  background: var(--surface-container);
+}
+
+.cs-seg-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: calc(0.5rem - 2px);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-seg-item.is-active {
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+}
+
+/* 地址栏 */
+.cs-address {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  font: var(--font-caption-lg);
+  color: var(--text-placeholder);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cs-preview-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+/* 缩放下拉 */
+.cs-zoom {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.cs-zoom-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font: var(--font-body-sm);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cs-zoom-btn:hover {
+  color: var(--on-surface);
+}
+
+.cs-zoom-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: max-content;
+  padding: 6px;
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-container-lowest);
+  box-shadow: var(--shadow-dropdown);
+}
+
+.cs-zoom-opt {
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-font-primary);
+  font: var(--font-body-sm);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-zoom-opt:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+.cs-zoom-opt.is-active {
+  font-weight: var(--font-weight-bold);
+  color: var(--primary);
+}
+
+/* 更多操作下拉 */
+.cs-more {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.cs-more-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: max-content;
+  padding: 6px;
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-container-lowest);
+  box-shadow: var(--shadow-dropdown);
+}
+
+.cs-more-opt {
+  display: block;
+  width: 100%;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-font-primary);
+  font: var(--font-body-md);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-more-opt:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+/* ---- 预览容器 ---- */
+.cs-preview-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.cs-preview-container {
+  margin: 1.5rem 2rem;
+  /* #E5E5EA — 等价 var(--surface-container-high) */
+  border: 1px solid var(--surface-container-high);
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+/* 模拟文档页面 */
+.cs-preview-page {
+  padding: 28px;
+  background: var(--surface-container-lowest);
+}
+
+.cs-preview-name {
+  font: var(--font-title-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.cs-preview-eyebrow {
+  font: var(--font-caption-lg);
+  color: var(--text-placeholder);
+  margin: 4px 0 0;
+}
+
+.cs-preview-sec {
+  margin-top: 20px;
+}
+
+.cs-preview-sec h3 {
+  font: var(--font-subtitle-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0 0 6px;
+}
+
+.cs-preview-sec p {
+  font: var(--font-body-sm);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+  margin: 0;
 }
 
 /* ================= 动画 ================= */
@@ -3345,6 +3817,13 @@ img[data-component="Icon"] {
 
   .cs-user-wrap {
     max-width: 92%;
+  }
+
+  .cs-preview {
+    flex: 1 1 auto;
+    flex-basis: 100%;
+    border-left: 0;
+    border-top: 1px solid var(--divider);
   }
 }
 
@@ -3613,7 +4092,6 @@ function SearchBar(props) {
     "code": [["path",{"d":"m16 18 6-6-6-6"}],["path",{"d":"m8 6-6 6 6 6"}]],
     "code-xml": [["path",{"d":"m18 16 4-4-4-4"}],["path",{"d":"m6 8-4 4 4 4"}],["path",{"d":"m14.5 4-5 16"}]],
     "cpu": [["path",{"d":"M12 20v2"}],["path",{"d":"M12 2v2"}],["path",{"d":"M17 20v2"}],["path",{"d":"M17 2v2"}],["path",{"d":"M2 12h2"}],["path",{"d":"M2 17h2"}],["path",{"d":"M2 7h2"}],["path",{"d":"M20 12h2"}],["path",{"d":"M20 17h2"}],["path",{"d":"M20 7h2"}],["path",{"d":"M7 20v2"}],["path",{"d":"M7 2v2"}],["rect",{"x":"4","y":"4","width":"16","height":"16","rx":"2"}],["rect",{"x":"8","y":"8","width":"8","height":"8","rx":"1"}]],
-    "download": [["path",{"d":"M12 15V3"}],["path",{"d":"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"}],["path",{"d":"m7 10 5 5 5-5"}]],
     "eye": [["path",{"d":"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"}],["circle",{"cx":"12","cy":"12","r":"3"}]],
     "file-code": [["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"M10 12.5 8 15l2 2.5"}],["path",{"d":"m14 12.5 2 2.5-2 2.5"}]],
     "file-output": [["path",{"d":"M4.226 20.925A2 2 0 0 0 6 22h12a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v3.127"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"m5 11-3 3"}],["path",{"d":"m5 17-3-3h10"}]],
@@ -3629,6 +4107,7 @@ function SearchBar(props) {
     "layers": [["path",{"d":"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"}],["path",{"d":"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"}],["path",{"d":"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"}]],
     "library": [["path",{"d":"m16 6 4 14"}],["path",{"d":"M12 6v14"}],["path",{"d":"M8 8v12"}],["path",{"d":"M4 4v16"}]],
     "mail": [["path",{"d":"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"}],["rect",{"x":"2","y":"4","width":"20","height":"16","rx":"2"}]],
+    "message-circle": [["path",{"d":"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"}]],
     "message-square": [["path",{"d":"M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"}]],
     "network": [["rect",{"x":"16","y":"16","width":"6","height":"6","rx":"1"}],["rect",{"x":"2","y":"16","width":"6","height":"6","rx":"1"}],["rect",{"x":"9","y":"2","width":"6","height":"6","rx":"1"}],["path",{"d":"M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"}],["path",{"d":"M12 12V8"}]],
     "palette": [["path",{"d":"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"}],["circle",{"cx":"13.5","cy":"6.5","r":".5","fill":"currentColor"}],["circle",{"cx":"17.5","cy":"10.5","r":".5","fill":"currentColor"}],["circle",{"cx":"6.5","cy":"12.5","r":".5","fill":"currentColor"}],["circle",{"cx":"8.5","cy":"7.5","r":".5","fill":"currentColor"}]],
@@ -3644,8 +4123,8 @@ function SearchBar(props) {
     "settings-2": [["path",{"d":"M14 17H5"}],["path",{"d":"M19 7h-9"}],["circle",{"cx":"17","cy":"17","r":"3"}],["circle",{"cx":"7","cy":"7","r":"3"}]],
     "shield-alert": [["path",{"d":"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"}],["path",{"d":"M12 8v4"}],["path",{"d":"M12 16h.01"}]],
     "sparkles": [["path",{"d":"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"}],["path",{"d":"M20 2v4"}],["path",{"d":"M22 4h-4"}],["circle",{"cx":"4","cy":"20","r":"2"}]],
-    "square-pen": [["path",{"d":"M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"}],["path",{"d":"M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"}]],
     "table": [["path",{"d":"M12 3v18"}],["rect",{"width":"18","height":"18","x":"3","y":"3","rx":"2"}],["path",{"d":"M3 9h18"}],["path",{"d":"M3 15h18"}]],
+    "triangle": [["path",{"d":"M13.73 4a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"}]],
     "type": [["path",{"d":"M12 4v16"}],["path",{"d":"M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"}],["path",{"d":"M9 20h6"}]],
     "user-round": [["circle",{"cx":"12","cy":"8","r":"5"}],["path",{"d":"M20 21a8 8 0 0 0-16 0"}]],
     "wrench": [["path",{"d":"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"}]],
@@ -3886,7 +4365,7 @@ function Sidebar() {
 
 /* ===== views/ChatComposer/index.jsx ===== */
 (function () {
-  const { useState, useEffect, useRef } = React;
+  const { useState, useEffect, useLayoutEffect, useRef } = React;
   const { Icon } = __export;
 /* ================= 配置数据（下拉选项） ================= */
 const AGENT_MODES = [
@@ -4118,9 +4597,20 @@ const ADD_LEVELS = {
 };
 
 /* ================= 通用下拉菜单面板 ================= */
+/* 自适应方向：默认向下弹出；底部空间不足时翻转到按钮上方（渲染前测量，无闪烁） */
 function DropMenu({ options, selectedId, onPick }) {
+  const ref = useRef(null);
+  const [up, setUp] = useState(false);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.bottom > window.innerHeight - 8) setUp(true);
+  }, []);
+
   return (
-    <div className="cc-menu">
+    <div ref={ref} className={"cc-menu" + (up ? " cc-menu--up" : "")}>
       {options.map((o) => {
         const isSel = o.id === selectedId;
         return (
@@ -4875,9 +5365,13 @@ function ChatComposer(props) {
               ) : sent ? (
                 <Icon name="check" size={18} />
               ) : (
-                /* active vs inactive by canSend; icons carry their own circle bg */
+                /* 有内容时切换 send-active(蓝底),否则 send-inactive(灰底);图形自带圆底 */
                 <Icon
-                  src={canSend ? "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIzMi4wMDAwMDAiIGhlaWdodD0iMzIuMDAwMDAwIiBmaWxsPSJub25lIiBjdXN0b21GcmFtZT0idXJsKCNjbGlwUGF0aF82KSI+DQoJPGRlZnM+DQoJCTxjbGlwUGF0aCBpZD0iY2xpcFBhdGhfNiI+DQoJCQk8cmVjdCB3aWR0aD0iMzIuMDAwMDAwIiBoZWlnaHQ9IjMyLjAwMDAwMCIgeD0iMC4wMDAwMDAiIHk9IjAuMDAwMDAwIiByeD0iMTYuMDAwMDAwIiBmaWxsPSJyZ2IoMjU1LDI1NSwyNTUpIiAvPg0KCQk8L2NsaXBQYXRoPg0KCQk8Y2xpcFBhdGggaWQ9ImNsaXBQYXRoXzciPg0KCQkJPHJlY3Qgd2lkdGg9IjIwLjAwMDAwMCIgaGVpZ2h0PSIyMC4wMDAwMDAiIHg9IjYuMDAwMDAwIiB5PSI2LjAwMDAwMCIgZmlsbD0icmdiKDI1NSwyNTUsMjU1KSIgLz4NCgkJPC9jbGlwUGF0aD4NCgk8L2RlZnM+DQoJPHJlY3QgaWQ9IuaTjeS9nC/lj5HpgIEt5pyq5r+A5rS7IiB3aWR0aD0iMzIuMDAwMDAwIiBoZWlnaHQ9IjMyLjAwMDAwMCIgeD0iMC4wMDAwMDAiIHk9IjAuMDAwMDAwIiByeD0iMTYuMDAwMDAwIiBmaWxsPSJyZ2IoMCwwLDApIiBmaWxsLW9wYWNpdHk9IjAuODk4MDM5MjIyIiAvPg0KCTxnIGlkPSJwYXBlci1wbGFuZS1maWxsIDEiIGNsaXAtcGF0aD0idXJsKCNjbGlwUGF0aF83KSIgY3VzdG9tRnJhbWU9InVybCgjY2xpcFBhdGhfNykiPg0KCQk8cmVjdCBpZD0icGFwZXItcGxhbmUtZmlsbCAxIiB3aWR0aD0iMjAuMDAwMDAwIiBoZWlnaHQ9IjIwLjAwMDAwMCIgeD0iNi4wMDAwMDAiIHk9IjYuMDAwMDAwIiAvPg0KCQk8cGF0aCBpZD0i55+i6YePIDM4NjkwIiBkPSJNMjMuODcyMiAyMi4wNTU4QzIzLjc2MzYgMjIuMTg1NiAyMy42Mjc4IDIyLjI4OTkgMjMuNDc0NCAyMi4zNjE1QzIzLjMyMSAyMi40MzMgMjMuMTUzOCAyMi40NyAyMi45ODQ1IDIyLjQ2OThDMjIuODUxNSAyMi40Njk2IDIyLjcxOTQgMjIuNDQ3IDIyLjU5MzkgMjIuNDAyOEwxNi43NzcxIDIwLjQzODVDMTYuNzE5NCAyMC40MTkgMTYuNjY5MyAyMC4zODE5IDE2LjYzMzggMjAuMzMyNEMxNi41OTgzIDIwLjI4MyAxNi41NzkyIDIwLjIyMzYgMTYuNTc5MiAyMC4xNjI3TDE2LjU3OTIgMTQuOTAzM0MxNi41Nzk1IDE0Ljc5NjYgMTYuNTUwNCAxNC42OTE5IDE2LjQ5NTEgMTQuNjAwNkMxNi40Mzk5IDE0LjUwOTQgMTYuMzYwNyAxNC40MzUxIDE2LjI2NiAxNC4zODU4QzE2LjE3MTQgMTQuMzM2NSAxNi4wNjUxIDE0LjMxNDIgMTUuOTU4NiAxNC4zMjEyQzE1Ljg1OTUgMTQuMzMgMTUuNzY0MSAxNC4zNjM0IDE1LjY4MTMgMTQuNDE4NUMxNS41OTg0IDE0LjQ3MzUgMTUuNTMwNiAxNC41NDg1IDE1LjQ4NDEgMTQuNjM2NUMxNS40Mzc2IDE0LjcyNDUgMTUuNDEzOSAxNC44MjI3IDE1LjQxNTIgMTQuOTIyMkwxNS40MTUyIDIwLjE2MDVDMTUuNDE1MiAyMC4yMjE0IDE1LjM5NjEgMjAuMjgwOCAxNS4zNjA2IDIwLjMzMDJDMTUuMzI1MSAyMC4zNzk3IDE1LjI3NSAyMC40MTY4IDE1LjIxNzMgMjAuNDM2M0w5LjQwMDU0IDIyLjQwMDZDOS4xNzczOCAyMi40NzkxIDguOTM1NjQgMjIuNDg3NiA4LjcwNzQ5IDIyLjQyNTJDOC40NzkzNSAyMi4zNjI4IDguMjc1NjMgMjIuMjMyNCA4LjEyMzQ2IDIyLjA1MTNDNy45NzEyOSAyMS44NzAyIDcuODc3OSAyMS42NDcxIDcuODU1NzIgMjEuNDExNkM3LjgzMzUzIDIxLjE3NjEgNy44ODM2MSAyMC45Mzk0IDcuOTk5MjggMjAuNzMzMUwxNC45ODE1IDguNTEwMzRDMTUuMDgyOCA4LjMzMDMyIDE1LjIzMDEgOC4xODA0OSAxNS40MDg0IDguMDc2MjJDMTUuNTg2NyA3Ljk3MTk1IDE1Ljc4OTYgNy45MTY5OSAxNS45OTYxIDcuOTE2OTlDMTYuMjAyNyA3LjkxNjk5IDE2LjQwNTUgNy45NzE5NSAxNi41ODM4IDguMDc2MjJDMTYuNzYyMSA4LjE4MDQ5IDE2LjkwOTQgOC4zMzAzMiAxNy4wMTA3IDguNTEwMzRMMjMuOTk1OCAyMC43MzA5QzI0LjExNDIgMjAuOTM3NiAyNC4xNjU4IDIxLjE3NTggMjQuMTQzNyAyMS40MTI5QzI0LjEyMTYgMjEuNjUwMSAyNC4wMjY3IDIxLjg3NDYgMjMuODcyMiAyMi4wNTU4WiIgZmlsbD0icmdiKDI1NSwyNTUsMjU1KSIgZmlsbC1ydWxlPSJub256ZXJvIiAvPg0KCTwvZz4NCjwvc3ZnPg0K" : "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIzMi4wMDAwMDAiIGhlaWdodD0iMzIuMDAwMDAwIiBmaWxsPSJub25lIiBjdXN0b21GcmFtZT0idXJsKCNjbGlwUGF0aF80KSI+DQoJPGRlZnM+DQoJCTxjbGlwUGF0aCBpZD0iY2xpcFBhdGhfNCI+DQoJCQk8cmVjdCB3aWR0aD0iMzIuMDAwMDAwIiBoZWlnaHQ9IjMyLjAwMDAwMCIgeD0iMC4wMDAwMDAiIHk9IjAuMDAwMDAwIiByeD0iMTYuMDAwMDAwIiBmaWxsPSJyZ2IoMjU1LDI1NSwyNTUpIiAvPg0KCQk8L2NsaXBQYXRoPg0KCQk8Y2xpcFBhdGggaWQ9ImNsaXBQYXRoXzUiPg0KCQkJPHJlY3Qgd2lkdGg9IjIwLjAwMDAwMCIgaGVpZ2h0PSIyMC4wMDAwMDAiIHg9IjYuMDAwMDAwIiB5PSI2LjAwMDAwMCIgZmlsbD0icmdiKDI1NSwyNTUsMjU1KSIgLz4NCgkJPC9jbGlwUGF0aD4NCgk8L2RlZnM+DQoJPHJlY3QgaWQ9IuaTjeS9nC/lj5HpgIEt5pyq5r+A5rS7IiB3aWR0aD0iMzIuMDAwMDAwIiBoZWlnaHQ9IjMyLjAwMDAwMCIgeD0iMC4wMDAwMDAiIHk9IjAuMDAwMDAwIiByeD0iMTYuMDAwMDAwIiBmaWxsPSJyZ2IoMjI5LDIyOSwyMzQpIiAvPg0KCTxnIGlkPSJwYXBlci1wbGFuZS1maWxsIDEiIGNsaXAtcGF0aD0idXJsKCNjbGlwUGF0aF81KSIgY3VzdG9tRnJhbWU9InVybCgjY2xpcFBhdGhfNSkiPg0KCQk8cmVjdCBpZD0icGFwZXItcGxhbmUtZmlsbCAxIiB3aWR0aD0iMjAuMDAwMDAwIiBoZWlnaHQ9IjIwLjAwMDAwMCIgeD0iNi4wMDAwMDAiIHk9IjYuMDAwMDAwIiAvPg0KCQk8cGF0aCBpZD0i55+i6YePIDM4NjkwIiBkPSJNMjMuODcyMiAyMi4wNTU4QzIzLjc2MzYgMjIuMTg1NiAyMy42Mjc4IDIyLjI4OTkgMjMuNDc0NCAyMi4zNjE1QzIzLjMyMSAyMi40MzMgMjMuMTUzOCAyMi40NyAyMi45ODQ1IDIyLjQ2OThDMjIuODUxNSAyMi40Njk2IDIyLjcxOTQgMjIuNDQ3IDIyLjU5MzkgMjIuNDAyOEwxNi43NzcxIDIwLjQzODVDMTYuNzE5NCAyMC40MTkgMTYuNjY5MyAyMC4zODE5IDE2LjYzMzggMjAuMzMyNEMxNi41OTgzIDIwLjI4MyAxNi41NzkyIDIwLjIyMzYgMTYuNTc5MiAyMC4xNjI3TDE2LjU3OTIgMTQuOTAzM0MxNi41Nzk1IDE0Ljc5NjYgMTYuNTUwNCAxNC42OTE5IDE2LjQ5NTEgMTQuNjAwNkMxNi40Mzk5IDE0LjUwOTQgMTYuMzYwNyAxNC40MzUxIDE2LjI2NiAxNC4zODU4QzE2LjE3MTQgMTQuMzM2NSAxNi4wNjUxIDE0LjMxNDIgMTUuOTU4NiAxNC4zMjEyQzE1Ljg1OTUgMTQuMzMgMTUuNzY0MSAxNC4zNjM0IDE1LjY4MTMgMTQuNDE4NUMxNS41OTg0IDE0LjQ3MzUgMTUuNTMwNiAxNC41NDg1IDE1LjQ4NDEgMTQuNjM2NUMxNS40Mzc2IDE0LjcyNDUgMTUuNDEzOSAxNC44MjI3IDE1LjQxNTIgMTQuOTIyMkwxNS40MTUyIDIwLjE2MDVDMTUuNDE1MiAyMC4yMjE0IDE1LjM5NjEgMjAuMjgwOCAxNS4zNjA2IDIwLjMzMDJDMTUuMzI1MSAyMC4zNzk3IDE1LjI3NSAyMC40MTY4IDE1LjIxNzMgMjAuNDM2M0w5LjQwMDU0IDIyLjQwMDZDOS4xNzczOCAyMi40NzkxIDguOTM1NjQgMjIuNDg3NiA4LjcwNzQ5IDIyLjQyNTJDOC40NzkzNSAyMi4zNjI4IDguMjc1NjMgMjIuMjMyNCA4LjEyMzQ2IDIyLjA1MTNDNy45NzEyOSAyMS44NzAyIDcuODc3OSAyMS42NDcxIDcuODU1NzIgMjEuNDExNkM3LjgzMzUzIDIxLjE3NjEgNy44ODM2MSAyMC45Mzk0IDcuOTk5MjggMjAuNzMzMUwxNC45ODE1IDguNTEwMzRDMTUuMDgyOCA4LjMzMDMyIDE1LjIzMDEgOC4xODA0OSAxNS40MDg0IDguMDc2MjJDMTUuNTg2NyA3Ljk3MTk1IDE1Ljc4OTYgNy45MTY5OSAxNS45OTYxIDcuOTE2OTlDMTYuMjAyNyA3LjkxNjk5IDE2LjQwNTUgNy45NzE5NSAxNi41ODM4IDguMDc2MjJDMTYuNzYyMSA4LjE4MDQ5IDE2LjkwOTQgOC4zMzAzMiAxNy4wMTA3IDguNTEwMzRMMjMuOTk1OCAyMC43MzA5QzI0LjExNDIgMjAuOTM3NiAyNC4xNjU4IDIxLjE3NTggMjQuMTQzNyAyMS40MTI5QzI0LjEyMTYgMjEuNjUwMSAyNC4wMjY3IDIxLjg3NDYgMjMuODcyMiAyMi4wNTU4WiIgZmlsbD0icmdiKDI1NSwyNTUsMjU1KSIgZmlsbC1ydWxlPSJub256ZXJvIiAvPg0KCTwvZz4NCjwvc3ZnPg0K"}
+                  src={
+                    canSend
+                      ? "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIzMi4wMDAwMDAiIGhlaWdodD0iMzIuMDAwMDAwIiBmaWxsPSJub25lIiBjdXN0b21GcmFtZT0idXJsKCNjbGlwUGF0aF82KSI+DQoJPGRlZnM+DQoJCTxjbGlwUGF0aCBpZD0iY2xpcFBhdGhfNiI+DQoJCQk8cmVjdCB3aWR0aD0iMzIuMDAwMDAwIiBoZWlnaHQ9IjMyLjAwMDAwMCIgeD0iMC4wMDAwMDAiIHk9IjAuMDAwMDAwIiByeD0iMTYuMDAwMDAwIiBmaWxsPSJyZ2IoMjU1LDI1NSwyNTUpIiAvPg0KCQk8L2NsaXBQYXRoPg0KCQk8Y2xpcFBhdGggaWQ9ImNsaXBQYXRoXzciPg0KCQkJPHJlY3Qgd2lkdGg9IjIwLjAwMDAwMCIgaGVpZ2h0PSIyMC4wMDAwMDAiIHg9IjYuMDAwMDAwIiB5PSI2LjAwMDAwMCIgZmlsbD0icmdiKDI1NSwyNTUsMjU1KSIgLz4NCgkJPC9jbGlwUGF0aD4NCgk8L2RlZnM+DQoJPHJlY3QgaWQ9IuaTjeS9nC/lj5HpgIEt5pyq5r+A5rS7IiB3aWR0aD0iMzIuMDAwMDAwIiBoZWlnaHQ9IjMyLjAwMDAwMCIgeD0iMC4wMDAwMDAiIHk9IjAuMDAwMDAwIiByeD0iMTYuMDAwMDAwIiBmaWxsPSJyZ2IoMCwwLDApIiBmaWxsLW9wYWNpdHk9IjAuODk4MDM5MjIyIiAvPg0KCTxnIGlkPSJwYXBlci1wbGFuZS1maWxsIDEiIGNsaXAtcGF0aD0idXJsKCNjbGlwUGF0aF83KSIgY3VzdG9tRnJhbWU9InVybCgjY2xpcFBhdGhfNykiPg0KCQk8cmVjdCBpZD0icGFwZXItcGxhbmUtZmlsbCAxIiB3aWR0aD0iMjAuMDAwMDAwIiBoZWlnaHQ9IjIwLjAwMDAwMCIgeD0iNi4wMDAwMDAiIHk9IjYuMDAwMDAwIiAvPg0KCQk8cGF0aCBpZD0i55+i6YePIDM4NjkwIiBkPSJNMjMuODcyMiAyMi4wNTU4QzIzLjc2MzYgMjIuMTg1NiAyMy42Mjc4IDIyLjI4OTkgMjMuNDc0NCAyMi4zNjE1QzIzLjMyMSAyMi40MzMgMjMuMTUzOCAyMi40NyAyMi45ODQ1IDIyLjQ2OThDMjIuODUxNSAyMi40Njk2IDIyLjcxOTQgMjIuNDQ3IDIyLjU5MzkgMjIuNDAyOEwxNi43NzcxIDIwLjQzODVDMTYuNzE5NCAyMC40MTkgMTYuNjY5MyAyMC4zODE5IDE2LjYzMzggMjAuMzMyNEMxNi41OTgzIDIwLjI4MyAxNi41NzkyIDIwLjIyMzYgMTYuNTc5MiAyMC4xNjI3TDE2LjU3OTIgMTQuOTAzM0MxNi41Nzk1IDE0Ljc5NjYgMTYuNTUwNCAxNC42OTE5IDE2LjQ5NTEgMTQuNjAwNkMxNi40Mzk5IDE0LjUwOTQgMTYuMzYwNyAxNC40MzUxIDE2LjI2NiAxNC4zODU4QzE2LjE3MTQgMTQuMzM2NSAxNi4wNjUxIDE0LjMxNDIgMTUuOTU4NiAxNC4zMjEyQzE1Ljg1OTUgMTQuMzMgMTUuNzY0MSAxNC4zNjM0IDE1LjY4MTMgMTQuNDE4NUMxNS41OTg0IDE0LjQ3MzUgMTUuNTMwNiAxNC41NDg1IDE1LjQ4NDEgMTQuNjM2NUMxNS40Mzc2IDE0LjcyNDUgMTUuNDEzOSAxNC44MjI3IDE1LjQxNTIgMTQuOTIyMkwxNS40MTUyIDIwLjE2MDVDMTUuNDE1MiAyMC4yMjE0IDE1LjM5NjEgMjAuMjgwOCAxNS4zNjA2IDIwLjMzMDJDMTUuMzI1MSAyMC4zNzk3IDE1LjI3NSAyMC40MTY4IDE1LjIxNzMgMjAuNDM2M0w5LjQwMDU0IDIyLjQwMDZDOS4xNzczOCAyMi40NzkxIDguOTM1NjQgMjIuNDg3NiA4LjcwNzQ5IDIyLjQyNTJDOC40NzkzNSAyMi4zNjI4IDguMjc1NjMgMjIuMjMyNCA4LjEyMzQ2IDIyLjA1MTNDNy45NzEyOSAyMS44NzAyIDcuODc3OSAyMS42NDcxIDcuODU1NzIgMjEuNDExNkM3LjgzMzUzIDIxLjE3NjEgNy44ODM2MSAyMC45Mzk0IDcuOTk5MjggMjAuNzMzMUwxNC45ODE1IDguNTEwMzRDMTUuMDgyOCA4LjMzMDMyIDE1LjIzMDEgOC4xODA0OSAxNS40MDg0IDguMDc2MjJDMTUuNTg2NyA3Ljk3MTk1IDE1Ljc4OTYgNy45MTY5OSAxNS45OTYxIDcuOTE2OTlDMTYuMjAyNyA3LjkxNjk5IDE2LjQwNTUgNy45NzE5NSAxNi41ODM4IDguMDc2MjJDMTYuNzYyMSA4LjE4MDQ5IDE2LjkwOTQgOC4zMzAzMiAxNy4wMTA3IDguNTEwMzRMMjMuOTk1OCAyMC43MzA5QzI0LjExNDIgMjAuOTM3NiAyNC4xNjU4IDIxLjE3NTggMjQuMTQzNyAyMS40MTI5QzI0LjEyMTYgMjEuNjUwMSAyNC4wMjY3IDIxLjg3NDYgMjMuODcyMiAyMi4wNTU4WiIgZmlsbD0icmdiKDI1NSwyNTUsMjU1KSIgZmlsbC1ydWxlPSJub256ZXJvIiAvPg0KCTwvZz4NCjwvc3ZnPg0K"
+                      : "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIzMi4wMDAwMDAiIGhlaWdodD0iMzIuMDAwMDAwIiBmaWxsPSJub25lIiBjdXN0b21GcmFtZT0idXJsKCNjbGlwUGF0aF80KSI+DQoJPGRlZnM+DQoJCTxjbGlwUGF0aCBpZD0iY2xpcFBhdGhfNCI+DQoJCQk8cmVjdCB3aWR0aD0iMzIuMDAwMDAwIiBoZWlnaHQ9IjMyLjAwMDAwMCIgeD0iMC4wMDAwMDAiIHk9IjAuMDAwMDAwIiByeD0iMTYuMDAwMDAwIiBmaWxsPSJyZ2IoMjU1LDI1NSwyNTUpIiAvPg0KCQk8L2NsaXBQYXRoPg0KCQk8Y2xpcFBhdGggaWQ9ImNsaXBQYXRoXzUiPg0KCQkJPHJlY3Qgd2lkdGg9IjIwLjAwMDAwMCIgaGVpZ2h0PSIyMC4wMDAwMDAiIHg9IjYuMDAwMDAwIiB5PSI2LjAwMDAwMCIgZmlsbD0icmdiKDI1NSwyNTUsMjU1KSIgLz4NCgkJPC9jbGlwUGF0aD4NCgk8L2RlZnM+DQoJPHJlY3QgaWQ9IuaTjeS9nC/lj5HpgIEt5pyq5r+A5rS7IiB3aWR0aD0iMzIuMDAwMDAwIiBoZWlnaHQ9IjMyLjAwMDAwMCIgeD0iMC4wMDAwMDAiIHk9IjAuMDAwMDAwIiByeD0iMTYuMDAwMDAwIiBmaWxsPSJyZ2IoMjI5LDIyOSwyMzQpIiAvPg0KCTxnIGlkPSJwYXBlci1wbGFuZS1maWxsIDEiIGNsaXAtcGF0aD0idXJsKCNjbGlwUGF0aF81KSIgY3VzdG9tRnJhbWU9InVybCgjY2xpcFBhdGhfNSkiPg0KCQk8cmVjdCBpZD0icGFwZXItcGxhbmUtZmlsbCAxIiB3aWR0aD0iMjAuMDAwMDAwIiBoZWlnaHQ9IjIwLjAwMDAwMCIgeD0iNi4wMDAwMDAiIHk9IjYuMDAwMDAwIiAvPg0KCQk8cGF0aCBpZD0i55+i6YePIDM4NjkwIiBkPSJNMjMuODcyMiAyMi4wNTU4QzIzLjc2MzYgMjIuMTg1NiAyMy42Mjc4IDIyLjI4OTkgMjMuNDc0NCAyMi4zNjE1QzIzLjMyMSAyMi40MzMgMjMuMTUzOCAyMi40NyAyMi45ODQ1IDIyLjQ2OThDMjIuODUxNSAyMi40Njk2IDIyLjcxOTQgMjIuNDQ3IDIyLjU5MzkgMjIuNDAyOEwxNi43NzcxIDIwLjQzODVDMTYuNzE5NCAyMC40MTkgMTYuNjY5MyAyMC4zODE5IDE2LjYzMzggMjAuMzMyNEMxNi41OTgzIDIwLjI4MyAxNi41NzkyIDIwLjIyMzYgMTYuNTc5MiAyMC4xNjI3TDE2LjU3OTIgMTQuOTAzM0MxNi41Nzk1IDE0Ljc5NjYgMTYuNTUwNCAxNC42OTE5IDE2LjQ5NTEgMTQuNjAwNkMxNi40Mzk5IDE0LjUwOTQgMTYuMzYwNyAxNC40MzUxIDE2LjI2NiAxNC4zODU4QzE2LjE3MTQgMTQuMzM2NSAxNi4wNjUxIDE0LjMxNDIgMTUuOTU4NiAxNC4zMjEyQzE1Ljg1OTUgMTQuMzMgMTUuNzY0MSAxNC4zNjM0IDE1LjY4MTMgMTQuNDE4NUMxNS41OTg0IDE0LjQ3MzUgMTUuNTMwNiAxNC41NDg1IDE1LjQ4NDEgMTQuNjM2NUMxNS40Mzc2IDE0LjcyNDUgMTUuNDEzOSAxNC44MjI3IDE1LjQxNTIgMTQuOTIyMkwxNS40MTUyIDIwLjE2MDVDMTUuNDE1MiAyMC4yMjE0IDE1LjM5NjEgMjAuMjgwOCAxNS4zNjA2IDIwLjMzMDJDMTUuMzI1MSAyMC4zNzk3IDE1LjI3NSAyMC40MTY4IDE1LjIxNzMgMjAuNDM2M0w5LjQwMDU0IDIyLjQwMDZDOS4xNzczOCAyMi40NzkxIDguOTM1NjQgMjIuNDg3NiA4LjcwNzQ5IDIyLjQyNTJDOC40NzkzNSAyMi4zNjI4IDguMjc1NjMgMjIuMjMyNCA4LjEyMzQ2IDIyLjA1MTNDNy45NzEyOSAyMS44NzAyIDcuODc3OSAyMS42NDcxIDcuODU1NzIgMjEuNDExNkM3LjgzMzUzIDIxLjE3NjEgNy44ODM2MSAyMC45Mzk0IDcuOTk5MjggMjAuNzMzMUwxNC45ODE1IDguNTEwMzRDMTUuMDgyOCA4LjMzMDMyIDE1LjIzMDEgOC4xODA0OSAxNS40MDg0IDguMDc2MjJDMTUuNTg2NyA3Ljk3MTk1IDE1Ljc4OTYgNy45MTY5OSAxNS45OTYxIDcuOTE2OTlDMTYuMjAyNyA3LjkxNjk5IDE2LjQwNTUgNy45NzE5NSAxNi41ODM4IDguMDc2MjJDMTYuNzYyMSA4LjE4MDQ5IDE2LjkwOTQgOC4zMzAzMiAxNy4wMTA3IDguNTEwMzRMMjMuOTk1OCAyMC43MzA5QzI0LjExNDIgMjAuOTM3NiAyNC4xNjU4IDIxLjE3NTggMjQuMTQzNyAyMS40MTI5QzI0LjEyMTYgMjEuNjUwMSAyNC4wMjY3IDIxLjg3NDYgMjMuODcyMiAyMi4wNTU4WiIgZmlsbD0icmdiKDI1NSwyNTUsMjU1KSIgZmlsbC1ydWxlPSJub256ZXJvIiAvPg0KCTwvZz4NCjwvc3ZnPg0K"
+                  }
                   size={32}
                 />
               )}
@@ -5187,6 +5681,13 @@ function short(text, n) {
   return t.length > n ? t.slice(0, n) + "…" : t;
 }
 
+/* 用户提供的内联 SVG 图标（含嵌入 PNG base64），直接渲染为 <svg> 而非 <img> */
+const PROJECT_FILES_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><image x="0" y="0" width="16" height="16" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABIUlEQVR4Ae3gAZAkSZIkSRKLqpm7R0REZmZmVlVVVVV3d3d3d/fMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMdHd3d3dXV1VVVVVmZkZGRIS7m5kKz0xmV3d1d3dPz8zMzMxMovj3Qfz7IOBm4CZgD/gH4GbgJl40dwh4R+AdgX8APgt4R+AdedH8svj3Qfz7IP59EPBGwIsBdwA/CrwR8GK8aP5BwBsBLwbcAfwo8EbAi/Gi+Qfx74P490H8+yDg/YE3Bv4B+Czg/YE35kXzowJuBm7iij8CbgZu4kVzh/j3Qfz78I+dsRKT5tp2pAAAAABJRU5ErkJggg=="/></svg>';
+
+const ZOOM_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"><image x="0" y="0" width="32" height="32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACcUlEQVR4Ae3gAZAkSZIkSRKLqpm7R0REZmZmVlVVVVV3d3d3d/fMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMdHd3d3dXV1VVVVVmZkZGRIS7m5kKz0xmV3d1d3dPz8zMzMxMovjvhfjvhfjvhfjvhfjvhfjvhfjvhfjvhfiXLYCX5jktgb/mOb0Kz2kJPBFY8oIh/mUvDXwI8CTgHM/2PTzbAnhHnu1m4Gbgu4E/4gVD/MteBXg9YAP4JuB2XribgQ8BzgN/CPwRLxjiX/YqwCOB3wQ+BPgm4Haev5uBDwG+CXhd4EnAH/GCIf5lrwI8Evge4GbgQ4BvAm7nOd0MfAjwTcDtwHsBTwL+iBcM8S97FeCRwPdwxc3AhwDfBNzOFTcDHwJ8E3A7V7wX8DfAX/OCIV40C2DJs90MvDnwTVzx6cD3ALfzr4P474X474X4t7kZeEfgK7ji04HvAW7n2RbAkhcO8S97aeClgO/hipuBDwG+CbidK24GPgT4JuB2rngv4EnAH/GCIf5lrwI8Evge4GbgQ4BvAm7nOd0MfAjwTcDtwHsBTwL+iBcM8S97FeCRwG8CHwJ8E3A7z9/NwIcA3wS8LvAk4I94wRD/slcBXhU4BXwTcDsv3M3AhwBHwG8Af8QLhviXvQrw3sDtwO08248CS57tvXi208AjgW8C/poXDPEvWwCPAhY8pz/iOb00sOA5/TWw5AVD/PdC/PdC/PdC/PdC/PdC/PdC/PdC/PfiHwHUwU0hBnrcswAAAABJRU5ErkJggg=="/></svg>';
+
 /* 依据发送载荷构造一次 Agent 回复：结构化回答块流。
    块类型："p" 段落 / "li" 列表项 / "status" 图标状态行（随流式逐字输出）/
    "perm-wait" 授权等待标记 — 流式输出到该块时挂起，授权弹框在输入框上方弹出，
@@ -5270,13 +5771,24 @@ function buildAgentReply(payload) {
       title: "汇报演示.html · HTML",
       lines: [
         "# 汇报演示 · When2meet 项目",
-        "01 背景与目标 —— 会议时间协调的痛点与机会",
-        "02 用户画像 —— 目标人群与核心场景",
+        "01 背景与目标 —— 会议时间协调痛点与改进机会",
+        "02 用户画像 —— 目标人群与核心使用场景",
         "03 首页交互改版 —— 布局与动效方案（重点）",
         "04 智慧推荐 —— 推荐策略与算法链路（重点）",
-        "05 数据验证 —— 核心指标与 A/B 结论",
-        "…",
-        "18 路线图与 Q&A —— 迭代计划与讨论",
+        "05 竞品分析 —— Doodle、Calendly 功能对比",
+        "06 信息架构 —— 站点地图与页面跳转关系",
+        "07 交互流程 —— 创建/参与/分享三大主流程",
+        "08 视觉规范 —— 色彩、字体与间距系统",
+        "09 动效设计 —— 微交互与转场动效规范",
+        "10 数据看板 —— 关键指标定义与埋点方案",
+        "11 技术方案 —— 前端架构与性能预算",
+        "12 性能优化 —— 首屏加载与包体积优化",
+        "13 A/B 实验 —— 实验设计与分流策略",
+        "14 数据验证 —— 核心指标与 A/B 结论",
+        "15 风险与应对 —— 识别、评估与缓解措施",
+        "16 团队分工 —— 角色职责与协作机制",
+        "17 排期计划 —— 三期迭代里程碑",
+        "18 路线图与 Q&A —— 长期规划与讨论",
       ],
     },
     {
@@ -5326,16 +5838,86 @@ function UserBubble({ msg }) {
           ))}
         </div>
       ) : null}
-      <div className="cs-user-bubble">{msg.text}</div>
-      <p className="cs-user-meta">
-        {msg.meta.modelLabel} · {msg.meta.modeLabel}
-      </p>
+      <div className="cs-user-bubble">
+        {/* 标签：图标 + 文档总结（图标 0.875rem） */}
+        <span className="cs-user-tag">
+          <Icon name="file-text" size={14} />
+          <span>文档总结</span>
+        </span>
+        <div className="cs-user-text">{msg.text}</div>
+      </div>
+    </div>
+  );
+}
+
+/* ================= 产物文件卡片：图标 + 信息 + 更多操作下拉 ================= */
+function FileCard({ f, onPreview }) {
+  const [open, setOpen] = useState(false);
+
+  /* 点击下拉外部任意位置时收起 */
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e) => {
+      if (!e.target.closest("[data-file-drop]")) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+
+  return (
+    <div className="cs-file">
+      <span className="cs-file-icon">
+        <Icon src={f.src} size={28} />
+      </span>
+      <span className="cs-file-info">
+        <span className="cs-file-name">{f.name}</span>
+        <span className="cs-file-meta">
+          {f.desc} · {f.size}
+        </span>
+      </span>
+      {/* 打开方式下拉 */}
+      <div className="cs-file-drop" data-file-drop>
+        <button
+          type="button"
+          className={"cs-file-more" + (open ? " is-open" : "")}
+          onClick={() => setOpen((v) => !v)}
+          aria-label="打开方式"
+          aria-expanded={open}
+        >
+          <span>打开方式</span>
+          <Icon
+            name="triangle"
+            size={8}
+            className={"cs-file-caret" + (open ? " is-open" : "")}
+          />
+        </button>
+        {open ? (
+          <div className="cs-file-menu">
+            <button
+              type="button"
+              className="cs-file-opt"
+              onClick={() => {
+                setOpen(false);
+                if (onPreview) onPreview(f);
+              }}
+            >
+              在线预览
+            </button>
+            <button type="button" className="cs-file-opt" onClick={() => setOpen(false)}>
+              浏览器打开
+            </button>
+            <button type="button" className="cs-file-opt" onClick={() => setOpen(false)}>
+              下载到本地
+            </button>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
 
 /* ================= Agent 回复：流式生成 + 授权弹框等待 ================= */
-function AgentRun({ msg, onGrow, onNeedPerm, permCmd }) {
+function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview }) {
   const blocks = msg.blocks;
   const total = blocks.length;
   const [cursor, setCursor] = useState(0); // 当前处理到的块下标（= 已完成块数）
@@ -5581,28 +6163,12 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd }) {
               );
             }
 
-            /* ---- 生成产物：产物文件卡片 ---- */
+            /* ---- 生成产物：产物文件卡片（FileCard 子组件渲染，右侧为操作下拉） ---- */
             if (b.type === "artifacts") {
               return (
                 <div className={"cs-files " + (b.cls || "")} key={i}>
                   {b.files.map((f) => (
-                    <div className="cs-file" key={f.id}>
-                      <span className="cs-file-icon">
-                        <Icon src={f.src} size={24} />
-                      </span>
-                      <span className="cs-file-info">
-                        <span className="cs-file-name">{f.name}</span>
-                        <span className="cs-file-meta">
-                          {f.desc} · {f.size}
-                        </span>
-                      </span>
-                      <button type="button" className="cs-file-btn" title="预览" aria-label="预览">
-                        <Icon name="eye" size={14} />
-                      </button>
-                      <button type="button" className="cs-file-btn" title="下载" aria-label="下载">
-                        <Icon name="download" size={14} />
-                      </button>
-                    </div>
+                    <FileCard key={f.id} f={f} onPreview={onPreview} />
                   ))}
                 </div>
               );
@@ -5713,15 +6279,28 @@ function ChatSession({ messages, onReset, composer }) {
   const [permCmd, setPermCmd] = useState(null);
   const [allowOpen, setAllowOpen] = useState(false); // 「允许」下拉展开态
 
-  /* 点击下拉外部任意位置时收起「允许」下拉 */
+  /* 右侧预览面板：当前预览的产物文件 */
+  const [previewFile, setPreviewFile] = useState(null);
+  const [zoomOpen, setZoomOpen] = useState(false); // 缩放下拉
+  const [moreOpen, setMoreOpen] = useState(false); // 更多操作下拉
+
+  /* 统一关闭所有下拉（允许/缩放/更多）：点击外部非下拉区域时收起 */
   useEffect(() => {
-    if (!allowOpen) return;
+    if (!allowOpen && !zoomOpen && !moreOpen) return;
     const onDown = (e) => {
-      if (!e.target.closest("[data-perm-drop]")) setAllowOpen(false);
+      if (
+        !e.target.closest("[data-perm-drop]") &&
+        !e.target.closest("[data-zoom-drop]") &&
+        !e.target.closest("[data-more-drop]")
+      ) {
+        setAllowOpen(false);
+        setZoomOpen(false);
+        setMoreOpen(false);
+      }
     };
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
-  }, [allowOpen]);
+  }, [allowOpen, zoomOpen, moreOpen]);
 
   /* 内容增长时贴底滚动；新消息发出时重置授权弹框状态 */
   const scrollToBottom = () => {
@@ -5751,41 +6330,37 @@ function ChatSession({ messages, onReset, composer }) {
 
   return (
     <div className="cs-wrap">
-      {/* 顶栏：会话标题 + 新对话 */}
-      <header className="cs-header">
-        <div className="cs-header-main">
-          <h1 className="cs-title">{first ? short(first.text, 24) : "新会话"}</h1>
-          <p className="cs-subtitle">
-            {first ? first.meta.modelLabel + " · " + first.meta.modeLabel + " · " + first.meta.permissionLabel : ""}
-          </p>
-        </div>
-        <button type="button" className="cs-new" onClick={onReset}>
-          <Icon name="square-pen" size={15} />
-          <span>新对话</span>
-        </button>
-      </header>
+      <div className="cs-main">
+        {/* 顶栏：会话标题 + 日历图标 */}
+        <header className="cs-header">
+          <div className="cs-header-main">
+            <h1 className="cs-title">{first ? short(first.text, 24) : "新会话"}</h1>
+          </div>
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEtElEQVR4Ae3gAZAkSZIkSRKLqpm7R0REZmZmVlVVVVV3d3d3d/fMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMdHd3d3dXV1VVVVVmZkZGRIS7m5kKz0xmV3d1d3dPz8zMzMxMonguu7uHLxeFDwBe0/BQYMa/z1rwNOB3s/Ftx49v/gXPhngm25t7B0dfBnwI/7m+aWdr4xMkHQIIwPbm3v7RryNemf8K5o93tjdeX9KhAC7tH34j8CH81/qmY9ubH6rd3cOXU+HP+W/gxstrb//wmw0fxH8Dwbdob//wcYbH8N9A8Hhd2j9cATP+e6x1af/QvAge//jH8/jHP44XxWMe81ge85jH8CJAl/YPzb/gC7/g8/mNX/81XvGVXokXxZ/+yZ/weq//Bnzqp306/wJ0af/QvBCPf/zj+fAP/WB+47d+hxdkb2+P3/j1X+Nt3vbtuN/rvc5r8fXf+M085jGP4YVAl/YPzQvxkz/5E/zZn/4JX/TFX8oLcuedd/Ae7/5u/OZv/Q73+5RP/kRe4RVfibd927fjhUCX9g/NC/GTP/kT/Nmf/glf9MVfygty55138B7v/m785m/9Dvf7lE/+RF7hFV+Jt33bt+OFQJf2D80L8ZM/+RP82Z/+CV/0xV/KC3LnnXfwHu/+bvzmb/0O9/uUT/5EXuEVX4m3fdu344VAl/YPzQvxkz/5E/zZn/4JX/TFX8oLcuedd/Ae7/5u/OZv/Q73+5RP/kRe4RVfibd927fjhUCX9g/NC/GTP/kT/Nmf/glf9MVfygty55138B7v/m785m/9Dvf7lE/+RF7hFV+Jt33bt+OFQJf2D80L8ZM/+RP82Z/+CV/0xV/KC3LnnXfwHu/+bvzmb/0O9/uUT/5EXuEVX4m3fdu344VAl/YPzQvxkz/5E/zZn/4JX/TFX8oLcuedd/Ae7/5u/OZv/Q73+5RP/kRe4RVfibd927fjhUCX9g/NC/GTP/kT/Nmf/glf9MVfygty55138B7v/m785m/9Dvf7lE/+RF7hFV+Jt33bt+OFQJf2D80L8ZM/+RP82Z/+CV/0xV/KC3LnnXfwHu/+bvzmb/0O9/uUT/5EXuEVX4m3fdu344VAl/YPzQvxkz/5E/zZn/4JX/TFX8oLcuedd/Ae7/5u/OZv/Q73+5RP/kRe4RVfibd927fjhUCX9g/NC/H4xz+eD//QD+Y3fut3eEH29vb43u/5bj78Iz6S+73e67wWX/+N38xjHvMYXgh0af/Q/Au+8As+n9/49V/jFV/plXhR/Omf/Amv9/pvwKd+2qfzL0CX9g/Ni+Dxj388j3/843hRPOYxj+Uxj3kMLwJ0af9wBcz477HW3v7h4wyP4b+B4PHa2z/8ZsMH8d9A8C3a3T18ORX+nP8Gbry8AC7tH34j8CH81/qmY9ubHyoA25t7+0e/jnhl/iuYP97Z3nh9SYfimWxv7h0cfRnwIfzn+qadrY1PkHQIIJ7L7u7hy0XhA4DXNDwUmPHvsxY8DfjdbHzb8eObf8Gz8Y8Y2YGm6qeDDAAAAABJRU5ErkJggg==" alt="" className="cs-new" />
+        </header>
 
-      {/* 消息流 */}
-      <div className="cs-list" ref={listRef}>
-        <div className="cs-inner">
-          {messages.map((m) =>
-            m.role === "user" ? (
-              <UserBubble key={m.id} msg={m} />
-            ) : (
-              <AgentRun
-                key={m.id}
-                msg={m}
-                onGrow={scrollToBottom}
-                onNeedPerm={setPendingMsgId}
-                permCmd={permCmd}
-              />
-            )
-          )}
+        {/* 消息流 */}
+        <div className="cs-list" ref={listRef}>
+          <div className="cs-inner">
+            {messages.map((m) =>
+              m.role === "user" ? (
+                <UserBubble key={m.id} msg={m} />
+              ) : (
+                <AgentRun
+                  key={m.id}
+                  msg={m}
+                  onGrow={scrollToBottom}
+                  onNeedPerm={setPendingMsgId}
+                  permCmd={permCmd}
+                  onPreview={setPreviewFile}
+                />
+              )
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* 底部输入区（由 ChatWorkspace 注入）+ 操作授权弹框（悬于输入框上方） */}
-      <div className="cs-composer">
+        {/* 底部输入区（由 ChatWorkspace 注入）+ 操作授权弹框（悬于输入框上方） */}
+        <div className="cs-composer">
         {permBlock ? (
           <div className="cs-perm-pop" role="dialog" aria-modal="false" aria-label="操作授权">
             <h3 className="cs-perm-pop-title">{permBlock.title}</h3>
@@ -5832,7 +6407,220 @@ function ChatSession({ messages, onReset, composer }) {
           </div>
         ) : null}
         {composer}
+        <p className="cs-footnote">内容由 AI 生成，请仔细核实 · Enter 发送 / Shift + Enter 换行</p>
+        </div>
       </div>
+
+      {/* 右侧预览面板：点击产物卡片下拉的「在线预览」打开 */}
+      {previewFile ? (
+        <aside className="cs-preview" aria-label="文件预览">
+          {/* ---- 头部 ---- */}
+          <div className="cs-preview-head">
+            <div className="cs-preview-head-left">
+              <span className="cs-preview-tab">
+                <Icon src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2Ij48aW1hZ2UgeD0iMCIgeT0iMCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBocmVmPSJkYXRhOmltYWdlL3BuZztiYXNlNjQsaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQUJBQUFBQVFDQVlBQUFBZjgvOWhBQUFCSVVsRVFWUjRBZTNnQVpBa1NaSWtTUktMcXBtN1IwUkVabVptVmxWVlZWVjNkM2QzZC9mTXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek1kSGQzZDNkWFYxVlZWVlZtWmtaR1JJUzdtNWtLejB4bVYzZDFkM2RQejh6TXpNeE1vdmozUWZ6N0lPQm00Q1pnRC9nSDRHYmdKbDQwZHdoNFIrQWRnWDhBUGd0NFIrQWRlZEg4c3ZqM1FmejdJUDU5RVBCR3dJc0Jkd0EvQ3J3UjhHSzhhUDVCd0JzQkx3YmNBZndvOEViQWkvR2krUWZ4NzRQNDkwSDgreURnL1lFM0J2NEIrQ3pnL1lFMzVrWHpvd0p1Qm03aWlqOENiZ1p1NGtWemgvajNRZno3OEkrZHNSS1Q1dHAycEFBQUFBQkpSVTVFcmtKZ2dnPT0iLz48L3N2Zz4=" size={16} />
+                <span>项目文件</span>
+              </span>
+              <button type="button" className="cs-preview-tab">
+                <Icon name="file-text" size={14} />
+                <span>任务摘要</span>
+              </button>
+              <span className="cs-preview-vline" />
+              <div className="cs-preview-filetab">
+                <Icon src={previewFile.src} size={14} />
+                <span>{previewFile.name}</span>
+                <button
+                  type="button"
+                  className="cs-preview-filetab-x"
+                  onClick={() => setPreviewFile(null)}
+                  aria-label="关闭文件"
+                >
+                  <Icon name="x" size={12} />
+                </button>
+              </div>
+            </div>
+            <div className="cs-preview-head-right">
+              <div className="cs-preview-iconbox">
+                <Icon src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj48aW1hZ2UgeD0iMCIgeT0iMCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBocmVmPSJkYXRhOmltYWdlL3BuZztiYXNlNjQsaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQUNBQUFBQWdDQVlBQUFCemVucjBBQUFDY1VsRVFWUjRBZTNnQVpBa1NaSWtTUktMcXBtN1IwUkVabVptVmxWVlZWVjNkM2QzZC9mTXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek16TXpNek1kSGQzZDNkWFYxVlZWVlZtWmtaR1JJUzdtNWtLejB4bVYzZDFkM2RQejh6TXpNeE1vdmp2aGZqdmhmanZoZmp2aGZqdmhmanZoZmp2aGZqdmhmaVhMWUNYNWprdGdiL21PYjBLejJrSlBCRlk4b0loL21VdkRYd0k4Q1RnSE0vMlBUemJBbmhIbnUxbTRHYmd1NEUvNGdWRC9NdGVCWGc5WUFQNEp1QjJYcmliZ1E4QnpnTi9DUHdSTHhqaVgvWXF3Q09CM3dRK0JQZ200SGFldjV1QkR3RytDWGhkNEVuQUgvR0NJZjVscndJOEV2Z2U0R2JnUTRCdkFtN25PZDBNZkFqd1RjRHR3SHNCVHdMK2lCY004Uzk3RmVDUndQZHd4YzNBaHdEZkJOek9GVGNESHdKOEUzQTdWN3dYOERmQVgvT0NJVjQwQzJESnM5ME12RG53VFZ6eDZjRDNBTGZ6cjRQNDc0WDQ3NFg0dDdrWmVFZmdLN2ppMDRIdkFXN24yUmJBa2hjTzhTOTdhZUNsZ08vaGlwdUJEd0crQ2JpZEsyNEdQZ1Q0SnVCMnJuZ3Y0RW5BSC9HQ0lmNWxyd0k4RXZnZTRHYmdRNEJ2QW03bk9kME1mQWp3VGNEdHdIc0JUd0wraUJjTThTOTdGZUNSd0c4Q0h3SjhFM0E3ejkvTndJY0Ezd1M4THZBazRJOTR3UkQvc2xjQlhoVTRCWHdUY0RzdjNNM0Fod0JId0c4QWY4UUxodmlYdlFydzNzRHR3TzA4MjQ4Q1M1N3R2WGkyMDhBamdXOEMvcG9YRFBFdld3Q1BBaFk4cHovaU9iMDBzT0E1L1RXdzVBVkQvUGRDL1BkQy9QZEMvUGRDL1BkQy9QZEMvUGRDL1BmaUh3SFV3VTBoQm5yY3N3QUFBQUJKUlU1RXJrSmdnZz09Ii8+PC9zdmc+" size={16} />
+              </div>
+              <button type="button" className="cs-preview-iconbtn" title="展开" aria-label="展开">
+                <Icon src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEtElEQVR4Ae3gAZAkSZIkSRKLqpm7R0REZmZmVlVVVVV3d3d3d/fMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMdHd3d3dXV1VVVVVmZkZGRIS7m5kKz0xmV3d1d3dPz8zMzMxMonguu7uHLxeFDwBe0/BQYMa/z1rwNOB3s/Ftx49v/gXPhngm25t7B0dfBnwI/7m+aWdr4xMkHQIIwPbm3v7RryNemf8K5o93tjdeX9KhAC7tH34j8CH81/qmY9ubH6rd3cOXU+HP+W/gxstrb//wmw0fxH8Dwbdob//wcYbH8N9A8Hhd2j9cATP+e6x1af/QvAge//jH8/jHP44XxWMe81ge85jH8CJAl/YPzb/gC7/g8/mNX/81XvGVXokXxZ/+yZ/weq//Bnzqp306/wJ0af/QvBCPf/zj+fAP/WB+47d+hxdkb2+P3/j1X+Nt3vbtuN/rvc5r8fXf+M085jGP4YVAl/YPzQvxkz/5E/zZn/4JX/TFX8oLcuedd/Ae7/5u/OZv/Q73+5RP/kRe4RVfibd927fjhUCX9g/NC/GTP/kT/Nmf/glf9MVfygty55138B7v/m785m/9Dvf7lE/+RF7hFV+Jt33bt+OFQJf2D80L8ZM/+RP82Z/+CV/0xV/KC3LnnXfwHu/+bvzmb/0O9/uUT/5EXuEVX4m3fdu344VAl/YPzQvxkz/5E/zZn/4JX/TFX8oLcuedd/Ae7/5u/OZv/Q73+5RP/kRe4RVfibd927fjhUCX9g/NC/GTP/kT/Nmf/glf9MVfygty55138B7v/m785m/9Dvf7lE/+RF7hFV+Jt33bt+OFQJf2D80L8ZM/+RP82Z/+CV/0xV/KC3LnnXfwHu/+bvzmb/0O9/uUT/5EXuEVX4m3fdu344VAl/YPzQvxkz/5E/zZn/4JX/TFX8oLcuedd/Ae7/5u/OZv/Q73+5RP/kRe4RVfibd927fjhUCX9g/NC/GTP/kT/Nmf/glf9MVfygty55138B7v/m785m/9Dvf7lE/+RF7hFV+Jt33bt+OFQJf2D80L8ZM/+RP82Z/+CV/0xV/KC3LnnXfwHu/+bvzmb/0O9/uUT/5EXuEVX4m3fdu344VAl/YPzQvxkz/5E/zZn/4JX/TFX8oLcuedd/Ae7/5u/OZv/Q73+5RP/kRe4RVfibd927fjhUCX9g/NC/H4xz+eD//QD+Y3fut3eEH29vb43u/5bj78Iz6S+73e67wWX/+N38xjHvMYXgh0af/Q/Au+8As+n9/49V/jFV/plXhR/Omf/Amv9/pvwKd+2qfzL0CX9g/Ni+Dxj388j3/843hRPOYxj+Uxj3kMLwJ0af9wBcz477HW3v7h4wyP4b+B4PHa2z/8ZsMH8d9A8C3a3T18ORX+nP8Gbry8AC7tH34j8CH81/qmY9ubHyoA25t7+0e/jnhl/iuYP97Z3nh9SYfimWxv7h0cfRnwIfzn+qadrY1PkHQIIJ7L7u7hy0XhA4DXNDwUmPHvsxY8DfjdbHzb8eObf8Gz8Y8Y2YGm6qeDDAAAAABJRU5ErkJggg==" size={16} />
+              </button>
+            </div>
+          </div>
+
+          {/* ---- 操作栏 ---- */}
+          <div className="cs-preview-toolbar">
+            <div className="cs-preview-toolbar-left">
+              {/* 类似 ant Segmented：预览(眼睛) / 代码(dev) */}
+              <div className="cs-segmented">
+                <button type="button" className="cs-seg-item is-active" title="预览" aria-label="预览">
+                  <Icon name="eye" size={14} />
+                </button>
+                <button type="button" className="cs-seg-item" title="代码" aria-label="代码">
+                  <Icon src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTYgMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIxNi4wMDAwMDAiIGhlaWdodD0iMTYuMDAwMDAwIiBmaWxsPSJub25lIj4NCgk8cmVjdCBpZD0iaWNfcHVibGljX2NvZGUiIHdpZHRoPSIxNi4wMDAwMDAiIGhlaWdodD0iMTYuMDAwMDAwIiB4PSIwLjAwMDAwMCIgeT0iMC4wMDAwMDAiIC8+DQoJPGcgaWQ9ImljX3B1YmxpY19jb2RlXzFfMSI+DQoJCTxwYXRoIGlkPSJpY19wdWJsaWNfY29kZV8yXzAiIGQ9Ik0wLjUwMTgyMyA3Ljk5Mzg5QzAuNTAxODIzIDYuODIyMiAwLjQ5NzcyMiA1LjY1MDUgMC41MDE4MjMgNC40Nzg4MUMwLjQ5OTQ2NSAzLjkxMTgzIDAuNTY5MTUzIDMuMzQ2ODQgMC43MDkyMTIgMi43OTc0M0MxLjAxNjIgMS42MzQ1MiAxLjc3MzcgMC45NDQzOTMgMi45MzU0MyAwLjY3NjY2MUMzLjUxNzk0IDAuNTUwODA1IDQuMTEyOTEgMC40OTE4MzkgNC43MDg3OSAwLjUwMDkwN0M2Ljk1NTcxIDAuNTAwOTA3IDkuMjAyODIgMC41MDA5MDcgMTEuNDUwMSAwLjUwMDkwN0MxMi4wMTc3IDAuNDk3Mzg0IDEyLjU4MzYgMC41NjIyOTUgMTMuMTM1NiAwLjY5NDIzNkMxNC4zMzI1IDAuOTg3MTYgMTUuMDUwNyAxLjc0NTI1IDE1LjMyNDMgMi45MzgwM0MxNS40NDczIDMuNTAxNzYgMTUuNTA2MSA0LjA3NzYxIDE1LjQ5OTUgNC42NTQ1NkMxNS40OTk1IDYuOTI1NyAxNS40OTk1IDkuMTk3MDMgMTUuNDk5NSAxMS40Njg2QzE1LjUwMjYgMTIuMDMwNiAxNS40Mzc5IDEyLjU5MSAxNS4zMDY4IDEzLjEzNzZDMTUuMDEzOCAxNC4zMzUxIDE0LjI1MjIgMTUuMDQ5OCAxMy4wNTk0IDE1LjMyMzRDMTIuNDc2OSAxNS40NDg4IDExLjg4MiAxNS41MDc4IDExLjI4NjEgMTUuNDk5MkM5LjA0ODU1IDE1LjQ5OTIgNi44MTEyIDE1LjQ5OTIgNC41NzQwNCAxNS40OTkyQzQuMDAyMTUgMTUuNTAzOCAzLjQzMTc2IDE1LjQzOTkgMi44NzUwOSAxNS4zMDg4QzEuNjcyOTMgMTUuMDE1OSAwLjk1MTE2NyAxNC4yNTQzIDAuNjc4MTYzIDEzLjA1NTZDMC41Mzg3MzEgMTIuNDQ2MyAwLjUwMTgyMyAxMS44MzUzIDAuNTAxODIzIDExLjIxOUMwLjUwMTgyMyAxMC4xNDQxIDAuNTAxODIzIDkuMDY5MTIgMC41MDE4MjMgNy45OTM4OVoiIGZpbGw9InJnYigyNTUsMjU1LDI1NSkiIGZpbGwtb3BhY2l0eT0iMCIgZmlsbC1ydWxlPSJub256ZXJvIiAvPg0KCQk8cGF0aCBpZD0iaWNfcHVibGljX2NvZGVfMl8wIiBkPSJNMC41MDE4MjMgNC40Nzg4MUMwLjQ5OTQ2NSAzLjkxMTgzIDAuNTY5MTUzIDMuMzQ2ODQgMC43MDkyMTIgMi43OTc0M0MxLjAxNjIgMS42MzQ1MiAxLjc3MzcgMC45NDQzOTMgMi45MzU0MyAwLjY3NjY2MUMzLjUxNzk0IDAuNTUwODA1IDQuMTEyOTEgMC40OTE4MzkgNC43MDg3OSAwLjUwMDkwN0M2Ljk1NTcxIDAuNTAwOTA3IDkuMjAyODIgMC41MDA5MDcgMTEuNDUwMSAwLjUwMDkwN0MxMi4wMTc3IDAuNDk3Mzg0IDEyLjU4MzYgMC41NjIyOTUgMTMuMTM1NiAwLjY5NDIzNkMxNC4zMzI1IDAuOTg3MTYgMTUuMDUwNyAxLjc0NTI1IDE1LjMyNDMgMi45MzgwM0MxNS40NDczIDMuNTAxNzYgMTUuNTA2MSA0LjA3NzYxIDE1LjQ5OTUgNC42NTQ1NkMxNS40OTk1IDYuOTI1NyAxNS40OTk1IDkuMTk3MDMgMTUuNDk5NSAxMS40Njg2QzE1LjUwMjYgMTIuMDMwNiAxNS40Mzc5IDEyLjU5MSAxNS4zMDY4IDEzLjEzNzZDMTUuMDEzOCAxNC4zMzUxIDE0LjI1MjIgMTUuMDQ5OCAxMy4wNTk0IDE1LjMyMzRDMTIuNDc2OSAxNS40NDg4IDExLjg4MiAxNS41MDc4IDExLjI4NjEgMTUuNDk5MkM5LjA0ODU1IDE1LjQ5OTIgNi44MTEyIDE1LjQ5OTIgNC41NzQwNCAxNS40OTkyQzQuMDAyMTUgMTUuNTAzOCAzLjQzMTc2IDE1LjQzOTkgMi44NzUwOSAxNS4zMDg4QzEuNjcyOTMgMTUuMDE1OSAwLjk1MTE2NyAxNC4yNTQzIDAuNjc4MTYzIDEzLjA1NTZDMC41Mzg3MzEgMTIuNDQ2MyAwLjUwMTgyMyAxMS44MzUzIDAuNTAxODIzIDExLjIxOUMwLjUwMTgyMyAxMC4xNDQxIDAuNTAxODIzIDkuMDY5MTIgMC41MDE4MjMgNy45OTM4OUMwLjUwMTgyMyA2LjgyMjIgMC40OTc3MjIgNS42NTA1IDAuNTAxODIzIDQuNDc4ODFaIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0icmdiKDI1NSwyNTUsMjU1KSIgc3Ryb2tlLW9wYWNpdHk9IjAiIHN0cm9rZS13aWR0aD0iMS4wMDAwMDAiIC8+DQoJCTxwYXRoIGlkPSJpY19wdWJsaWNfY29kZV8yXzEiIGQ9Ik0wLjUwMTgyMyA0LjQ3ODgxQzAuNDk5NDY1IDMuOTExODMgMC41NjkxNTMgMy4zNDY4NCAwLjcwOTIxMiAyLjc5NzQzQzEuMDE2MiAxLjYzNDUyIDEuNzczNyAwLjk0NDM5MyAyLjkzNTQzIDAuNjc2NjYxQzMuNTE3OTQgMC41NTA4MDUgNC4xMTI5MSAwLjQ5MTgzOSA0LjcwODc5IDAuNTAwOTA3QzYuOTU1NzEgMC41MDA5MDcgOS4yMDI4MiAwLjUwMDkwNyAxMS40NTAxIDAuNTAwOTA3QzEyLjAxNzcgMC40OTczODQgMTIuNTgzNiAwLjU2MjI5NSAxMy4xMzU2IDAuNjk0MjM2QzE0LjMzMjUgMC45ODcxNiAxNS4wNTA3IDEuNzQ1MjUgMTUuMzI0MyAyLjkzODAzQzE1LjQ0NzMgMy41MDE3NiAxNS41MDYxIDQuMDc3NjEgMTUuNDk5NSA0LjY1NDU2QzE1LjQ5OTUgNi45MjU3IDE1LjQ5OTUgOS4xOTcwMyAxNS40OTk1IDExLjQ2ODZDMTUuNTAyNiAxMi4wMzA2IDE1LjQzNzkgMTIuNTkxIDE1LjMwNjggMTMuMTM3NkMxNS4wMTM4IDE0LjMzNTEgMTQuMjUyMiAxNS4wNDk4IDEzLjA1OTQgMTUuMzIzNEMxMi40NzY5IDE1LjQ0ODggMTEuODgyIDE1LjUwNzggMTEuMjg2MSAxNS40OTkyQzkuMDQ4NTUgMTUuNDk5MiA2LjgxMTIgMTUuNDk5MiA0LjU3NDA0IDE1LjQ5OTJDNC4wMDIxNSAxNS41MDM4IDMuNDMxNzYgMTUuNDM5OSAyLjg3NTA5IDE1LjMwODhDMS42NzI5MyAxNS4wMTU5IDAuOTUxMTY3IDE0LjI1NDMgMC42NzgxNjMgMTMuMDU1NkMwLjUzODczMSAxMi40NDYzIDAuNTAxODIzIDExLjgzNTMgMC41MDE4MjMgMTEuMjE5QzAuNTAxODIzIDEwLjE0NDEgMC41MDE4MjMgOS4wNjkxMiAwLjUwMTgyMyA3Ljk5Mzg5QzAuNTAxODIzIDYuODIyMiAwLjQ5NzcyMiA1LjY1MDUgMC41MDE4MjMgNC40Nzg4MVoiIG9wYWNpdHk9IjAuMjAwMDAwMDAzIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0icmdiKDI1NSwyNTUsMjU1KSIgc3Ryb2tlLW9wYWNpdHk9IjAiIHN0cm9rZS13aWR0aD0iMS4wMDAwMDAiIC8+DQoJCTxjaXJjbGUgaWQ9ImljX3B1YmxpY19jb2RlXzJfMiIgY3g9IjgiIGN5PSI4IiByPSI4IiBmaWxsPSJyZ2IoMjU1LDI1NSwyNTUpIiBmaWxsLW9wYWNpdHk9IjAiIC8+DQoJCTxwYXRoIGlkPSJpY19wdWJsaWNfY29kZV8yXzMiIGQ9Ik0xMS4zMzMzIDQuMzMzMzRMMTQuMjkzNiA3LjI5Mjk4QzE0LjY4NDMgNy42ODMzMSAxNC42ODQ0IDguMzE2NDcgMTQuMjkzOSA4LjcwNzA0QzE0LjI5MzkgOC43MDcwOSAxNC4yOTM4IDguNzA3MTQgMTQuMjkzNiA4LjcwNzA0TDExLjMzMzMgMTEuNjY2N000LjY2NzQ1IDQuMzMzMzRMMS43MDcxNyA3LjI5Mjk4QzEuMzE2NDUgNy42ODMzMSAxLjMxNjM4IDguMzE2NDcgMS43MDY4NiA4LjcwNzA0QzEuNzA2OTEgOC43MDcwOSAxLjcwNjk2IDguNzA3MTQgMS43MDcxNyA4LjcwNzA0TDQuNjY3NDUgMTEuNjY2NyIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9InJnYigwLDAsMCkiIHN0cm9rZS1vcGFjaXR5PSIwLjYwMDAwMDAyNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuMDAwMDAwIiAvPg0KCQk8cGF0aCBpZD0iaWNfcHVibGljX2NvZGVfMl80IiBkPSJNMTEuMDk3NiA0LjA5NzY2QzExLjIyNzcgMy45Njc0NyAxMS40Mzg4IDMuOTY3NDQgMTEuNTY5IDQuMDk3NjFMMTQuNTI5MiA3LjA1NzE1QzE1LjA1MDIgNy41Nzc2MSAxNS4wNTAzIDguNDIxOSAxNC41Mjk2IDguOTQyNzFMMTEuNTY5IDExLjkwMjRDMTEuNDQ4OCAxMi4wMjI1IDExLjI1OTcgMTIuMDMxOCAxMS4xMjkgMTEuOTMwMUwxMS4wOTc2IDExLjkwMjNDMTAuOTY3NCAxMS43NzIyIDEwLjk2NzUgMTEuNTYxMSAxMS4wOTc2IDExLjQzMDlMMTQuMDU3OSA4LjQ3MTNMMTQuMDYxIDguNDY4MzNMMTQuMDk3MSA4LjQyODk0QzE0LjMwNTUgOC4xODE1NSAxNC4zMDU0IDcuODE4MzcgMTQuMDk2OSA3LjU3MTA5TDE0LjA1NzkgNy41Mjg3TDExLjA5NzYgNC41NjkwNkMxMC45Njc1IDQuNDM4OSAxMC45Njc0IDQuMjI3ODUgMTEuMDk3NiA0LjA5NzY2Wk00LjQzMTc4IDQuMDk3NjFDNC41NjE5NiAzLjk2NzQ0IDQuNzczMDIgMy45Njc0NyA0LjkwMzE4IDQuMDk3NjZDNS4wMzMzNCA0LjIyNzg1IDUuMDMzMzIgNC40Mzg5IDQuOTAzMTMgNC41NjkwNkwxLjk0Mjc1IDcuNTI4NzlDMS42ODIzNCA3Ljc4ODk0IDEuNjgyMjYgOC4yMTA5NyAxLjk0MjU4IDguNDcxMzVMMS45MzkzMSA4LjQ2ODMzTDEuOTQyODQgOC40NzEzTDQuOTAzMTMgMTEuNDMwOUM1LjAzMzMyIDExLjU2MTEgNS4wMzMzNCAxMS43NzIyIDQuOTAzMTggMTEuOTAyM0M0Ljc3MzAyIDEyLjAzMjUgNC41NjE5NiAxMi4wMzI2IDQuNDMxNzggMTEuOTAyNEwxLjQ3MTk4IDguOTQzMzNDMC45Njc3OTUgOC40MzkyNiAwLjk1MTE2MyA3LjYzMzU0IDEuNDIxMTQgNy4xMTAzNEwxLjQ3MTQ5IDcuMDU3MjRMNC40MzE3OCA0LjA5NzYxWiIgZmlsbD0icmdiKDI1NSwyNTUsMjU1KSIgZmlsbC1vcGFjaXR5PSIwIiBmaWxsLXJ1bGU9Im5vbnplcm8iIC8+DQoJCTxwYXRoIGlkPSJpY19wdWJsaWNfY29kZV8yXzQiIGQ9Ik0xMS41NjkgNC4wOTc2MUwxNC41MjkyIDcuMDU3MTVDMTUuMDUwMiA3LjU3NzYxIDE1LjA1MDMgOC40MjE5IDE0LjUyOTYgOC45NDI3MUwxMS41NjkgMTEuOTAyNEMxMS40NDg4IDEyLjAyMjUgMTEuMjU5NyAxMi4wMzE4IDExLjEyOSAxMS45MzAxTDExLjA5NzYgMTEuOTAyM0MxMC45Njc0IDExLjc3MjIgMTAuOTY3NSAxMS41NjExIDExLjA5NzYgMTEuNDMwOUwxNC4wNTc5IDguNDcxM0wxNC4wNjEgOC40NjgzM0wxNC4wOTcxIDguNDI4OTRDMTQuMzA1NSA4LjE4MTU1IDE0LjMwNTQgNy44MTgzNyAxNC4wOTY5IDcuNTcxMDlMMTQuMDU3OSA3LjUyODdMMTEuMDk3NiA0LjU2OTA2QzEwLjk2NzUgNC40Mzg5IDEwLjk2NzQgNC4yMjc4NSAxMS4wOTc2IDQuMDk3NjZDMTEuMjI3NyAzLjk2NzQ3IDExLjQzODggMy45Njc0NCAxMS41NjkgNC4wOTc2MVpNNC45MDMxOCA0LjA5NzY2QzUuMDMzMzQgNC4yMjc4NSA1LjAzMzMyIDQuNDM4OSA0LjkwMzEzIDQuNTY5MDZMMS45NDI3NSA3LjUyODc5QzEuNjgyMzQgNy43ODg5NCAxLjY4MjI2IDguMjEwOTcgMS45NDI1OCA4LjQ3MTM1TDEuOTM5MzEgOC40NjgzM0wxLjk0Mjg0IDguNDcxM0w0LjkwMzEzIDExLjQzMDlDNS4wMzMzMiAxMS41NjExIDUuMDMzMzQgMTEuNzcyMiA0LjkwMzE4IDExLjkwMjNDNC43NzMwMiAxMi4wMzI1IDQuNTYxOTYgMTIuMDMyNiA0LjQzMTc4IDExLjkwMjRMMS40NzE5OCA4Ljk0MzMzQzAuOTY3Nzk1IDguNDM5MjYgMC45NTExNjMgNy42MzM1NCAxLjQyMTE0IDcuMTEwMzRMMS40NzE0OSA3LjA1NzI0TDQuNDMxNzggNC4wOTc2MUM0LjU2MTk2IDMuOTY3NDQgNC43NzMwMiAzLjk2NzQ3IDQuOTAzMTggNC4wOTc2NloiIGZpbGwtcnVsZT0ibm9uemVybyIgc3Ryb2tlPSJyZ2IoMjU1LDI1NSwyNTUpIiBzdHJva2Utb3BhY2l0eT0iMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjAwMDAwMCIgLz4NCgkJPGxpbmUgaWQ9ImljX3B1YmxpY19jb2RlXzJfNSIgeDE9IjAiIHgyPSI3LjQyMzY4NTA3IiB5MT0iMCIgeTI9IjAiIHN0cm9rZT0icmdiKDAsMCwwKSIgc3Ryb2tlLW9wYWNpdHk9IjAuNjAwMDAwMDI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMS4wMDAwMDAiIHRyYW5zZm9ybT0ibWF0cml4KDAuMzU5MjExLC0wLjkzMzI1NywwLjkzMzI1NywwLjM1OTIxMSw2LjY2NjY2LDExLjQ2NDEpIiAvPg0KCQk8cGF0aCBpZD0iaWNfcHVibGljX2NvZGVfMl82IiBkPSJNNy42MTQ4NyAwLjAwNDEwNTI1QzcuNzk2NzIgLTAuMDI0NTI5OCA3Ljk2NzM2IDAuMDk5Njc5MyA3Ljk5NTk5IDAuMjgxNTM0QzguMDI0NjMgMC40NjMzODggNy45MDA0MiAwLjYzNDAyMyA3LjcxODU2IDAuNjYyNjU4TDAuMzg1MjI5IDEuODE3MzZDMC4yMDMzNzUgMS44NDU5OSAwLjAzMjc0IDEuNzIxNzggMC4wMDQxMDUyNSAxLjUzOTkzQy0wLjAyNDUyOTUgMS4zNTgwOCAwLjA5OTY3OTYgMS4xODc0NCAwLjI4MTUzNCAxLjE1ODgxTDcuNjE0ODcgMC4wMDQxMDUyNVoiIGZpbGw9InJnYigyNTUsMjU1LDI1NSkiIGZpbGwtb3BhY2l0eT0iMCIgZmlsbC1ydWxlPSJub256ZXJvIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjUsLTAuODY2MDI1LDAuODY2MDI1LDAuNSw1LjIxMTI0LDExLjAwODgpIiAvPg0KCQk8cGF0aCBpZD0iaWNfcHVibGljX2NvZGVfMl82IiBkPSJNNy45OTU5OSAwLjI4MTUzNEM4LjAyNDYzIDAuNDYzMzg4IDcuOTAwNDIgMC42MzQwMjMgNy43MTg1NiAwLjY2MjY1OEwwLjM4NTIyOSAxLjgxNzM2QzAuMjAzMzc1IDEuODQ1OTkgMC4wMzI3NCAxLjcyMTc4IDAuMDA0MTA1MjUgMS41Mzk5M0MtMC4wMjQ1Mjk1IDEuMzU4MDggMC4wOTk2Nzk2IDEuMTg3NDQgMC4yODE1MzQgMS4xNTg4MUw3LjYxNDg3IDAuMDA0MTA1MjVDNy43OTY3MiAtMC4wMjQ1Mjk4IDcuOTY3MzYgMC4wOTk2NzkzIDcuOTk1OTkgMC4yODE1MzRaIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0icmdiKDI1NSwyNTUsMjU1KSIgc3Ryb2tlLW9wYWNpdHk9IjAiIHN0cm9rZS13aWR0aD0iMS4wMDAwMDAiIHRyYW5zZm9ybT0ibWF0cml4KDAuNSwtMC44NjYwMjUsMC44NjYwMjUsMC41LDUuMjExMjQsMTEuMDA4OCkiIC8+DQoJPC9nPg0KPC9zdmc+DQo=" size={14} />
+                </button>
+              </div>
+              {/* 地址栏 */}
+              <div className="cs-address">
+                <Icon name="folder-open" size={12} />
+                <span>D:\Projects\agent-demo\{previewFile.name}</span>
+              </div>
+            </div>
+            <div className="cs-preview-toolbar-right">
+              <button type="button" className="cs-preview-iconbtn" title="会话" aria-label="会话">
+                <Icon name="message-circle" size={16} />
+              </button>
+              {/* 缩放下拉 */}
+              <div className="cs-zoom" data-zoom-drop>
+                <button type="button" className="cs-zoom-btn" onClick={() => setZoomOpen((v) => !v)}>
+                  <span>100%</span>
+                  <Icon name="chevron-down" size={12} />
+                </button>
+                {zoomOpen ? (
+                  <div className="cs-zoom-menu">
+                    <button type="button" className="cs-zoom-opt">50%</button>
+                    <button type="button" className="cs-zoom-opt">75%</button>
+                    <button type="button" className="cs-zoom-opt is-active">100%</button>
+                    <button type="button" className="cs-zoom-opt">125%</button>
+                    <button type="button" className="cs-zoom-opt">150%</button>
+                  </div>
+                ) : null}
+              </div>
+              {/* 更多操作下拉：与 cs-file-more 同款（打开方式 + 倒三角） */}
+              <div className="cs-more" data-more-drop>
+                <button type="button" className="cs-preview-iconbtn cs-toolbar-openwith" onClick={() => setMoreOpen((v) => !v)} aria-label="更多">
+                  <span>打开方式</span>
+                  <Icon name="triangle" size={8} className="cs-file-caret" />
+                </button>
+                {moreOpen ? (
+                  <div className="cs-more-menu">
+                    <button type="button" className="cs-more-opt">在新窗口打开</button>
+                    <button type="button" className="cs-more-opt">复制链接</button>
+                    <button type="button" className="cs-more-opt">导出文件</button>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          </div>
+
+          {/* ---- 预览容器 ---- */}
+          <div className="cs-preview-body">
+            <div className="cs-preview-container">
+              <div className="cs-preview-page">
+                <h2 className="cs-preview-name">汇报演示 · When2meet 项目</h2>
+                <p className="cs-preview-eyebrow">18 页 · {previewFile.size} · 模拟预览</p>
+
+                <div className="cs-preview-sec">
+                  <h3>01 背景与目标</h3>
+                  <p>会议时间协调长期依赖群内接龙，效率低且易遗漏。本章从用户调研数据出发，界定核心痛点与改进机会。</p>
+                  <p>调研覆盖 500+ 活跃用户，发现平均创建一次多人会议需往返沟通 6.2 次、耗时 23 分钟，其中 78% 的用户期望系统自动推荐最优时段。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>02 用户画像</h3>
+                  <p>核心用户分为三类：行政协调者（占比 35%）、项目经理（占比 40%）和跨组织参与者（占比 25%）。每类用户的创建频率、参与人数与决策链路各不相同。</p>
+                  <p>高频协调者日均创建 3.5 场会议，对批量操作和模板复用诉求强烈；跨组织用户更关注免注册参与和时区自适应。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>03 首页交互改版（重点）</h3>
+                  <p>重构首页信息架构，新增引导式创建流程与动效反馈，降低新用户上手成本，提升创建完成率。</p>
+                  <p>改版重点包括：三步式创建向导（主题 → 参与人 → 时段候选）、实时参与度热力图、以及基于滑动操作的快捷时段标记。动效层面采用弹性过渡 + 骨架屏，首屏可交互时间从 2.1s 降至 0.8s。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>04 智慧推荐（重点）</h3>
+                  <p>基于历史行为与偏好特征构建推荐策略，在时间候选、参与人与会议时长三个维度提供主动建议。</p>
+                  <p>推荐算法融合协方差过滤（CF）与日程密度分析，对多人场景自动计算"最大公约数时段"并给出置信度评分。上线后推荐采纳率达到 62%，平均协调耗时从 23 分钟缩短至 8 分钟。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>05 竞品分析</h3>
+                  <p>对标 Doodle、Calendly、When2meet 原版三款产品，从功能完整度、交互体验、价格策略三个维度横向对比。</p>
+                  <p>Doodle 优势在于品牌认知度但移动端体验弱；Calendly 深度绑定日历但跨组织场景受限；原版 When2meet 简洁但缺乏智能推荐。改版方案取长补短，定位"轻量 + 智能"。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>06 信息架构</h3>
+                  <p>站点地图从扁平 4 页扩展为三级 12 页结构，新增个人中心、模板库与数据看板模块。</p>
+                  <p>页面跳转关系经过卡片分类法验证，核心路径（创建 → 分享 → 查看）不超过 2 次点击。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>07 交互流程</h3>
+                  <p>梳理创建、参与、分享三大主流程共 18 个关键节点，标注异常分支与降级方案。</p>
+                  <p>参与流程支持免注册预览 + 一键注册确认；分享流程生成短链自动适配 Open Graph 预览卡片。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>08 视觉规范</h3>
+                  <p>建立色彩（品牌蓝 + 功能色 6 组）、字体（标题/正文双栈）与间距（8px 基线网格）三大系统。</p>
+                  <p>暗色模式全覆盖，对比度均通过 WCAG AA 级认证。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>09 动效设计</h3>
+                  <p>定义页面转场、组件微交互与状态反馈三层动效规范，统一使用 ease-out 缓动曲线。</p>
+                  <p>关键动效包括：时段热力图渐入（400ms）、参与人头像弹入（弹性 + 150ms 延迟阶梯）、以及推荐结果高亮脉冲。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>10 数据看板</h3>
+                  <p>定义核心指标：创建完成率、平均协调耗时、推荐采纳率、7 日留存。埋点覆盖 32 个关键事件。</p>
+                  <p>看板支持按用户群、时间段与渠道三维筛选，数据延迟 T+1 更新。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>11 技术方案</h3>
+                  <p>前端采用 React 18 + TypeScript，状态管理 Zustand，构建链 Vite。性能预算：首屏 JS ≤ 180KB（gzip）。</p>
+                  <p>后端推荐服务使用 Python + Faiss 向量检索，P99 响应时间 ≤ 120ms。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>12 性能优化</h3>
+                  <p>首屏加载通过代码分割 + 预加载关键路由实现；包体积优化包括 Tree Shaking（-23%）与图片 AVIF 格式迁移（-41%）。</p>
+                  <p>Lighthouse 综合评分从 68 分提升至 94 分。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>13 A/B 实验</h3>
+                  <p>设计两组实验：E1 测试新引导式创建流程 vs 旧流程；E2 测试推荐时段自动填充 vs 手动选择。</p>
+                  <p>分流策略按用户 ID 哈希 50/50，实验周期 14 天，最小可检测效应 5%。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>14 数据验证</h3>
+                  <p>通过 A/B 实验对比改版前后核心指标：创建时长中位数从 23 分钟降至 8 分钟（-65%）、七日留存从 34% 提升至 48%（+14pp）、分享率从 12% 提升至 19%（+7pp）。</p>
+                  <p>所有指标均达到统计显著（p &lt; 0.01）。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>15 风险与应对</h3>
+                  <p>识别三大风险：推荐准确率冷启动（缓解：人工规则兜底）、高并发创建（缓解：消息队列削峰）、跨时区歧义（缓解：IANA 时区数据库）。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>16 团队分工</h3>
+                  <p>产品 2 人（需求 + 设计）、前端 3 人、后端 2 人、算法 1 人、测试 1 人。每日站会同步进度，双周迭代评审。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>17 排期计划</h3>
+                  <p>三期迭代：Alpha（第 1-4 周，核心流程）、Beta（第 5-8 周，推荐系统）、GA（第 9-12 周，数据看板 + 性能优化）。</p>
+                  <p>每期结束进行灰度发布，按 5% → 20% → 100% 逐步放量。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>18 路线图与 Q&amp;A</h3>
+                  <p>按季度滚动迭代：Q1 交互细化与推荐策略升级、Q2 开放 API 与日历深度集成、Q3 多语言与国际化。</p>
+                  <p>预留 15 分钟 Q&amp;A 环节，欢迎就方案细节与排期展开讨论。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      ) : null}
     </div>
   );
 }

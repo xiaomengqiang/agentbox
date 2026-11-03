@@ -10,6 +10,13 @@ function short(text, n) {
   return t.length > n ? t.slice(0, n) + "…" : t;
 }
 
+/* 用户提供的内联 SVG 图标（含嵌入 PNG base64），直接渲染为 <svg> 而非 <img> */
+const PROJECT_FILES_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><image x="0" y="0" width="16" height="16" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABIUlEQVR4Ae3gAZAkSZIkSRKLqpm7R0REZmZmVlVVVVV3d3d3d/fMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMdHd3d3dXV1VVVVVmZkZGRIS7m5kKz0xmV3d1d3dPz8zMzMxMovj3Qfz7IOBm4CZgD/gH4GbgJl40dwh4R+AdgX8APgt4R+AdedH8svj3Qfz7IP59EPBGwIsBdwA/CrwR8GK8aP5BwBsBLwbcAfwo8EbAi/Gi+Qfx74P490H8+yDg/YE3Bv4B+Czg/YE35kXzowJuBm7iij8CbgZu4kVzh/j3Qfz78I+dsRKT5tp2pAAAAABJRU5ErkJggg=="/></svg>';
+
+const ZOOM_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"><image x="0" y="0" width="32" height="32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACcUlEQVR4Ae3gAZAkSZIkSRKLqpm7R0REZmZmVlVVVVV3d3d3d/fMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMdHd3d3dXV1VVVVVmZkZGRIS7m5kKz0xmV3d1d3dPz8zMzMxMovjvhfjvhfjvhfjvhfjvhfjvhfjvhfjvhfiXLYCX5jktgb/mOb0Kz2kJPBFY8oIh/mUvDXwI8CTgHM/2PTzbAnhHnu1m4Gbgu4E/4gVD/MteBXg9YAP4JuB2XribgQ8BzgN/CPwRLxjiX/YqwCOB3wQ+BPgm4Haev5uBDwG+CXhd4EnAH/GCIf5lrwI8Evge4GbgQ4BvAm7nOd0MfAjwTcDtwHsBTwL+iBcM8S97FeCRwPdwxc3AhwDfBNzOFTcDHwJ8E3A7V7wX8DfAX/OCIV40C2DJs90MvDnwTVzx6cD3ALfzr4P474X474X4t7kZeEfgK7ji04HvAW7n2RbAkhcO8S97aeClgO/hipuBDwG+CbidK24GPgT4JuB2rngv4EnAH/GCIf5lrwI8Evge4GbgQ4BvAm7nOd0MfAjwTcDtwHsBTwL+iBcM8S97FeCRwG8CHwJ8E3A7z9/NwIcA3wS8LvAk4I94wRD/slcBXhU4BXwTcDsv3M3AhwBHwG8Af8QLhviXvQrw3sDtwO08248CS57tvXi208AjgW8C/poXDPEvWwCPAhY8pz/iOb00sOA5/TWw5AVD/PdC/PdC/PdC/PdC/PdC/PdC/PdC/PfiHwHUwU0hBnrcswAAAABJRU5ErkJggg=="/></svg>';
+
 /* 依据发送载荷构造一次 Agent 回复：结构化回答块流。
    块类型："p" 段落 / "li" 列表项 / "status" 图标状态行（随流式逐字输出）/
    "perm-wait" 授权等待标记 — 流式输出到该块时挂起，授权弹框在输入框上方弹出，
@@ -93,13 +100,24 @@ export function buildAgentReply(payload) {
       title: "汇报演示.html · HTML",
       lines: [
         "# 汇报演示 · When2meet 项目",
-        "01 背景与目标 —— 会议时间协调的痛点与机会",
-        "02 用户画像 —— 目标人群与核心场景",
+        "01 背景与目标 —— 会议时间协调痛点与改进机会",
+        "02 用户画像 —— 目标人群与核心使用场景",
         "03 首页交互改版 —— 布局与动效方案（重点）",
         "04 智慧推荐 —— 推荐策略与算法链路（重点）",
-        "05 数据验证 —— 核心指标与 A/B 结论",
-        "…",
-        "18 路线图与 Q&A —— 迭代计划与讨论",
+        "05 竞品分析 —— Doodle、Calendly 功能对比",
+        "06 信息架构 —— 站点地图与页面跳转关系",
+        "07 交互流程 —— 创建/参与/分享三大主流程",
+        "08 视觉规范 —— 色彩、字体与间距系统",
+        "09 动效设计 —— 微交互与转场动效规范",
+        "10 数据看板 —— 关键指标定义与埋点方案",
+        "11 技术方案 —— 前端架构与性能预算",
+        "12 性能优化 —— 首屏加载与包体积优化",
+        "13 A/B 实验 —— 实验设计与分流策略",
+        "14 数据验证 —— 核心指标与 A/B 结论",
+        "15 风险与应对 —— 识别、评估与缓解措施",
+        "16 团队分工 —— 角色职责与协作机制",
+        "17 排期计划 —— 三期迭代里程碑",
+        "18 路线图与 Q&A —— 长期规划与讨论",
       ],
     },
     {
@@ -149,16 +167,86 @@ function UserBubble({ msg }) {
           ))}
         </div>
       ) : null}
-      <div className="cs-user-bubble">{msg.text}</div>
-      <p className="cs-user-meta">
-        {msg.meta.modelLabel} · {msg.meta.modeLabel}
-      </p>
+      <div className="cs-user-bubble">
+        {/* 标签：图标 + 文档总结（图标 0.875rem） */}
+        <span className="cs-user-tag">
+          <Icon name="file-text" size={14} />
+          <span>文档总结</span>
+        </span>
+        <div className="cs-user-text">{msg.text}</div>
+      </div>
+    </div>
+  );
+}
+
+/* ================= 产物文件卡片：图标 + 信息 + 更多操作下拉 ================= */
+function FileCard({ f, onPreview }) {
+  const [open, setOpen] = useState(false);
+
+  /* 点击下拉外部任意位置时收起 */
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e) => {
+      if (!e.target.closest("[data-file-drop]")) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+
+  return (
+    <div className="cs-file">
+      <span className="cs-file-icon">
+        <Icon src={f.src} size={28} />
+      </span>
+      <span className="cs-file-info">
+        <span className="cs-file-name">{f.name}</span>
+        <span className="cs-file-meta">
+          {f.desc} · {f.size}
+        </span>
+      </span>
+      {/* 打开方式下拉 */}
+      <div className="cs-file-drop" data-file-drop>
+        <button
+          type="button"
+          className={"cs-file-more" + (open ? " is-open" : "")}
+          onClick={() => setOpen((v) => !v)}
+          aria-label="打开方式"
+          aria-expanded={open}
+        >
+          <span>打开方式</span>
+          <Icon
+            name="triangle"
+            size={8}
+            className={"cs-file-caret" + (open ? " is-open" : "")}
+          />
+        </button>
+        {open ? (
+          <div className="cs-file-menu">
+            <button
+              type="button"
+              className="cs-file-opt"
+              onClick={() => {
+                setOpen(false);
+                if (onPreview) onPreview(f);
+              }}
+            >
+              在线预览
+            </button>
+            <button type="button" className="cs-file-opt" onClick={() => setOpen(false)}>
+              浏览器打开
+            </button>
+            <button type="button" className="cs-file-opt" onClick={() => setOpen(false)}>
+              下载到本地
+            </button>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
 
 /* ================= Agent 回复：流式生成 + 授权弹框等待 ================= */
-function AgentRun({ msg, onGrow, onNeedPerm, permCmd }) {
+function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview }) {
   const blocks = msg.blocks;
   const total = blocks.length;
   const [cursor, setCursor] = useState(0); // 当前处理到的块下标（= 已完成块数）
@@ -404,28 +492,12 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd }) {
               );
             }
 
-            /* ---- 生成产物：产物文件卡片 ---- */
+            /* ---- 生成产物：产物文件卡片（FileCard 子组件渲染，右侧为操作下拉） ---- */
             if (b.type === "artifacts") {
               return (
                 <div className={"cs-files " + (b.cls || "")} key={i}>
                   {b.files.map((f) => (
-                    <div className="cs-file" key={f.id}>
-                      <span className="cs-file-icon">
-                        <Icon src={f.src} size={24} />
-                      </span>
-                      <span className="cs-file-info">
-                        <span className="cs-file-name">{f.name}</span>
-                        <span className="cs-file-meta">
-                          {f.desc} · {f.size}
-                        </span>
-                      </span>
-                      <button type="button" className="cs-file-btn" title="预览" aria-label="预览">
-                        <Icon name="eye" size={14} />
-                      </button>
-                      <button type="button" className="cs-file-btn" title="下载" aria-label="下载">
-                        <Icon name="download" size={14} />
-                      </button>
-                    </div>
+                    <FileCard key={f.id} f={f} onPreview={onPreview} />
                   ))}
                 </div>
               );
@@ -536,15 +608,28 @@ export default function ChatSession({ messages, onReset, composer }) {
   const [permCmd, setPermCmd] = useState(null);
   const [allowOpen, setAllowOpen] = useState(false); // 「允许」下拉展开态
 
-  /* 点击下拉外部任意位置时收起「允许」下拉 */
+  /* 右侧预览面板：当前预览的产物文件 */
+  const [previewFile, setPreviewFile] = useState(null);
+  const [zoomOpen, setZoomOpen] = useState(false); // 缩放下拉
+  const [moreOpen, setMoreOpen] = useState(false); // 更多操作下拉
+
+  /* 统一关闭所有下拉（允许/缩放/更多）：点击外部非下拉区域时收起 */
   useEffect(() => {
-    if (!allowOpen) return;
+    if (!allowOpen && !zoomOpen && !moreOpen) return;
     const onDown = (e) => {
-      if (!e.target.closest("[data-perm-drop]")) setAllowOpen(false);
+      if (
+        !e.target.closest("[data-perm-drop]") &&
+        !e.target.closest("[data-zoom-drop]") &&
+        !e.target.closest("[data-more-drop]")
+      ) {
+        setAllowOpen(false);
+        setZoomOpen(false);
+        setMoreOpen(false);
+      }
     };
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
-  }, [allowOpen]);
+  }, [allowOpen, zoomOpen, moreOpen]);
 
   /* 内容增长时贴底滚动；新消息发出时重置授权弹框状态 */
   const scrollToBottom = () => {
@@ -574,41 +659,37 @@ export default function ChatSession({ messages, onReset, composer }) {
 
   return (
     <div className="cs-wrap">
-      {/* 顶栏：会话标题 + 新对话 */}
-      <header className="cs-header">
-        <div className="cs-header-main">
-          <h1 className="cs-title">{first ? short(first.text, 24) : "新会话"}</h1>
-          <p className="cs-subtitle">
-            {first ? first.meta.modelLabel + " · " + first.meta.modeLabel + " · " + first.meta.permissionLabel : ""}
-          </p>
-        </div>
-        <button type="button" className="cs-new" onClick={onReset}>
-          <Icon name="square-pen" size={15} />
-          <span>新对话</span>
-        </button>
-      </header>
+      <div className="cs-main">
+        {/* 顶栏：会话标题 + 日历图标 */}
+        <header className="cs-header">
+          <div className="cs-header-main">
+            <h1 className="cs-title">{first ? short(first.text, 24) : "新会话"}</h1>
+          </div>
+          <img src="./assets/uploads/header-calendar.png" alt="" className="cs-new" />
+        </header>
 
-      {/* 消息流 */}
-      <div className="cs-list" ref={listRef}>
-        <div className="cs-inner">
-          {messages.map((m) =>
-            m.role === "user" ? (
-              <UserBubble key={m.id} msg={m} />
-            ) : (
-              <AgentRun
-                key={m.id}
-                msg={m}
-                onGrow={scrollToBottom}
-                onNeedPerm={setPendingMsgId}
-                permCmd={permCmd}
-              />
-            )
-          )}
+        {/* 消息流 */}
+        <div className="cs-list" ref={listRef}>
+          <div className="cs-inner">
+            {messages.map((m) =>
+              m.role === "user" ? (
+                <UserBubble key={m.id} msg={m} />
+              ) : (
+                <AgentRun
+                  key={m.id}
+                  msg={m}
+                  onGrow={scrollToBottom}
+                  onNeedPerm={setPendingMsgId}
+                  permCmd={permCmd}
+                  onPreview={setPreviewFile}
+                />
+              )
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* 底部输入区（由 ChatWorkspace 注入）+ 操作授权弹框（悬于输入框上方） */}
-      <div className="cs-composer">
+        {/* 底部输入区（由 ChatWorkspace 注入）+ 操作授权弹框（悬于输入框上方） */}
+        <div className="cs-composer">
         {permBlock ? (
           <div className="cs-perm-pop" role="dialog" aria-modal="false" aria-label="操作授权">
             <h3 className="cs-perm-pop-title">{permBlock.title}</h3>
@@ -655,7 +736,220 @@ export default function ChatSession({ messages, onReset, composer }) {
           </div>
         ) : null}
         {composer}
+        <p className="cs-footnote">内容由 AI 生成，请仔细核实 · Enter 发送 / Shift + Enter 换行</p>
+        </div>
       </div>
+
+      {/* 右侧预览面板：点击产物卡片下拉的「在线预览」打开 */}
+      {previewFile ? (
+        <aside className="cs-preview" aria-label="文件预览">
+          {/* ---- 头部 ---- */}
+          <div className="cs-preview-head">
+            <div className="cs-preview-head-left">
+              <span className="cs-preview-tab">
+                <Icon src="./assets/uploads/tab-files.svg" size={16} />
+                <span>项目文件</span>
+              </span>
+              <button type="button" className="cs-preview-tab">
+                <Icon name="file-text" size={14} />
+                <span>任务摘要</span>
+              </button>
+              <span className="cs-preview-vline" />
+              <div className="cs-preview-filetab">
+                <Icon src={previewFile.src} size={14} />
+                <span>{previewFile.name}</span>
+                <button
+                  type="button"
+                  className="cs-preview-filetab-x"
+                  onClick={() => setPreviewFile(null)}
+                  aria-label="关闭文件"
+                >
+                  <Icon name="x" size={12} />
+                </button>
+              </div>
+            </div>
+            <div className="cs-preview-head-right">
+              <div className="cs-preview-iconbox">
+                <Icon src="./assets/uploads/header-expand.svg" size={16} />
+              </div>
+              <button type="button" className="cs-preview-iconbtn" title="展开" aria-label="展开">
+                <Icon src="./assets/uploads/header-calendar.png" size={16} />
+              </button>
+            </div>
+          </div>
+
+          {/* ---- 操作栏 ---- */}
+          <div className="cs-preview-toolbar">
+            <div className="cs-preview-toolbar-left">
+              {/* 类似 ant Segmented：预览(眼睛) / 代码(dev) */}
+              <div className="cs-segmented">
+                <button type="button" className="cs-seg-item is-active" title="预览" aria-label="预览">
+                  <Icon name="eye" size={14} />
+                </button>
+                <button type="button" className="cs-seg-item" title="代码" aria-label="代码">
+                  <Icon src="./assets/uploads/category-dev.svg" size={14} />
+                </button>
+              </div>
+              {/* 地址栏 */}
+              <div className="cs-address">
+                <Icon name="folder-open" size={12} />
+                <span>D:\Projects\agent-demo\{previewFile.name}</span>
+              </div>
+            </div>
+            <div className="cs-preview-toolbar-right">
+              <button type="button" className="cs-preview-iconbtn" title="会话" aria-label="会话">
+                <Icon name="message-circle" size={16} />
+              </button>
+              {/* 缩放下拉 */}
+              <div className="cs-zoom" data-zoom-drop>
+                <button type="button" className="cs-zoom-btn" onClick={() => setZoomOpen((v) => !v)}>
+                  <span>100%</span>
+                  <Icon name="chevron-down" size={12} />
+                </button>
+                {zoomOpen ? (
+                  <div className="cs-zoom-menu">
+                    <button type="button" className="cs-zoom-opt">50%</button>
+                    <button type="button" className="cs-zoom-opt">75%</button>
+                    <button type="button" className="cs-zoom-opt is-active">100%</button>
+                    <button type="button" className="cs-zoom-opt">125%</button>
+                    <button type="button" className="cs-zoom-opt">150%</button>
+                  </div>
+                ) : null}
+              </div>
+              {/* 更多操作下拉：与 cs-file-more 同款（打开方式 + 倒三角） */}
+              <div className="cs-more" data-more-drop>
+                <button type="button" className="cs-preview-iconbtn cs-toolbar-openwith" onClick={() => setMoreOpen((v) => !v)} aria-label="更多">
+                  <span>打开方式</span>
+                  <Icon name="triangle" size={8} className="cs-file-caret" />
+                </button>
+                {moreOpen ? (
+                  <div className="cs-more-menu">
+                    <button type="button" className="cs-more-opt">在新窗口打开</button>
+                    <button type="button" className="cs-more-opt">复制链接</button>
+                    <button type="button" className="cs-more-opt">导出文件</button>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          </div>
+
+          {/* ---- 预览容器 ---- */}
+          <div className="cs-preview-body">
+            <div className="cs-preview-container">
+              <div className="cs-preview-page">
+                <h2 className="cs-preview-name">汇报演示 · When2meet 项目</h2>
+                <p className="cs-preview-eyebrow">18 页 · {previewFile.size} · 模拟预览</p>
+
+                <div className="cs-preview-sec">
+                  <h3>01 背景与目标</h3>
+                  <p>会议时间协调长期依赖群内接龙，效率低且易遗漏。本章从用户调研数据出发，界定核心痛点与改进机会。</p>
+                  <p>调研覆盖 500+ 活跃用户，发现平均创建一次多人会议需往返沟通 6.2 次、耗时 23 分钟，其中 78% 的用户期望系统自动推荐最优时段。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>02 用户画像</h3>
+                  <p>核心用户分为三类：行政协调者（占比 35%）、项目经理（占比 40%）和跨组织参与者（占比 25%）。每类用户的创建频率、参与人数与决策链路各不相同。</p>
+                  <p>高频协调者日均创建 3.5 场会议，对批量操作和模板复用诉求强烈；跨组织用户更关注免注册参与和时区自适应。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>03 首页交互改版（重点）</h3>
+                  <p>重构首页信息架构，新增引导式创建流程与动效反馈，降低新用户上手成本，提升创建完成率。</p>
+                  <p>改版重点包括：三步式创建向导（主题 → 参与人 → 时段候选）、实时参与度热力图、以及基于滑动操作的快捷时段标记。动效层面采用弹性过渡 + 骨架屏，首屏可交互时间从 2.1s 降至 0.8s。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>04 智慧推荐（重点）</h3>
+                  <p>基于历史行为与偏好特征构建推荐策略，在时间候选、参与人与会议时长三个维度提供主动建议。</p>
+                  <p>推荐算法融合协方差过滤（CF）与日程密度分析，对多人场景自动计算"最大公约数时段"并给出置信度评分。上线后推荐采纳率达到 62%，平均协调耗时从 23 分钟缩短至 8 分钟。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>05 竞品分析</h3>
+                  <p>对标 Doodle、Calendly、When2meet 原版三款产品，从功能完整度、交互体验、价格策略三个维度横向对比。</p>
+                  <p>Doodle 优势在于品牌认知度但移动端体验弱；Calendly 深度绑定日历但跨组织场景受限；原版 When2meet 简洁但缺乏智能推荐。改版方案取长补短，定位"轻量 + 智能"。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>06 信息架构</h3>
+                  <p>站点地图从扁平 4 页扩展为三级 12 页结构，新增个人中心、模板库与数据看板模块。</p>
+                  <p>页面跳转关系经过卡片分类法验证，核心路径（创建 → 分享 → 查看）不超过 2 次点击。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>07 交互流程</h3>
+                  <p>梳理创建、参与、分享三大主流程共 18 个关键节点，标注异常分支与降级方案。</p>
+                  <p>参与流程支持免注册预览 + 一键注册确认；分享流程生成短链自动适配 Open Graph 预览卡片。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>08 视觉规范</h3>
+                  <p>建立色彩（品牌蓝 + 功能色 6 组）、字体（标题/正文双栈）与间距（8px 基线网格）三大系统。</p>
+                  <p>暗色模式全覆盖，对比度均通过 WCAG AA 级认证。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>09 动效设计</h3>
+                  <p>定义页面转场、组件微交互与状态反馈三层动效规范，统一使用 ease-out 缓动曲线。</p>
+                  <p>关键动效包括：时段热力图渐入（400ms）、参与人头像弹入（弹性 + 150ms 延迟阶梯）、以及推荐结果高亮脉冲。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>10 数据看板</h3>
+                  <p>定义核心指标：创建完成率、平均协调耗时、推荐采纳率、7 日留存。埋点覆盖 32 个关键事件。</p>
+                  <p>看板支持按用户群、时间段与渠道三维筛选，数据延迟 T+1 更新。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>11 技术方案</h3>
+                  <p>前端采用 React 18 + TypeScript，状态管理 Zustand，构建链 Vite。性能预算：首屏 JS ≤ 180KB（gzip）。</p>
+                  <p>后端推荐服务使用 Python + Faiss 向量检索，P99 响应时间 ≤ 120ms。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>12 性能优化</h3>
+                  <p>首屏加载通过代码分割 + 预加载关键路由实现；包体积优化包括 Tree Shaking（-23%）与图片 AVIF 格式迁移（-41%）。</p>
+                  <p>Lighthouse 综合评分从 68 分提升至 94 分。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>13 A/B 实验</h3>
+                  <p>设计两组实验：E1 测试新引导式创建流程 vs 旧流程；E2 测试推荐时段自动填充 vs 手动选择。</p>
+                  <p>分流策略按用户 ID 哈希 50/50，实验周期 14 天，最小可检测效应 5%。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>14 数据验证</h3>
+                  <p>通过 A/B 实验对比改版前后核心指标：创建时长中位数从 23 分钟降至 8 分钟（-65%）、七日留存从 34% 提升至 48%（+14pp）、分享率从 12% 提升至 19%（+7pp）。</p>
+                  <p>所有指标均达到统计显著（p &lt; 0.01）。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>15 风险与应对</h3>
+                  <p>识别三大风险：推荐准确率冷启动（缓解：人工规则兜底）、高并发创建（缓解：消息队列削峰）、跨时区歧义（缓解：IANA 时区数据库）。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>16 团队分工</h3>
+                  <p>产品 2 人（需求 + 设计）、前端 3 人、后端 2 人、算法 1 人、测试 1 人。每日站会同步进度，双周迭代评审。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>17 排期计划</h3>
+                  <p>三期迭代：Alpha（第 1-4 周，核心流程）、Beta（第 5-8 周，推荐系统）、GA（第 9-12 周，数据看板 + 性能优化）。</p>
+                  <p>每期结束进行灰度发布，按 5% → 20% → 100% 逐步放量。</p>
+                </div>
+
+                <div className="cs-preview-sec">
+                  <h3>18 路线图与 Q&amp;A</h3>
+                  <p>按季度滚动迭代：Q1 交互细化与推荐策略升级、Q2 开放 API 与日历深度集成、Q3 多语言与国际化。</p>
+                  <p>预留 15 分钟 Q&amp;A 环节，欢迎就方案细节与排期展开讨论。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      ) : null}
     </div>
   );
 }

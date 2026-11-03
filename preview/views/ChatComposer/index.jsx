@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { Icon } from "../../components/Icon/index.jsx";
 import "./index.css";
 
@@ -232,9 +232,20 @@ const ADD_LEVELS = {
 };
 
 /* ================= 通用下拉菜单面板 ================= */
+/* 自适应方向：默认向下弹出；底部空间不足时翻转到按钮上方（渲染前测量，无闪烁） */
 function DropMenu({ options, selectedId, onPick }) {
+  const ref = useRef(null);
+  const [up, setUp] = useState(false);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.bottom > window.innerHeight - 8) setUp(true);
+  }, []);
+
   return (
-    <div className="cc-menu">
+    <div ref={ref} className={"cc-menu" + (up ? " cc-menu--up" : "")}>
       {options.map((o) => {
         const isSel = o.id === selectedId;
         return (
