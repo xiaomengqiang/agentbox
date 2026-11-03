@@ -251,6 +251,12 @@
   bottom: calc(100% + 8px);
 }
 
+/* 对话页:加号的一级菜单同样向上弹出 */
+.cc-drop-up .cc-addmenu {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
 /* 靠右对齐的面板（右侧控件使用） */
 .cc-drop-right .cc-menu {
   left: auto;
@@ -857,6 +863,12 @@
   background-color: var(--surface-container-lowest);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-dropdown);
+}
+
+/* 对话页:"/"指令面板锚定到输入框上方 */
+.cc-slash--up {
+  top: auto;
+  bottom: calc(100% + 8px);
 }
 
 .cc-slash-group-label {

@@ -854,8 +854,15 @@ export default function ChatComposer(props) {
         {/* 底部工具栏 */}
         <div className="cc-toolbar">
           <div className="cc-tool-group">
-            {/* 加号：二级下拉（展开时旋转 45°，菜单向下弹出） */}
-            <div className={"cc-drop" + (open === "attach" ? " is-active" : "")} data-drop>
+            {/* 加号：二级下拉（对话页向上弹出，避免被视口底部裁切） */}
+            <div
+              className={
+                "cc-drop" +
+                (chatMode ? " cc-drop-up" : "") +
+                (open === "attach" ? " is-active" : "")
+              }
+              data-drop
+            >
               <button
                 type="button"
                 className={"cc-ghost" + (open === "attach" ? " is-active" : "")}
@@ -881,8 +888,15 @@ export default function ChatComposer(props) {
               ) : null}
             </div>
 
-            {/* Agent 模式下拉 */}
-            <div className={"cc-drop" + (open === "mode" ? " is-active" : "")} data-drop>
+            {/* Agent 模式下拉（对话页向上弹出） */}
+            <div
+              className={
+                "cc-drop" +
+                (chatMode ? " cc-drop-up" : "") +
+                (open === "mode" ? " is-active" : "")
+              }
+              data-drop
+            >
               <button
                 type="button"
                 className={"cc-chip" + (open === "mode" ? " is-active" : "")}
@@ -897,8 +911,15 @@ export default function ChatComposer(props) {
               ) : null}
             </div>
 
-            {/* 请求权限下拉 */}
-            <div className={"cc-drop" + (open === "permission" ? " is-active" : "")} data-drop>
+            {/* 请求权限下拉（对话页向上弹出） */}
+            <div
+              className={
+                "cc-drop" +
+                (chatMode ? " cc-drop-up" : "") +
+                (open === "permission" ? " is-active" : "")
+              }
+              data-drop
+            >
               <button
                 type="button"
                 className={
@@ -931,8 +952,15 @@ export default function ChatComposer(props) {
           </div>
 
           <div className="cc-tool-group">
-            {/* 模型选择下拉（auto + 外部传入的模型列表，靠右对齐） */}
-            <div className={"cc-drop cc-drop-right" + (open === "model" ? " is-active" : "")} data-drop>
+            {/* 模型选择下拉（auto + 外部传入的模型列表，靠右对齐；对话页向上弹出） */}
+            <div
+              className={
+                "cc-drop cc-drop-right" +
+                (chatMode ? " cc-drop-up" : "") +
+                (open === "model" ? " is-active" : "")
+              }
+              data-drop
+            >
               <button
                 type="button"
                 className={"cc-chip" + (open === "model" ? " is-active" : "")}
@@ -1098,7 +1126,7 @@ export default function ChatComposer(props) {
 
       {/* ============ “/”快捷指令面板：悬于灰色外框下方 ============ */}
       {slashOpen && (slashAdd.length > 0 || slashSkills.length > 0 || slashExperts.length > 0) ? (
-        <div className="cc-slash" data-slash>
+        <div className={"cc-slash" + (chatMode ? " cc-slash--up" : "")} data-slash>
           {/* 独立小节：添加文件 */}
           {slashAdd.map((it) => cmdRow(it, pickSlash))}
           {/* 技能组 */}
