@@ -767,6 +767,9 @@ export default function ChatSession({ messages, onReset, composer }) {
                   <Icon name="x" size={12} />
                 </button>
               </div>
+              <button type="button" className="cs-preview-iconbtn cs-preview-add" title="添加" aria-label="添加">
+                <Icon src="./assets/uploads/add.svg" size={16} />
+              </button>
             </div>
             <div className="cs-preview-head-right">
               <div className="cs-preview-iconbox">

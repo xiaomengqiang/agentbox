@@ -864,6 +864,16 @@
   color: var(--on-surface);
 }
 
+/* 头部「添加」图标按钮 */
+.cs-preview-add {
+  width: 1.75rem;
+}
+
+.cs-preview-add img {
+  width: 1rem;
+  height: 1rem;
+}
+
 /* 图标容器（非按钮，纯展示） */
 .cs-preview-iconbox {
   display: flex;
