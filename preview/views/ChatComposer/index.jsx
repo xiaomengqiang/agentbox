@@ -277,6 +277,7 @@ function DropMenu({ options, selectedId, onPick }) {
 export default function ChatComposer(props) {
   const {
     initialMessage = "",
+    placeholder = '需要帮你做些什么?输入"/"快速引用技能及指令',
     modeId = "single",
     permissionId = "request",
     modelId = "auto",
@@ -846,7 +847,7 @@ export default function ChatComposer(props) {
           ) : null}
           <textarea
             className="cc-input"
-            placeholder={cmdChips.length ? "继续输入你的需求…" : '需要帮你做些什么?输入"/"快速引用技能及指令'}
+            placeholder={cmdChips.length ? "继续输入你的需求…" : placeholder}
             value={msg}
             onChange={handleInput}
             onKeyDown={onKeyDown}

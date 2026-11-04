@@ -131,7 +131,8 @@ export function MenuRow({ initialEditing = false, inputAutoFocus = true, renamea
         {leadingIcon && <MenuIcon src={item.iconSrc || DEFAULT_ICON} className="mi-leading-icon" />}
         <MenuLabel name={name} onDoubleClick={beginRename} />
       </button>
-      {trailingIcon && <span className="mi-trailing-region"><button type="button" className="mi-trailing-action" aria-label="更多" onClick={event => { event.stopPropagation(); onTrailingAction?.(currentItem); }}><MenuIcon src={MORE_ICON} /></button></span>}
+      {trailingIcon && <span className="mi-trailing-region"><button type="button" className="mi-trailing-action" aria-label="更多" onClick={event => { event.stopPropagation(); onTrailingAction?.(currentItem); }}>{item.trailingIcon || <MenuIcon src={MORE_ICON} />}</button></span>}
+      {item.statusDot && <span className="mi-status-dot" aria-hidden="true" />}
     </>}
 
   </div>;
