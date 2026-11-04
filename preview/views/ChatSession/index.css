@@ -273,13 +273,12 @@
   opacity: 0.85;
 }
 
-.cs-perm-pop-chev {
-  flex: 0 0 auto;
-  transition: transform var(--duration-fast) var(--ease-standard);
-}
-
-.cs-perm-pop-chev.is-open {
+/* 实心白色倒三角（triangle 旋转 180° 并填充，无动画） */
+.cs-perm-pop-caret {
   transform: rotate(180deg);
+  /* #fff — 等价 var(--white) */
+  color: var(--white);
+  fill: currentColor;
 }
 
 .cs-perm-pop-menu {
@@ -561,6 +560,12 @@
   background: var(--surface-container-lowest);
   /* #E5E5EA — 等价 var(--surface-container-high) */
   border: 1px solid var(--surface-container-high);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-file:hover {
+  /* rgba(0,0,0,0.05) — 等价 var(--surface-container) */
+  background: var(--surface-container);
 }
 
 .cs-file-icon {

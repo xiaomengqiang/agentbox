@@ -707,11 +707,7 @@ export default function ChatSession({ messages, onReset, composer }) {
                   onClick={() => setAllowOpen((v) => !v)}
                 >
                   <span>允许本次操作</span>
-                  <Icon
-                    name="chevron-down"
-                    size={16}
-                    className={"cs-perm-pop-chev" + (allowOpen ? " is-open" : "")}
-                  />
+                  <Icon name="triangle" size={8} className="cs-perm-pop-caret" />
                 </button>
                 {allowOpen ? (
                   <div className="cs-perm-pop-menu">
