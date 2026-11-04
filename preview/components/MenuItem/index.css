@@ -191,3 +191,6 @@
 @media (prefers-reduced-motion: reduce) {
   .mi-row:hover .mi-label-overflow .mi-label-track { animation: none; }
 }
+
+/* Optional conversation activity indicator. */
+.mi-status-dot { flex: 0 0 auto; width: 8px; height: 8px; border-radius: var(--radius-full); background: var(--primary); }
