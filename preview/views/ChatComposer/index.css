@@ -45,7 +45,7 @@
 /* 输入框右上角外侧的吉祥鸟装饰插画(纯装饰,不拦截交互;整体悬于外框上方,不被卡片遮挡) */
 .cc-shell-mascot {
   position: absolute;
-  top: -96px;
+  top: -89px;
   right: 24px;
   width: 88px;
   height: 88px;
