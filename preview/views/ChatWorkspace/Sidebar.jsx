@@ -15,7 +15,7 @@ const MENU_ITEMS = [
   { id: "new-chat", label: "新建对话", iconSrc: "./assets/uploads/icon/sidebar/new-chat.svg" },
   { id: "scheduled-task", label: "定时任务", iconSrc: "./assets/uploads/icon/sidebar/scheduled-task.svg" },
   { id: "plugin", label: "插件", iconSrc: "./assets/uploads/icon/sidebar/plugin.svg" },
-  { id: "more", label: "更多", iconSrc: "./assets/uploads/icon/sidebar/more.svg" },
+  { id: "more", label: "更多", iconSrc: "./assets/uploads/sidebar-more-circle.svg" },
 ];
 
 // 项目文件（可交互）
