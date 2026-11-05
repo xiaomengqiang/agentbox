@@ -4413,11 +4413,11 @@ img[data-component="Icon"] {
   cursor: pointer;
 }
 
-/* ---- 浅灰信息栏 ---- */
+/* ---- 浅灰信息栏:#f1f3f5 50% ---- */
 .sp-info {
   padding: 12px 14px;
   border-radius: var(--radius-container);
-  background-color: var(--surface-container-low);
+  background-color: rgba(241, 243, 245, 0.5);
 }
 
 .sp-info-head {
@@ -4509,9 +4509,11 @@ img[data-component="Icon"] {
 }
 
 /* ---- 任务列表(进度图下方,8 项,可展开) ---- */
+/* ---- 任务列表(进度图下方,8 项,可展开;项间距 4) ---- */
 .sp-tasks {
   display: flex;
   flex-direction: column;
+  gap: 4px;
   margin-top: 14px;
 }
 
@@ -4519,10 +4521,12 @@ img[data-component="Icon"] {
   display: flex;
   align-items: center;
   gap: 8px;
+  box-sizing: border-box;
+  height: 40px;
   width: 100%;
-  padding: 8px 6px;
+  padding: 0 6px;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   background-color: transparent;
   text-align: left;
   cursor: pointer;
@@ -4561,13 +4565,15 @@ img[data-component="Icon"] {
   transform: rotate(180deg);
 }
 
-/* 展开详情:圆角边框,左小鸟 + 右上下两行文本 */
+/* 展开详情:圆角边框,高 72 垂直居中,左小鸟 + 右上下两行文本 */
 .sp-task-detail {
   display: flex;
   align-items: center;
+  box-sizing: border-box;
   gap: 10px;
-  margin: 2px 6px 10px;
-  padding: 10px 12px;
+  height: 72px;
+  margin: 4px 6px;
+  padding: 0 12px;
   border: 1px solid #e5e5ea;
   border-radius: 12px;
   background-color: var(--surface-container-lowest);
