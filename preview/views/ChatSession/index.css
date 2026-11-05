@@ -1094,6 +1094,12 @@
   box-shadow: var(--shadow-dropdown);
 }
 
+/* fixed 定位变体:脱离消息列表滚动容器的裁切,可覆盖下方输入框 */
+.cs-file-menu--fixed {
+  position: fixed;
+  z-index: 300;
+}
+
 .cs-file-opt {
   display: flex;
   align-items: center;

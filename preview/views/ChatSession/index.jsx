@@ -206,6 +206,8 @@ function UserBubble({ msg }) {
 /* ================= 产物文件卡片：图标 + 信息 + 更多操作下拉 ================= */
 function FileCard({ f, onPreview }) {
   const [open, setOpen] = useState(false);
+  const [menuPos, setMenuPos] = useState(null); // fixed 定位坐标(脱离滚动容器裁切)
+  const btnRef = useRef(null);
 
   /* 点击下拉外部任意位置时收起 */
   useEffect(() => {
@@ -216,6 +218,19 @@ function FileCard({ f, onPreview }) {
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
   }, [open]);
+
+  /* 按按钮视口坐标计算下拉位置:fixed 定位可覆盖下方输入框 */
+  const toggleMenu = () => {
+    if (open) {
+      setOpen(false);
+      return;
+    }
+    const rect = btnRef.current
+      ? btnRef.current.getBoundingClientRect()
+      : { bottom: 0, left: 0 };
+    setMenuPos({ top: rect.bottom + 8, left: rect.left });
+    setOpen(true);
+  };
 
   return (
     <div className="cs-file">
@@ -231,9 +246,10 @@ function FileCard({ f, onPreview }) {
       {/* 打开方式下拉 */}
       <div className="cs-file-drop" data-file-drop>
         <button
+          ref={btnRef}
           type="button"
           className={"cs-file-more" + (open ? " is-open" : "")}
-          onClick={() => setOpen((v) => !v)}
+          onClick={toggleMenu}
           aria-label="打开方式"
           aria-expanded={open}
         >
@@ -244,8 +260,11 @@ function FileCard({ f, onPreview }) {
             className={"cs-file-caret" + (open ? " is-open" : "")}
           />
         </button>
-        {open ? (
-          <div className="cs-file-menu">
+        {open && menuPos ? (
+          <div
+            className="cs-file-menu cs-file-menu--fixed"
+            style={{ top: menuPos.top, left: menuPos.left }}
+          >
             <button
               type="button"
               className="cs-file-opt"
