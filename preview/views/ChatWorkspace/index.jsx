@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "./Sidebar.jsx";
 import ChatComposer from "../ChatComposer/index.jsx";
 import { Icon } from "../../components/Icon/index.jsx";
@@ -38,8 +38,49 @@ export default function ChatWorkspace() {
   const [generating, setGenerating] = useState(false);
   const [stopGen, setStopGen] = useState(0);
 
+  // 蜂群群聊模式:右侧 SwarmPanel 处于群聊(辩论)页签时,
+  // 左侧输入框的发送只向右侧追加聊天内容,左侧会话流不变
+  const [swarmChatMode, setSwarmChatMode] = useState(false);
+  const [swarmChat, setSwarmChat] = useState([]);
+  const pushSwarmChat = (item) => setSwarmChat((list) => [...list, item]);
+  // 离开会话页(重置/切工作台)时复位群聊模式与追加消息
+  useEffect(() => {
+    if (!inSession) {
+      setSwarmChatMode(false);
+      setSwarmChat([]);
+    }
+  }, [inSession]);
+
   // 发送：追加一条用户消息，并构造一次流式生成 + 授权等待的 Agent 回复
   const handleSend = (payload) => {
+    // 蜂群群聊模式:仅右侧 SwarmPanel 追加聊天,左侧不变
+    if (swarmChatMode) {
+      const ts = Date.now();
+      pushSwarmChat({
+        id: "uc-" + ts,
+        role: "user_123",
+        avatar: "./assets/uploads/workbench-avatar.png",
+        time: "2026/06/20 13:23",
+        paragraphs: [
+          "@项目研究专家 再收集一些竞品的UI方案我想看看空闲时间和重合的时间是怎么展示的？",
+        ],
+        side: "right",
+      });
+      window.setTimeout(() => {
+        pushSwarmChat({
+          id: "ac-" + Date.now(),
+          role: "项目研究专家",
+          avatar: "./assets/uploads/avatar-research.svg",
+          time: "2026/06/20 13:23",
+          paragraphs: [
+            "@User_123 收到！我现在按照之前的竞品研究思路去收集相关的设计方案。",
+          ],
+          side: "left",
+        });
+      }, 3000);
+      return;
+    }
+
     const reply = buildAgentReply(payload);
     const ts = Date.now();
     setGenerating(true);
@@ -80,6 +121,8 @@ export default function ChatWorkspace() {
             onReset={() => setMessages([])}
             onGeneratingChange={setGenerating}
             stopGen={stopGen}
+            swarmExtraChat={swarmChat}
+            onSwarmViewChange={setSwarmChatMode}
             composer={<ChatComposer onSend={handleSend} chatMode isGenerating={generating} onStop={handleStop} />}
           />
         ) : (

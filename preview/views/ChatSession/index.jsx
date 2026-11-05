@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { Icon } from "../../components/Icon/index.jsx";
 import { buildSwarmBlocks, buildSwarmFlowBlocks } from "./swarm.jsx";
+import SwarmPanel from "../SwarmPanel/index.jsx";
 import "./index.css";
 
 /* ================= 会话数据构造 ================= */
@@ -270,7 +271,7 @@ function FileCard({ f, onPreview }) {
 }
 
 /* ================= Agent 回复：流式生成 + 授权弹框等待 ================= */
-function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGeneratingChange }) {
+function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGeneratingChange, onProgress }) {
   const blocks = msg.blocks;
   const total = blocks.length;
   const [cursor, setCursor] = useState(0); // 当前处理到的块下标（= 已完成块数）
@@ -297,6 +298,24 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
   useEffect(() => {
     if (onGeneratingChange) onGeneratingChange(activelyGenerating);
   }, [activelyGenerating, onGeneratingChange]);
+
+  /* 流式进度(0~1) = (已完成块数 + 当前块内打字比例) / 总块数;
+     表单/授权等待时光标停住 → 进度自然冻结;中止/失败不再上报
+     供右侧蜂群面板(SwarmPanel)同步进度条动画 */
+  const blockFrac = cur && cur.text ? Math.min(1, chars / cur.text.length) : 0;
+  const streamProgress = total ? Math.min(1, (cursor + blockFrac) / total) : 0;
+  const lastReport = useRef(-1);
+  useEffect(() => {
+    if (!onProgress) return;
+    if (rejected) return; // 已中止:冻结在最后上报的进度
+    if (
+      Math.abs(streamProgress - lastReport.current) >= 0.01 ||
+      (streamProgress >= 1 && lastReport.current < 1)
+    ) {
+      lastReport.current = streamProgress;
+      onProgress(streamProgress);
+    }
+  }, [streamProgress]);
 
   /* 生成计时与 Token 消耗：未完成且未暂停时每 200ms 刷新，暂停/完成后冻结；重试时重启 */
   const [startTs, setStartTs] = useState(() => Date.now());
@@ -777,7 +796,7 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
 }
 
 /* ================= 会话页面 ================= */
-export default function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange }) {
+export default function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange, swarmExtraChat, onSwarmViewChange }) {
   const listRef = useRef(null);
   const first = messages[0];
 
@@ -801,6 +820,9 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
       setActiveTab("summary");
     }
   }, [isSwarmSession, messages.length]);
+
+  /* 左侧流式进度 → 驱动右侧 SwarmPanel 的进度动画 */
+  const [swarmProgress, setSwarmProgress] = useState(0);
 
   /* 点击产物「在线预览」→ 打开预览面板，选中文件页签 */
   const handleFilePreview = (file) => {
@@ -904,6 +926,11 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
                   onPreview={handleFilePreview}
                   stopGen={mi === messages.length - 1 ? stopGen : undefined}
                   onGeneratingChange={mi === messages.length - 1 ? onGeneratingChange : undefined}
+                  onProgress={
+                    isSwarmSession && mi === messages.length - 1
+                      ? setSwarmProgress
+                      : undefined
+                  }
                 />
               )
             )}
@@ -1024,8 +1051,15 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
         </div>
       </div>
 
-      {/* 右侧公共预览模块：头部导航 + 页签内容区 */}
+      {/* 右侧面板:蜂群会话 → SwarmPanel(任务摘要/群聊等);单Agent会话 → 公共预览模块 */}
       {previewOpen ? (
+        isSwarmSession ? (
+          <SwarmPanel
+            progress={swarmProgress}
+            extraChat={swarmExtraChat}
+            onViewChange={onSwarmViewChange}
+          />
+        ) : (
         <aside className="cs-preview" aria-label="预览面板">
           {/* ---- 公共头部导航 ---- */}
           <div className="cs-preview-head">
@@ -1234,6 +1268,7 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
             </div>
           )}
         </aside>
+        )
       ) : null}
     </div>
   );

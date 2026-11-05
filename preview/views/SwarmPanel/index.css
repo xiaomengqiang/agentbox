@@ -1,0 +1,601 @@
+/* ===================== SwarmPanel 蜂群任务面板(固宽650) ===================== */
+
+.sp-panel {
+  display: flex;
+  flex: 0 0 650px;
+  width: 650px;
+  flex-direction: column;
+  min-height: 0;
+  box-sizing: border-box;
+  background-color: var(--surface-container-lowest);
+  border-left: 1px solid var(--divider);
+}
+
+/* 群聊辩论页签:面板加宽到 890 */
+.sp-panel--wide {
+  flex: 0 0 890px;
+  width: 890px;
+}
+
+/* ---- 标题栏 ---- */
+.sp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #e4e4e5;
+}
+
+.sp-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sp-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: var(--text-secondary);
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.sp-tab:hover {
+  background-color: var(--color-interactive-hover);
+  color: var(--on-surface);
+}
+
+/* 选中态:非胶囊,圆角 8 + 浅灰底 #f1f3f5,文字 #000 90% */
+.sp-tab.is-active {
+  background-color: #f1f3f5;
+  border-radius: var(--radius-container);
+  color: var(--on-surface);
+  font-weight: var(--font-weight-bold);
+}
+
+.sp-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sp-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-icon-secondary);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.sp-action:hover {
+  background-color: var(--color-interactive-hover);
+  color: var(--color-icon-primary);
+}
+
+/* 展开图标选中态:与左侧选项卡同款(圆角8 + #f1f3f5) */
+.sp-action.is-active {
+  background-color: #f1f3f5;
+  border-radius: var(--radius-container);
+  color: var(--primary);
+}
+
+/* ---- 主内容区 ---- */
+.sp-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px 16px;
+}
+
+/* 进展标题:16px 加粗,三角图标紧随文字右侧(间距4) */
+.sp-section-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 4px 2px 10px;
+  border: none;
+  background-color: transparent;
+  color: var(--on-surface);
+  font: var(--font-subtitle-md);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+}
+
+/* ---- 浅灰信息栏 ---- */
+.sp-info {
+  padding: 12px 14px;
+  border-radius: var(--radius-container);
+  background-color: var(--surface-container-low);
+}
+
+.sp-info-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.sp-info-title {
+  color: var(--on-surface);
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-bold);
+}
+
+.sp-info-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-secondary);
+  font: var(--font-caption-lg);
+}
+
+.sp-stat b {
+  margin-left: 2px;
+  color: var(--on-surface);
+  font-weight: var(--font-weight-bold);
+}
+
+/* 进度区:顶部为小鸟预留空间,小鸟正好位于信息头(sp-info-head)下方 */
+.sp-progress {
+  position: relative;
+  padding-top: 62px;
+}
+
+.sp-progress-track {
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background-color: var(--surface-container-highest);
+}
+
+/* 进度填充:蓝色渐变(50% 透明度 → 实色) + 淡白斜纹;
+   宽度由左侧流式进度驱动,0.4s 线性过渡平滑衔接 */
+.sp-progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 0,
+      rgba(255, 255, 255, 0.2) 3px,
+      transparent 3px,
+      transparent 8px
+    ),
+    linear-gradient(to right, rgba(10, 89, 247, 0.5), #0a59f7);
+  transition: width 0.4s linear;
+}
+
+/* 完成态:绿色渐变(#64bb5c 50% → #64bb5c),斜纹保持 */
+.sp-progress-fill--done {
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 0,
+      rgba(255, 255, 255, 0.2) 3px,
+      transparent 3px,
+      transparent 8px
+    ),
+    linear-gradient(to right, rgba(100, 187, 92, 0.5), #64bb5c);
+}
+
+/* 进度小鸟:宽 108(高度自适应),前缘与激活进度条的边缘对齐(整体骑在填充段上) */
+.sp-progress-bird {
+  position: absolute;
+  top: 0;
+  width: 108px;
+  margin-left: -95px;
+  pointer-events: none;
+  transition: left 0.4s linear;
+}
+
+/* 完成态小鸟:换图后尺寸与锚点调整(悬于进度末端) */
+.sp-progress-bird--done {
+  top: -7px;
+  width: 72px;
+  margin-left: -72px;
+}
+
+/* ---- 任务列表(进度图下方,8 项,可展开) ---- */
+.sp-tasks {
+  display: flex;
+  flex-direction: column;
+  margin-top: 14px;
+}
+
+.sp-task-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 6px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.sp-task-head:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+/* 状态图标:step-loading 持续旋转,step-done 静止 */
+.sp-task-loading {
+  flex: 0 0 auto;
+  animation: sp-agent-spin 1s linear infinite;
+}
+
+.sp-task-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--on-surface);
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-bold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 向下箭头:展开时旋转 180° */
+.sp-task-chev {
+  flex: 0 0 auto;
+  color: var(--color-icon-tertiary);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.sp-task.is-open .sp-task-chev {
+  transform: rotate(180deg);
+}
+
+/* 展开详情:圆角边框,左小鸟 + 右上下两行文本 */
+.sp-task-detail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 6px 10px;
+  padding: 10px 12px;
+  border: 1px solid #e5e5ea;
+  border-radius: 12px;
+  background-color: var(--surface-container-lowest);
+}
+
+.sp-task-bird {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+}
+
+.sp-task-lines {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sp-task-line1 {
+  color: var(--on-surface);
+  font: var(--font-body-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.sp-task-line2 {
+  color: var(--text-secondary);
+  font: var(--font-caption-lg);
+}
+
+/* ---- 子智能体(距任务列表 32) ---- */
+.sp-agents {
+  margin-top: 32px;
+}
+
+.sp-agents-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 2px 16px;
+}
+
+/* 子智能体/群聊 切换按钮:选中态深色加粗,未选中浅灰 */
+.sp-agents-switch {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: var(--text-placeholder);
+  font: var(--font-subtitle-md);
+  font-weight: var(--font-weight-regular);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.sp-agents-switch.is-active {
+  color: var(--on-surface);
+  font-weight: var(--font-weight-bold);
+}
+
+/* 群聊视图:浅灰圆角卡片,左两行文本 + 右小鸟;可点击(触发新增页签) */
+.sp-groupchat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 16px;
+  border-radius: var(--radius-container);
+  background-color: var(--surface-container-low);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.sp-groupchat:hover {
+  background-color: var(--surface-container);
+}
+
+.sp-groupchat-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sp-groupchat-line1 {
+  overflow: hidden;
+  color: var(--on-surface);
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-medium);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sp-groupchat-line2 {
+  overflow: hidden;
+  color: var(--text-secondary);
+  font: var(--font-caption-lg);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sp-groupchat-bird {
+  flex: 0 0 145px;
+  width: 145px;
+}
+
+.sp-agents-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* 智能体胶囊:胶囊形状(全圆角)+ #d1d1d6 边框,左圆形头像 + 右两行文本,固宽 176 */
+.sp-agent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 176px;
+  padding: 10px;
+  border: 1px solid #d1d1d6;
+  border-radius: var(--radius-full);
+  background-color: var(--surface-container-lowest);
+}
+
+.sp-agent-avatar {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+}
+
+.sp-agent-lines {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sp-agent-line1 {
+  overflow: hidden;
+  color: var(--on-surface);
+  font: var(--font-body-sm);
+  font-weight: var(--font-weight-medium);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sp-agent-line2 {
+  overflow: hidden;
+  color: var(--text-secondary);
+  font: var(--font-caption-md);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* loading 状态图标:持续旋转 */
+.sp-agent-loading {
+  flex: 0 0 auto;
+  animation: sp-agent-spin 1s linear infinite;
+}
+
+@keyframes sp-agent-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- 产物(距子智能体 32) ---- */
+.sp-artifacts {
+  margin-top: 32px;
+}
+
+.sp-artifacts-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 4px 2px 10px;
+  border: none;
+  background-color: transparent;
+  color: var(--on-surface);
+  font: var(--font-subtitle-md);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+}
+
+.sp-artifacts-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 产物行:固高 40,图标 + 文件名 + 右侧进行中标注 */
+.sp-artifact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 6px;
+  border-radius: var(--radius-sm);
+  color: var(--on-surface);
+  font: var(--font-body-md);
+}
+
+.sp-artifact:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+.sp-artifact-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sp-artifact-status {
+  flex: 0 0 auto;
+  color: var(--text-placeholder);
+  font: var(--font-caption-lg);
+}
+
+/* ---- 群聊辩论视图 ---- */
+/* 胶囊搜索框:浅灰底 */
+.sp-chat-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  margin-bottom: 14px;
+  border-radius: var(--radius-full);
+  background-color: var(--surface-container-low);
+  color: var(--color-icon-secondary);
+}
+
+.sp-chat-search-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: var(--on-surface);
+  font: var(--font-body-md);
+}
+
+.sp-chat-search-input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.sp-chat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 消息头:左头像 + 标题 + 浅灰时间 */
+.sp-chat-item-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.sp-chat-item-avatar {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+}
+
+.sp-chat-item-role {
+  color: var(--on-surface);
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-bold);
+}
+
+.sp-chat-item-time {
+  margin-left: 4px;
+  color: var(--text-placeholder);
+  font: var(--font-caption-md);
+}
+
+/* 消息正文:与标题文字对齐(缩进=头像32+间距8),#f1f3f5 95% 背景,
+   上下内边距保留,左上角无圆角,其余三角 16px */
+.sp-chat-item-body {
+  margin-left: 40px;
+  padding: 12px 14px;
+  background-color: rgba(241, 243, 245, 0.95);
+  border-radius: 0 16px 16px 16px;
+}
+
+/* @提及 文本:蓝色 */
+.sp-chat-mention {
+  color: var(--primary);
+}
+
+/* 段落之间不设间距(内容连排) */
+.sp-chat-item-p {
+  margin: 0;
+  color: var(--on-surface);
+  font: var(--font-body-sm);
+  line-height: 1.7;
+}
+
+/* 靠右的用户消息:头部镜像(头像最右),正文按内容自适应宽度并靠右,
+   右侧缩进对齐标题文字,右上角无圆角 */
+.sp-chat-item--right .sp-chat-item-head {
+  flex-direction: row-reverse;
+}
+
+.sp-chat-item--right .sp-chat-item-time {
+  margin-left: 0;
+  margin-right: 4px;
+}
+
+.sp-chat-item--right .sp-chat-item-body {
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: calc(100% - 40px);
+  margin-left: auto;
+  margin-right: 40px;
+  border-radius: 16px 0 16px 16px;
+}
