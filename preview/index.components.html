@@ -9086,7 +9086,19 @@ function SwarmPanel(props) {
             <Icon src="./assets/uploads/icon/section-arrow.svg" size={14} />
           </button>
           <div className="sp-artifacts-list">
-            {ARTIFACTS.map((a) => (
+            {[
+              ...ARTIFACTS,
+              /* 群聊信息执行后追加的产物 */
+              ...(extraChat.length > 0
+                ? [
+                    {
+                      id: "f-when2meet",
+                      name: "when2meet.html",
+                      src: "./assets/uploads/icon/file-type/filled/code.svg",
+                    },
+                  ]
+                : []),
+            ].map((a) => (
               <div key={a.id} className="sp-artifact">
                 <Icon src={a.src} size={16} />
                 <span className="sp-artifact-name">{a.name}</span>
@@ -9094,7 +9106,7 @@ function SwarmPanel(props) {
                   <span className="sp-artifact-status">{a.status}</span>
                 ) : null}
               </div>
-              ))}
+            ))}
           </div>
         </div>
         </>
