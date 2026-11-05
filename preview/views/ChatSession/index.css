@@ -192,7 +192,179 @@
   flex: 0 0 auto;
 }
 
-/* ---- 操作授权弹框（悬于输入框上方，流式生成中途挂起等待用户授权） ---- */
+/* ---- 蜂群配置表单弹框（悬于输入框上方，上下布局） ---- */
+.cs-form-pop {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.25rem;
+  border-radius: 1rem;
+  background: var(--white);
+  box-shadow: var(--shadow-popover);
+  overflow: hidden;
+}
+
+/* 上部：表单内容（分页显示，关闭按钮固定右上角不随翻页移动） */
+.cs-form-body {
+  position: relative;
+  padding: 1rem 1rem 0.875rem;
+  border-bottom: 1px solid var(--divider);
+}
+
+/* 右上角关闭按钮 */
+.cs-form-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-placeholder);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-form-close:hover {
+  background: var(--color-interactive-hover);
+  color: var(--on-surface);
+}
+
+/* 表单内容右侧留出关闭按钮空间 */
+.cs-form-page {
+  padding-right: 2rem;
+}
+
+.cs-form-title {
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0 0 12px;
+  line-height: var(--line-height-relaxed);
+}
+
+.cs-form-options {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 4px;
+}
+
+.cs-form-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font: var(--font-body-md);
+  color: var(--on-surface);
+}
+
+/* 自定义单选圆圈：选中时蓝底 + 白色对勾 */
+.cs-radio-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--container-10);
+  background: transparent;
+  transition: background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-form-radio.is-checked .cs-radio-circle {
+  /* #0A59F7 — 品牌蓝 */
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.cs-radio-check {
+  color: var(--white);
+}
+
+/* 下部：翻页器 + 操作按钮 */
+.cs-form-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.cs-form-pager {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cs-form-pager-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface-container);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-form-pager-btn:hover {
+  background: var(--color-interactive-hover);
+  color: var(--on-surface);
+}
+
+.cs-form-pager-text {
+  font: var(--font-body-sm);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.cs-form-btns {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cs-form-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 9rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  box-sizing: border-box;
+  font-size: 1rem;
+  /* #000 — 等价 var(--on-surface) */
+  color: var(--on-surface);
+  /* rgba(0,0,0,0.05) — 等价 var(--surface-container) */
+  background: var(--surface-container);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-form-btn:hover {
+  background: var(--color-interactive-hover);
+}
+
+.cs-form-btn.is-primary {
+  /* rgba(0,0,0,0.9) — #000 @ 90% */
+  background: rgba(0, 0, 0, 0.9);
+  color: var(--white);
+}
+
+.cs-form-btn.is-primary:hover {
+  background: var(--black);
+}
 .cs-perm-pop {
   display: flex;
   flex-direction: column;
@@ -501,6 +673,266 @@
   margin: 3px 0 0 21px;
 }
 
+/* ---- 蜂群模式：问题澄清卡片 ---- */
+.cs-qa-card {
+  border: 1px solid var(--surface-container-high);
+  border-radius: 1rem;
+  padding: 0 1rem;
+  background: var(--white);
+  margin-bottom: 0.75rem;
+}
+
+.cs-qa-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--surface-container-high);
+  font-size: 0.875rem;
+  color: var(--text-placeholder);
+}
+
+.cs-qa-body {
+  padding: 0.75rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cs-qa-q {
+  font-size: 0.875rem;
+  color: var(--on-surface);
+  margin: 0 0 0.75rem;
+}
+
+.cs-qa-a {
+  font-size: 0.875rem;
+  color: var(--text-placeholder);
+  margin: 0;
+}
+
+/* ---- 技能调取 ---- */
+.cs-skill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.cs-skill svg,
+.cs-skill img {
+  flex: 0 0 auto;
+  color: var(--text-secondary);
+}
+
+/* ---- 任务卡片 ---- */
+.cs-task-card {
+  padding: 0 1rem;
+  margin-bottom: 0.75rem;
+  background: var(--white);
+  border-radius: 1rem;
+  /* #E5E5EA — 等价 var(--surface-container-high) */
+  border: 1px solid var(--surface-container-high);
+}
+
+.cs-task-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--surface-container-high);
+}
+
+.cs-task-head svg {
+  flex: 0 0 auto;
+  color: var(--text-secondary);
+}
+
+.cs-task-team {
+  font-size: 0.875rem;
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.cs-task-sep {
+  color: var(--text-placeholder);
+}
+
+.cs-task-desc {
+  font-size: 0.875rem;
+  color: var(--text-placeholder);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cs-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+}
+
+.cs-task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 1.75rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.cs-task-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 任务行右侧负责人（头像 + 名称，固定宽度使各行头像垂直对齐） */
+.cs-task-assignee {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 8.5rem;
+  padding-right: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.cs-task-assignee-avatar {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ---- 专家/人员标签 ---- */
+.cs-agent-tag-row {
+  margin-bottom: 0.75rem;
+}
+
+.cs-agent-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 2.25rem;
+  padding: 0 0.75rem 0 0.5rem;
+  border-radius: 1.25rem;
+  /* #E5E5EA — 等价 var(--surface-container-high) */
+  border: 1px solid var(--surface-container-high);
+}
+
+.cs-agent-tag-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-top: -0.125rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.cs-agent-tag-icon img {
+  width: 100%;
+  height: 100%;
+}
+
+.cs-agent-tag-name {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.cs-agent-tag-check {
+  flex: 0 0 auto;
+  color: var(--success);
+}
+
+/* ---- 列表块（标题 + 黑点列表项） ---- */
+.cs-list-block {
+  margin-bottom: 0.75rem;
+}
+
+.cs-list-block-title {
+  font-size: 1rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0 0 8px;
+}
+
+.cs-list-block-items {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cs-list-block-item {
+  position: relative;
+  padding-left: 16px;
+  font-size: 0.875rem;
+  color: var(--on-surface);
+  line-height: var(--line-height-relaxed);
+}
+
+.cs-list-block-item::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--black);
+}
+
+/* ---- 带链接的文本 ---- */
+.cs-text-link {
+  font-size: 0.875rem;
+  color: var(--on-surface);
+  margin: 0 0 0.75rem;
+  line-height: var(--line-height-relaxed);
+}
+
+.cs-doc-link {
+  color: var(--primary);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cs-doc-link:hover {
+  text-decoration: underline;
+}
+
+/* ---- 核心结论/流程容器 ---- */
+.cs-conclusion {
+  margin-bottom: 0.75rem;
+}
+
+.cs-conclusion-title {
+  font-size: 1rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  margin: 0 0 0.5rem;
+}
+
+.cs-conclusion-body {
+  font-size: 0.875rem;
+  color: var(--on-surface);
+  line-height: var(--line-height-relaxed);
+  margin: 0;
+}
+
 /* ---- 生成产物：文件内容预览（无背景色） ---- */
 .cs-fc {
   margin: 4px 0 12px;
@@ -748,27 +1180,33 @@
 .cs-preview-head-left {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
   min-width: 0;
 }
 
 .cs-preview-tab {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 0.5rem;
   flex: 0 0 auto;
-  padding: 0;
+  padding: 0.5rem;
   border: 0;
-  background: transparent;
+  border-radius: var(--radius-sm);
+  background: var(--white);
   color: var(--text-secondary);
   font: var(--font-body-sm);
   cursor: pointer;
   white-space: nowrap;
-  transition: color var(--duration-fast) var(--ease-standard);
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
 }
 
 .cs-preview-tab:hover {
   color: var(--on-surface);
+}
+
+.cs-preview-tab.is-active {
+  /* #F1F3F5 — 等价 var(--color-background-secondary) */
+  background: var(--color-background-secondary);
 }
 
 .cs-preview-vline {
@@ -1117,6 +1555,31 @@
   color: var(--text-secondary);
   line-height: var(--line-height-relaxed);
   margin: 0;
+}
+
+/* 任务摘要页签：空白内容区 */
+.cs-preview-blank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cs-preview-blank-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cs-preview-blank-text {
+  font: var(--font-body-md);
+  color: var(--text-placeholder);
+  margin: 0;
+}
+
+/* 文件页签激活态 */
+.cs-preview-filetab.is-active {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 /* ================= 动画 ================= */

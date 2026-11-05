@@ -34,10 +34,15 @@ export default function ChatWorkspace() {
   ] : CAPABILITIES;
   const inSession = messages.length > 0;
 
+  // 生成中标记 + 停止信号（点击停止按钮时递增，AgentRun 感知后跳到结尾）
+  const [generating, setGenerating] = useState(false);
+  const [stopGen, setStopGen] = useState(0);
+
   // 发送：追加一条用户消息，并构造一次流式生成 + 授权等待的 Agent 回复
   const handleSend = (payload) => {
     const reply = buildAgentReply(payload);
     const ts = Date.now();
+    setGenerating(true);
     setMessages((ms) => [
       ...ms,
       {
@@ -58,6 +63,12 @@ export default function ChatWorkspace() {
     ]);
   };
 
+  // 停止生成：递增停止信号，AgentRun 跳到结尾；按钮恢复初始态
+  const handleStop = () => {
+    setStopGen((n) => n + 1);
+    setGenerating(false);
+  };
+
   return (
     <div className="cw-page">
       <Sidebar mode={workspaceMode} onModeChange={setWorkspaceMode} />
@@ -67,7 +78,9 @@ export default function ChatWorkspace() {
           <ChatSession
             messages={messages}
             onReset={() => setMessages([])}
-            composer={<ChatComposer onSend={handleSend} chatMode />}
+            onGeneratingChange={setGenerating}
+            stopGen={stopGen}
+            composer={<ChatComposer onSend={handleSend} chatMode isGenerating={generating} onStop={handleStop} />}
           />
         ) : (
           /* ---- 欢迎页：Hero + 居中输入框 + 快捷能力胶囊 ---- */

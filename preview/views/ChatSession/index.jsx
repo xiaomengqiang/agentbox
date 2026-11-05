@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { Icon } from "../../components/Icon/index.jsx";
+import { buildSwarmBlocks, buildSwarmFlowBlocks } from "./swarm.jsx";
 import "./index.css";
 
 /* ================= 会话数据构造 ================= */
@@ -24,8 +25,13 @@ const ZOOM_SVG =
 export function buildAgentReply(payload) {
   /* 失败注入：用户消息包含「失败 / 中断 / fail」时，冲刺阶段打完文案后触发生成失败（测试失败流程） */
   const failMode = /失败|中断|fail/i.test(payload.text || "");
+  const swarm = payload.meta && payload.meta.modeId === "swarm";
 
-  const blocks = [
+  /* 蜂群模式：多子Agent并行协作流程（由 swarm.jsx 独立模块处理） */
+  const swarmPre = swarm ? buildSwarmBlocks(payload) : [];
+
+  /* ---- 单Agent模式：默认流程 ---- */
+  const singlePre = [
     {
       type: "p",
       cls: "cs-node-intro",
@@ -53,13 +59,6 @@ export function buildAgentReply(payload) {
       transient: true, // 思考完成后隐藏该节点
     },
     {
-      type: "perm-wait",
-      cls: "cs-node-permission",
-      title: "操作授权",
-      desc: "申请新建GitHub仓库【When2meet】，并将该项目部署至个人网站/测试环境",
-      short: "新建GitHub仓库【When2meet】",
-    },
-    {
       type: "status",
       cls: "cs-node-reading",
       icon: "file-search",
@@ -83,20 +82,36 @@ export function buildAgentReply(payload) {
         },
       ],
     },
+  ];
+
+  /* 授权等待（仅单Agent模式）+ 冲刺 + 产物输出 */
+  const blocks = [...(swarm ? swarmPre : singlePre)];
+  if (!swarm) {
+    blocks.push({
+      type: "perm-wait",
+      cls: "cs-node-permission",
+      title: "操作授权",
+      desc: "申请新建GitHub仓库【When2meet】，并将该项目部署至个人网站/测试环境",
+      short: "新建GitHub仓库【When2meet】",
+    });
+  } else {
+    /* 蜂群模式：表单后插入完整协作流程，再接冲刺+产物 */
+    blocks.push(...buildSwarmFlowBlocks(payload));
+  }
+  blocks.push(
     {
       type: "status",
       cls: "cs-node-sprint",
       src: "./assets/uploads/bird.webp",
       text: "咻一一青鸟正在最终冲刺中......",
       linear: true,
-      transient: true, // 生成完成后隐藏该节点
-      failHere: failMode, // 失败模式：冲刺文案打完后触发生成失败，任务中断
+      transient: true,
+      failHere: failMode,
     },
-    /* ---- 以下为生成产物输出：文件内容 → 产物汇总 → 产物文件 ---- */
     {
       type: "filecontent",
       cls: "cs-node-filecontent",
-      noPerm: true, // 拒绝授权时不输出
+      noPerm: true,
       title: "汇报演示.html · HTML",
       lines: [
         "# 汇报演示 · When2meet 项目",
@@ -140,7 +155,16 @@ export function buildAgentReply(payload) {
         },
       ],
     },
-  ];
+  );
+  /* 蜂群模式跳过 filecontent、summary 和冲刺节点（已在协作流程中覆盖） */
+  if (swarm) {
+    const fcIdx = blocks.findIndex((b) => b.type === "filecontent");
+    if (fcIdx !== -1) blocks.splice(fcIdx, 1);
+    const smIdx = blocks.findIndex((b) => b.type === "summary");
+    if (smIdx !== -1) blocks.splice(smIdx, 1);
+    const spIdx = blocks.findIndex((b) => b.cls === "cs-node-sprint");
+    if (spIdx !== -1) blocks.splice(spIdx, 1);
+  }
 
   return { blocks, failMode };
 }
@@ -246,7 +270,7 @@ function FileCard({ f, onPreview }) {
 }
 
 /* ================= Agent 回复：流式生成 + 授权弹框等待 ================= */
-function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview }) {
+function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGeneratingChange }) {
   const blocks = msg.blocks;
   const total = blocks.length;
   const [cursor, setCursor] = useState(0); // 当前处理到的块下标（= 已完成块数）
@@ -254,20 +278,34 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview }) {
   const [readIdx, setReadIdx] = useState(0); // 读取文档面板已揭示的条目数
   const [perm, setPerm] = useState("none"); // 授权状态：none / waiting / allowed / always / rejected
   const [failed, setFailed] = useState(false); // 生成失败（任务中断）
+  const [paused, setPaused] = useState(false); // 暂停中（冻结当前位置，不推进）
 
   const cur = cursor < total ? blocks[cursor] : null;
   const done = cursor >= total;
   const rejected = perm === "rejected";
   const completed = done && !rejected; // 任务完成（生成成功）
 
-  /* 生成计时与 Token 消耗：未完成时每 200ms 刷新（等待授权期间同样计时），完成后冻结；重试时重启 */
+  /* 停止信号：stopGen 递增时暂停流式（冻结当前位置，不跳到结尾、不继续打印） */
+  useEffect(() => {
+    if (stopGen === undefined || stopGen === 0) return;
+    if (done) return;
+    setPaused(true);
+  }, [stopGen]);
+
+  /* 向父级报告生成状态：未完成且未暂停 = 生成中（驱动暂停按钮显隐） */
+  const activelyGenerating = !done && !paused;
+  useEffect(() => {
+    if (onGeneratingChange) onGeneratingChange(activelyGenerating);
+  }, [activelyGenerating, onGeneratingChange]);
+
+  /* 生成计时与 Token 消耗：未完成且未暂停时每 200ms 刷新，暂停/完成后冻结；重试时重启 */
   const [startTs, setStartTs] = useState(() => Date.now());
   const [nowTs, setNowTs] = useState(() => Date.now());
   useEffect(() => {
-    if (done) return;
+    if (done || paused) return;
     const t = window.setInterval(() => setNowTs(Date.now()), 200);
     return () => window.clearInterval(t);
-  }, [done]);
+  }, [done, paused]);
   const elapsedMs = Math.max(0, nowTs - startTs);
   const tokens = 1024 + Math.floor((elapsedMs / 1000) * 386);
 
@@ -276,16 +314,18 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview }) {
     setReadIdx(0);
   }, [cursor]);
 
-  /* 流式打字：逐字输出当前文本块，块间稍作停顿；授权等待块由下方授权链路处理。
+  /* 流式打字：逐字输出当前文本块，块间稍作停顿；暂停中冻结不推进。
+     授权/表单等待块由下方挂起链路处理。
      读取文档块：先打标签文字，再逐条揭示文档相关内容，全部揭示后进入下一块。
      结构块（文件内容/产物汇总/产物文件）：整块淡入展示后推进 */
   useEffect(() => {
-    if (!cur || cur.type === "perm-wait") return;
+    if (paused) return; // 暂停中：不推进流式
+    if (!cur || cur.type === "perm-wait" || cur.type === "form-wait") return;
     if (!cur.text) {
       const t = window.setTimeout(() => {
         setCursor((c) => c + 1);
         if (onGrow) onGrow();
-      }, 700);
+      }, 1000);
       return () => window.clearTimeout(t);
     }
     if (cur.reading) {
@@ -293,28 +333,28 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview }) {
         const t = window.setTimeout(() => {
           setChars((c) => c + 2);
           if (onGrow) onGrow();
-        }, 16);
+        }, 35);
         return () => window.clearTimeout(t);
       }
       if (readIdx < cur.reading.length) {
         const t = window.setTimeout(() => {
           setReadIdx((v) => v + 1);
           if (onGrow) onGrow();
-        }, 900);
+        }, 1200);
         return () => window.clearTimeout(t);
       }
       const t = window.setTimeout(() => {
         setCursor((c) => c + 1);
         setChars(0);
         if (onGrow) onGrow();
-      }, 500);
+      }, 700);
       return () => window.clearTimeout(t);
     }
     if (chars < cur.text.length) {
       const t = window.setTimeout(() => {
         setChars((c) => c + 2);
         if (onGrow) onGrow();
-      }, 16);
+      }, 35);
       return () => window.clearTimeout(t);
     }
     /* 失败注入点：冲刺文案打完后短暂等待 → 生成失败，任务中断 */
@@ -323,20 +363,20 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview }) {
         setFailed(true);
         setCursor(total);
         if (onGrow) onGrow();
-      }, 1200);
+      }, 1500);
       return () => window.clearTimeout(t);
     }
     const t = window.setTimeout(() => {
       setCursor((c) => c + 1);
       setChars(0);
       if (onGrow) onGrow();
-    }, 140);
+    }, 220);
     return () => window.clearTimeout(t);
-  }, [cursor, chars, readIdx]);
+  }, [cursor, chars, readIdx, paused]);
 
-  /* 流式推进到授权等待块：置为等待态，并通知父级弹出操作授权弹框（输入框上方） */
+  /* 流式推进到授权/表单等待块：置为等待态，并通知父级弹出弹框（输入框上方） */
   useEffect(() => {
-    if (!cur || cur.type !== "perm-wait") return;
+    if (!cur || (cur.type !== "perm-wait" && cur.type !== "form-wait")) return;
     if (perm === "none") {
       setPerm("waiting");
       if (onNeedPerm) onNeedPerm(msg.id);
@@ -362,7 +402,8 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview }) {
     return () => window.clearTimeout(t);
   }, [permCmd, perm]);
 
-  /* 状态栏阶段：思考中 → 已思考（思考块完成，含授权与读取文档期间）→ 生成中（读取块完成）→ 任务完成/已中止 */
+  /* 状态栏阶段：蜂群模式直接显示生成中；单Agent按 思考→已思考→生成中 流转 */
+  const isSwarm = msg.meta && msg.meta.modeId === "swarm";
   const thinkingIdx = blocks.findIndex((b) => b.endsThinking);
   const readingIdx = blocks.findIndex((b) => b.endsReading);
   const thinkingDone = thinkingIdx !== -1 && cursor > thinkingIdx;
@@ -378,11 +419,13 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview }) {
       : failed
         ? "生成失败，用时 "
         : "任务完成，用时 "
-    : !thinkingDone
-      ? "思考中，用时 "
-      : !readingDone
-        ? "已思考，用时 "
-        : "生成中，用时 ";
+    : isSwarm
+      ? "生成中，用时 "
+      : !thinkingDone
+        ? "思考中，用时 "
+        : !readingDone
+          ? "已思考，用时 "
+          : "生成中，用时 ";
 
   /* 重试：重置整条生成流程（含授权弹框），计时与 Token 重新累计 */
   const retry = () => {
@@ -459,9 +502,144 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview }) {
         <div className="cs-answer">
           {blocks.map((b, i) => {
             if (i > cursor) return null; // 尚未输出到的块
-            if (b.transient && i < cursor) return null; // 阶段性节点（思考/读取/冲刺）完成后隐藏
-            if (b.hideOnDone && !rejected && !failed && artifactsStarted) return null; // 产物开始输出时隐藏（已探索/梳理段落）；失败/中止时保留
-            if (b.noPerm && (rejected || failed)) return null; // 拒绝授权/生成失败时不输出产物相关块
+            if (b.transient && i < cursor) return null; // 阶段性节点完成后隐藏
+            if (b.hideAfterForm && perm !== "none" && perm !== "waiting") return null; // 表单提交后隐藏（蜂群 intro）
+            if (b.hideOnDone && !rejected && !failed && artifactsStarted) return null;
+            if (b.noPerm && (rejected || failed)) return null;
+
+            /* ---- 问题澄清卡片 ---- */
+            if (b.type === "qa-card") {
+              const isCurQ = i === cursor;
+              const shown_ = isCurQ;
+              return (
+                <div className={"cs-qa-card " + (b.cls || "")} key={i}>
+                  <div className="cs-qa-head">
+                    <Icon src="./assets/uploads/category-content.svg" size={12} />
+                    <span>{b.title}</span>
+                  </div>
+                  <div className="cs-qa-body">
+                    {b.qa.map((item, k) => {
+                      const visible = !isCurQ || k < Math.floor(chars / 20);
+                      if (!visible) return null;
+                      return (
+                        <div className="cs-qa-item" key={k}>
+                          <p className="cs-qa-q">{item.q}</p>
+                          <p className="cs-qa-a">{item.a}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            }
+
+            /* ---- 技能调取 ---- */
+            if (b.type === "skill") {
+              const isCurS = i === cursor;
+              const textS = isCurS ? b.text.slice(0, chars) : b.text;
+              if (!textS) return null;
+              return (
+                <div className="cs-skill" key={i}>
+                  {b.icon === "hand" ? (
+                    <Icon name="hand" size={12} />
+                  ) : (
+                    <Icon src="./assets/uploads/skill.svg" size={12} />
+                  )}
+                  <span>{textS}{isCurS && chars < b.text.length ? <span className="cs-caret" /> : null}</span>
+                </div>
+              );
+            }
+
+            /* ---- 任务卡片 ---- */
+            if (b.type === "task-card") {
+              const isCurT = i === cursor;
+              const taskCount = isCurT ? Math.min(b.tasks.length, Math.floor(chars / 8)) : b.tasks.length;
+              return (
+                <div className={"cs-task-card " + (b.cls || "")} key={i}>
+                  <div className="cs-task-head">
+                    <Icon name="users" size={14} />
+                    <span className="cs-task-team">{b.team}</span>
+                    <span className="cs-task-sep">|</span>
+                    <span className="cs-task-desc">{b.desc}</span>
+                  </div>
+                  <div className="cs-task-list">
+                    {b.tasks.slice(0, taskCount).map((t, k) => (
+                      <div className="cs-task-item" key={k}>
+                        <span className="cs-task-text">{t.text}</span>
+                        {t.assignee ? (
+                          <span className="cs-task-assignee">
+                            <img src={t.avatar} alt="" className="cs-task-assignee-avatar" />
+                            <span>{t.assignee}</span>
+                          </span>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+
+            /* ---- 专家/人员标签 ---- */
+            if (b.type === "agent-tag") {
+              return (
+                <div className="cs-agent-tag-row" key={i}>
+                  <div className="cs-agent-tag">
+                    <span className="cs-agent-tag-icon">
+                      <Icon src={b.avatar} size={28} />
+                    </span>
+                    <span className="cs-agent-tag-name">{b.name}</span>
+                    <Icon src="./assets/uploads/connector-connected.svg" size={14} />
+                  </div>
+                </div>
+              );
+            }
+
+            /* ---- 列表块（标题 + 黑点列表项） ---- */
+            if (b.type === "list-block") {
+              const isCurL = i === cursor;
+              const itemCount = isCurL ? Math.min(b.items.length, Math.floor(chars / 6)) : b.items.length;
+              return (
+                <div className="cs-list-block" key={i}>
+                  <p className="cs-list-block-title">{b.title}</p>
+                  <ul className="cs-list-block-items">
+                    {b.items.slice(0, itemCount).map((it, k) => (
+                      <li className="cs-list-block-item" key={k}>{it}</li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            }
+
+            /* ---- 带链接的文本 ---- */
+            if (b.type === "text-link") {
+              const isCurTL = i === cursor;
+              const textTL = isCurTL ? b.text.slice(0, chars) : b.text;
+              if (!textTL && !isCurTL) return null;
+              const showLink = !isCurTL || chars >= b.text.length;
+              return (
+                <p className="cs-text-link" key={i}>
+                  {textTL}
+                  {showLink ? <a className="cs-doc-link" href="#">{b.link}</a> : null}
+                  {isCurTL && chars < b.text.length ? <span className="cs-caret" /> : null}
+                </p>
+              );
+            }
+
+            /* ---- 核心结论/流程容器 ---- */
+            if (b.type === "conclusion") {
+              const isCurC = i === cursor;
+              const contentC = isCurC ? b.content.slice(0, chars) : b.content;
+              if (!contentC && isCurC && b.content) return null;
+              if (!contentC && !isCurC && b.content) return null;
+              return (
+                <div className="cs-conclusion" key={i}>
+                  <p className="cs-conclusion-title">{b.title}</p>
+                  {b.content ? (
+                    <p className="cs-conclusion-body">{contentC}{isCurC && chars < b.content.length ? <span className="cs-caret" /> : null}</p>
+                  ) : null}
+                </div>
+              );
+            }
 
             /* ---- 生成产物：文件内容预览 ---- */
             if (b.type === "filecontent") {
@@ -503,14 +681,14 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview }) {
               );
             }
 
-            /* 授权等待块：等待期间由输入框上方的弹框承载；
-               允许（本次/始终）后不再渲染授权结果节点，直接继续流式输出；
-               拒绝 → 紧凑结果行提示任务中止 */
-            if (b.type === "perm-wait") {
+            /* 授权/表单等待块：等待期间由输入框上方的弹框承载；
+               允许后不再渲染结果节点；拒绝（仅单Agent授权）→ 紧凑中止行 */
+            if (b.type === "perm-wait" || b.type === "form-wait") {
               if (i === cursor) return null;
+              if (b.type === "form-wait") return null; // 表单提交后不渲染
               if (perm !== "rejected") return null;
               return (
-                <div className={"cs-perm-done is-rejected " + (b.cls || "")} key={i}>
+                <div className="cs-perm-done is-rejected" key={i}>
                   <Icon name="circle-alert" size={14} />
                   <span>已拒绝授权 · 任务已中止</span>
                 </div>
@@ -599,7 +777,7 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview }) {
 }
 
 /* ================= 会话页面 ================= */
-export default function ChatSession({ messages, onReset, composer }) {
+export default function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange }) {
   const listRef = useRef(null);
   const first = messages[0];
 
@@ -608,10 +786,34 @@ export default function ChatSession({ messages, onReset, composer }) {
   const [permCmd, setPermCmd] = useState(null);
   const [allowOpen, setAllowOpen] = useState(false); // 「允许」下拉展开态
 
-  /* 右侧预览面板：当前预览的产物文件 */
+  /* 右侧预览面板：当前预览的产物文件 + 页签控制 */
   const [previewFile, setPreviewFile] = useState(null);
+  const [previewOpen, setPreviewOpen] = useState(false); // 预览面板是否显示
+  const [activeTab, setActiveTab] = useState("summary"); // 当前选中页签："summary" | "file"
   const [zoomOpen, setZoomOpen] = useState(false); // 缩放下拉
   const [moreOpen, setMoreOpen] = useState(false); // 更多操作下拉
+
+  /* 蜂群模式：进入会话页自动打开预览面板，选中「任务摘要」页签 */
+  const isSwarmSession = first && first.meta && first.meta.modeId === "swarm";
+  useEffect(() => {
+    if (isSwarmSession && messages.length > 0) {
+      setPreviewOpen(true);
+      setActiveTab("summary");
+    }
+  }, [isSwarmSession, messages.length]);
+
+  /* 点击产物「在线预览」→ 打开预览面板，选中文件页签 */
+  const handleFilePreview = (file) => {
+    setPreviewFile(file);
+    setPreviewOpen(true);
+    setActiveTab("file");
+  };
+
+  /* 关闭文件页签 → 返回任务摘要 */
+  const closeFileTab = () => {
+    setPreviewFile(null);
+    setActiveTab("summary");
+  };
 
   /* 统一关闭所有下拉（允许/缩放/更多）：点击外部非下拉区域时收起 */
   useEffect(() => {
@@ -643,7 +845,7 @@ export default function ChatSession({ messages, onReset, composer }) {
     scrollToBottom();
   }, [messages.length]);
 
-  /* 弹框按钮：拒绝 / 允许本次操作 / 始终运行操作 → 关闭弹框并把决定回传给等待中的 AgentRun */
+  /* 弹框按钮：拒绝 / 允许 / 表单提交 → 关闭弹框并把决定回传给等待中的 AgentRun */
   const decide = (decision) => {
     if (!pendingMsgId) return;
     setPermCmd({ msgId: pendingMsgId, decision });
@@ -651,11 +853,29 @@ export default function ChatSession({ messages, onReset, composer }) {
     setAllowOpen(false);
   };
 
-  /* 弹框内容取自等待授权消息里的 perm-wait 块 */
+  /* 蜂群配置表单弹框状态 */
+  const [formPage, setFormPage] = useState(0);
+  const [formAnswers, setFormAnswers] = useState({});
+
+  /* 重置弹框时同步重置表单 */
+  useEffect(() => {
+    if (!pendingMsgId) {
+      setFormPage(0);
+      setFormAnswers({});
+    }
+  }, [pendingMsgId]);
+
+  /* 表单提交 → 关闭弹框并把决定回传给等待中的 AgentRun */
+  const submitForm = () => {
+    decide("allowed");
+  };
+
+  /* 弹框内容取自等待授权消息里的等待块（授权 or 蜂群配置表单） */
   const pendingMsg = messages.find((m) => m.id === pendingMsgId);
-  const permBlock = pendingMsg
-    ? pendingMsg.blocks.find((b) => b.type === "perm-wait")
+  const waitBlock = pendingMsg
+    ? pendingMsg.blocks.find((b) => b.type === "perm-wait" || b.type === "form-wait")
     : null;
+  const isFormPopup = waitBlock && waitBlock.type === "form-wait";
 
   return (
     <div className="cs-wrap">
@@ -671,7 +891,7 @@ export default function ChatSession({ messages, onReset, composer }) {
         {/* 消息流 */}
         <div className="cs-list" ref={listRef}>
           <div className="cs-inner">
-            {messages.map((m) =>
+            {messages.map((m, mi) =>
               m.role === "user" ? (
                 <UserBubble key={m.id} msg={m} />
               ) : (
@@ -681,25 +901,101 @@ export default function ChatSession({ messages, onReset, composer }) {
                   onGrow={scrollToBottom}
                   onNeedPerm={setPendingMsgId}
                   permCmd={permCmd}
-                  onPreview={setPreviewFile}
+                  onPreview={handleFilePreview}
+                  stopGen={mi === messages.length - 1 ? stopGen : undefined}
+                  onGeneratingChange={mi === messages.length - 1 ? onGeneratingChange : undefined}
                 />
               )
             )}
           </div>
         </div>
 
-        {/* 底部输入区（由 ChatWorkspace 注入）+ 操作授权弹框（悬于输入框上方） */}
+        {/* 底部输入区 + 弹框（操作授权 / 蜂群配置表单，悬于输入框上方） */}
         <div className="cs-composer">
-        {permBlock ? (
+        {isFormPopup && waitBlock ? (
+          /* ---- 蜂群配置表单弹框（多页 + 单选 + 翻页） ---- */
+          <div className="cs-form-pop" role="dialog" aria-modal="false" aria-label="配置信息">
+            {/* 上部：表单内容（分页显示，关闭按钮固定右上角） */}
+            <div className="cs-form-body">
+              <button
+                type="button"
+                className="cs-form-close"
+                onClick={() => decide("rejected")}
+                aria-label="关闭"
+              >
+                <Icon name="x" size={16} />
+              </button>
+              {waitBlock.pages.map((pg, pi) =>
+                pi === formPage ? (
+                  <div className="cs-form-page" key={pg.id}>
+                    <p className="cs-form-title">{pg.title}</p>
+                    <div className="cs-form-options">
+                      {pg.options.map((opt) => {
+                        const isSel = formAnswers[pg.id] === opt;
+                        return (
+                          <label
+                            className={"cs-form-radio" + (isSel ? " is-checked" : "")}
+                            key={opt}
+                            onClick={() => setFormAnswers((a) => ({ ...a, [pg.id]: opt }))}
+                          >
+                            <span className="cs-radio-circle">
+                              {isSel ? <Icon name="check" size={10} className="cs-radio-check" /> : null}
+                            </span>
+                            <span>{opt}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null
+              )}
+            </div>
+            {/* 下部：翻页器 + 操作按钮 */}
+            <div className="cs-form-foot">
+              <div className="cs-form-pager">
+                <button
+                  type="button"
+                  className="cs-form-pager-btn"
+                  onClick={() => setFormPage((p) => Math.max(0, p - 1))}
+                  aria-label="上一页"
+                >
+                  <Icon name="chevron-left" size={14} />
+                </button>
+                <span className="cs-form-pager-text">
+                  {formPage + 1} / {waitBlock.pages.length}
+                </span>
+                <button
+                  type="button"
+                  className="cs-form-pager-btn"
+                  onClick={() => setFormPage((p) => Math.min(p + 1, waitBlock.pages.length - 1))}
+                  aria-label="下一页"
+                >
+                  <Icon name="chevron-right" size={14} />
+                </button>
+              </div>
+              <div className="cs-form-btns">
+                <button
+                  type="button"
+                  className="cs-form-btn"
+                  onClick={submitForm}
+                >
+                  跳过
+                </button>
+                <button type="button" className="cs-form-btn is-primary" onClick={submitForm}>
+                  确定
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : waitBlock ? (
+          /* ---- 单Agent操作授权弹框 ---- */
           <div className="cs-perm-pop" role="dialog" aria-modal="false" aria-label="操作授权">
-            <h3 className="cs-perm-pop-title">{permBlock.title}</h3>
-            <p className="cs-perm-pop-desc">{permBlock.desc}</p>
+            <h3 className="cs-perm-pop-title">{waitBlock.title}</h3>
+            <p className="cs-perm-pop-desc">{waitBlock.desc}</p>
             <div className="cs-perm-pop-actions">
-              {/* 拒绝：次级按钮 */}
               <button type="button" className="cs-perm-pop-deny" onClick={() => decide("rejected")}>
                 拒绝
               </button>
-              {/* 允许：下拉选择框（允许本次操作 / 始终运行操作） */}
               <div className="cs-perm-pop-allow" data-perm-drop>
                 <button
                   type="button"
@@ -711,18 +1007,10 @@ export default function ChatSession({ messages, onReset, composer }) {
                 </button>
                 {allowOpen ? (
                   <div className="cs-perm-pop-menu">
-                    <button
-                      type="button"
-                      className="cs-perm-pop-opt"
-                      onClick={() => decide("allowed")}
-                    >
+                    <button type="button" className="cs-perm-pop-opt" onClick={() => decide("allowed")}>
                       允许本次操作
                     </button>
-                    <button
-                      type="button"
-                      className="cs-perm-pop-opt"
-                      onClick={() => decide("always")}
-                    >
+                    <button type="button" className="cs-perm-pop-opt" onClick={() => decide("always")}>
                       始终运行操作
                     </button>
                   </div>
@@ -736,33 +1024,41 @@ export default function ChatSession({ messages, onReset, composer }) {
         </div>
       </div>
 
-      {/* 右侧预览面板：点击产物卡片下拉的「在线预览」打开 */}
-      {previewFile ? (
-        <aside className="cs-preview" aria-label="文件预览">
-          {/* ---- 头部 ---- */}
+      {/* 右侧公共预览模块：头部导航 + 页签内容区 */}
+      {previewOpen ? (
+        <aside className="cs-preview" aria-label="预览面板">
+          {/* ---- 公共头部导航 ---- */}
           <div className="cs-preview-head">
             <div className="cs-preview-head-left">
-              <span className="cs-preview-tab">
+              <span className={"cs-preview-tab" + (activeTab === "files" ? " is-active" : "")}>
                 <Icon src="./assets/uploads/tab-files.svg" size={16} />
                 <span>项目文件</span>
               </span>
-              <button type="button" className="cs-preview-tab">
+              <button
+                type="button"
+                className={"cs-preview-tab" + (activeTab === "summary" ? " is-active" : "")}
+                onClick={() => setActiveTab("summary")}
+              >
                 <Icon name="file-text" size={14} />
                 <span>任务摘要</span>
               </button>
-              <span className="cs-preview-vline" />
-              <div className="cs-preview-filetab">
-                <Icon src={previewFile.src} size={14} />
-                <span>{previewFile.name}</span>
-                <button
-                  type="button"
-                  className="cs-preview-filetab-x"
-                  onClick={() => setPreviewFile(null)}
-                  aria-label="关闭文件"
-                >
-                  <Icon name="x" size={12} />
-                </button>
-              </div>
+              {previewFile ? (
+                <>
+                  <span className="cs-preview-vline" />
+                  <div className={"cs-preview-filetab" + (activeTab === "file" ? " is-active" : "")}>
+                    <Icon src={previewFile.src} size={14} />
+                    <span onClick={() => setActiveTab("file")}>{previewFile.name}</span>
+                    <button
+                      type="button"
+                      className="cs-preview-filetab-x"
+                      onClick={closeFileTab}
+                      aria-label="关闭文件"
+                    >
+                      <Icon name="x" size={12} />
+                    </button>
+                  </div>
+                </>
+              ) : null}
               <button type="button" className="cs-preview-iconbtn cs-preview-add" title="添加" aria-label="添加">
                 <Icon src="./assets/uploads/add.svg" size={16} />
               </button>
@@ -777,176 +1073,166 @@ export default function ChatSession({ messages, onReset, composer }) {
             </div>
           </div>
 
-          {/* ---- 操作栏 ---- */}
-          <div className="cs-preview-toolbar">
-            <div className="cs-preview-toolbar-left">
-              {/* 类似 ant Segmented：预览(眼睛) / 代码(dev) */}
-              <div className="cs-segmented">
-                <button type="button" className="cs-seg-item is-active" title="预览" aria-label="预览">
-                  <Icon name="eye" size={14} />
-                </button>
-                <button type="button" className="cs-seg-item" title="代码" aria-label="代码">
-                  <Icon src="./assets/uploads/category-dev.svg" size={14} />
-                </button>
-              </div>
-              {/* 地址栏 */}
-              <div className="cs-address">
-                <Icon name="folder-open" size={12} />
-                <span>D:\Projects\agent-demo\{previewFile.name}</span>
-              </div>
-            </div>
-            <div className="cs-preview-toolbar-right">
-              <button type="button" className="cs-preview-iconbtn" title="会话" aria-label="会话">
-                <Icon name="message-circle" size={16} />
-              </button>
-              {/* 缩放下拉 */}
-              <div className="cs-zoom" data-zoom-drop>
-                <button type="button" className="cs-zoom-btn" onClick={() => setZoomOpen((v) => !v)}>
-                  <span>100%</span>
-                  <Icon name="chevron-down" size={12} />
-                </button>
-                {zoomOpen ? (
-                  <div className="cs-zoom-menu">
-                    <button type="button" className="cs-zoom-opt">50%</button>
-                    <button type="button" className="cs-zoom-opt">75%</button>
-                    <button type="button" className="cs-zoom-opt is-active">100%</button>
-                    <button type="button" className="cs-zoom-opt">125%</button>
-                    <button type="button" className="cs-zoom-opt">150%</button>
+          {/* ---- 页签内容区：文件页签 → 操作栏+预览容器；任务摘要 → 空白 ---- */}
+          {activeTab === "file" && previewFile ? (
+            <>
+              {/* 操作栏 */}
+              <div className="cs-preview-toolbar">
+                <div className="cs-preview-toolbar-left">
+                  <div className="cs-segmented">
+                    <button type="button" className="cs-seg-item is-active" title="预览" aria-label="预览">
+                      <Icon name="eye" size={14} />
+                    </button>
+                    <button type="button" className="cs-seg-item" title="代码" aria-label="代码">
+                      <Icon src="./assets/uploads/category-dev.svg" size={14} />
+                    </button>
                   </div>
-                ) : null}
-              </div>
-              {/* 更多操作下拉：与 cs-file-more 同款（打开方式 + 倒三角） */}
-              <div className="cs-more" data-more-drop>
-                <button type="button" className="cs-preview-iconbtn cs-toolbar-openwith" onClick={() => setMoreOpen((v) => !v)} aria-label="更多">
-                  <span>打开方式</span>
-                  <Icon name="triangle" size={8} className="cs-file-caret" />
-                </button>
-                {moreOpen ? (
-                  <div className="cs-more-menu">
-                    <button type="button" className="cs-more-opt">在新窗口打开</button>
-                    <button type="button" className="cs-more-opt">复制链接</button>
-                    <button type="button" className="cs-more-opt">导出文件</button>
+                  <div className="cs-address">
+                    <Icon name="folder-open" size={12} />
+                    <span>D:\Projects\agent-demo\{previewFile.name}</span>
                   </div>
-                ) : null}
-              </div>
-            </div>
-          </div>
-
-          {/* ---- 预览容器 ---- */}
-          <div className="cs-preview-body">
-            <div className="cs-preview-container">
-              <div className="cs-preview-page">
-                <h2 className="cs-preview-name">汇报演示 · When2meet 项目</h2>
-                <p className="cs-preview-eyebrow">18 页 · {previewFile.size} · 模拟预览</p>
-
-                <div className="cs-preview-sec">
-                  <h3>01 背景与目标</h3>
-                  <p>会议时间协调长期依赖群内接龙，效率低且易遗漏。本章从用户调研数据出发，界定核心痛点与改进机会。</p>
-                  <p>调研覆盖 500+ 活跃用户，发现平均创建一次多人会议需往返沟通 6.2 次、耗时 23 分钟，其中 78% 的用户期望系统自动推荐最优时段。</p>
                 </div>
-
-                <div className="cs-preview-sec">
-                  <h3>02 用户画像</h3>
-                  <p>核心用户分为三类：行政协调者（占比 35%）、项目经理（占比 40%）和跨组织参与者（占比 25%）。每类用户的创建频率、参与人数与决策链路各不相同。</p>
-                  <p>高频协调者日均创建 3.5 场会议，对批量操作和模板复用诉求强烈；跨组织用户更关注免注册参与和时区自适应。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>03 首页交互改版（重点）</h3>
-                  <p>重构首页信息架构，新增引导式创建流程与动效反馈，降低新用户上手成本，提升创建完成率。</p>
-                  <p>改版重点包括：三步式创建向导（主题 → 参与人 → 时段候选）、实时参与度热力图、以及基于滑动操作的快捷时段标记。动效层面采用弹性过渡 + 骨架屏，首屏可交互时间从 2.1s 降至 0.8s。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>04 智慧推荐（重点）</h3>
-                  <p>基于历史行为与偏好特征构建推荐策略，在时间候选、参与人与会议时长三个维度提供主动建议。</p>
-                  <p>推荐算法融合协方差过滤（CF）与日程密度分析，对多人场景自动计算"最大公约数时段"并给出置信度评分。上线后推荐采纳率达到 62%，平均协调耗时从 23 分钟缩短至 8 分钟。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>05 竞品分析</h3>
-                  <p>对标 Doodle、Calendly、When2meet 原版三款产品，从功能完整度、交互体验、价格策略三个维度横向对比。</p>
-                  <p>Doodle 优势在于品牌认知度但移动端体验弱；Calendly 深度绑定日历但跨组织场景受限；原版 When2meet 简洁但缺乏智能推荐。改版方案取长补短，定位"轻量 + 智能"。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>06 信息架构</h3>
-                  <p>站点地图从扁平 4 页扩展为三级 12 页结构，新增个人中心、模板库与数据看板模块。</p>
-                  <p>页面跳转关系经过卡片分类法验证，核心路径（创建 → 分享 → 查看）不超过 2 次点击。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>07 交互流程</h3>
-                  <p>梳理创建、参与、分享三大主流程共 18 个关键节点，标注异常分支与降级方案。</p>
-                  <p>参与流程支持免注册预览 + 一键注册确认；分享流程生成短链自动适配 Open Graph 预览卡片。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>08 视觉规范</h3>
-                  <p>建立色彩（品牌蓝 + 功能色 6 组）、字体（标题/正文双栈）与间距（8px 基线网格）三大系统。</p>
-                  <p>暗色模式全覆盖，对比度均通过 WCAG AA 级认证。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>09 动效设计</h3>
-                  <p>定义页面转场、组件微交互与状态反馈三层动效规范，统一使用 ease-out 缓动曲线。</p>
-                  <p>关键动效包括：时段热力图渐入（400ms）、参与人头像弹入（弹性 + 150ms 延迟阶梯）、以及推荐结果高亮脉冲。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>10 数据看板</h3>
-                  <p>定义核心指标：创建完成率、平均协调耗时、推荐采纳率、7 日留存。埋点覆盖 32 个关键事件。</p>
-                  <p>看板支持按用户群、时间段与渠道三维筛选，数据延迟 T+1 更新。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>11 技术方案</h3>
-                  <p>前端采用 React 18 + TypeScript，状态管理 Zustand，构建链 Vite。性能预算：首屏 JS ≤ 180KB（gzip）。</p>
-                  <p>后端推荐服务使用 Python + Faiss 向量检索，P99 响应时间 ≤ 120ms。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>12 性能优化</h3>
-                  <p>首屏加载通过代码分割 + 预加载关键路由实现；包体积优化包括 Tree Shaking（-23%）与图片 AVIF 格式迁移（-41%）。</p>
-                  <p>Lighthouse 综合评分从 68 分提升至 94 分。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>13 A/B 实验</h3>
-                  <p>设计两组实验：E1 测试新引导式创建流程 vs 旧流程；E2 测试推荐时段自动填充 vs 手动选择。</p>
-                  <p>分流策略按用户 ID 哈希 50/50，实验周期 14 天，最小可检测效应 5%。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>14 数据验证</h3>
-                  <p>通过 A/B 实验对比改版前后核心指标：创建时长中位数从 23 分钟降至 8 分钟（-65%）、七日留存从 34% 提升至 48%（+14pp）、分享率从 12% 提升至 19%（+7pp）。</p>
-                  <p>所有指标均达到统计显著（p &lt; 0.01）。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>15 风险与应对</h3>
-                  <p>识别三大风险：推荐准确率冷启动（缓解：人工规则兜底）、高并发创建（缓解：消息队列削峰）、跨时区歧义（缓解：IANA 时区数据库）。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>16 团队分工</h3>
-                  <p>产品 2 人（需求 + 设计）、前端 3 人、后端 2 人、算法 1 人、测试 1 人。每日站会同步进度，双周迭代评审。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>17 排期计划</h3>
-                  <p>三期迭代：Alpha（第 1-4 周，核心流程）、Beta（第 5-8 周，推荐系统）、GA（第 9-12 周，数据看板 + 性能优化）。</p>
-                  <p>每期结束进行灰度发布，按 5% → 20% → 100% 逐步放量。</p>
-                </div>
-
-                <div className="cs-preview-sec">
-                  <h3>18 路线图与 Q&amp;A</h3>
-                  <p>按季度滚动迭代：Q1 交互细化与推荐策略升级、Q2 开放 API 与日历深度集成、Q3 多语言与国际化。</p>
-                  <p>预留 15 分钟 Q&amp;A 环节，欢迎就方案细节与排期展开讨论。</p>
+                <div className="cs-preview-toolbar-right">
+                  <button type="button" className="cs-preview-iconbtn" title="会话" aria-label="会话">
+                    <Icon name="message-circle" size={16} />
+                  </button>
+                  <div className="cs-zoom" data-zoom-drop>
+                    <button type="button" className="cs-zoom-btn" onClick={() => setZoomOpen((v) => !v)}>
+                      <span>100%</span>
+                      <Icon name="chevron-down" size={12} />
+                    </button>
+                    {zoomOpen ? (
+                      <div className="cs-zoom-menu">
+                        <button type="button" className="cs-zoom-opt">50%</button>
+                        <button type="button" className="cs-zoom-opt">75%</button>
+                        <button type="button" className="cs-zoom-opt is-active">100%</button>
+                        <button type="button" className="cs-zoom-opt">125%</button>
+                        <button type="button" className="cs-zoom-opt">150%</button>
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="cs-more" data-more-drop>
+                    <button type="button" className="cs-preview-iconbtn cs-toolbar-openwith" onClick={() => setMoreOpen((v) => !v)} aria-label="更多">
+                      <span>打开方式</span>
+                      <Icon name="triangle" size={8} className="cs-file-caret" />
+                    </button>
+                    {moreOpen ? (
+                      <div className="cs-more-menu">
+                        <button type="button" className="cs-more-opt">在新窗口打开</button>
+                        <button type="button" className="cs-more-opt">复制链接</button>
+                        <button type="button" className="cs-more-opt">导出文件</button>
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
               </div>
+
+              {/* 预览容器 */}
+              <div className="cs-preview-body">
+                <div className="cs-preview-container">
+                  <div className="cs-preview-page">
+                    <h2 className="cs-preview-name">汇报演示 · When2meet 项目</h2>
+                    <p className="cs-preview-eyebrow">18 页 · {previewFile.size} · 模拟预览</p>
+                    <div className="cs-preview-sec">
+                      <h3>01 背景与目标</h3>
+                      <p>会议时间协调长期依赖群内接龙，效率低且易遗漏。本章从用户调研数据出发，界定核心痛点与改进机会。</p>
+                      <p>调研覆盖 500+ 活跃用户，发现平均创建一次多人会议需往返沟通 6.2 次、耗时 23 分钟，其中 78% 的用户期望系统自动推荐最优时段。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>02 用户画像</h3>
+                      <p>核心用户分为三类：行政协调者（占比 35%）、项目经理（占比 40%）和跨组织参与者（占比 25%）。每类用户的创建频率、参与人数与决策链路各不相同。</p>
+                      <p>高频协调者日均创建 3.5 场会议，对批量操作和模板复用诉求强烈；跨组织用户更关注免注册参与和时区自适应。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>03 首页交互改版（重点）</h3>
+                      <p>重构首页信息架构，新增引导式创建流程与动效反馈，降低新用户上手成本，提升创建完成率。</p>
+                      <p>改版重点包括：三步式创建向导（主题 → 参与人 → 时段候选）、实时参与度热力图、以及基于滑动操作的快捷时段标记。动效层面采用弹性过渡 + 骨架屏，首屏可交互时间从 2.1s 降至 0.8s。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>04 智慧推荐（重点）</h3>
+                      <p>基于历史行为与偏好特征构建推荐策略，在时间候选、参与人与会议时长三个维度提供主动建议。</p>
+                      <p>推荐算法融合协方差过滤（CF）与日程密度分析，对多人场景自动计算"最大公约数时段"并给出置信度评分。上线后推荐采纳率达到 62%，平均协调耗时从 23 分钟缩短至 8 分钟。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>05 竞品分析</h3>
+                      <p>对标 Doodle、Calendly、When2meet 原版三款产品，从功能完整度、交互体验、价格策略三个维度横向对比。</p>
+                      <p>Doodle 优势在于品牌认知度但移动端体验弱；Calendly 深度绑定日历但跨组织场景受限；原版 When2meet 简洁但缺乏智能推荐。改版方案取长补短，定位"轻量 + 智能"。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>06 信息架构</h3>
+                      <p>站点地图从扁平 4 页扩展为三级 12 页结构，新增个人中心、模板库与数据看板模块。</p>
+                      <p>页面跳转关系经过卡片分类法验证，核心路径（创建 → 分享 → 查看）不超过 2 次点击。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>07 交互流程</h3>
+                      <p>梳理创建、参与、分享三大主流程共 18 个关键节点，标注异常分支与降级方案。</p>
+                      <p>参与流程支持免注册预览 + 一键注册确认；分享流程生成短链自动适配 Open Graph 预览卡片。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>08 视觉规范</h3>
+                      <p>建立色彩（品牌蓝 + 功能色 6 组）、字体（标题/正文双栈）与间距（8px 基线网格）三大系统。</p>
+                      <p>暗色模式全覆盖，对比度均通过 WCAG AA 级认证。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>09 动效设计</h3>
+                      <p>定义页面转场、组件微交互与状态反馈三层动效规范，统一使用 ease-out 缓动曲线。</p>
+                      <p>关键动效包括：时段热力图渐入（400ms）、参与人头像弹入（弹性 + 150ms 延迟阶梯）、以及推荐结果高亮脉冲。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>10 数据看板</h3>
+                      <p>定义核心指标：创建完成率、平均协调耗时、推荐采纳率、7 日留存。埋点覆盖 32 个关键事件。</p>
+                      <p>看板支持按用户群、时间段与渠道三维筛选，数据延迟 T+1 更新。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>11 技术方案</h3>
+                      <p>前端采用 React 18 + TypeScript，状态管理 Zustand，构建链 Vite。性能预算：首屏 JS ≤ 180KB（gzip）。</p>
+                      <p>后端推荐服务使用 Python + Faiss 向量检索，P99 响应时间 ≤ 120ms。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>12 性能优化</h3>
+                      <p>首屏加载通过代码分割 + 预加载关键路由实现；包体积优化包括 Tree Shaking（-23%）与图片 AVIF 格式迁移（-41%）。</p>
+                      <p>Lighthouse 综合评分从 68 分提升至 94 分。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>13 A/B 实验</h3>
+                      <p>设计两组实验：E1 测试新引导式创建流程 vs 旧流程；E2 测试推荐时段自动填充 vs 手动选择。</p>
+                      <p>分流策略按用户 ID 哈希 50/50，实验周期 14 天，最小可检测效应 5%。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>14 数据验证</h3>
+                      <p>通过 A/B 实验对比改版前后核心指标：创建时长中位数从 23 分钟降至 8 分钟（-65%）、七日留存从 34% 提升至 48%（+14pp）、分享率从 12% 提升至 19%（+7pp）。</p>
+                      <p>所有指标均达到统计显著（p &lt; 0.01）。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>15 风险与应对</h3>
+                      <p>识别三大风险：推荐准确率冷启动（缓解：人工规则兜底）、高并发创建（缓解：消息队列削峰）、跨时区歧义（缓解：IANA 时区数据库）。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>16 团队分工</h3>
+                      <p>产品 2 人（需求 + 设计）、前端 3 人、后端 2 人、算法 1 人、测试 1 人。每日站会同步进度，双周迭代评审。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>17 排期计划</h3>
+                      <p>三期迭代：Alpha（第 1-4 周，核心流程）、Beta（第 5-8 周，推荐系统）、GA（第 9-12 周，数据看板 + 性能优化）。</p>
+                      <p>每期结束进行灰度发布，按 5% → 20% → 100% 逐步放量。</p>
+                    </div>
+                    <div className="cs-preview-sec">
+                      <h3>18 路线图与 Q&amp;A</h3>
+                      <p>按季度滚动迭代：Q1 交互细化与推荐策略升级、Q2 开放 API 与日历深度集成、Q3 多语言与国际化。</p>
+                      <p>预留 15 分钟 Q&amp;A 环节，欢迎就方案细节与排期展开讨论。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            /* 任务摘要页签：空白内容区 */
+            <div className="cs-preview-body cs-preview-blank">
+              <div className="cs-preview-blank-inner">
+                <p className="cs-preview-blank-text">任务摘要</p>
+              </div>
             </div>
-          </div>
+          )}
         </aside>
       ) : null}
     </div>

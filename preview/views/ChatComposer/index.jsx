@@ -285,6 +285,8 @@ export default function ChatComposer(props) {
     spaceId = "",
     onSend, // 发送回调：把输入内容与当前选择上报给父级（会话页据此追加消息）
     chatMode = false, // 对话页模式:隐藏吉祥鸟/灰色外框/底部行,发送按钮显示生成中图标
+    isGenerating = false, // 会话页生成中标记：true 时按钮变为停止按钮
+    onStop, // 停止生成回调：点击后停止流式打印并恢复按钮初始态
   } = props;
 
   // auto 固定置于选项首位，其后拼接外部传入的模型列表
@@ -987,17 +989,27 @@ export default function ChatComposer(props) {
               ) : null}
             </div>
 
-            {/* 发送按钮 */}
+            {/* 发送/停止按钮 */}
             <button
               type="button"
               className={"cc-send" + (sent && !chatMode ? " is-sent" : "")}
-              onClick={send}
-              disabled={!canSend}
-              aria-label="发送"
+              onClick={chatMode && isGenerating ? onStop : send}
+              disabled={!chatMode && !canSend}
+              aria-label={chatMode && isGenerating ? "停止" : "发送"}
             >
-              {chatMode ? (
-                /* 对话页:生成中图标常驻 */
+              {chatMode && isGenerating ? (
+                /* 生成中：显示 generating.svg，点击停止流式打印 → 图标变为 send-inactive.svg */
                 <Icon src="./assets/uploads/generating.svg" size={32} />
+              ) : chatMode ? (
+                /* 会话页空闲：正常发送按钮 */
+                <Icon
+                  src={
+                    canSend
+                      ? "./assets/uploads/send-active.svg"
+                      : "./assets/uploads/send-inactive.svg"
+                  }
+                  size={32}
+                />
               ) : sent ? (
                 <Icon name="check" size={18} />
               ) : (
