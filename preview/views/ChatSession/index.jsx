@@ -150,9 +150,8 @@ export function buildAgentReply(payload) {
         {
           id: "art-1",
           name: "汇报演示.html",
-          desc: "18 页汇报演示文件",
           size: "86.5 KB",
-          src: "./assets/uploads/file-doc.svg",
+          src: "./assets/uploads/docx.svg",
         },
       ],
     },
@@ -221,12 +220,12 @@ function FileCard({ f, onPreview }) {
   return (
     <div className="cs-file">
       <span className="cs-file-icon">
-        <Icon src={f.src} size={28} />
+        <Icon src="./assets/uploads/icon/file-type/filled/code.svg" size={28} />
       </span>
       <span className="cs-file-info">
-        <span className="cs-file-name">{f.name}</span>
+        <span className="cs-file-name">{f.name.replace(/\.[^.]+$/, "")}</span>
         <span className="cs-file-meta">
-          {f.desc} · {f.size}
+          {(f.name.split(".").pop() || "").toUpperCase()} · {f.size}
         </span>
       </span>
       {/* 打开方式下拉 */}
@@ -1163,98 +1162,127 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
               {/* 预览容器 */}
               <div className="cs-preview-body">
                 <div className="cs-preview-container">
-                  <div className="cs-preview-page">
-                    <h2 className="cs-preview-name">汇报演示 · When2meet 项目</h2>
-                    <p className="cs-preview-eyebrow">18 页 · {previewFile.size} · 模拟预览</p>
-                    <div className="cs-preview-sec">
-                      <h3>01 背景与目标</h3>
-                      <p>会议时间协调长期依赖群内接龙，效率低且易遗漏。本章从用户调研数据出发，界定核心痛点与改进机会。</p>
-                      <p>调研覆盖 500+ 活跃用户，发现平均创建一次多人会议需往返沟通 6.2 次、耗时 23 分钟，其中 78% 的用户期望系统自动推荐最优时段。</p>
+                  {isSwarmSession ? (
+                    /* 蜂群模式：人员时间排布（一周课程表式） */
+                    <div className="cs-timetable">
+                      {/* 表头 */}
+                      <div className="cs-tt-head">
+                        <span className="cs-tt-corner">人员 / 日期</span>
+                        <span>周一</span><span>周二</span><span>周三</span><span>周四</span><span>周五</span><span>周六</span><span>周日</span>
+                      </div>
+                      {/* 行：每个专家一周的任务分配 */}
+                      {[
+                        { agent: "项目总监", slots: ["编排计划", "", "竞品评审", "", "", "", "汇总复盘"] },
+                        { agent: "项目研究专家", slots: ["", "需求调研", "竞品分析", "", "", "", ""] },
+                        { agent: "UXUI设计专家", slots: ["", "", "界面设计", "交互流程", "动效规范", "", ""] },
+                        { agent: "开发专家", slots: ["", "", "", "代码开发", "代码开发", "修复缺陷", ""] },
+                        { agent: "测试专家", slots: ["", "", "", "", "", "测试报告", ""] },
+                      ].map((row, ri) => (
+                        <div className="cs-tt-row" key={ri}>
+                          <span className="cs-tt-agent">{row.agent}</span>
+                          {row.slots.map((slot, si) => (
+                            <span key={si} className={"cs-tt-cell" + (slot ? " is-filled" : "")}>
+                              {slot}
+                            </span>
+                          ))}
+                        </div>
+                      ))}
                     </div>
-                    <div className="cs-preview-sec">
-                      <h3>02 用户画像</h3>
-                      <p>核心用户分为三类：行政协调者（占比 35%）、项目经理（占比 40%）和跨组织参与者（占比 25%）。每类用户的创建频率、参与人数与决策链路各不相同。</p>
-                      <p>高频协调者日均创建 3.5 场会议，对批量操作和模板复用诉求强烈；跨组织用户更关注免注册参与和时区自适应。</p>
+                  ) : (
+                    /* 单Agent模式：文档预览页面 */
+                    <div className="cs-preview-page">
+                      <h2 className="cs-preview-name">汇报演示 · When2meet 项目</h2>
+                      <p className="cs-preview-eyebrow">18 页 · {previewFile.size} · 模拟预览</p>
+                      <div className="cs-preview-sec">
+                        <h3>01 背景与目标</h3>
+                        <p>会议时间协调长期依赖群内接龙，效率低且易遗漏。本章从用户调研数据出发，界定核心痛点与改进机会。</p>
+                        <p>调研覆盖 500+ 活跃用户，发现平均创建一次多人会议需往返沟通 6.2 次、耗时 23 分钟，其中 78% 的用户期望系统自动推荐最优时段。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>02 用户画像</h3>
+                        <p>核心用户分为三类：行政协调者（占比 35%）、项目经理（占比 40%）和跨组织参与者（占比 25%）。每类用户的创建频率、参与人数与决策链路各不相同。</p>
+                        <p>高频协调者日均创建 3.5 场会议，对批量操作和模板复用诉求强烈；跨组织用户更关注免注册参与和时区自适应。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>03 首页交互改版（重点）</h3>
+                        <p>重构首页信息架构，新增引导式创建流程与动效反馈，降低新用户上手成本，提升创建完成率。</p>
+                        <p>改版重点包括：三步式创建向导（主题 → 参与人 → 时段候选）、实时参与度热力图、以及基于滑动操作的快捷时段标记。动效层面采用弹性过渡 + 骨架屏，首屏可交互时间从 2.1s 降至 0.8s。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>04 智慧推荐（重点）</h3>
+                        <p>基于历史行为与偏好特征构建推荐策略，在时间候选、参与人与会议时长三个维度提供主动建议。</p>
+                        <p>推荐算法融合协方差过滤（CF）与日程密度分析，对多人场景自动计算"最大公约数时段"并给出置信度评分。上线后推荐采纳率达到 62%，平均协调耗时从 23 分钟缩短至 8 分钟。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>05 竞品分析</h3>
+                        <p>对标 Doodle、Calendly、When2meet 原版三款产品，从功能完整度、交互体验、价格策略三个维度横向对比。</p>
+                        <p>Doodle 优势在于品牌认知度但移动端体验弱；Calendly 深度绑定日历但跨组织场景受限；原版 When2meet 简洁但缺乏智能推荐。改版方案取长补短，定位"轻量 + 智能"。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>06 信息架构</h3>
+                        <p>站点地图从扁平 4 页扩展为三级 12 页结构，新增个人中心、模板库与数据看板模块。</p>
+                        <p>页面跳转关系经过卡片分类法验证，核心路径（创建 → 分享 → 查看）不超过 2 次点击。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>07 交互流程</h3>
+                        <p>梳理创建、参与、分享三大主流程共 18 个关键节点，标注异常分支与降级方案。</p>
+                        <p>参与流程支持免注册预览 + 一键注册确认；分享流程生成短链自动适配 Open Graph 预览卡片。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>08 视觉规范</h3>
+                        <p>建立色彩（品牌蓝 + 功能色 6 组）、字体（标题/正文双栈）与间距（8px 基线网格）三大系统。</p>
+                        <p>暗色模式全覆盖，对比度均通过 WCAG AA 级认证。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>09 动效设计</h3>
+                        <p>定义页面转场、组件微交互与状态反馈三层动效规范，统一使用 ease-out 缓动曲线。</p>
+                        <p>关键动效包括：时段热力图渐入（400ms）、参与人头像弹入（弹性 + 150ms 延迟阶梯）、以及推荐结果高亮脉冲。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>10 数据看板</h3>
+                        <p>定义核心指标：创建完成率、平均协调耗时、推荐采纳率、7 日留存。埋点覆盖 32 个关键事件。</p>
+                        <p>看板支持按用户群、时间段与渠道三维筛选，数据延迟 T+1 更新。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>11 技术方案</h3>
+                        <p>前端采用 React 18 + TypeScript，状态管理 Zustand，构建链 Vite。性能预算：首屏 JS ≤ 180KB（gzip）。</p>
+                        <p>后端推荐服务使用 Python + Faiss 向量检索，P99 响应时间 ≤ 120ms。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>12 性能优化</h3>
+                        <p>首屏加载通过代码分割 + 预加载关键路由实现；包体积优化包括 Tree Shaking（-23%）与图片 AVIF 格式迁移（-41%）。</p>
+                        <p>Lighthouse 综合评分从 68 分提升至 94 分。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>13 A/B 实验</h3>
+                        <p>设计两组实验：E1 测试新引导式创建流程 vs 旧流程；E2 测试推荐时段自动填充 vs 手动选择。</p>
+                        <p>分流策略按用户 ID 哈希 50/50，实验周期 14 天，最小可检测效应 5%。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>14 数据验证</h3>
+                        <p>通过 A/B 实验对比改版前后核心指标：创建时长中位数从 23 分钟降至 8 分钟（-65%）、七日留存从 34% 提升至 48%（+14pp）、分享率从 12% 提升至 19%（+7pp）。</p>
+                        <p>所有指标均达到统计显著（p &lt; 0.01）。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>15 风险与应对</h3>
+                        <p>识别三大风险：推荐准确率冷启动（缓解：人工规则兜底）、高并发创建（缓解：消息队列削峰）、跨时区歧义（缓解：IANA 时区数据库）。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>16 团队分工</h3>
+                        <p>产品 2 人（需求 + 设计）、前端 3 人、后端 2 人、算法 1 人、测试 1 人。每日站会同步进度，双周迭代评审。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>17 排期计划</h3>
+                        <p>三期迭代：Alpha（第 1-4 周，核心流程）、Beta（第 5-8 周，推荐系统）、GA（第 9-12 周，数据看板 + 性能优化）。</p>
+                        <p>每期结束进行灰度发布，按 5% → 20% → 100% 逐步放量。</p>
+                      </div>
+                      <div className="cs-preview-sec">
+                        <h3>18 路线图与 Q&amp;A</h3>
+                        <p>按季度滚动迭代：Q1 交互细化与推荐策略升级、Q2 开放 API 与日历深度集成、Q3 多语言与国际化。</p>
+                        <p>预留 15 分钟 Q&amp;A 环节，欢迎就方案细节与排期展开讨论。</p>
+                      </div>
                     </div>
-                    <div className="cs-preview-sec">
-                      <h3>03 首页交互改版（重点）</h3>
-                      <p>重构首页信息架构，新增引导式创建流程与动效反馈，降低新用户上手成本，提升创建完成率。</p>
-                      <p>改版重点包括：三步式创建向导（主题 → 参与人 → 时段候选）、实时参与度热力图、以及基于滑动操作的快捷时段标记。动效层面采用弹性过渡 + 骨架屏，首屏可交互时间从 2.1s 降至 0.8s。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>04 智慧推荐（重点）</h3>
-                      <p>基于历史行为与偏好特征构建推荐策略，在时间候选、参与人与会议时长三个维度提供主动建议。</p>
-                      <p>推荐算法融合协方差过滤（CF）与日程密度分析，对多人场景自动计算"最大公约数时段"并给出置信度评分。上线后推荐采纳率达到 62%，平均协调耗时从 23 分钟缩短至 8 分钟。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>05 竞品分析</h3>
-                      <p>对标 Doodle、Calendly、When2meet 原版三款产品，从功能完整度、交互体验、价格策略三个维度横向对比。</p>
-                      <p>Doodle 优势在于品牌认知度但移动端体验弱；Calendly 深度绑定日历但跨组织场景受限；原版 When2meet 简洁但缺乏智能推荐。改版方案取长补短，定位"轻量 + 智能"。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>06 信息架构</h3>
-                      <p>站点地图从扁平 4 页扩展为三级 12 页结构，新增个人中心、模板库与数据看板模块。</p>
-                      <p>页面跳转关系经过卡片分类法验证，核心路径（创建 → 分享 → 查看）不超过 2 次点击。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>07 交互流程</h3>
-                      <p>梳理创建、参与、分享三大主流程共 18 个关键节点，标注异常分支与降级方案。</p>
-                      <p>参与流程支持免注册预览 + 一键注册确认；分享流程生成短链自动适配 Open Graph 预览卡片。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>08 视觉规范</h3>
-                      <p>建立色彩（品牌蓝 + 功能色 6 组）、字体（标题/正文双栈）与间距（8px 基线网格）三大系统。</p>
-                      <p>暗色模式全覆盖，对比度均通过 WCAG AA 级认证。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>09 动效设计</h3>
-                      <p>定义页面转场、组件微交互与状态反馈三层动效规范，统一使用 ease-out 缓动曲线。</p>
-                      <p>关键动效包括：时段热力图渐入（400ms）、参与人头像弹入（弹性 + 150ms 延迟阶梯）、以及推荐结果高亮脉冲。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>10 数据看板</h3>
-                      <p>定义核心指标：创建完成率、平均协调耗时、推荐采纳率、7 日留存。埋点覆盖 32 个关键事件。</p>
-                      <p>看板支持按用户群、时间段与渠道三维筛选，数据延迟 T+1 更新。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>11 技术方案</h3>
-                      <p>前端采用 React 18 + TypeScript，状态管理 Zustand，构建链 Vite。性能预算：首屏 JS ≤ 180KB（gzip）。</p>
-                      <p>后端推荐服务使用 Python + Faiss 向量检索，P99 响应时间 ≤ 120ms。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>12 性能优化</h3>
-                      <p>首屏加载通过代码分割 + 预加载关键路由实现；包体积优化包括 Tree Shaking（-23%）与图片 AVIF 格式迁移（-41%）。</p>
-                      <p>Lighthouse 综合评分从 68 分提升至 94 分。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>13 A/B 实验</h3>
-                      <p>设计两组实验：E1 测试新引导式创建流程 vs 旧流程；E2 测试推荐时段自动填充 vs 手动选择。</p>
-                      <p>分流策略按用户 ID 哈希 50/50，实验周期 14 天，最小可检测效应 5%。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>14 数据验证</h3>
-                      <p>通过 A/B 实验对比改版前后核心指标：创建时长中位数从 23 分钟降至 8 分钟（-65%）、七日留存从 34% 提升至 48%（+14pp）、分享率从 12% 提升至 19%（+7pp）。</p>
-                      <p>所有指标均达到统计显著（p &lt; 0.01）。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>15 风险与应对</h3>
-                      <p>识别三大风险：推荐准确率冷启动（缓解：人工规则兜底）、高并发创建（缓解：消息队列削峰）、跨时区歧义（缓解：IANA 时区数据库）。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>16 团队分工</h3>
-                      <p>产品 2 人（需求 + 设计）、前端 3 人、后端 2 人、算法 1 人、测试 1 人。每日站会同步进度，双周迭代评审。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>17 排期计划</h3>
-                      <p>三期迭代：Alpha（第 1-4 周，核心流程）、Beta（第 5-8 周，推荐系统）、GA（第 9-12 周，数据看板 + 性能优化）。</p>
-                      <p>每期结束进行灰度发布，按 5% → 20% → 100% 逐步放量。</p>
-                    </div>
-                    <div className="cs-preview-sec">
-                      <h3>18 路线图与 Q&amp;A</h3>
-                      <p>按季度滚动迭代：Q1 交互细化与推荐策略升级、Q2 开放 API 与日历深度集成、Q3 多语言与国际化。</p>
-                      <p>预留 15 分钟 Q&amp;A 环节，欢迎就方案细节与排期展开讨论。</p>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </>

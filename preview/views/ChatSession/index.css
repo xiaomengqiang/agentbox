@@ -1557,6 +1557,77 @@
   margin: 0;
 }
 
+/* 蜂群模式：人员时间排布（一周课程表式） */
+.cs-timetable {
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+}
+
+/* 表头 */
+.cs-tt-head {
+  display: grid;
+  grid-template-columns: 7rem repeat(7, 1fr);
+  gap: 2px;
+  flex: 0 0 auto;
+}
+
+.cs-tt-corner,
+.cs-tt-head span {
+  padding: 0.5rem 0.25rem;
+  text-align: center;
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-secondary);
+  background: var(--surface-container-low);
+  border-radius: var(--radius-xs);
+}
+
+.cs-tt-corner {
+  text-align: left;
+  color: var(--text-placeholder);
+}
+
+/* 行 */
+.cs-tt-row {
+  display: grid;
+  grid-template-columns: 7rem repeat(7, 1fr);
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.cs-tt-agent {
+  padding: 0.5rem 0.5rem;
+  font: var(--font-body-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  display: flex;
+  align-items: center;
+  background: var(--surface-container-low);
+  border-radius: var(--radius-xs);
+  white-space: nowrap;
+}
+
+.cs-tt-cell {
+  padding: 0.5rem 0.25rem;
+  min-height: 2.5rem;
+  border-radius: var(--radius-xs);
+  background: var(--surface-container-low);
+  font: var(--font-caption-lg);
+  color: var(--text-placeholder);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.cs-tt-cell.is-filled {
+  background: var(--brand-10);
+  color: var(--primary);
+  font-weight: var(--font-weight-bold);
+}
+
 /* 任务摘要页签：空白内容区 */
 .cs-preview-blank {
   display: flex;
