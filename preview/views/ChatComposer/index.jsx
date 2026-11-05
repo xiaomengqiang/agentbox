@@ -915,6 +915,7 @@ export default function ChatComposer(props) {
                 type="button"
                 className={"cc-chip" + (open === "mode" ? " is-active" : "")}
                 onClick={() => toggle("mode")}
+                disabled={chatMode}
               >
                 <Icon name={mode.icon} src={mode.src} size={16} />
                 <span className="cc-chip-label">{mode.label}</span>

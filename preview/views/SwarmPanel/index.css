@@ -567,8 +567,9 @@
   border-radius: 0 16px 16px 16px;
 }
 
-/* @提及 文本:蓝色 */
+/* @提及 文本:蓝色,与后面内容间距 4px */
 .sp-chat-mention {
+  margin-right: 4px;
   color: var(--primary);
 }
 

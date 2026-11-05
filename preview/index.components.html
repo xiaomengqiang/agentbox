@@ -1319,8 +1319,14 @@ img[data-component="Icon"] {
   display: flex;
   flex-direction: column;
   background-color: var(--surface-container-lowest);
-  box-shadow: var(--shadow-md);
+  /* 默认态浅阴影;聚焦态(内部输入框获得焦点)加深 */
+  box-shadow: var(--shadow-sm);
   border-radius: var(--radius-2xl);
+}
+
+/* 聚焦态:阴影加深 */
+.cc-card:focus-within {
+  box-shadow: var(--shadow-md);
 }
 
 /* 输入框右上角外侧的吉祥鸟装饰插画(纯装饰,不拦截交互;整体悬于外框上方,不被卡片遮挡) */
@@ -1440,6 +1446,21 @@ img[data-component="Icon"] {
 .cc-chip:hover,
 .cc-chip.is-active {
   background-color: var(--color-interactive-hover);
+}
+
+/* 会话页:模式下拉按钮整体禁用(模式不可再设置) */
+.cc-chip:disabled {
+  color: var(--text-disabled);
+  cursor: default;
+}
+
+.cc-chip:disabled:hover,
+.cc-chip:disabled.is-active {
+  background-color: transparent;
+}
+
+.cc-chip:disabled .cc-chev {
+  color: var(--color-icon-fourth);
 }
 
 .cc-chip .cc-chev,
@@ -4840,8 +4861,9 @@ img[data-component="Icon"] {
   border-radius: 0 16px 16px 16px;
 }
 
-/* @提及 文本:蓝色 */
+/* @提及 文本:蓝色,与后面内容间距 4px */
 .sp-chat-mention {
+  margin-right: 4px;
   color: var(--primary);
 }
 
@@ -8219,6 +8241,7 @@ function ChatComposer(props) {
                 type="button"
                 className={"cc-chip" + (open === "mode" ? " is-active" : "")}
                 onClick={() => toggle("mode")}
+                disabled={chatMode}
               >
                 <Icon name={mode.icon} src={mode.src} size={16} />
                 <span className="cc-chip-label">{mode.label}</span>
