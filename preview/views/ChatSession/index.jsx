@@ -1047,7 +1047,6 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
           </div>
         ) : null}
         {composer}
-        <p className="cs-footnote">内容由 AI 生成，请仔细核实 · Enter 发送 / Shift + Enter 换行</p>
         </div>
       </div>
 
