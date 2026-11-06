@@ -38,11 +38,12 @@ const AGENTS = [
   { id: "a-5", name: "测试专家", duty: "项目缺陷修复", avatar: "./assets/uploads/avatar-test.svg", bg: "#d6e1f4", busy: [6, 8] },
 ];
 
-/* 产物:md 文档与代码文件;进行中的文件在右侧浅灰标注 */
+/* 产物:与流式内容链接一致的四个蜂群产出文件;进行中的文件在右侧浅灰标注 */
 const ARTIFACTS = [
   { id: "f-1", name: "编排计划.md", src: "./assets/uploads/icon/file-type/filled/markdown.svg" },
   { id: "f-2", name: "竞品分析报告.md", src: "./assets/uploads/icon/file-type/filled/markdown.svg", status: "进行中" },
-  { id: "f-3", name: "index.html", src: "./assets/uploads/icon/file-type/filled/code.svg", status: "进行中" },
+  { id: "f-3", name: "关键体验的编排计划.md", src: "./assets/uploads/icon/file-type/filled/markdown.svg", status: "进行中" },
+  { id: "f-4", name: "When2meet.html", src: "./assets/uploads/icon/file-type/filled/code.svg", status: "进行中" },
 ];
 
 /* 群聊辩论视图:搜索框 + 4 条聊天对话(头像/角色/时间/多段正文) */
@@ -110,7 +111,8 @@ export default function SwarmPanel(props) {
   // extraChat:父级注入的追加消息(左侧输入框发送后追加)
   // progress:外部同步进度(0~1,来自左侧流式进度);未提供时回退为内部自动动画
   // onViewChange:向上上报当前是否处于群聊(辩论)视图,输入框据此切换发送去向
-  const { extraChat = [], progress: progressProp, onViewChange } = props;
+  // onOpenArtifact:点击产物行 → 父级在右侧预览打开对应产物页签
+  const { extraChat = [], progress: progressProp, onViewChange, onOpenArtifact } = props;
   // 默认选中第二个选项「任务摘要」
   const [tab, setTab] = useState("summary");
   // 右侧第二个图标(展开)带选中态,与左侧选项卡同款选中效果
@@ -424,27 +426,24 @@ export default function SwarmPanel(props) {
           )}
         </div>
 
-        {/* 产物(距子智能体 32):标题 + 向下三角,3 个文件行 */}
+        {/* 产物(距子智能体 32):标题 + 向下三角,4 个文件行;点击行 → 右侧预览打开对应产物页签 */}
         <div className="sp-artifacts">
           <button type="button" className="sp-artifacts-head">
             <span>产物</span>
             <Icon src="./assets/uploads/icon/section-arrow.svg" size={14} />
           </button>
           <div className="sp-artifacts-list">
-            {[
-              ...ARTIFACTS,
-              /* 群聊信息执行后追加的产物 */
-              ...(extraChat.length > 0
-                ? [
-                    {
-                      id: "f-when2meet",
-                      name: "when2meet.html",
-                      src: "./assets/uploads/icon/file-type/filled/code.svg",
-                    },
-                  ]
-                : []),
-            ].map((a) => (
-              <div key={a.id} className="sp-artifact">
+            {ARTIFACTS.map((a) => (
+              <div
+                key={a.id}
+                className="sp-artifact"
+                role="button"
+                tabIndex={0}
+                onClick={() => onOpenArtifact && onOpenArtifact(a)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") onOpenArtifact && onOpenArtifact(a);
+                }}
+              >
                 <Icon src={a.src} size={16} />
                 <span className="sp-artifact-name">{a.name}</span>
                 {a.status && !finished ? (

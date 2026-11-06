@@ -473,7 +473,7 @@
   flex-direction: column;
 }
 
-/* 产物行:固高 40,图标 + 文件名 + 右侧进行中标注 */
+/* 产物行:固高 40,图标 + 文件名 + 右侧进行中标注;点击打开对应产物预览页签 */
 .sp-artifact {
   display: flex;
   align-items: center;
@@ -483,6 +483,8 @@
   border-radius: var(--radius-sm);
   color: var(--on-surface);
   font: var(--font-body-md);
+  /* 链接文本可点击:手型光标 */
+  cursor: pointer;
 }
 
 .sp-artifact:hover {

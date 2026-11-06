@@ -146,13 +146,22 @@ export function buildAgentReply(payload) {
       type: "artifacts",
       cls: "cs-node-artifacts",
       noPerm: true,
+      /* 蜂群模式的最终产物为 When2meet 小程序(与协作流程各环节的产出一致);
+         单Agent模式保持汇报演示文档 */
       files: [
-        {
-          id: "art-1",
-          name: "汇报演示.html",
-          size: "86.5 KB",
-          src: "./assets/uploads/docx.svg",
-        },
+        swarm
+          ? {
+              id: "art-1",
+              name: "When2meet.html",
+              size: "132.6 KB",
+              src: "./assets/uploads/icon/file-type/filled/code.svg",
+            }
+          : {
+              id: "art-1",
+              name: "汇报演示.html",
+              size: "86.5 KB",
+              src: "./assets/uploads/docx.svg",
+            },
       ],
     },
   );
@@ -238,9 +247,14 @@ function FileCard({ f, onPreview }) {
         <Icon src="./assets/uploads/icon/file-type/filled/code.svg" size={28} />
       </span>
       <span className="cs-file-info">
-        <span className="cs-file-name">{f.name.replace(/\.[^.]+$/, "")}</span>
+        {/* 文件名:不带扩展名;meta:文件类型大写(如 HTML),无扩展名时为空 */}
+        <span className="cs-file-name">
+          {f.name.slice(0, f.name.lastIndexOf(".") > 0 ? f.name.lastIndexOf(".") : undefined)}
+        </span>
         <span className="cs-file-meta">
-          {(f.name.split(".").pop() || "").toUpperCase()} · {f.size}
+          {f.name.lastIndexOf(".") > 0
+            ? f.name.slice(f.name.lastIndexOf(".") + 1).toUpperCase()
+            : ""}
         </span>
       </span>
       {/* 打开方式下拉 */}
@@ -647,7 +661,7 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
               );
             }
 
-            /* ---- 带链接的文本 ---- */
+            /* ---- 带链接的文本:点击链接文本 → 在右侧预览打开该产物页签 ---- */
             if (b.type === "text-link") {
               const isCurTL = i === cursor;
               const textTL = isCurTL ? b.text.slice(0, chars) : b.text;
@@ -656,7 +670,18 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
               return (
                 <p className="cs-text-link" key={i}>
                   {textTL}
-                  {showLink ? <a className="cs-doc-link" href="#">{b.link}</a> : null}
+                  {showLink ? (
+                    <a
+                      className="cs-doc-link"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (onPreview) onPreview({ name: b.link });
+                      }}
+                    >
+                      {b.link}
+                    </a>
+                  ) : null}
                   {isCurTL && chars < b.text.length ? <span className="cs-caret" /> : null}
                 </p>
               );
@@ -813,6 +838,252 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
   );
 }
 
+/* ================= 蜂群产物预览:When2meet 小程序数据 ================= */
+
+/* 参与者(已填 5 人 + 待填 1 人,热力图人数与之对应);
+   待填成员无头像,渲染中性占位图标(避免内联大图) */
+const W2M_MEMBERS = [
+  { name: "项目总监", avatar: "./assets/uploads/avatar-director.svg", done: true },
+  { name: "项目研究专家", avatar: "./assets/uploads/avatar-research.svg", done: true },
+  { name: "UXUI设计专家", avatar: "./assets/uploads/avatar-design.svg", done: true },
+  { name: "开发专家", avatar: "./assets/uploads/avatar-develop.svg", done: true },
+  { name: "测试专家", avatar: "./assets/uploads/avatar-test.svg", done: true },
+  { name: "市场负责人", avatar: null, done: false },
+];
+
+/* 日期列(周一 ~ 周六)与时间行(9:00 ~ 20:00 整点) */
+const W2M_DAYS = ["6/23 周一", "6/24 周二", "6/25 周三", "6/26 周四", "6/27 周五", "6/28 周六"];
+const W2M_HOURS = ["9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"];
+
+/* 各格空闲人数(0~5):行=时间,列=日期;周三 14:00 为 5 人全员有空的最优格 */
+const W2M_DATA = [
+  [1, 0, 1, 0, 0, 0],
+  [3, 4, 2, 1, 2, 0],
+  [2, 3, 3, 2, 1, 0],
+  [0, 1, 0, 0, 0, 0],
+  [2, 3, 4, 2, 3, 1],
+  [4, 4, 5, 3, 4, 2],
+  [3, 2, 4, 4, 4, 1],
+  [2, 3, 3, 2, 4, 0],
+  [3, 4, 4, 1, 3, 1],
+  [1, 2, 2, 0, 1, 0],
+  [0, 1, 1, 0, 0, 0],
+  [0, 0, 1, 0, 0, 0],
+];
+
+/* 推荐时段:峰值与热力图一致(周三 14:00 = 5 人;周五 16:00 / 周二 10:00 = 4 人) */
+const W2M_RECOS = [
+  { when: "周三 6/25 14:00 – 15:00", note: "已填 5/5 人全有空", score: "100%" },
+  { when: "周五 6/27 16:00 – 17:00", note: "4/5 人有空 · 项目总监冲突", score: "80%" },
+  { when: "周二 6/24 10:00 – 11:00", note: "4/5 人有空 · 测试专家冲突", score: "80%" },
+];
+
+/* 特性胶囊:图标取自产物内已注入的 Lucide 表 */
+const W2M_FEATS = [
+  { icon: "zap", text: "单次排会操作步数减半" },
+  { icon: "table", text: "共同时间自动汇总" },
+  { icon: "users", text: "免注册 · 全员协同" },
+  { icon: "settings-2", text: "移动端单日视图适配" },
+];
+
+/* 参与统计卡片(unit 为数值后缀,如 秒/分钟/个) */
+const W2M_STATS = [
+  { num: "83%", unit: "", label: "已填率" },
+  { num: "42", unit: "秒", label: "平均填表耗时" },
+  { num: "6", unit: "分钟", label: "最快响应" },
+  { num: "4", unit: "个", label: "覆盖部门" },
+];
+
+/* 最近动态(时间倒序):who 为人,avatar 复用成员头像 */
+const W2M_FEED = [
+  { who: "项目研究专家", avatar: "./assets/uploads/avatar-research.svg", text: "完成了空闲时间填写", time: "12 分钟前" },
+  { who: "UXUI设计专家", avatar: "./assets/uploads/avatar-design.svg", text: "完成了空闲时间填写", time: "35 分钟前" },
+  { who: "开发专家", avatar: "./assets/uploads/avatar-develop.svg", text: "完成了空闲时间填写", time: "1 小时前" },
+  { who: "测试专家", avatar: "./assets/uploads/avatar-test.svg", text: "完成了空闲时间填写", time: "2 小时前" },
+  { who: "项目总监", avatar: "./assets/uploads/avatar-director.svg", text: "创建了投票并分享链接", time: "昨天 16:20" },
+];
+
+/* 移动端单日视图说明 */
+const W2M_MOBILE_NOTES = [
+  "手机打开分享链接即可填写，无需下载 App、无需注册",
+  "单日视图纵向排列时间槽，拇指单手可达",
+  "填写结果自动保存，实时与桌面端同步",
+  "深色模式自动跟随系统设置",
+];
+
+/* 热力格颜色:空闲人数越多绿色越深(#64BB5C = var(--color-success),JSX 内联色值) */
+function w2mCellBg(c) {
+  return "rgba(100, 187, 92, " + (0.15 + (c / 5) * 0.7).toFixed(2) + ")";
+}
+
+/* ================= 蜂群产物:流式链接对应的预览页签内容 ================= */
+
+/* 蜂群产物注册表:key 为流式内容中的链接文本;kind=w2m 为小程序界面预览,
+   其余按 title/eyebrow/sections(h 标题 + p 段落 + list 列表)渲染文档视图 */
+const SWARM_ARTIFACTS = {
+  "编排计划.md": {
+    icon: "./assets/uploads/icon/file-type/filled/markdown.svg",
+    title: "编排计划 · When2meet 项目",
+    eyebrow: "8 个子任务 · 5 位子智能体 · Markdown",
+    sections: [
+      {
+        h: "01 项目目标",
+        p: "以「无需注册、快速填写、结果清晰」为核心，交付单文件离线可运行的会议时间协调小程序，把一次多人排会的协调耗时从 23 分钟压缩到 3 分钟以内。",
+      },
+      {
+        h: "02 任务拆解",
+        p: "共拆解 8 个子任务，按依赖关系串并混合编排：",
+        list: [
+          "任务 1：制定编排计划与任务分配 —— 项目总监",
+          "任务 2：需求探索与竞品模式调研 —— 项目研究专家",
+          "任务 3：输出交互与界面设计 —— UXUI 设计专家",
+          "任务 4：代码开发 —— 开发专家",
+          "任务 5：测试并输出报告 —— 测试专家",
+          "任务 6：根据测试报告修复缺陷 —— 开发专家",
+          "任务 7：汇总流程并复盘 —— 项目总监",
+          "任务 8：部署上线并归档产物 —— 项目总监",
+        ],
+      },
+      {
+        h: "03 里程碑与耗时",
+        list: [
+          "编排规划：约 12 秒（生成 8 个子任务并完成角色分配）",
+          "调研与设计：约 2 分钟（竞品分析 → 界面方案 → 关键体验）",
+          "开发实现：约 3 分钟（7 个页面模块 + 汇总推荐逻辑）",
+          "测试回归：约 1 分钟（40 项用例 + 2 个 P1 缺陷修复）",
+          "部署上线：约 40 秒（单文件构建并通过人工审批放行）",
+        ],
+      },
+      {
+        h: "04 协作机制",
+        p: "子智能体在群聊中同步进展并开展方案辩论，关键节点交由用户授权放行；每个环节的产物（文档 / 代码 / 报告）沿任务链传递，最终汇总至项目总监复盘归档。",
+      },
+    ],
+  },
+  "竞品分析报告.md": {
+    icon: "./assets/uploads/icon/file-type/filled/markdown.svg",
+    title: "竞品分析报告 · 会议时间协调工具",
+    eyebrow: "3 款对标产品 · 4 个维度 · Markdown",
+    sections: [
+      {
+        h: "01 对比对象",
+        p: "选取 Doodle、Calendly 与 when2meet 原版三款产品，覆盖海外市场头部工具与经典轻量工具。",
+      },
+      {
+        h: "02 对比维度",
+        list: [
+          "注册门槛：Doodle 需注册 · Calendly 强制账号 · 原版免注册",
+          "日历集成：竞品主推「一键直连」，依赖账号体系与授权链路",
+          "推荐能力：Calendly 仅单向时段，均缺少共同空闲聚合推荐",
+          "移动体验：Doodle 移动端评分最低，原版缺少单日视图",
+        ],
+      },
+      {
+        h: "03 核心结论",
+        p: "竞品已放出「日历一键直连」的激进策略，本质是通过堆砌功能圈地、抢占企业团队市场。我们不做盲目加法，采用「极简轻量化」错位竞争：以「无感收集 vs 繁琐填表」压制其交互链路，把产品拉高到「秒级响应 + 全域协同」维度。",
+      },
+      {
+        h: "04 三个硬性指标",
+        list: [
+          "市场挤压：在办公排期核心场景拦截竞品的跨部门协作与外部会议客群",
+          "体验提效：单次排会操作步数直接减半，以易用性拉动高频使用（DAU）",
+          "用户资产：以极简体验捆绑后续生态与服务，提升全生命周期价值（LTV）",
+        ],
+      },
+    ],
+  },
+  "关键体验的编排计划.md": {
+    icon: "./assets/uploads/icon/file-type/filled/markdown.svg",
+    title: "关键体验编排计划",
+    eyebrow: "界面方案 · 关键体验 · 验收标准 · Markdown",
+    sections: [
+      {
+        h: "01 关键体验目标",
+        list: [
+          "参与者无需注册，打开链接即可填写",
+          "选择结果自动保存，中断后可恢复",
+          "所有人共同有空的时间突出显示",
+        ],
+      },
+      {
+        h: "02 核心流程编排",
+        p: "围绕一条零门槛主链路编排页面与状态：",
+        list: [
+          "创建活动 → 分享链接 → 输入姓名 → 选择空闲时间",
+          "自动汇总 → 推荐共同时间 → 主办者确认",
+        ],
+      },
+      {
+        h: "03 页面模块排布",
+        list: [
+          "创建活动（主办者视图）",
+          "参与者加入（免注册）",
+          "日历时间选择（桌面网格 / 移动端单日）",
+          "共同时间热力图与推荐时间",
+          "空状态与错误状态（链接失效、填写截止）",
+        ],
+      },
+      {
+        h: "04 验收标准",
+        list: [
+          "单次排会操作 ≤ 3 步，首屏可交互 < 1 秒",
+          "共同空闲推荐命中率 ≥ 90%",
+          "移动端单手可完成全部填写动作",
+        ],
+      },
+    ],
+  },
+  "QA_report.md": {
+    icon: "./assets/uploads/icon/file-type/filled/markdown.svg",
+    title: "测试报告 · When2meet v1.0",
+    eyebrow: "40 项用例 · 2 个 P1 缺陷已修复 · Markdown",
+    sections: [
+      {
+        h: "01 测试范围",
+        p: "覆盖创建 / 分享、参与者填写、自动保存、共同时间汇总、推荐时段与移动端适配六大模块，共 40 项核心用例。",
+      },
+      {
+        h: "02 缺陷与修复",
+        list: [
+          "P1-01：移动端 320px 宽度下 30 分钟格错位 —— 已修复并回归通过",
+          "P1-02：跨时区场景下截止时间边界溢出 1 小时 —— 已修复并回归通过",
+        ],
+      },
+      {
+        h: "03 回归结论",
+        p: "两个 P1 缺陷返还开发专家修复后，全量回归 40 项用例全部通过，高优先级缺陷清零，线上版本运行正常。",
+      },
+    ],
+  },
+  "When2meet.html": {
+    icon: "./assets/uploads/icon/file-type/filled/code.svg",
+    kind: "w2m", // 小程序界面预览(见下方 cs-w2m 视图)
+  },
+};
+
+/* markdown 类产物的文档页签渲染(复用单Agent文档页样式) */
+function SwarmMdDoc({ def, name }) {
+  return (
+    <div className="cs-preview-page">
+      <h2 className="cs-preview-name">{(def && def.title) || name}</h2>
+      <p className="cs-preview-eyebrow">{(def && def.eyebrow) || "Markdown · 模拟预览"}</p>
+      {(def && def.sections ? def.sections : []).map((s, k) => (
+        <div className="cs-preview-sec" key={k}>
+          <h3>{s.h}</h3>
+          {s.p ? <p>{s.p}</p> : null}
+          {s.list ? (
+            <ul className="cs-md-list">
+              {s.list.map((it, j) => (
+                <li key={j}>{it}</li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ================= 会话页面 ================= */
 export default function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange, swarmExtraChat, onSwarmViewChange }) {
   const listRef = useRef(null);
@@ -823,36 +1094,47 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
   const [permCmd, setPermCmd] = useState(null);
   const [allowOpen, setAllowOpen] = useState(false); // 「允许」下拉展开态
 
-  /* 右侧预览面板：当前预览的产物文件 + 页签控制 */
-  const [previewFile, setPreviewFile] = useState(null);
+  /* 右侧预览面板：页签控制 —— 任务摘要 + 多个产物页签(流式链接/产物卡片点击时新增) */
   const [previewOpen, setPreviewOpen] = useState(false); // 预览面板是否显示
-  const [activeTab, setActiveTab] = useState("summary"); // 当前选中页签："summary" | "file"
+  const [openTabs, setOpenTabs] = useState([]); // 已打开的产物页签(file 对象,按 name 去重)
+  const [activeTab, setActiveTab] = useState("summary"); // 当前选中页签："summary" | 产物名
   const [zoomOpen, setZoomOpen] = useState(false); // 缩放下拉
   const [moreOpen, setMoreOpen] = useState(false); // 更多操作下拉
 
-  /* 蜂群模式：进入会话页自动打开预览面板，选中「任务摘要」页签 */
+  /* 蜂群模式判定（进入会话页不打开预览，点击弹框确认后才打开） */
   const isSwarmSession = first && first.meta && first.meta.modeId === "swarm";
-  useEffect(() => {
-    if (isSwarmSession && messages.length > 0) {
-      setPreviewOpen(true);
-      setActiveTab("summary");
-    }
-  }, [isSwarmSession, messages.length]);
+
+  /* 当前激活的产物页签(activeTab 为任务摘要时为 null) */
+  const activeFile = openTabs.find((t) => t.name === activeTab) || null;
+
+  /* 蜂群文件预览激活态:任一产物页签处于激活;
+     关闭全部页签/切回任务摘要 → 返回 SwarmPanel(隐藏不卸载,保留面板内部状态) */
+  const swarmFileOpen = isSwarmSession && !!activeFile;
+
+  /* 页签图标:产物注册表优先,再按扩展名回退(html → code,其余 → markdown) */
+  const tabIcon = (name) =>
+    (isSwarmSession && SWARM_ARTIFACTS[name] && SWARM_ARTIFACTS[name].icon) ||
+    (/\.html?$/i.test(name)
+      ? "./assets/uploads/icon/file-type/filled/code.svg"
+      : "./assets/uploads/icon/file-type/filled/markdown.svg");
 
   /* 左侧流式进度 → 驱动右侧 SwarmPanel 的进度动画 */
   const [swarmProgress, setSwarmProgress] = useState(0);
 
-  /* 点击产物「在线预览」→ 打开预览面板，选中文件页签 */
+  /* 点击产物「在线预览」或流式内容中的链接文本 → 新增(或激活)对应产物页签 */
   const handleFilePreview = (file) => {
-    setPreviewFile(file);
+    setOpenTabs((tabs) => (tabs.some((t) => t.name === file.name) ? tabs : [...tabs, file]));
+    setActiveTab(file.name);
     setPreviewOpen(true);
-    setActiveTab("file");
   };
 
-  /* 关闭文件页签 → 返回任务摘要 */
-  const closeFileTab = () => {
-    setPreviewFile(null);
-    setActiveTab("summary");
+  /* 关闭产物页签:若关闭的是激活页签,回退到剩余最后一个,无剩余则回任务摘要 */
+  const closeFileTab = (name) => {
+    const rest = openTabs.filter((t) => t.name !== name);
+    setOpenTabs(rest);
+    if (activeTab === name) {
+      setActiveTab(rest.length ? rest[rest.length - 1].name : "summary");
+    }
   };
 
   /* 统一关闭所有下拉（允许/缩放/更多）：点击外部非下拉区域时收起 */
@@ -905,9 +1187,14 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
     }
   }, [pendingMsgId]);
 
-  /* 表单提交 → 关闭弹框并把决定回传给等待中的 AgentRun */
+  /* 表单提交 → 关闭弹框并把决定回传给等待中的 AgentRun；
+     蜂群模式：确认后才打开右侧预览面板（选中任务摘要页签） */
   const submitForm = () => {
     decide("allowed");
+    if (isSwarmSession) {
+      setPreviewOpen(true);
+      setActiveTab("summary");
+    }
   };
 
   /* 弹框内容取自等待授权消息里的等待块（授权 or 蜂群配置表单） */
@@ -1068,15 +1355,20 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
         </div>
       </div>
 
-      {/* 右侧面板:蜂群会话 → SwarmPanel(任务摘要/群聊等);单Agent会话 → 公共预览模块 */}
-      {previewOpen ? (
-        isSwarmSession ? (
+      {/* 右侧面板:蜂群会话默认 SwarmPanel(任务摘要/群聊等);点击产物「在线预览」切换为文件预览,
+          关闭文件页签返回 SwarmPanel —— 蜂群面板隐藏不卸载,内部状态(任务展开/群聊页签)保留;
+          单Agent会话 → 公共预览模块 */}
+      {previewOpen && isSwarmSession ? (
+        <div className={"cs-swarm-slot" + (swarmFileOpen ? " cs-swarm-slot--hidden" : "")}>
           <SwarmPanel
             progress={swarmProgress}
             extraChat={swarmExtraChat}
             onViewChange={onSwarmViewChange}
+            onOpenArtifact={handleFilePreview}
           />
-        ) : (
+        </div>
+      ) : null}
+      {previewOpen && (!isSwarmSession || swarmFileOpen) ? (
         <aside className="cs-preview" aria-label="预览面板">
           {/* ---- 公共头部导航 ---- */}
           <div className="cs-preview-head">
@@ -1093,23 +1385,25 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
                 <Icon name="file-text" size={14} />
                 <span>任务摘要</span>
               </button>
-              {previewFile ? (
-                <>
-                  <span className="cs-preview-vline" />
-                  <div className={"cs-preview-filetab" + (activeTab === "file" ? " is-active" : "")}>
-                    <Icon src={previewFile.src} size={14} />
-                    <span onClick={() => setActiveTab("file")}>{previewFile.name}</span>
-                    <button
-                      type="button"
-                      className="cs-preview-filetab-x"
-                      onClick={closeFileTab}
-                      aria-label="关闭文件"
-                    >
-                      <Icon name="x" size={12} />
-                    </button>
-                  </div>
-                </>
-              ) : null}
+              {/* 产物页签:多个并存,点击切换,X 关闭(关闭激活页签时回退) */}
+              {openTabs.length ? <span className="cs-preview-vline" /> : null}
+              {openTabs.map((t) => (
+                <div
+                  key={t.name}
+                  className={"cs-preview-filetab" + (activeTab === t.name ? " is-active" : "")}
+                >
+                  <Icon src={tabIcon(t.name)} size={14} />
+                  <span onClick={() => setActiveTab(t.name)}>{t.name}</span>
+                  <button
+                    type="button"
+                    className="cs-preview-filetab-x"
+                    onClick={() => closeFileTab(t.name)}
+                    aria-label="关闭文件"
+                  >
+                    <Icon name="x" size={12} />
+                  </button>
+                </div>
+              ))}
               <button type="button" className="cs-preview-iconbtn cs-preview-add" title="添加" aria-label="添加">
                 <Icon src="./assets/uploads/add.svg" size={16} />
               </button>
@@ -1124,8 +1418,8 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
             </div>
           </div>
 
-          {/* ---- 页签内容区：文件页签 → 操作栏+预览容器；任务摘要 → 空白 ---- */}
-          {activeTab === "file" && previewFile ? (
+          {/* ---- 页签内容区：产物页签 → 操作栏+预览容器；任务摘要 → 空白 ---- */}
+          {activeFile ? (
             <>
               {/* 操作栏 */}
               <div className="cs-preview-toolbar">
@@ -1140,7 +1434,7 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
                   </div>
                   <div className="cs-address">
                     <Icon name="folder-open" size={12} />
-                    <span>D:\Projects\agent-demo\{previewFile.name}</span>
+                    <span>D:\Projects\agent-demo\{activeFile.name}</span>
                   </div>
                 </div>
                 <div className="cs-preview-toolbar-right">
@@ -1182,36 +1476,237 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
               <div className="cs-preview-body">
                 <div className="cs-preview-container">
                   {isSwarmSession ? (
-                    /* 蜂群模式：人员时间排布（一周课程表式） */
-                    <div className="cs-timetable">
-                      {/* 表头 */}
-                      <div className="cs-tt-head">
-                        <span className="cs-tt-corner">人员 / 日期</span>
-                        <span>周一</span><span>周二</span><span>周三</span><span>周四</span><span>周五</span><span>周六</span><span>周日</span>
-                      </div>
-                      {/* 行：每个专家一周的任务分配 */}
-                      {[
-                        { agent: "项目总监", slots: ["编排计划", "", "竞品评审", "", "", "", "汇总复盘"] },
-                        { agent: "项目研究专家", slots: ["", "需求调研", "竞品分析", "", "", "", ""] },
-                        { agent: "UXUI设计专家", slots: ["", "", "界面设计", "交互流程", "动效规范", "", ""] },
-                        { agent: "开发专家", slots: ["", "", "", "代码开发", "代码开发", "修复缺陷", ""] },
-                        { agent: "测试专家", slots: ["", "", "", "", "", "测试报告", ""] },
-                      ].map((row, ri) => (
-                        <div className="cs-tt-row" key={ri}>
-                          <span className="cs-tt-agent">{row.agent}</span>
-                          {row.slots.map((slot, si) => (
-                            <span key={si} className={"cs-tt-cell" + (slot ? " is-filled" : "")}>
-                              {slot}
-                            </span>
+                    /* 蜂群模式按产物类型渲染:When2meet.html(kind=w2m) → 小程序界面预览
+                       (顶栏+活动信息+参与统计+最近动态+参与者+热力图+推荐时段+移动端+特性);
+                       markdown 产物(编排计划/竞品分析/关键体验/QA 报告) → 文档页签视图 */
+                    SWARM_ARTIFACTS[activeFile.name] &&
+                    SWARM_ARTIFACTS[activeFile.name].kind === "w2m" ? (
+                    <div className="cs-w2m">
+                      {/* ---- 应用顶栏：品牌 + 分享/锁定操作 ---- */}
+                      <header className="cs-w2m-topbar">
+                        <div className="cs-w2m-brand">
+                          <img className="cs-w2m-logo" src="./assets/uploads/progress-bird-complete.svg" alt="" aria-hidden="true" />
+                          <span className="cs-w2m-brand-name">When2meet</span>
+                          <span className="cs-w2m-brand-tag">排期投票 · v1.0</span>
+                        </div>
+                        <div className="cs-w2m-topbar-actions">
+                          <button type="button" className="cs-w2m-ghost">
+                            <Icon name="mail" size={14} />
+                            <span>分享链接</span>
+                          </button>
+                          <button type="button" className="cs-w2m-solid">
+                            <Icon name="check" size={14} />
+                            <span>锁定最优时间</span>
+                          </button>
+                        </div>
+                      </header>
+
+                      {/* ---- 活动信息 ---- */}
+                      <section className="cs-w2m-hero">
+                        <div className="cs-w2m-hero-main">
+                          <p className="cs-w2m-kicker">新功能评审会 · 60 分钟 · 全员投票中</p>
+                          <h2 className="cs-w2m-title">找出大家共同有空的 1 小时</h2>
+                          <p className="cs-w2m-sub">
+                            创建者 项目总监 · 时区 GMT+8 · 投票截止 周五 18:00 · 参与者无需注册即可填写
+                          </p>
+                        </div>
+                        <div className="cs-w2m-hero-side">
+                          <span className="cs-w2m-side-num">5<i>/6</i></span>
+                          <span className="cs-w2m-side-label">已填写</span>
+                          <div className="cs-w2m-side-bar"><span style={{ width: "83%" }} /></div>
+                          <span className="cs-w2m-side-deadline">距投票截止 2 天 6 小时</span>
+                        </div>
+                      </section>
+
+                      {/* ---- 参与统计 ---- */}
+                      <section className="cs-w2m-block">
+                        <div className="cs-w2m-block-head">
+                          <span className="cs-w2m-block-title">参与统计</span>
+                          <span className="cs-w2m-block-extra">数据实时更新</span>
+                        </div>
+                        <div className="cs-w2m-statcards">
+                          {W2M_STATS.map((s) => (
+                            <div key={s.label} className="cs-w2m-statcard">
+                              <span className="cs-w2m-statcard-num">
+                                {s.num}{s.unit ? <i>{s.unit}</i> : null}
+                              </span>
+                              <span className="cs-w2m-statcard-label">{s.label}</span>
+                            </div>
                           ))}
                         </div>
-                      ))}
+                      </section>
+
+                      {/* ---- 最近动态 ---- */}
+                      <section className="cs-w2m-block">
+                        <div className="cs-w2m-block-head">
+                          <span className="cs-w2m-block-title">最近动态</span>
+                          <span className="cs-w2m-block-extra">填写与通知 · 时间倒序</span>
+                        </div>
+                        <div className="cs-w2m-feed">
+                          {W2M_FEED.map((it) => (
+                            <div key={it.who + it.time} className="cs-w2m-feed-item">
+                              <img className="cs-w2m-feed-avatar" src={it.avatar} alt="" aria-hidden="true" />
+                              <span className="cs-w2m-feed-text">
+                                <b>{it.who}</b> {it.text}
+                              </span>
+                              <span className="cs-w2m-feed-time">{it.time}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+
+                      {/* ---- 参与者 ---- */}
+                      <section className="cs-w2m-block">
+                        <div className="cs-w2m-block-head">
+                          <span className="cs-w2m-block-title">参与者</span>
+                          <span className="cs-w2m-block-extra">结果自动保存 · 新成员可随时补填</span>
+                        </div>
+                        <div className="cs-w2m-members">
+                          {W2M_MEMBERS.map((m) => (
+                            <div key={m.name} className={"cs-w2m-member" + (m.done ? "" : " is-pending")}>
+                              {m.avatar ? (
+                                <img className="cs-w2m-member-avatar" src={m.avatar} alt="" aria-hidden="true" />
+                              ) : (
+                                <span className="cs-w2m-member-avatar cs-w2m-member-placeholder" aria-hidden="true">
+                                  <Icon name="user-round" size={16} />
+                                </span>
+                              )}
+                              <span className="cs-w2m-member-name">{m.name}</span>
+                              <span className="cs-w2m-member-state">
+                                <Icon name={m.done ? "check" : "user-round"} size={10} />
+                                {m.done ? "已填" : "待填"}
+                              </span>
+                            </div>
+                          ))}
+                          <button type="button" className="cs-w2m-invite">
+                            <Icon name="plus" size={12} />
+                            <span>邀请成员</span>
+                          </button>
+                        </div>
+                      </section>
+
+                      {/* ---- 共同空闲热力图 ---- */}
+                      <section className="cs-w2m-block">
+                        <div className="cs-w2m-block-head">
+                          <span className="cs-w2m-block-title">共同空闲热力图</span>
+                          <div className="cs-w2m-legend" aria-hidden="true">
+                            <span className="cs-w2m-legend-label">1 人</span>
+                            {[1, 2, 3, 4, 5].map((c) => (
+                              <span key={c} className="cs-w2m-legend-cell" style={{ background: w2mCellBg(c) }} />
+                            ))}
+                            <span className="cs-w2m-legend-label">5 人</span>
+                          </div>
+                        </div>
+                        <div className="cs-w2m-grid">
+                          <div className="cs-w2m-grid-row">
+                            <span className="cs-w2m-grid-corner" />
+                            {W2M_DAYS.map((d) => (
+                              <span key={d} className="cs-w2m-grid-day">{d}</span>
+                            ))}
+                          </div>
+                          {W2M_HOURS.map((h, hi) => (
+                            <div key={h} className="cs-w2m-grid-row">
+                              <span className="cs-w2m-grid-time">{h}</span>
+                              {W2M_DATA[hi].map((c, di) => (
+                                /* 最优格:周三(列 2)14:00(行 5)5 人全有空 */
+                                <span
+                                  key={di}
+                                  className={"cs-w2m-grid-cell" + (hi === 5 && di === 2 ? " is-best" : "")}
+                                  style={c ? { background: w2mCellBg(c) } : undefined}
+                                  title={c + " 人有空"}
+                                />
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+
+                      {/* ---- 推荐时段 ---- */}
+                      <section className="cs-w2m-block">
+                        <div className="cs-w2m-block-head">
+                          <span className="cs-w2m-block-title">推荐时段</span>
+                          <span className="cs-w2m-block-extra">基于已填空闲自动计算 · 按匹配度排序</span>
+                        </div>
+                        <div className="cs-w2m-recos">
+                          {W2M_RECOS.map((r, i) => (
+                            <div key={r.when} className={"cs-w2m-reco" + (i === 0 ? " is-top" : "")}>
+                              <div className="cs-w2m-reco-main">
+                                <span className="cs-w2m-reco-when">{r.when}</span>
+                                <span className="cs-w2m-reco-note">{r.note}</span>
+                              </div>
+                              <span className="cs-w2m-reco-score">{r.score}</span>
+                              <button type="button" className={i === 0 ? "cs-w2m-solid" : "cs-w2m-ghost"}>
+                                {i === 0 ? "锁定并发起" : "发起会议"}
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+
+                      {/* ---- 移动端单日视图:手机框(周三各时段有空成员头像) + 说明 ---- */}
+                      <section className="cs-w2m-block">
+                        <div className="cs-w2m-block-head">
+                          <span className="cs-w2m-block-title">移动端 · 单日视图</span>
+                          <span className="cs-w2m-block-extra">手机端自适应布局</span>
+                        </div>
+                        <div className="cs-w2m-mobile">
+                          <div className="cs-w2m-phone" aria-hidden="true">
+                            <div className="cs-w2m-phone-head">
+                              <span className="cs-w2m-phone-day">6/25 周三</span>
+                              <span className="cs-w2m-phone-sub">全天可填</span>
+                            </div>
+                            <div className="cs-w2m-phone-body">
+                              {W2M_HOURS.map((h, hi) => {
+                                /* 手机端展示周三列(列 2):各时段有空成员头像,14:00 为最优 */
+                                const c = W2M_DATA[hi][2];
+                                const best = h === "14:00";
+                                return (
+                                  <div key={h} className={"cs-w2m-phone-row" + (best ? " is-best" : "")}>
+                                    <span className="cs-w2m-phone-time">{h}</span>
+                                    <span className="cs-w2m-phone-avatars">
+                                      {W2M_MEMBERS.filter((m) => m.avatar).slice(0, c).map((m) => (
+                                        <img key={m.name} src={m.avatar} alt="" />
+                                      ))}
+                                    </span>
+                                    {best ? <span className="cs-w2m-phone-badge">5 人有空</span> : null}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                            <button type="button" className="cs-w2m-phone-btn">选择时间</button>
+                          </div>
+                          <ul className="cs-w2m-mobile-notes">
+                            {W2M_MOBILE_NOTES.map((n) => (
+                              <li key={n}>{n}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </section>
+
+                      {/* ---- 特性胶囊 + 页脚 ---- */}
+                      <section className="cs-w2m-feats">
+                        {W2M_FEATS.map((f) => (
+                          <span key={f.text} className="cs-w2m-feat">
+                            <Icon name={f.icon} size={13} />
+                            {f.text}
+                          </span>
+                        ))}
+                      </section>
+                      <footer className="cs-w2m-foot">
+                        When2meet · 由 AgentBox 蜂群模式生成 · 单文件离线运行 · 无需注册即可填写
+                      </footer>
                     </div>
+                    ) : (
+                      /* markdown 产物:文档页签视图 */
+                      <SwarmMdDoc def={SWARM_ARTIFACTS[activeFile.name]} name={activeFile.name} />
+                    )
                   ) : (
                     /* 单Agent模式：文档预览页面 */
                     <div className="cs-preview-page">
                       <h2 className="cs-preview-name">汇报演示 · When2meet 项目</h2>
-                      <p className="cs-preview-eyebrow">18 页 · {previewFile.size} · 模拟预览</p>
+                      <p className="cs-preview-eyebrow">
+                        18 页{activeFile.size ? " · " + activeFile.size : ""} · 模拟预览
+                      </p>
                       <div className="cs-preview-sec">
                         <h3>01 背景与目标</h3>
                         <p>会议时间协调长期依赖群内接龙，效率低且易遗漏。本章从用户调研数据出发，界定核心痛点与改进机会。</p>
@@ -1314,7 +1809,6 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
             </div>
           )}
         </aside>
-        )
       ) : null}
     </div>
   );

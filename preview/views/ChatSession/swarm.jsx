@@ -137,7 +137,7 @@ export function buildSwarmFlowBlocks(payload) {
       title: "关键体验：",
       content: "参与者无需注册；选择结果自动保存；所有人共同有空的时间会被突出显示。",
     },
-    { type: "text-link", text: "已经拆解需求并完成计划分配，输出 ", link: "编排计划.md" },
+    { type: "text-link", text: "关键体验与界面方案已拆解并完成编排，输出 ", link: "关键体验的编排计划.md" },
     /* ---- 开发专家（第一轮） ---- */
     { type: "agent-tag", name: "开发专家", avatar: "./assets/uploads/avatar-develop.svg" },
     {
