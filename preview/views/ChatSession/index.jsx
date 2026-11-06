@@ -122,25 +122,25 @@ export function buildAgentReply(payload) {
       noPerm: true,
       title: "汇报演示.html · HTML",
       lines: [
-        "# 汇报演示 · When2meet 项目",
-        "01 背景与目标 —— 会议时间协调痛点与改进机会",
-        "02 用户画像 —— 目标人群与核心使用场景",
-        "03 首页交互改版 —— 布局与动效方案（重点）",
-        "04 智慧推荐 —— 推荐策略与算法链路（重点）",
-        "05 竞品分析 —— Doodle、Calendly 功能对比",
-        "06 信息架构 —— 站点地图与页面跳转关系",
-        "07 交互流程 —— 创建/参与/分享三大主流程",
-        "08 视觉规范 —— 色彩、字体与间距系统",
-        "09 动效设计 —— 微交互与转场动效规范",
-        "10 数据看板 —— 关键指标定义与埋点方案",
-        "11 技术方案 —— 前端架构与性能预算",
-        "12 性能优化 —— 首屏加载与包体积优化",
-        "13 A/B 实验 —— 实验设计与分流策略",
-        "14 数据验证 —— 核心指标与 A/B 结论",
-        "15 风险与应对 —— 识别、评估与缓解措施",
-        "16 团队分工 —— 角色职责与协作机制",
-        "17 排期计划 —— 三期迭代里程碑",
-        "18 路线图与 Q&A —— 长期规划与讨论",
+        "• 汇报演示 · When2meet 项目",
+        "• 背景与目标 —— 会议时间协调痛点与改进机会",
+        "• 用户画像 —— 目标人群与核心使用场景",
+        "• 首页交互改版 —— 布局与动效方案（重点）",
+        "• 智慧推荐 —— 推荐策略与算法链路（重点）",
+        "• 竞品分析 —— Doodle、Calendly 功能对比",
+        "• 信息架构 —— 站点地图与页面跳转关系",
+        "• 交互流程 —— 创建/参与/分享三大主流程",
+        "• 视觉规范 —— 色彩、字体与间距系统",
+        "• 动效设计 —— 微交互与转场动效规范",
+        "• 数据看板 —— 关键指标定义与埋点方案",
+        "• 技术方案 —— 前端架构与性能预算",
+        "• 性能优化 —— 首屏加载与包体积优化",
+        "• A/B 实验 —— 实验设计与分流策略",
+        "• 数据验证 —— 核心指标与 A/B 结论",
+        "• 风险与应对 —— 识别、评估与缓解措施",
+        "• 团队分工 —— 角色职责与协作机制",
+        "• 排期计划 —— 三期迭代里程碑",
+        "• 路线图与 Q&A —— 长期规划与讨论",
       ],
     },
     {
@@ -171,6 +171,19 @@ export function buildAgentReply(payload) {
             },
       ],
     },
+    /* 编辑统计 + 变更胶囊 + 撤销/审核按钮(仅单Agent模式) */
+    ...(swarm
+      ? []
+      : [
+          {
+            type: "edit-stats",
+            cls: "cs-node-edit-stats",
+            noPerm: true,
+            text: "编辑了18个文本",
+            additions: "+956",
+            deletions: "-0",
+          },
+        ]),
   );
   /* 蜂群模式跳过 filecontent、summary 和冲刺节点（已在协作流程中覆盖） */
   if (swarm) {
@@ -742,14 +755,20 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
               return (
                 <div className={"cs-fc " + (b.cls || "")} key={i}>
                   <div className="cs-fc-head">
-                    <Icon name="file-code" size={14} />
+                    <img
+                      src="./assets/uploads/icon/file-type/filled/code.svg"
+                      alt=""
+                      width="20"
+                      height="20"
+                    />
                     <span>{b.title}</span>
                   </div>
                   <p className="cs-sum-title">文件内容</p>
                   <div className="cs-fc-body">
                     {b.lines.map((ln, k) => (
                       <p className="cs-fc-line" key={k}>
-                        {ln}
+                        <span className="cs-fc-bullet">•</span>
+                        <span className="cs-fc-text">{ln.replace(/^\u2022\s*/, "")}</span>
                       </p>
                     ))}
                   </div>
@@ -773,6 +792,34 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
                   {b.files.map((f) => (
                     <FileCard key={f.id} f={f} onPreview={onPreview} />
                   ))}
+                </div>
+              );
+            }
+
+            /* ---- 编辑统计:与产物文件卡片同款结构(图标 + 两行信息 + 操作) ---- */
+            if (b.type === "edit-stats") {
+              return (
+                <div className="cs-files cs-edit-stats-wrap" key={i}>
+                  <div className="cs-file cs-edit-stats">
+                    <span className="cs-file-icon">
+                      <Icon src="./assets/uploads/review-files.svg" size={28} />
+                    </span>
+                    <span className="cs-file-info">
+                      <span className="cs-file-name">编辑了18个文本</span>
+                      <span className="cs-edit-stats-pills">
+                        <span className="cs-edit-pill cs-edit-pill--add">{b.additions}</span>
+                        <span className="cs-edit-pill cs-edit-pill--del">{b.deletions}</span>
+                      </span>
+                    </span>
+                    <div className="cs-edit-stats-actions">
+                      <button type="button" className="cs-edit-btn cs-edit-btn--ghost">
+                        撤销
+                      </button>
+                      <button type="button" className="cs-edit-btn cs-edit-btn--outline">
+                        审核
+                      </button>
+                    </div>
+                  </div>
                 </div>
               );
             }

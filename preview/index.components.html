@@ -3580,17 +3580,24 @@ img[data-component="Icon"] {
 
 /* ---- 生成产物：文件内容预览（无背景色） ---- */
 .cs-fc {
-  margin: 4px 0 12px;
+  margin: 0 0 12px;
 }
 
 .cs-fc-head {
   display: flex;
   align-items: center;
   gap: 7px;
-  padding: 8px 0;
-  font: var(--font-body-sm);
-  /* #000 @ 0.9 — 等价 var(--on-surface)，暗色模式自动翻转 */
-  color: var(--on-surface);
+  margin: 12px 0;
+  padding: 0;
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-bold);
+  /* 文件代码块标题:蓝色文本 */
+  color: var(--primary);
+}
+
+.cs-fc-head img,
+.cs-fc-head svg {
+  flex: 0 0 auto;
 }
 
 .cs-fc-head svg {
@@ -3606,18 +3613,158 @@ img[data-component="Icon"] {
 }
 
 .cs-fc-line {
+  display: flex;
+  align-items: baseline;
   font: var(--font-body-sm);
-  color: var(--text-secondary);
+  color: var(--on-surface);
   line-height: var(--line-height-relaxed);
   margin: 0;
-  white-space: pre-wrap;
+}
+
+/* 小黑点:固定 20px 宽度居中 */
+.cs-fc-bullet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 20px;
+  width: 20px;
+  font-size: var(--font-body-sm);
+  color: var(--on-surface);
+}
+
+.cs-fc-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ---- 编辑统计:在 cs-file 卡片容器内,两行信息 + 右侧操作 ---- */
+.cs-edit-stats-wrap {
+  margin-top: 8px;
+}
+
+.cs-edit-stats {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cs-edit-stats .cs-file-info {
+  flex: 1 1 auto;
+}
+
+/* 胶囊行:与 cs-file-meta 同位置(第二行),与标题间距 4px */
+.cs-edit-stats-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* 变更胶囊:绿色增加 / 红色删除,字号 12px */
+.cs-edit-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: var(--radius-full);
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+.cs-edit-stats-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.cs-edit-stats-text {
+  margin: 0;
+  font: var(--font-body-sm);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.cs-edit-stats-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 变更胶囊:绿色增加 / 红色删除 */
+.cs-edit-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: var(--radius-full);
+  font: var(--font-caption-md);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+.cs-edit-pill--add {
+  background-color: #d5f2dc;
+  color: #01802b;
+}
+
+.cs-edit-pill--del {
+  background-color: #fce3e0;
+  color: #bf0a1c;
+}
+
+.cs-edit-stats-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* 撤销:无边框,黑色文字 */
+.cs-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  padding: 4px 10px;
+  border-radius: 0.5rem;
+  font: var(--font-body-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-edit-btn--ghost {
+  border: none;
+  background-color: transparent;
+  color: var(--on-surface);
+}
+
+.cs-edit-btn--ghost:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+/* 审核:边框样式与 cs-file-more 一致 */
+.cs-edit-btn--outline {
+  box-sizing: border-box;
+  border: 1px solid var(--surface-container-high);
+  background-color: transparent;
+  color: var(--on-surface);
+  white-space: nowrap;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-edit-btn--outline:hover {
+  background-color: var(--color-interactive-hover);
 }
 
 /* ---- 生成产物：产物汇总标题（无卡片背景，1rem，#000 @ 90%，不加粗） ---- */
 .cs-sum-title {
   font-size: 1rem;
+  font-weight: var(--font-weight-bold);
   color: var(--on-surface);
-  margin: 4px 0 0.5rem;
+  margin: 0 0 0.5rem;
 }
 
 /* ---- 生成产物：产物文件卡片（边框线替代阴影） ---- */
@@ -6568,17 +6715,24 @@ img[data-component="Icon"] {
 
 /* ---- 生成产物：文件内容预览（无背景色） ---- */
 .cs-fc {
-  margin: 4px 0 12px;
+  margin: 0 0 12px;
 }
 
 .cs-fc-head {
   display: flex;
   align-items: center;
   gap: 7px;
-  padding: 8px 0;
-  font: var(--font-body-sm);
-  /* #000 @ 0.9 — 等价 var(--on-surface)，暗色模式自动翻转 */
-  color: var(--on-surface);
+  margin: 12px 0;
+  padding: 0;
+  font: var(--font-body-md);
+  font-weight: var(--font-weight-bold);
+  /* 文件代码块标题:蓝色文本 */
+  color: var(--primary);
+}
+
+.cs-fc-head img,
+.cs-fc-head svg {
+  flex: 0 0 auto;
 }
 
 .cs-fc-head svg {
@@ -6594,18 +6748,158 @@ img[data-component="Icon"] {
 }
 
 .cs-fc-line {
+  display: flex;
+  align-items: baseline;
   font: var(--font-body-sm);
-  color: var(--text-secondary);
+  color: var(--on-surface);
   line-height: var(--line-height-relaxed);
   margin: 0;
-  white-space: pre-wrap;
+}
+
+/* 小黑点:固定 20px 宽度居中 */
+.cs-fc-bullet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 20px;
+  width: 20px;
+  font-size: var(--font-body-sm);
+  color: var(--on-surface);
+}
+
+.cs-fc-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ---- 编辑统计:在 cs-file 卡片容器内,两行信息 + 右侧操作 ---- */
+.cs-edit-stats-wrap {
+  margin-top: 8px;
+}
+
+.cs-edit-stats {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cs-edit-stats .cs-file-info {
+  flex: 1 1 auto;
+}
+
+/* 胶囊行:与 cs-file-meta 同位置(第二行),与标题间距 4px */
+.cs-edit-stats-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* 变更胶囊:绿色增加 / 红色删除,字号 12px */
+.cs-edit-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: var(--radius-full);
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+.cs-edit-stats-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.cs-edit-stats-text {
+  margin: 0;
+  font: var(--font-body-sm);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.cs-edit-stats-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 变更胶囊:绿色增加 / 红色删除 */
+.cs-edit-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: var(--radius-full);
+  font: var(--font-caption-md);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+.cs-edit-pill--add {
+  background-color: #d5f2dc;
+  color: #01802b;
+}
+
+.cs-edit-pill--del {
+  background-color: #fce3e0;
+  color: #bf0a1c;
+}
+
+.cs-edit-stats-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* 撤销:无边框,黑色文字 */
+.cs-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  padding: 4px 10px;
+  border-radius: 0.5rem;
+  font: var(--font-body-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-edit-btn--ghost {
+  border: none;
+  background-color: transparent;
+  color: var(--on-surface);
+}
+
+.cs-edit-btn--ghost:hover {
+  background-color: var(--color-interactive-hover);
+}
+
+/* 审核:边框样式与 cs-file-more 一致 */
+.cs-edit-btn--outline {
+  box-sizing: border-box;
+  border: 1px solid var(--surface-container-high);
+  background-color: transparent;
+  color: var(--on-surface);
+  white-space: nowrap;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.cs-edit-btn--outline:hover {
+  background-color: var(--color-interactive-hover);
 }
 
 /* ---- 生成产物：产物汇总标题（无卡片背景，1rem，#000 @ 90%，不加粗） ---- */
 .cs-sum-title {
   font-size: 1rem;
+  font-weight: var(--font-weight-bold);
   color: var(--on-surface);
-  margin: 4px 0 0.5rem;
+  margin: 0 0 0.5rem;
 }
 
 /* ---- 生成产物：产物文件卡片（边框线替代阴影） ---- */
@@ -8265,7 +8559,7 @@ img[data-component="Icon"] {
 </head>
 <body>
 <div id="root">Loading...</div>
-<script>var LUCIDE = {"ban":[["circle",{"cx":"12","cy":"12","r":"10"}],["path",{"d":"M4.929 4.929 19.07 19.071"}]],"bot":[["path",{"d":"M12 8V4H8"}],["rect",{"width":"16","height":"12","x":"4","y":"8","rx":"2"}],["path",{"d":"M2 14h2"}],["path",{"d":"M20 14h2"}],["path",{"d":"M15 13v2"}],["path",{"d":"M9 13v2"}]],"braces":[["path",{"d":"M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"}],["path",{"d":"M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"}]],"brain":[["path",{"d":"M12 18V5"}],["path",{"d":"M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"}],["path",{"d":"M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"}],["path",{"d":"M17.997 5.125a4 4 0 0 1 2.526 5.77"}],["path",{"d":"M18 18a4 4 0 0 0 2-7.464"}],["path",{"d":"M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"}],["path",{"d":"M6 18a4 4 0 0 1-2-7.464"}],["path",{"d":"M6.003 5.125a4 4 0 0 0-2.526 5.77"}]],"bug":[["path",{"d":"M12 20v-9"}],["path",{"d":"M14 7a4 4 0 0 1 4 4v3a6 6 0 0 1-12 0v-3a4 4 0 0 1 4-4z"}],["path",{"d":"M14.12 3.88 16 2"}],["path",{"d":"M21 21a4 4 0 0 0-3.81-4"}],["path",{"d":"M21 5a4 4 0 0 1-3.55 3.97"}],["path",{"d":"M22 13h-4"}],["path",{"d":"M3 21a4 4 0 0 1 3.81-4"}],["path",{"d":"M3 5a4 4 0 0 0 3.55 3.97"}],["path",{"d":"M6 13H2"}],["path",{"d":"m8 2 1.88 1.88"}],["path",{"d":"M9 7.13V6a3 3 0 1 1 6 0v1.13"}]],"chart-column":[["path",{"d":"M3 3v16a2 2 0 0 0 2 2h16"}],["path",{"d":"M18 17V9"}],["path",{"d":"M13 17V5"}],["path",{"d":"M8 17v-3"}]],"check":[["path",{"d":"M20 6 9 17l-5-5"}]],"chevron-down":[["path",{"d":"m6 9 6 6 6-6"}]],"chevron-left":[["path",{"d":"m15 18-6-6 6-6"}]],"chevron-right":[["path",{"d":"m9 18 6-6-6-6"}]],"circle-alert":[["circle",{"cx":"12","cy":"12","r":"10"}],["line",{"x1":"12","x2":"12","y1":"8","y2":"12"}],["line",{"x1":"12","x2":"12.01","y1":"16","y2":"16"}]],"cloud":[["path",{"d":"M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"}]],"code":[["path",{"d":"m16 18 6-6-6-6"}],["path",{"d":"m8 6-6 6 6 6"}]],"code-xml":[["path",{"d":"m18 16 4-4-4-4"}],["path",{"d":"m6 8-4 4 4 4"}],["path",{"d":"m14.5 4-5 16"}]],"cpu":[["path",{"d":"M12 20v2"}],["path",{"d":"M12 2v2"}],["path",{"d":"M17 20v2"}],["path",{"d":"M17 2v2"}],["path",{"d":"M2 12h2"}],["path",{"d":"M2 17h2"}],["path",{"d":"M2 7h2"}],["path",{"d":"M20 12h2"}],["path",{"d":"M20 17h2"}],["path",{"d":"M20 7h2"}],["path",{"d":"M7 20v2"}],["path",{"d":"M7 2v2"}],["rect",{"x":"4","y":"4","width":"16","height":"16","rx":"2"}],["rect",{"x":"8","y":"8","width":"8","height":"8","rx":"1"}]],"expand":[["path",{"d":"m15 15 6 6"}],["path",{"d":"m15 9 6-6"}],["path",{"d":"M21 16v5h-5"}],["path",{"d":"M21 8V3h-5"}],["path",{"d":"M3 16v5h5"}],["path",{"d":"m3 21 6-6"}],["path",{"d":"M3 8V3h5"}],["path",{"d":"M9 9 3 3"}]],"eye":[["path",{"d":"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"}],["circle",{"cx":"12","cy":"12","r":"3"}]],"file":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}]],"file-code":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"M10 12.5 8 15l2 2.5"}],["path",{"d":"m14 12.5 2 2.5-2 2.5"}]],"file-output":[["path",{"d":"M4.226 20.925A2 2 0 0 0 6 22h12a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v3.127"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"m5 11-3 3"}],["path",{"d":"m5 17-3-3h10"}]],"file-search":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["circle",{"cx":"11.5","cy":"14.5","r":"2.5"}],["path",{"d":"M13.3 16.3 15 18"}]],"file-spreadsheet":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"M8 13h2"}],["path",{"d":"M14 13h2"}],["path",{"d":"M8 17h2"}],["path",{"d":"M14 17h2"}]],"file-text":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"M10 9H8"}],["path",{"d":"M16 13H8"}],["path",{"d":"M16 17H8"}]],"files":[["path",{"d":"M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"}],["path",{"d":"M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"}],["path",{"d":"M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"}]],"folder":[["path",{"d":"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"}]],"folder-open":[["path",{"d":"m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"}]],"git-branch":[["path",{"d":"M15 6a9 9 0 0 0-9 9V3"}],["circle",{"cx":"18","cy":"6","r":"3"}],["circle",{"cx":"6","cy":"18","r":"3"}]],"group":[["path",{"d":"M3 7V5c0-1.1.9-2 2-2h2"}],["path",{"d":"M17 3h2c1.1 0 2 .9 2 2v2"}],["path",{"d":"M21 17v2c0 1.1-.9 2-2 2h-2"}],["path",{"d":"M7 21H5c-1.1 0-2-.9-2-2v-2"}],["rect",{"width":"7","height":"5","x":"7","y":"7","rx":"1"}],["rect",{"width":"7","height":"5","x":"10","y":"12","rx":"1"}]],"hand":[["path",{"d":"M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"}],["path",{"d":"M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"}],["path",{"d":"M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"}],["path",{"d":"M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"}]],"hard-drive":[["path",{"d":"M10 16h.01"}],["path",{"d":"M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"}],["path",{"d":"M21.946 12.013H2.054"}],["path",{"d":"M6 16h.01"}]],"image":[["rect",{"width":"18","height":"18","x":"3","y":"3","rx":"2","ry":"2"}],["circle",{"cx":"9","cy":"9","r":"2"}],["path",{"d":"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"}]],"layers":[["path",{"d":"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"}],["path",{"d":"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"}],["path",{"d":"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"}]],"list":[["path",{"d":"M3 5h.01"}],["path",{"d":"M3 12h.01"}],["path",{"d":"M3 19h.01"}],["path",{"d":"M8 5h13"}],["path",{"d":"M8 12h13"}],["path",{"d":"M8 19h13"}]],"mail":[["path",{"d":"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"}],["rect",{"x":"2","y":"4","width":"20","height":"16","rx":"2"}]],"message-circle":[["path",{"d":"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"}]],"network":[["rect",{"x":"16","y":"16","width":"6","height":"6","rx":"1"}],["rect",{"x":"2","y":"16","width":"6","height":"6","rx":"1"}],["rect",{"x":"9","y":"2","width":"6","height":"6","rx":"1"}],["path",{"d":"M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"}],["path",{"d":"M12 12V8"}]],"palette":[["path",{"d":"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"}],["circle",{"cx":"13.5","cy":"6.5","r":".5","fill":"currentColor"}],["circle",{"cx":"17.5","cy":"10.5","r":".5","fill":"currentColor"}],["circle",{"cx":"6.5","cy":"12.5","r":".5","fill":"currentColor"}],["circle",{"cx":"8.5","cy":"7.5","r":".5","fill":"currentColor"}]],"paperclip":[["path",{"d":"m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"}]],"plug":[["path",{"d":"M12 22v-5"}],["path",{"d":"M15 8V2"}],["path",{"d":"M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"}],["path",{"d":"M9 8V2"}]],"plus":[["path",{"d":"M5 12h14"}],["path",{"d":"M12 5v14"}]],"presentation":[["path",{"d":"M2 3h20"}],["path",{"d":"M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"}],["path",{"d":"m7 21 5-5 5 5"}]],"radio":[["path",{"d":"M16.247 7.761a6 6 0 0 1 0 8.478"}],["path",{"d":"M19.075 4.933a10 10 0 0 1 0 14.134"}],["path",{"d":"M4.925 19.067a10 10 0 0 1 0-14.134"}],["path",{"d":"M7.753 16.239a6 6 0 0 1 0-8.478"}],["circle",{"cx":"12","cy":"12","r":"2"}]],"scan-search":[["path",{"d":"M3 7V5a2 2 0 0 1 2-2h2"}],["path",{"d":"M17 3h2a2 2 0 0 1 2 2v2"}],["path",{"d":"M21 17v2a2 2 0 0 1-2 2h-2"}],["path",{"d":"M7 21H5a2 2 0 0 1-2-2v-2"}],["circle",{"cx":"12","cy":"12","r":"3"}],["path",{"d":"m16 16-1.9-1.9"}]],"search":[["path",{"d":"m21 21-4.34-4.34"}],["circle",{"cx":"11","cy":"11","r":"8"}]],"settings-2":[["path",{"d":"M14 17H5"}],["path",{"d":"M19 7h-9"}],["circle",{"cx":"17","cy":"17","r":"3"}],["circle",{"cx":"7","cy":"7","r":"3"}]],"sheet":[["rect",{"width":"18","height":"18","x":"3","y":"3","rx":"2","ry":"2"}],["line",{"x1":"3","x2":"21","y1":"9","y2":"9"}],["line",{"x1":"3","x2":"21","y1":"15","y2":"15"}],["line",{"x1":"9","x2":"9","y1":"9","y2":"21"}],["line",{"x1":"15","x2":"15","y1":"9","y2":"21"}]],"shield-alert":[["path",{"d":"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"}],["path",{"d":"M12 8v4"}],["path",{"d":"M12 16h.01"}]],"space":[["path",{"d":"M22 17v1c0 .5-.5 1-1 1H3c-.5 0-1-.5-1-1v-1"}]],"summary":[["path",{"d":"M15 4H7"}],["path",{"d":"m18 16 3 3-3 3"}],["path",{"d":"M3 4v13a2 2 0 0 0 2 2h16"}],["path",{"d":"M7 14h7"}],["path",{"d":"M7 9h12"}]],"table":[["path",{"d":"M12 3v18"}],["rect",{"width":"18","height":"18","x":"3","y":"3","rx":"2"}],["path",{"d":"M3 9h18"}],["path",{"d":"M3 15h18"}]],"triangle":[["path",{"d":"M13.73 4a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"}]],"type":[["path",{"d":"M12 4v16"}],["path",{"d":"M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"}],["path",{"d":"M9 20h6"}]],"user":[["path",{"d":"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"}],["circle",{"cx":"12","cy":"7","r":"4"}]],"user-round":[["circle",{"cx":"12","cy":"8","r":"5"}],["path",{"d":"M20 21a8 8 0 0 0-16 0"}]],"users":[["path",{"d":"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"}],["path",{"d":"M16 3.128a4 4 0 0 1 0 7.744"}],["path",{"d":"M22 21v-2a4 4 0 0 0-3-3.87"}],["circle",{"cx":"9","cy":"7","r":"4"}]],"video":[["path",{"d":"m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"}],["rect",{"x":"2","y":"6","width":"14","height":"12","rx":"2"}]],"wrench":[["path",{"d":"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"}]],"x":[["path",{"d":"M18 6 6 18"}],["path",{"d":"m6 6 12 12"}]],"zap":[["path",{"d":"M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"}]]};</script>
+<script>var LUCIDE = {"ban":[["circle",{"cx":"12","cy":"12","r":"10"}],["path",{"d":"M4.929 4.929 19.07 19.071"}]],"bot":[["path",{"d":"M12 8V4H8"}],["rect",{"width":"16","height":"12","x":"4","y":"8","rx":"2"}],["path",{"d":"M2 14h2"}],["path",{"d":"M20 14h2"}],["path",{"d":"M15 13v2"}],["path",{"d":"M9 13v2"}]],"braces":[["path",{"d":"M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"}],["path",{"d":"M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"}]],"brain":[["path",{"d":"M12 18V5"}],["path",{"d":"M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"}],["path",{"d":"M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"}],["path",{"d":"M17.997 5.125a4 4 0 0 1 2.526 5.77"}],["path",{"d":"M18 18a4 4 0 0 0 2-7.464"}],["path",{"d":"M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"}],["path",{"d":"M6 18a4 4 0 0 1-2-7.464"}],["path",{"d":"M6.003 5.125a4 4 0 0 0-2.526 5.77"}]],"bug":[["path",{"d":"M12 20v-9"}],["path",{"d":"M14 7a4 4 0 0 1 4 4v3a6 6 0 0 1-12 0v-3a4 4 0 0 1 4-4z"}],["path",{"d":"M14.12 3.88 16 2"}],["path",{"d":"M21 21a4 4 0 0 0-3.81-4"}],["path",{"d":"M21 5a4 4 0 0 1-3.55 3.97"}],["path",{"d":"M22 13h-4"}],["path",{"d":"M3 21a4 4 0 0 1 3.81-4"}],["path",{"d":"M3 5a4 4 0 0 0 3.55 3.97"}],["path",{"d":"M6 13H2"}],["path",{"d":"m8 2 1.88 1.88"}],["path",{"d":"M9 7.13V6a3 3 0 1 1 6 0v1.13"}]],"chart-column":[["path",{"d":"M3 3v16a2 2 0 0 0 2 2h16"}],["path",{"d":"M18 17V9"}],["path",{"d":"M13 17V5"}],["path",{"d":"M8 17v-3"}]],"check":[["path",{"d":"M20 6 9 17l-5-5"}]],"chevron-down":[["path",{"d":"m6 9 6 6 6-6"}]],"chevron-left":[["path",{"d":"m15 18-6-6 6-6"}]],"chevron-right":[["path",{"d":"m9 18 6-6-6-6"}]],"circle-alert":[["circle",{"cx":"12","cy":"12","r":"10"}],["line",{"x1":"12","x2":"12","y1":"8","y2":"12"}],["line",{"x1":"12","x2":"12.01","y1":"16","y2":"16"}]],"cloud":[["path",{"d":"M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"}]],"code":[["path",{"d":"m16 18 6-6-6-6"}],["path",{"d":"m8 6-6 6 6 6"}]],"code-xml":[["path",{"d":"m18 16 4-4-4-4"}],["path",{"d":"m6 8-4 4 4 4"}],["path",{"d":"m14.5 4-5 16"}]],"cpu":[["path",{"d":"M12 20v2"}],["path",{"d":"M12 2v2"}],["path",{"d":"M17 20v2"}],["path",{"d":"M17 2v2"}],["path",{"d":"M2 12h2"}],["path",{"d":"M2 17h2"}],["path",{"d":"M2 7h2"}],["path",{"d":"M20 12h2"}],["path",{"d":"M20 17h2"}],["path",{"d":"M20 7h2"}],["path",{"d":"M7 20v2"}],["path",{"d":"M7 2v2"}],["rect",{"x":"4","y":"4","width":"16","height":"16","rx":"2"}],["rect",{"x":"8","y":"8","width":"8","height":"8","rx":"1"}]],"expand":[["path",{"d":"m15 15 6 6"}],["path",{"d":"m15 9 6-6"}],["path",{"d":"M21 16v5h-5"}],["path",{"d":"M21 8V3h-5"}],["path",{"d":"M3 16v5h5"}],["path",{"d":"m3 21 6-6"}],["path",{"d":"M3 8V3h5"}],["path",{"d":"M9 9 3 3"}]],"eye":[["path",{"d":"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"}],["circle",{"cx":"12","cy":"12","r":"3"}]],"file":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}]],"file-output":[["path",{"d":"M4.226 20.925A2 2 0 0 0 6 22h12a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v3.127"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"m5 11-3 3"}],["path",{"d":"m5 17-3-3h10"}]],"file-search":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["circle",{"cx":"11.5","cy":"14.5","r":"2.5"}],["path",{"d":"M13.3 16.3 15 18"}]],"file-spreadsheet":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"M8 13h2"}],["path",{"d":"M14 13h2"}],["path",{"d":"M8 17h2"}],["path",{"d":"M14 17h2"}]],"file-text":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"M10 9H8"}],["path",{"d":"M16 13H8"}],["path",{"d":"M16 17H8"}]],"files":[["path",{"d":"M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"}],["path",{"d":"M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"}],["path",{"d":"M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"}]],"folder":[["path",{"d":"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"}]],"folder-open":[["path",{"d":"m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"}]],"git-branch":[["path",{"d":"M15 6a9 9 0 0 0-9 9V3"}],["circle",{"cx":"18","cy":"6","r":"3"}],["circle",{"cx":"6","cy":"18","r":"3"}]],"group":[["path",{"d":"M3 7V5c0-1.1.9-2 2-2h2"}],["path",{"d":"M17 3h2c1.1 0 2 .9 2 2v2"}],["path",{"d":"M21 17v2c0 1.1-.9 2-2 2h-2"}],["path",{"d":"M7 21H5c-1.1 0-2-.9-2-2v-2"}],["rect",{"width":"7","height":"5","x":"7","y":"7","rx":"1"}],["rect",{"width":"7","height":"5","x":"10","y":"12","rx":"1"}]],"hand":[["path",{"d":"M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"}],["path",{"d":"M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"}],["path",{"d":"M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"}],["path",{"d":"M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"}]],"hard-drive":[["path",{"d":"M10 16h.01"}],["path",{"d":"M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"}],["path",{"d":"M21.946 12.013H2.054"}],["path",{"d":"M6 16h.01"}]],"image":[["rect",{"width":"18","height":"18","x":"3","y":"3","rx":"2","ry":"2"}],["circle",{"cx":"9","cy":"9","r":"2"}],["path",{"d":"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"}]],"layers":[["path",{"d":"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"}],["path",{"d":"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"}],["path",{"d":"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"}]],"list":[["path",{"d":"M3 5h.01"}],["path",{"d":"M3 12h.01"}],["path",{"d":"M3 19h.01"}],["path",{"d":"M8 5h13"}],["path",{"d":"M8 12h13"}],["path",{"d":"M8 19h13"}]],"mail":[["path",{"d":"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"}],["rect",{"x":"2","y":"4","width":"20","height":"16","rx":"2"}]],"message-circle":[["path",{"d":"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"}]],"network":[["rect",{"x":"16","y":"16","width":"6","height":"6","rx":"1"}],["rect",{"x":"2","y":"16","width":"6","height":"6","rx":"1"}],["rect",{"x":"9","y":"2","width":"6","height":"6","rx":"1"}],["path",{"d":"M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"}],["path",{"d":"M12 12V8"}]],"palette":[["path",{"d":"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"}],["circle",{"cx":"13.5","cy":"6.5","r":".5","fill":"currentColor"}],["circle",{"cx":"17.5","cy":"10.5","r":".5","fill":"currentColor"}],["circle",{"cx":"6.5","cy":"12.5","r":".5","fill":"currentColor"}],["circle",{"cx":"8.5","cy":"7.5","r":".5","fill":"currentColor"}]],"paperclip":[["path",{"d":"m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"}]],"plug":[["path",{"d":"M12 22v-5"}],["path",{"d":"M15 8V2"}],["path",{"d":"M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"}],["path",{"d":"M9 8V2"}]],"plus":[["path",{"d":"M5 12h14"}],["path",{"d":"M12 5v14"}]],"presentation":[["path",{"d":"M2 3h20"}],["path",{"d":"M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"}],["path",{"d":"m7 21 5-5 5 5"}]],"radio":[["path",{"d":"M16.247 7.761a6 6 0 0 1 0 8.478"}],["path",{"d":"M19.075 4.933a10 10 0 0 1 0 14.134"}],["path",{"d":"M4.925 19.067a10 10 0 0 1 0-14.134"}],["path",{"d":"M7.753 16.239a6 6 0 0 1 0-8.478"}],["circle",{"cx":"12","cy":"12","r":"2"}]],"scan-search":[["path",{"d":"M3 7V5a2 2 0 0 1 2-2h2"}],["path",{"d":"M17 3h2a2 2 0 0 1 2 2v2"}],["path",{"d":"M21 17v2a2 2 0 0 1-2 2h-2"}],["path",{"d":"M7 21H5a2 2 0 0 1-2-2v-2"}],["circle",{"cx":"12","cy":"12","r":"3"}],["path",{"d":"m16 16-1.9-1.9"}]],"search":[["path",{"d":"m21 21-4.34-4.34"}],["circle",{"cx":"11","cy":"11","r":"8"}]],"settings-2":[["path",{"d":"M14 17H5"}],["path",{"d":"M19 7h-9"}],["circle",{"cx":"17","cy":"17","r":"3"}],["circle",{"cx":"7","cy":"7","r":"3"}]],"sheet":[["rect",{"width":"18","height":"18","x":"3","y":"3","rx":"2","ry":"2"}],["line",{"x1":"3","x2":"21","y1":"9","y2":"9"}],["line",{"x1":"3","x2":"21","y1":"15","y2":"15"}],["line",{"x1":"9","x2":"9","y1":"9","y2":"21"}],["line",{"x1":"15","x2":"15","y1":"9","y2":"21"}]],"shield-alert":[["path",{"d":"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"}],["path",{"d":"M12 8v4"}],["path",{"d":"M12 16h.01"}]],"space":[["path",{"d":"M22 17v1c0 .5-.5 1-1 1H3c-.5 0-1-.5-1-1v-1"}]],"summary":[["path",{"d":"M15 4H7"}],["path",{"d":"m18 16 3 3-3 3"}],["path",{"d":"M3 4v13a2 2 0 0 0 2 2h16"}],["path",{"d":"M7 14h7"}],["path",{"d":"M7 9h12"}]],"table":[["path",{"d":"M12 3v18"}],["rect",{"width":"18","height":"18","x":"3","y":"3","rx":"2"}],["path",{"d":"M3 9h18"}],["path",{"d":"M3 15h18"}]],"triangle":[["path",{"d":"M13.73 4a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"}]],"type":[["path",{"d":"M12 4v16"}],["path",{"d":"M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"}],["path",{"d":"M9 20h6"}]],"user":[["path",{"d":"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"}],["circle",{"cx":"12","cy":"7","r":"4"}]],"user-round":[["circle",{"cx":"12","cy":"8","r":"5"}],["path",{"d":"M20 21a8 8 0 0 0-16 0"}]],"users":[["path",{"d":"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"}],["path",{"d":"M16 3.128a4 4 0 0 1 0 7.744"}],["path",{"d":"M22 21v-2a4 4 0 0 0-3-3.87"}],["circle",{"cx":"9","cy":"7","r":"4"}]],"video":[["path",{"d":"m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"}],["rect",{"x":"2","y":"6","width":"14","height":"12","rx":"2"}]],"wrench":[["path",{"d":"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"}]],"x":[["path",{"d":"M18 6 6 18"}],["path",{"d":"m6 6 12 12"}]],"zap":[["path",{"d":"M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"}]]};</script>
 <script type="text/babel" data-presets="react">
 var __export = {};
 /* ===== components/Icon/index.jsx ===== */
@@ -10291,7 +10585,7 @@ const W2M_STATS = [
 
 /* 最近动态(时间倒序):who 为人,avatar 复用成员头像 */
 const W2M_FEED = [
-  { who: "项目研究专家", avatar: "./assets/uploads/avatar-research.svg", text: "完成了空闲时间填写", time: "12 分钟前" },
+  { who: "项目研究专家", avatar: "./assets/uploads/avatar-research.svg", text: "完成了空闲时间填写", time: "• 分钟前" },
   { who: "UXUI设计专家", avatar: "./assets/uploads/avatar-design.svg", text: "完成了空闲时间填写", time: "35 分钟前" },
   { who: "开发专家", avatar: "./assets/uploads/avatar-develop.svg", text: "完成了空闲时间填写", time: "1 小时前" },
   { who: "测试专家", avatar: "./assets/uploads/avatar-test.svg", text: "完成了空闲时间填写", time: "2 小时前" },
@@ -10342,11 +10636,11 @@ const SWARM_ARTIFACTS = {
     eyebrow: "8 个子任务 · 5 位子智能体 · Markdown",
     sections: [
       {
-        h: "01 项目目标",
+        h: "• 项目目标",
         p: "以「无需注册、快速填写、结果清晰」为核心，交付单文件离线可运行的会议时间协调小程序，把一次多人排会的协调耗时从 23 分钟压缩到 3 分钟以内。",
       },
       {
-        h: "02 任务拆解",
+        h: "• 任务拆解",
         p: "共拆解 8 个子任务，按依赖关系串并混合编排：",
         list: [
           "任务 1：制定编排计划与任务分配 —— 项目总监",
@@ -10360,7 +10654,7 @@ const SWARM_ARTIFACTS = {
         ],
       },
       {
-        h: "03 里程碑与耗时",
+        h: "• 里程碑与耗时",
         list: [
           "编排规划：约 12 秒（生成 8 个子任务并完成角色分配）",
           "调研与设计：约 2 分钟（竞品分析 → 界面方案 → 关键体验）",
@@ -10370,7 +10664,7 @@ const SWARM_ARTIFACTS = {
         ],
       },
       {
-        h: "04 协作机制",
+        h: "• 协作机制",
         p: "子智能体在群聊中同步进展并开展方案辩论，关键节点交由用户授权放行；每个环节的产物（文档 / 代码 / 报告）沿任务链传递，最终汇总至项目总监复盘归档。",
       },
     ],
@@ -10381,11 +10675,11 @@ const SWARM_ARTIFACTS = {
     eyebrow: "3 款对标产品 · 4 个维度 · Markdown",
     sections: [
       {
-        h: "01 对比对象",
+        h: "• 对比对象",
         p: "选取 Doodle、Calendly 与 when2meet 原版三款产品，覆盖海外市场头部工具与经典轻量工具。",
       },
       {
-        h: "02 对比维度",
+        h: "• 对比维度",
         list: [
           "注册门槛：Doodle 需注册 · Calendly 强制账号 · 原版免注册",
           "日历集成：竞品主推「一键直连」，依赖账号体系与授权链路",
@@ -10394,11 +10688,11 @@ const SWARM_ARTIFACTS = {
         ],
       },
       {
-        h: "03 核心结论",
+        h: "• 核心结论",
         p: "竞品已放出「日历一键直连」的激进策略，本质是通过堆砌功能圈地、抢占企业团队市场。我们不做盲目加法，采用「极简轻量化」错位竞争：以「无感收集 vs 繁琐填表」压制其交互链路，把产品拉高到「秒级响应 + 全域协同」维度。",
       },
       {
-        h: "04 三个硬性指标",
+        h: "• 三个硬性指标",
         list: [
           "市场挤压：在办公排期核心场景拦截竞品的跨部门协作与外部会议客群",
           "体验提效：单次排会操作步数直接减半，以易用性拉动高频使用（DAU）",
@@ -10413,7 +10707,7 @@ const SWARM_ARTIFACTS = {
     eyebrow: "界面方案 · 关键体验 · 验收标准 · Markdown",
     sections: [
       {
-        h: "01 关键体验目标",
+        h: "• 关键体验目标",
         list: [
           "参与者无需注册，打开链接即可填写",
           "选择结果自动保存，中断后可恢复",
@@ -10421,7 +10715,7 @@ const SWARM_ARTIFACTS = {
         ],
       },
       {
-        h: "02 核心流程编排",
+        h: "• 核心流程编排",
         p: "围绕一条零门槛主链路编排页面与状态：",
         list: [
           "创建活动 → 分享链接 → 输入姓名 → 选择空闲时间",
@@ -10429,7 +10723,7 @@ const SWARM_ARTIFACTS = {
         ],
       },
       {
-        h: "03 页面模块排布",
+        h: "• 页面模块排布",
         list: [
           "创建活动（主办者视图）",
           "参与者加入（免注册）",
@@ -10439,7 +10733,7 @@ const SWARM_ARTIFACTS = {
         ],
       },
       {
-        h: "04 验收标准",
+        h: "• 验收标准",
         list: [
           "单次排会操作 ≤ 3 步，首屏可交互 < 1 秒",
           "共同空闲推荐命中率 ≥ 90%",
@@ -10454,18 +10748,18 @@ const SWARM_ARTIFACTS = {
     eyebrow: "40 项用例 · 2 个 P1 缺陷已修复 · Markdown",
     sections: [
       {
-        h: "01 测试范围",
+        h: "• 测试范围",
         p: "覆盖创建 / 分享、参与者填写、自动保存、共同时间汇总、推荐时段与移动端适配六大模块，共 40 项核心用例。",
       },
       {
-        h: "02 缺陷与修复",
+        h: "• 缺陷与修复",
         list: [
           "P1-01：移动端 320px 宽度下 30 分钟格错位 —— 已修复并回归通过",
           "P1-02：跨时区场景下截止时间边界溢出 1 小时 —— 已修复并回归通过",
         ],
       },
       {
-        h: "03 回归结论",
+        h: "• 回归结论",
         p: "两个 P1 缺陷返还开发专家修复后，全量回归 40 项用例全部通过，高优先级缺陷清零，线上版本运行正常。",
       },
     ],
@@ -11269,25 +11563,25 @@ function buildAgentReply(payload) {
       noPerm: true,
       title: "汇报演示.html · HTML",
       lines: [
-        "# 汇报演示 · When2meet 项目",
-        "01 背景与目标 —— 会议时间协调痛点与改进机会",
-        "02 用户画像 —— 目标人群与核心使用场景",
-        "03 首页交互改版 —— 布局与动效方案（重点）",
-        "04 智慧推荐 —— 推荐策略与算法链路（重点）",
-        "05 竞品分析 —— Doodle、Calendly 功能对比",
-        "06 信息架构 —— 站点地图与页面跳转关系",
-        "07 交互流程 —— 创建/参与/分享三大主流程",
-        "08 视觉规范 —— 色彩、字体与间距系统",
-        "09 动效设计 —— 微交互与转场动效规范",
-        "10 数据看板 —— 关键指标定义与埋点方案",
-        "11 技术方案 —— 前端架构与性能预算",
-        "12 性能优化 —— 首屏加载与包体积优化",
-        "13 A/B 实验 —— 实验设计与分流策略",
-        "14 数据验证 —— 核心指标与 A/B 结论",
-        "15 风险与应对 —— 识别、评估与缓解措施",
-        "16 团队分工 —— 角色职责与协作机制",
-        "17 排期计划 —— 三期迭代里程碑",
-        "18 路线图与 Q&A —— 长期规划与讨论",
+        "• 汇报演示 · When2meet 项目",
+        "• 背景与目标 —— 会议时间协调痛点与改进机会",
+        "• 用户画像 —— 目标人群与核心使用场景",
+        "• 首页交互改版 —— 布局与动效方案（重点）",
+        "• 智慧推荐 —— 推荐策略与算法链路（重点）",
+        "• 竞品分析 —— Doodle、Calendly 功能对比",
+        "• 信息架构 —— 站点地图与页面跳转关系",
+        "• 交互流程 —— 创建/参与/分享三大主流程",
+        "• 视觉规范 —— 色彩、字体与间距系统",
+        "• 动效设计 —— 微交互与转场动效规范",
+        "• 数据看板 —— 关键指标定义与埋点方案",
+        "• 技术方案 —— 前端架构与性能预算",
+        "• 性能优化 —— 首屏加载与包体积优化",
+        "• A/B 实验 —— 实验设计与分流策略",
+        "• 数据验证 —— 核心指标与 A/B 结论",
+        "• 风险与应对 —— 识别、评估与缓解措施",
+        "• 团队分工 —— 角色职责与协作机制",
+        "• 排期计划 —— 三期迭代里程碑",
+        "• 路线图与 Q&A —— 长期规划与讨论",
       ],
     },
     {
@@ -11318,6 +11612,19 @@ function buildAgentReply(payload) {
             },
       ],
     },
+    /* 编辑统计 + 变更胶囊 + 撤销/审核按钮(仅单Agent模式) */
+    ...(swarm
+      ? []
+      : [
+          {
+            type: "edit-stats",
+            cls: "cs-node-edit-stats",
+            noPerm: true,
+            text: "编辑了18个文本",
+            additions: "+956",
+            deletions: "-0",
+          },
+        ]),
   );
   /* 蜂群模式跳过 filecontent、summary 和冲刺节点（已在协作流程中覆盖） */
   if (swarm) {
@@ -11889,14 +12196,20 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
               return (
                 <div className={"cs-fc " + (b.cls || "")} key={i}>
                   <div className="cs-fc-head">
-                    <Icon name="file-code" size={14} />
+                    <img
+                      src="./assets/uploads/icon/file-type/filled/code.svg"
+                      alt=""
+                      width="20"
+                      height="20"
+                    />
                     <span>{b.title}</span>
                   </div>
                   <p className="cs-sum-title">文件内容</p>
                   <div className="cs-fc-body">
                     {b.lines.map((ln, k) => (
                       <p className="cs-fc-line" key={k}>
-                        {ln}
+                        <span className="cs-fc-bullet">•</span>
+                        <span className="cs-fc-text">{ln.replace(/^\u2022\s*/, "")}</span>
                       </p>
                     ))}
                   </div>
@@ -11920,6 +12233,34 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
                   {b.files.map((f) => (
                     <FileCard key={f.id} f={f} onPreview={onPreview} />
                   ))}
+                </div>
+              );
+            }
+
+            /* ---- 编辑统计:与产物文件卡片同款结构(图标 + 两行信息 + 操作) ---- */
+            if (b.type === "edit-stats") {
+              return (
+                <div className="cs-files cs-edit-stats-wrap" key={i}>
+                  <div className="cs-file cs-edit-stats">
+                    <span className="cs-file-icon">
+                      <Icon src="./assets/uploads/review-files.svg" size={28} />
+                    </span>
+                    <span className="cs-file-info">
+                      <span className="cs-file-name">编辑了18个文本</span>
+                      <span className="cs-edit-stats-pills">
+                        <span className="cs-edit-pill cs-edit-pill--add">{b.additions}</span>
+                        <span className="cs-edit-pill cs-edit-pill--del">{b.deletions}</span>
+                      </span>
+                    </span>
+                    <div className="cs-edit-stats-actions">
+                      <button type="button" className="cs-edit-btn cs-edit-btn--ghost">
+                        撤销
+                      </button>
+                      <button type="button" className="cs-edit-btn cs-edit-btn--outline">
+                        审核
+                      </button>
+                    </div>
+                  </div>
                 </div>
               );
             }
