@@ -30,7 +30,17 @@
 }
 
 .cs-header-main {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   min-width: 0;
+}
+
+/* 标题前的显示器图标(会话进行中标记,与左侧对话项尾随图标一致) */
+.cs-header-icon {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
 }
 
 .cs-title {
@@ -73,7 +83,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 6px;
+  /* 用户指定 0.75rem */
+  gap: 0.75rem;
   max-width: 78%;
   margin-left: auto;
 }
@@ -82,7 +93,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 6px;
+  /* 与输入框文件卡片列表(cc-file-list)同款间距 */
+  gap: 8px;
 }
 
 .cs-user-chip {
@@ -100,6 +112,8 @@
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
+  /* 多个技能/指令标签与文本超宽时自动换行 */
+  flex-wrap: wrap;
   padding: 0.75rem 1rem;
   border-radius: 1rem;
   /* #f1f3f5 — 等价 var(--color-background-secondary)，暗色模式自动翻转 */
@@ -169,8 +183,8 @@
   font-size: 0.75rem;
   /* #000 @ 60% — 等价 var(--text-secondary)，暗色模式自动翻转 */
   color: var(--text-secondary);
-  /* #000 @ 20% — 等价 var(--divider)，暗色模式自动翻转 */
-  border-bottom: 1px solid var(--divider);
+  /* 用户指定 rgba(0,0,0,0.1)(#000 @ 10%,较 --divider 的 20% 更浅) */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .cs-head-sep {
@@ -207,7 +221,8 @@
 .cs-form-body {
   position: relative;
   padding: 1rem 1rem 0.875rem;
-  border-bottom: 1px solid var(--divider);
+  /* 用户指定 rgba(0,0,0,0.1)(#000 @ 10%,较 --divider 的 20% 更浅) */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 /* 右上角关闭按钮 */

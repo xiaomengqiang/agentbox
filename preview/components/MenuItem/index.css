@@ -145,6 +145,53 @@
   color: var(--color-icon-primary);
 }
 
+/* ---- 行 hover 操作组:更多 + 新建对话(仅带 --actions 标记的普通行;子菜单项不参与) ---- */
+/* 操作组默认隐藏 */
+.mi-trailing-hover {
+  display: none;
+}
+
+/* 行 hover:默认尾随图标隐藏,操作组显示 */
+.mi-row:hover .mi-trailing-region--actions > .mi-trailing-action {
+  display: none;
+}
+
+.mi-row:hover .mi-trailing-hover {
+  display: flex;
+  align-items: center;
+}
+
+/* 行 hover:尾随区宽度随操作组自适应(默认 16px 单图标宽) */
+.mi-row:hover .mi-trailing-region--actions {
+  flex-basis: auto;
+  width: auto;
+}
+
+/* hover 组末位按钮右侧对称 -4px:最右图标与默认尾随图标中心精确对齐
+   (默认按钮为 24px 目标区在 16px 尾随区内居中,左右各溢出 4px;
+    末位补 margin-right: -4px 后组外宽收敛,最右图标落位与默认一致) */
+.mi-trailing-hover .mi-trailing-action:last-child {
+  margin-right: calc((var(--mi-icon-size) - 24px) / 2);
+}
+
+/* ---- 子菜单(children) ---- */
+/* 子菜单项容器:每级缩进 12px,叠加 level-2 的 16px 展位空隙形成层级 */
+.mi-children {
+  display: flex;
+  flex-direction: column;
+  padding-left: 12px;
+}
+
+/* ---- 选中行:常驻状态层高亮(10% 黑,区别于 hover 的 5%) ---- */
+.mi-row-selected::before,
+.mi-row-selected:hover::before {
+  background: var(--primary-10);
+}
+
+.mi-row-selected {
+  color: var(--on-surface);
+}
+
 
 .mi-row-editing::before { background: var(--color-interactive-hover); }
 .mi-menu-error .mi-row-editing::before { background: var(--color-error-container); }

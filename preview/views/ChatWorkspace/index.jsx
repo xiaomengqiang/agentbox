@@ -26,6 +26,10 @@ export default function ChatWorkspace() {
     [workspaceMode]: typeof next === "function" ? next(previous[workspaceMode]) : next,
   }));
   const isCode = workspaceMode === "code";
+  /* 会话标题与标识(首条用户消息):会话开始时由侧栏在首个项目下创建「新对话」子节点并同步标题 */
+  const firstMsg = messages.length > 0 ? messages[0] : null;
+  const sessionTitle = firstMsg && firstMsg.text ? firstMsg.text : null;
+  const sessionId = firstMsg ? firstMsg.id : null;
   const capabilities = isCode ? [
     { id: "build", label: "项目开发", icon: "code-xml" },
     { id: "review", label: "代码审查", icon: "scan-search" },
@@ -115,9 +119,22 @@ export default function ChatWorkspace() {
     setGenerating(false);
   };
 
+  // 会话消息附件卡片操作:remove 移除附件卡片 / retry 清除失败态(模拟重试成功)
+  const handleFileAction = (msgId, fileId, kind) => {
+    setMessages((ms) =>
+      ms.map((m) => {
+        if (m.id !== msgId || !m.files) return m;
+        if (kind === "remove") {
+          return { ...m, files: m.files.filter((f) => f.id !== fileId) };
+        }
+        return { ...m, files: m.files.map((f) => (f.id === fileId ? { ...f, failed: false } : f)) };
+      })
+    );
+  };
+
   return (
     <div className="cw-page">
-      <Sidebar mode={workspaceMode} onModeChange={setWorkspaceMode} />
+      <Sidebar mode={workspaceMode} onModeChange={setWorkspaceMode} sessionTitle={sessionTitle} sessionId={sessionId} />
       <main key={workspaceMode} data-workspace={workspaceMode} className={"cw-main" + (inSession ? " cw-main--session" : "")}>
         {inSession ? (
           /* ---- 会话页：顶栏 + 消息流 + 底部输入 ---- */
@@ -128,6 +145,7 @@ export default function ChatWorkspace() {
             stopGen={stopGen}
             swarmExtraChat={swarmChat}
             onSwarmViewChange={setSwarmChatMode}
+            onFileAction={handleFileAction}
             composer={
               <ChatComposer
                 onSend={handleSend}

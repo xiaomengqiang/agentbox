@@ -3,6 +3,7 @@ import "./index.css";
 
 const DEFAULT_ICON = "./assets/uploads/icon/sidebar/new-chat.svg";
 const MORE_ICON = "./assets/uploads/icon/sidebar/more.svg";
+const NEW_CHAT_ICON = "./assets/uploads/icon/sidebar/new-chat.svg";
 const COLLAPSED_ICON = "./assets/uploads/icon/function/arrow-right.svg";
 const EXPANDED_ICON = "./assets/uploads/icon/function/arrow-down.svg";
 
@@ -52,20 +53,23 @@ export default function MenuItem({
   dropdownIcon = true,
   leadingIcon = true,
   trailingIcon = false,
+  newChatAction = true,
   renameable = false,
   onRename,
   defaultExpanded = false,
+  activeId,
   onSelect,
   onToggle,
   onTrailingAction,
+  onNewChatAction,
 }) {
   return <div id={id} className={["mi-menu", `mi-menu-${size}`, `mi-menu-${variant}`, className].filter(Boolean).join(" ")} style={style} role="list">
-    {items.map(item => <MenuRow key={item.id} item={item} level={level} dropdownIcon={dropdownIcon} leadingIcon={leadingIcon} trailingIcon={trailingIcon}
-      renameable={renameable} onRename={onRename} defaultExpanded={defaultExpanded} onSelect={onSelect} onToggle={onToggle} onTrailingAction={onTrailingAction} />)}
+    {items.map(item => <MenuRow key={item.id} item={item} level={level} dropdownIcon={dropdownIcon} leadingIcon={leadingIcon} trailingIcon={trailingIcon} newChatAction={newChatAction}
+      renameable={renameable} onRename={onRename} defaultExpanded={defaultExpanded} activeId={activeId} onSelect={onSelect} onToggle={onToggle} onTrailingAction={onTrailingAction} onNewChatAction={onNewChatAction} />)}
   </div>;
 }
 
-export function MenuRow({ initialEditing = false, inputAutoFocus = true, renameable, onRename, item, level, dropdownIcon, leadingIcon, trailingIcon, defaultExpanded, onSelect, onToggle, onTrailingAction }) {
+export function MenuRow({ initialEditing = false, inputAutoFocus = true, renameable, onRename, item, level, dropdownIcon, leadingIcon, trailingIcon, submenu = false, newChatAction = true, defaultExpanded, activeId, onSelect, onToggle, onTrailingAction, onNewChatAction }) {
   const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
   const [editing, setEditing] = useState(initialEditing);
   const [draft, setDraft] = useState("");
@@ -104,16 +108,22 @@ export function MenuRow({ initialEditing = false, inputAutoFocus = true, renamea
     } else activate();
   }
   const rowExpands = level === "level-1" && dropdownIcon;
+  /* 子节点:存在 children 且展开时,在行下渲染子菜单(level-2 子菜单项);
+     子菜单形态为纯文本 + 右侧更多图标 —— 无展开/收起箭头、无前置图标、无新建对话操作 */
+  const hasChildren = Array.isArray(item.children) && item.children.length > 0;
+  /* 选中态:activeId 与行 id 一致时常驻高亮 */
+  const selected = activeId !== undefined && activeId === item.id;
   function toggle() {
     const next = !expanded;
     if (item.expanded === undefined) setInternalExpanded(next);
     onToggle?.({ ...currentItem, expanded: next });
   }
-  return <div className={`mi-row${rowExpands ? " mi-row-expandable" : ""}${editing ? " mi-row-editing" : ""}`} role="listitem" onClick={rowExpands && !editing ? toggle : undefined}>
-    {level === "level-2" && <span className="mi-disclosure-space" aria-hidden="true" />}
-    {dropdownIcon && <button type="button" className="mi-disclosure" aria-label={expanded ? "收起" : "展开"} aria-expanded={expanded} onClick={event => { event.stopPropagation(); toggle(); }}>
-      <MenuIcon src={expanded ? EXPANDED_ICON : COLLAPSED_ICON} />
-    </button>}
+  return <>
+    <div className={`mi-row${rowExpands ? " mi-row-expandable" : ""}${editing ? " mi-row-editing" : ""}${selected ? " mi-row-selected" : ""}`} role="listitem" onClick={rowExpands && !editing ? toggle : undefined}>
+      {level === "level-2" && <span className="mi-disclosure-space" aria-hidden="true" />}
+      {dropdownIcon && <button type="button" className="mi-disclosure" aria-label={expanded ? "收起" : "展开"} aria-expanded={expanded} onClick={event => { event.stopPropagation(); toggle(); }}>
+        <MenuIcon src={expanded ? EXPANDED_ICON : COLLAPSED_ICON} />
+      </button>}
     {editing ? <>
       {leadingIcon && <MenuIcon src={item.iconSrc || DEFAULT_ICON} className="mi-leading-icon" />}
       <input className="mi-rename-input" aria-label="重命名" autoFocus={inputAutoFocus} value={draft}
@@ -131,9 +141,40 @@ export function MenuRow({ initialEditing = false, inputAutoFocus = true, renamea
         {leadingIcon && <MenuIcon src={item.iconSrc || DEFAULT_ICON} className="mi-leading-icon" />}
         <MenuLabel name={name} onDoubleClick={beginRename} />
       </button>
-      {trailingIcon && <span className="mi-trailing-region"><button type="button" className="mi-trailing-action" aria-label="更多" onClick={event => { event.stopPropagation(); onTrailingAction?.(currentItem); }}>{item.trailingIcon || <MenuIcon src={MORE_ICON} />}</button></span>}
+      {trailingIcon && (
+        <span className="mi-trailing-region mi-trailing-region--actions">
+          {/* 默认尾随图标(云朵/显示器/⋯):行 hover 时隐藏,由 hover 组接管 */}
+          <button type="button" className="mi-trailing-action" aria-label="更多" onClick={event => { event.stopPropagation(); onTrailingAction?.(currentItem); }}>
+            {item.trailingIcon || <MenuIcon src={MORE_ICON} />}
+          </button>
+          {/* hover 操作组(所有行):更多在前;hover 时替换默认图标。
+             新建对话仅普通行且 newChatAction 开启时渲染 —— 子菜单项与对话分组都只有更多 */}
+          <span className="mi-trailing-hover">
+            <button type="button" className="mi-trailing-action" aria-label="更多" onClick={event => { event.stopPropagation(); onTrailingAction?.(currentItem); }}>
+              <MenuIcon src={MORE_ICON} />
+            </button>
+            {!submenu && newChatAction && (
+              <button type="button" className="mi-trailing-action" aria-label="新建对话" onClick={event => { event.stopPropagation(); onNewChatAction?.(currentItem); }}>
+                <MenuIcon src={NEW_CHAT_ICON} />
+              </button>
+            )}
+          </span>
+        </span>
+      )}
       {item.statusDot && <span className="mi-status-dot" aria-hidden="true" />}
     </>}
 
-  </div>;
+  </div>
+  {hasChildren && expanded ? (
+    /* 子菜单:纯文本子菜单项 —— 无前置图标(leadingIcon=false)、无展开箭头、
+       尾部仅更多图标(不渲染 hover 操作组),继承选中/选择行为 */
+    <div className="mi-children" role="group">
+      {item.children.map(child => (
+        <MenuRow key={child.id} item={child} level="level-2" dropdownIcon={false} leadingIcon={false} trailingIcon={trailingIcon} submenu newChatAction={newChatAction}
+          renameable={renameable} onRename={onRename} defaultExpanded={false} activeId={activeId} onSelect={onSelect} onToggle={onToggle}
+          onTrailingAction={onTrailingAction} onNewChatAction={onNewChatAction} />
+      ))}
+    </div>
+  ) : null}
+  </>;
 }

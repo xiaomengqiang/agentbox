@@ -19,6 +19,11 @@ const PROJECT_FILES_SVG =
 const ZOOM_SVG =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"><image x="0" y="0" width="32" height="32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACcUlEQVR4Ae3gAZAkSZIkSRKLqpm7R0REZmZmVlVVVVV3d3d3d/fMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMdHd3d3dXV1VVVVVmZkZGRIS7m5kKz0xmV3d1d3dPz8zMzMxMovjvhfjvhfjvhfjvhfjvhfjvhfjvhfjvhfiXLYCX5jktgb/mOb0Kz2kJPBFY8oIh/mUvDXwI8CTgHM/2PTzbAnhHnu1m4Gbgu4E/4gVD/MteBXg9YAP4JuB2XribgQ8BzgN/CPwRLxjiX/YqwCOB3wQ+BPgm4Haev5uBDwG+CXhd4EnAH/GCIf5lrwI8Evge4GbgQ4BvAm7nOd0MfAjwTcDtwHsBTwL+iBcM8S97FeCRwPdwxc3AhwDfBNzOFTcDHwJ8E3A7V7wX8DfAX/OCIV40C2DJs90MvDnwTVzx6cD3ALfzr4P474X474X4t7kZeEfgK7ji04HvAW7n2RbAkhcO8S97aeClgO/hipuBDwG+CbidK24GPgT4JuB2rngv4EnAH/GCIf5lrwI8Evge4GbgQ4BvAm7nOd0MfAjwTcDtwHsBTwL+iBcM8S97FeCRwG8CHwJ8E3A7z9/NwIcA3wS8LvAk4I94wRD/slcBXhU4BXwTcDsv3M3AhwBHwG8Af8QLhviXvQrw3sDtwO08248CS57tvXi208AjgW8C/poXDPEvWwCPAhY8pz/iOb00sOA5/TWw5AVD/PdC/PdC/PdC/PdC/PdC/PdC/PdC/PfiHwHUwU0hBnrcswAAAABJRU5ErkJggg=="/></svg>';
 
+/* 会话标题前的显示器图标:与左侧对话项(ChatComposer 输入框联调)尾随的电脑图标一致,表示会话进行中 */
+const MONITOR_ICON = (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1.5" y="3" width="13" height="9" rx="1.5" stroke="black" strokeOpacity="0.4" strokeLinejoin="round"/><path d="M8 12v2.5" stroke="black" strokeOpacity="0.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M5.5 14.5h5" stroke="black" strokeOpacity="0.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+);
+
 /* 依据发送载荷构造一次 Agent 回复：结构化回答块流。
    块类型："p" 段落 / "li" 列表项 / "status" 图标状态行（随流式逐字输出）/
    "perm-wait" 授权等待标记 — 流式输出到该块时挂起，授权弹框在输入框上方弹出，
@@ -179,33 +184,67 @@ export function buildAgentReply(payload) {
 }
 
 /* ================= 用户消息气泡 ================= */
-function UserBubble({ msg }) {
+function UserBubble({ msg, onFileAction }) {
   const chips = msg.chips || [];
   const files = msg.files || [];
   return (
     <div className="cs-user-wrap">
-      {chips.length > 0 || files.length > 0 ? (
+      {files.length > 0 ? (
+        /* 附件卡片:复用输入框 cc-file-card 同款样式(图标/缩略图 + 名称 + 类型·大小,
+           hover 显移除按钮,失败态带重试);操作经 onFileAction 回写消息数据 */
         <div className="cs-user-attach">
-          {chips.map((c) => (
-            <span className="cs-user-chip" key={c.id}>
-              <Icon name={c.icon} size={12} />
-              {c.title}
-            </span>
-          ))}
           {files.map((f) => (
-            <span className="cs-user-chip" key={f.id}>
-              <Icon src={f.src} size={12} />
-              {f.name}
-            </span>
+            <div className="cc-file-card" key={f.id}>
+              <span className="cc-file-icon">
+                {f.preview ? (
+                  <img className="cc-file-thumb" src={f.preview} alt={f.name} />
+                ) : (
+                  <Icon src={f.src} size={30} />
+                )}
+              </span>
+              <span className="cc-file-info">
+                <span className="cc-file-name" title={f.name}>
+                  {f.name}
+                </span>
+                {f.failed ? (
+                  <span className="cc-file-meta cc-file-meta-failed">
+                    <span className="cc-file-failed">上传失败</span>
+                    <button
+                      type="button"
+                      className="cc-file-retry"
+                      onClick={() => onFileAction && onFileAction(msg.id, f.id, "retry")}
+                    >
+                      重试
+                    </button>
+                  </span>
+                ) : (
+                  <span className="cc-file-meta">
+                    {f.ext} · {f.size}
+                  </span>
+                )}
+              </span>
+              <button
+                type="button"
+                className="cc-file-x"
+                onClick={() => onFileAction && onFileAction(msg.id, f.id, "remove")}
+                aria-label={"移除" + f.name}
+              >
+                <Icon name="x" size={10} />
+              </button>
+            </div>
           ))}
         </div>
       ) : null}
       <div className="cs-user-bubble">
-        {/* 标签：图标 + 文档总结（图标 0.875rem） */}
-        <span className="cs-user-tag">
-          <Icon name="file-text" size={14} />
-          <span>文档总结</span>
-        </span>
+        {/* 首页输入框添加的技能/专家等指令胶囊 → 同步为气泡内标签;
+            图标按输入框胶囊同款渲染(mask 优先 → src → Lucide 名),其后为用户需求文本;
+            未添加时仅显示需求文本 */}
+        {chips.map((c) => (
+          <span className="cs-user-tag" key={c.id}>
+            <Icon name={c.icon} src={c.src} mask={c.mask} size={14} />
+            <span>{c.title}</span>
+          </span>
+        ))}
         <div className="cs-user-text">{msg.text}</div>
       </div>
     </div>
@@ -1085,7 +1124,7 @@ function SwarmMdDoc({ def, name }) {
 }
 
 /* ================= 会话页面 ================= */
-export default function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange, swarmExtraChat, onSwarmViewChange }) {
+export default function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange, swarmExtraChat, onSwarmViewChange, onFileAction }) {
   const listRef = useRef(null);
   const first = messages[0];
 
@@ -1207,9 +1246,10 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
   return (
     <div className="cs-wrap">
       <div className="cs-main">
-        {/* 顶栏：会话标题 + 日历图标 */}
+        {/* 顶栏：显示器图标 + 会话标题 + 日历图标 */}
         <header className="cs-header">
           <div className="cs-header-main">
+            <span className="cs-header-icon" aria-hidden="true">{MONITOR_ICON}</span>
             <h1 className="cs-title">{first ? short(first.text, 24) : "新会话"}</h1>
           </div>
           <img src="./assets/uploads/header-calendar.png" alt="" className="cs-new" />
@@ -1220,7 +1260,7 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
           <div className="cs-inner">
             {messages.map((m, mi) =>
               m.role === "user" ? (
-                <UserBubble key={m.id} msg={m} />
+                <UserBubble key={m.id} msg={m} onFileAction={onFileAction} />
               ) : (
                 <AgentRun
                   key={m.id}

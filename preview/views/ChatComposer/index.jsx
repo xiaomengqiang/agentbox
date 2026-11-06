@@ -324,9 +324,12 @@ export default function ChatComposer(props) {
   const [files, setFiles] = useState([]);
   // 顶部居中提示(超限/超大等)
   const [toast, setToast] = useState("");
-  // 加号(+)下拉：一级 hover 时向右侧弹出二级
-  const [hoverAdd, setHoverAdd] = useState(null); // 当前悬停的一级 key
+  // 加号(+)下拉:一级 hover 预览/点击选中均向右侧弹出二级
+  const [hoverAdd, setHoverAdd] = useState(null); // 当前悬停的一级 key(预览,鼠标离开即失效)
+  const [selectedAdd, setSelectedAdd] = useState(null); // 当前选中的一级 key(点击确定,面板常驻不消失)
   const [attachSecQuery, setAttachSecQuery] = useState("");
+  // 二级面板当前展示的一级项:悬停预览优先,否则回落到选中项
+  const activeAdd = hoverAdd || selectedAdd;
   // 连接器开关状态
   const [connOn, setConnOn] = useState({});
 
@@ -365,6 +368,14 @@ export default function ChatComposer(props) {
     return () => window.clearTimeout(t);
   }, [toast]);
 
+  // 加号菜单关闭时重置悬停与选中(下次打开回到初始态)
+  useEffect(() => {
+    if (open !== "attach") {
+      setHoverAdd(null);
+      setSelectedAdd(null);
+    }
+  }, [open]);
+
   const toggle = (key) => setOpen(open === key ? null : key);
 
   // 选中菜单项：更新状态并收起
@@ -379,8 +390,10 @@ export default function ChatComposer(props) {
     if (onSend) {
       onSend({
         text: msg.trim(),
-        chips: cmdChips.map((c) => ({ id: c.id, title: c.title, icon: c.icon })),
-        files: files.map((f) => ({ id: f.id, name: f.name, src: f.src })),
+        /* 胶囊完整视觉字段(icon/src/mask)透传,会话页气泡按输入框同款图标渲染 */
+        chips: cmdChips.map((c) => ({ id: c.id, title: c.title, icon: c.icon, src: c.src, mask: c.mask })),
+        /* 文件完整字段(ext/size/preview/failed)透传,会话页按输入框同款卡片渲染 */
+        files: files.map((f) => ({ id: f.id, name: f.name, src: f.src, ext: f.ext, size: f.size, preview: f.preview, failed: f.failed })),
         meta: {
           modeId: mode.id,
           modeLabel: mode.label,
@@ -644,7 +657,7 @@ export default function ChatComposer(props) {
     return ADD_CHILDREN.map((it) => cmdRow(it, pickAddItem));
   };
 
-  // 一级行（+ 菜单），hover 时右侧弹二级；「添加文件」无二级，点击唤起本地文件选择
+  // 一级行（+ 菜单）：hover 或点击选中时右侧弹二级（添加文件除外 —— 点击直接唤起本地文件选择）
   const renderAddRoot = (r) => {
     if (r.key === "add-file") {
       return (
@@ -664,13 +677,30 @@ export default function ChatComposer(props) {
     return (
       <div
         key={r.key}
-        className={"cc-add-item" + (hoverAdd === r.key ? " is-active" : "")}
+        className={
+          "cc-add-item" +
+          (hoverAdd === r.key ? " is-active" : "") +
+          (selectedAdd === r.key ? " is-selected" : "")
+        }
         onMouseEnter={() => {
           setHoverAdd(r.key);
           setAttachSecQuery("");
         }}
       >
-        <button type="button" className="cc-slash-row cc-slash-nav cc-add-root">
+        <button
+          type="button"
+          className="cc-slash-row cc-slash-nav cc-add-root"
+          onClick={() => {
+            /* 点击选中(再次点击取消):选中行常驻背景,二级面板在选中期间不随鼠标离开消失 */
+            if (selectedAdd === r.key) {
+              setSelectedAdd(null);
+              setHoverAdd(null);
+            } else {
+              setSelectedAdd(r.key);
+            }
+            setAttachSecQuery("");
+          }}
+        >
           <Icon name={r.icon} src={r.src} size={16} className="cc-slash-icon" />
           <span className="cc-slash-nav-title">{r.title}</span>
           <Icon name="chevron-right" size={14} className="cc-slash-nav-arrow" />
@@ -896,8 +926,9 @@ export default function ChatComposer(props) {
                   {ADD_ROOTS.slice(0, 1).map(renderAddRoot)}
                   <div className="cc-menu-divider" />
                   {ADD_ROOTS.slice(1).map(renderAddRoot)}
-                  {/* 二级面板锚定在菜单整体(而非所在行):切换选项时位置不跳动,避免抖动 */}
-                  {hoverAdd ? <div className="cc-add-sub">{addSub(hoverAdd)}</div> : null}
+                  {/* 二级面板锚定在菜单整体(而非所在行):切换选项时位置不跳动,避免抖动;
+                      悬停项优先预览,无悬停时回落到选中项 —— 选中期间面板常驻不消失 */}
+                  {activeAdd ? <div className="cc-add-sub">{addSub(activeAdd)}</div> : null}
                 </div>
               ) : null}
             </div>

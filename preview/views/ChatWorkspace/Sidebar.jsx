@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./index.css";
 import Segmented from "../../components/Segmented/index.jsx";
 import MenuItem from "../../components/MenuItem/index.jsx";
@@ -39,8 +39,91 @@ const CONVERSATIONS = [
   { id: "conv-3", label: "SQL 查询优化建议", trailingIcon: CLOUD_ICON },
 ];
 
-export default function Sidebar({ mode = "office", onModeChange }) {
+// 在树中按 id 将节点置为展开/收起(不可变更新,未命中时返回原引用)
+function setExpandedDeep(nodes, id, expanded) {
+  let changed = false;
+  const next = nodes.map((node) => {
+    if (node.id === id) {
+      changed = true;
+      return { ...node, expanded };
+    }
+    if (node.children) {
+      const children = setExpandedDeep(node.children, id, expanded);
+      if (children !== node.children) {
+        changed = true;
+        return { ...node, children };
+      }
+    }
+    return node;
+  });
+  return changed ? next : nodes;
+}
+
+// 标签截断:超长时截取为「前 n 字 + …」形式(子菜单项标签区约容 14 个中文字符)
+function truncateLabel(text, n) {
+  const t = (text || "").trim();
+  return t.length > n ? t.slice(0, n) + "…" : t;
+}
+
+// 在目标节点下追加子节点并展开父节点(不可变更新)
+function appendChildDeep(nodes, parentId, child) {
+  let changed = false;
+  const next = nodes.map((node) => {
+    if (node.id === parentId) {
+      changed = true;
+      return { ...node, expanded: true, children: [...(node.children || []), child] };
+    }
+    if (node.children) {
+      const children = appendChildDeep(node.children, parentId, child);
+      if (children !== node.children) {
+        changed = true;
+        return { ...node, children };
+      }
+    }
+    return node;
+  });
+  return changed ? next : nodes;
+}
+
+export default function Sidebar({ mode = "office", onModeChange, sessionTitle, sessionId }) {
   const [activeId, setActiveId] = useState("new-chat");
+  // 项目/对话菜单树:支持在任意节点下创建子对话(新建对话)
+  const [projects, setProjects] = useState(PROJECTS);
+  const [conversations, setConversations] = useState(CONVERSATIONS);
+
+  // 新会话开始(cs-title 生成):在首个项目下自动创建「新对话」子节点,
+  // 标签同步会话标题(与 cs-title 同源,超长截断为…)并携带显示器图标,同时选中;
+  // 同一会话(sessionId)只创建一次;主菜单「新建对话」标签始终保持不变
+  const handledSessionsRef = useRef(new Set());
+  useEffect(() => {
+    if (!sessionId || !sessionTitle || handledSessionsRef.current.has(sessionId)) return;
+    handledSessionsRef.current.add(sessionId);
+    const childId = `chat-${Date.now()}`;
+    const child = {
+      id: childId,
+      label: truncateLabel(sessionTitle, 14),
+      trailingIcon: MONITOR_ICON,
+    };
+    setProjects((list) => appendChildDeep(list, PROJECTS[0].id, child));
+    setActiveId(childId);
+  }, [sessionId, sessionTitle]);
+
+  // 点击行内「新建对话」:在目标节点下创建子节点,展开父节点并选中新子节点
+  // 子菜单项形态:纯文本 + 右侧显示器图标(同 conv-1 的 MONITOR_ICON,表示会话进行中)
+  const createChildChat = (setter) => (item) => {
+    const childId = `chat-${Date.now()}`;
+    const count = (item.children || []).length;
+    const child = {
+      id: childId,
+      label: count ? `新对话 ${count + 1}` : "新对话",
+      trailingIcon: MONITOR_ICON,
+    };
+    setter((list) => appendChildDeep(list, item.id, child));
+    setActiveId(childId);
+  };
+
+  // 展开/收起箭头:同步树节点的 expanded 状态
+  const toggleNode = (setter) => (item) => setter((list) => setExpandedDeep(list, item.id, item.expanded));
 
   return (
     <aside className="cw-sidebar" data-active={activeId}>
@@ -76,25 +159,32 @@ export default function Sidebar({ mode = "office", onModeChange }) {
       <div className="cw-section">
         <p className="cw-section-title">项目</p>
         <MenuItem
-          items={PROJECTS}
+          items={projects}
           level="level-1"
           dropdownIcon={false}
           leadingIcon
           trailingIcon
+          activeId={activeId}
           onSelect={(item) => setActiveId(item.id)}
+          onToggle={toggleNode(setProjects)}
           onTrailingAction={(item) => console.log("项目更多操作", item.id)}
+          onNewChatAction={createChildChat(setProjects)}
         />
       </div>
 
       <div className="cw-section cw-conversations">
         <p className="cw-section-title">对话</p>
         <MenuItem
-          items={CONVERSATIONS}
+          items={conversations}
           level="level-1"
           dropdownIcon={false}
           leadingIcon={false}
           trailingIcon
+          newChatAction={false}
+          activeId={activeId}
           onSelect={(item) => setActiveId(item.id)}
+          onToggle={toggleNode(setConversations)}
+          onNewChatAction={createChildChat(setConversations)}
         />
       </div>
 

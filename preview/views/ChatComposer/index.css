@@ -1030,6 +1030,12 @@
   background-color: var(--color-interactive-hover);
 }
 
+/* 选中态(点击确定):常驻背景(#000 @ 10%),与 hover 预览(约 5%)区分;
+   选中行的二级面板常驻,不随鼠标离开消失 */
+.cc-add-item.is-selected > .cc-add-root {
+  background-color: var(--primary-10);
+}
+
 .cc-add-root {
   width: 100%;
 }
