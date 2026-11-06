@@ -53,12 +53,12 @@
   text-overflow: ellipsis;
 }
 
-/* 顶栏右侧图标（纯图片展示） */
+/* 顶栏右侧图标（纯图片展示，用户指定 2rem × 2rem） */
 .cs-new {
   display: block;
   flex: 0 0 auto;
-  width: 1rem;
-  height: 1rem;
+  width: 2rem;
+  height: 2rem;
 }
 
 /* ---- 消息流 ---- */

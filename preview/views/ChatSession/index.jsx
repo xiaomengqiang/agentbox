@@ -424,6 +424,23 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
   useEffect(() => {
     if (paused) return; // 暂停中：不推进流式
     if (!cur || cur.type === "perm-wait" || cur.type === "form-wait") return;
+    /* 文件内容块:按文本打印方式逐字流式输出(跨行累计字符),打完短暂停留后推进 */
+    if (cur.type === "filecontent") {
+      const fcLen = cur.lines.reduce((s, l) => s + l.replace(/^\u2022\s*/, "").length, 0);
+      if (chars < fcLen) {
+        const t = window.setTimeout(() => {
+          setChars((c) => c + 2);
+          if (onGrow) onGrow();
+        }, typeInterval);
+        return () => window.clearTimeout(t);
+      }
+      const t = window.setTimeout(() => {
+        setCursor((c) => c + 1);
+        setChars(0);
+        if (onGrow) onGrow();
+      }, 700);
+      return () => window.clearTimeout(t);
+    }
     if (!cur.text) {
       const t = window.setTimeout(() => {
         setCursor((c) => c + 1);
@@ -746,8 +763,10 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
               );
             }
 
-            /* ---- 生成产物：文件内容预览 ---- */
+            /* ---- 生成产物：文件内容 —— 按文本打印方式逐字流式输出(跨行累计偏移) ---- */
             if (b.type === "filecontent") {
+              const isCurF = i === cursor;
+              let offset = 0;
               return (
                 <div className={"cs-fc " + (b.cls || "")} key={i}>
                   <div className="cs-fc-head">
@@ -761,12 +780,32 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
                   </div>
                   <p className="cs-sum-title">文件内容</p>
                   <div className="cs-fc-body">
-                    {b.lines.map((ln, k) => (
-                      <p className="cs-fc-line" key={k}>
-                        <span className="cs-fc-bullet">•</span>
-                        <span className="cs-fc-text">{ln.replace(/^\u2022\s*/, "")}</span>
-                      </p>
-                    ))}
+                    {b.lines.map((ln, k) => {
+                      const line = ln.replace(/^\u2022\s*/, "");
+                      const start = offset;
+                      offset += line.length;
+                      if (!isCurF) {
+                        return (
+                          <p className="cs-fc-line" key={k}>
+                            <span className="cs-fc-bullet">•</span>
+                            <span className="cs-fc-text">{line}</span>
+                          </p>
+                        );
+                      }
+                      /* 当前行按累计字符切片逐字揭示,行尾跟随打字光标 */
+                      const shown = Math.max(0, Math.min(line.length, chars - start));
+                      if (shown <= 0) return null;
+                      const typing = shown < line.length || chars === offset;
+                      return (
+                        <p className="cs-fc-line" key={k}>
+                          <span className="cs-fc-bullet">•</span>
+                          <span className="cs-fc-text">
+                            {line.slice(0, shown)}
+                            {typing ? <span className="cs-caret" /> : null}
+                          </span>
+                        </p>
+                      );
+                    })}
                   </div>
                 </div>
               );
