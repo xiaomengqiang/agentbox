@@ -1,23 +1,8 @@
+import { SWARM_FORM_PAGES } from "../../src/constants/chatSession.js";
 /* ============================================================
  * 蜂群模式 · 流式生成模块
  * 表单提交后的完整多专家协作流程
  * ============================================================ */
-
-/* 蜂群模式配置表单页面定义 */
-export const SWARM_FORM_PAGES = [
-  {
-    id: "approval",
-    title: "开发完成后部署前需要等待进行人工审批放行吗？",
-    type: "radio",
-    options: ["需要", "不需要"],
-  },
-  {
-    id: "env",
-    title: "选择部署环境？",
-    type: "radio",
-    options: ["测试环境", "生产环境"],
-  },
-];
 
 /* 依据发送载荷构造蜂群模式的前置流式块序列（表单前） */
 export function buildSwarmBlocks(payload) {
