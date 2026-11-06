@@ -33,6 +33,11 @@ export default function ChatWorkspace() {
     { id: "test", label: "编写测试", icon: "check" },
   ] : CAPABILITIES;
   const inSession = messages.length > 0;
+  // 会话创建时的模式:传给会话页输入框,使其显示与会话一致的模式(蜂群会话 → 蜂群模式)
+  const sessionModeId =
+    inSession && messages[0].meta && messages[0].meta.modeId === "swarm"
+      ? "swarm"
+      : "single";
 
   // 生成中标记 + 停止信号（点击停止按钮时递增，AgentRun 感知后跳到结尾）
   const [generating, setGenerating] = useState(false);
@@ -123,7 +128,15 @@ export default function ChatWorkspace() {
             stopGen={stopGen}
             swarmExtraChat={swarmChat}
             onSwarmViewChange={setSwarmChatMode}
-            composer={<ChatComposer onSend={handleSend} chatMode isGenerating={generating} onStop={handleStop} />}
+            composer={
+              <ChatComposer
+                onSend={handleSend}
+                chatMode
+                isGenerating={generating}
+                onStop={handleStop}
+                modeId={sessionModeId}
+              />
+            }
           />
         ) : (
           /* ---- 欢迎页：Hero + 居中输入框 + 快捷能力胶囊 ---- */

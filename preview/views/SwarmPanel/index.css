@@ -8,7 +8,7 @@
   min-height: 0;
   box-sizing: border-box;
   background-color: var(--surface-container-lowest);
-  border-left: 1px solid var(--divider);
+  border-left: 1px solid #e6e6e6;
 }
 
 /* 群聊辩论页签:面板加宽到 890 */
@@ -24,7 +24,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 10px 16px;
-  border-bottom: 1px solid #e4e4e5;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .sp-tabs {
@@ -40,7 +40,7 @@
   height: 32px;
   padding: 0 12px;
   border: none;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-container);
   background-color: transparent;
   color: var(--text-secondary);
   font: var(--font-caption-lg);
@@ -50,9 +50,11 @@
     color var(--duration-fast) var(--ease-standard);
 }
 
+/* hover 效果与选中态一致 */
 .sp-tab:hover {
-  background-color: var(--color-interactive-hover);
+  background-color: #f1f3f5;
   color: var(--on-surface);
+  font-weight: var(--font-weight-bold);
 }
 
 /* 选中态:非胶囊,圆角 8 + 浅灰底 #f1f3f5,文字 #000 90% */
@@ -101,7 +103,7 @@
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
-  padding: 14px 16px;
+  padding: 16px 24px;
 }
 
 /* 进展标题:16px 加粗,三角图标紧随文字右侧(间距4) */
@@ -119,11 +121,12 @@
   cursor: pointer;
 }
 
-/* ---- 浅灰信息栏:#f1f3f5 50% ---- */
+/* ---- 浅灰信息栏:#f1f3f5 50%;overflow hidden 防小鸟溢出 ---- */
 .sp-info {
   padding: 12px 14px;
   border-radius: var(--radius-container);
   background-color: rgba(241, 243, 245, 0.5);
+  overflow: hidden;
 }
 
 .sp-info-head {
@@ -197,12 +200,12 @@
     linear-gradient(to right, rgba(100, 187, 92, 0.5), #64bb5c);
 }
 
-/* 进度小鸟:宽 108(高度自适应),前缘与激活进度条的边缘对齐(整体骑在填充段上) */
+/* 进度小鸟:宽 108(高度自适应),与进度条激活位置居中对齐 */
 .sp-progress-bird {
   position: absolute;
   top: 0;
   width: 108px;
-  margin-left: -95px;
+  margin-left: -54px;
   pointer-events: none;
   transition: left 0.4s linear;
 }
@@ -211,7 +214,7 @@
 .sp-progress-bird--done {
   top: -7px;
   width: 72px;
-  margin-left: -72px;
+  margin-left: -38px;
 }
 
 /* ---- 任务列表(进度图下方,8 项,可展开) ---- */
@@ -271,14 +274,15 @@
   transform: rotate(180deg);
 }
 
-/* 展开详情:圆角边框,高 72 垂直居中,左小鸟 + 右上下两行文本 */
+/* 展开详情:圆角边框,高 72 垂直居中,左小鸟 + 右上下两行文本;
+   上距=margin-top 4px,下距=margin-bottom 0 + 列表间隙 4px,上下间距相等 */
 .sp-task-detail {
   display: flex;
   align-items: center;
   box-sizing: border-box;
   gap: 10px;
   height: 72px;
-  margin: 4px 6px;
+  margin: 4px 6px 0;
   padding: 0 12px;
   border: 1px solid #e5e5ea;
   border-radius: 12px;
@@ -579,11 +583,11 @@
   color: var(--primary);
 }
 
-/* 段落之间不设间距(内容连排) */
+/* 段落之间不设间距(内容连排),字号 14px */
 .sp-chat-item-p {
   margin: 0;
   color: var(--on-surface);
-  font: var(--font-body-sm);
+  font: var(--font-body-md);
   line-height: 1.7;
 }
 

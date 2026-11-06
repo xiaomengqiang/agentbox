@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Icon } from "../../components/Icon/index.jsx";
 import "./index.css";
 
@@ -77,8 +77,7 @@ const CHAT_MESSAGES = [
     avatar: "./assets/uploads/avatar-design.svg",
     time: "2026/06/20 12:56",
     paragraphs: [
-      `@项目研究专家 好，目标定得很准。那我们来看任务 2（提出更多体验侧诉求）。既然主打轻量化，这次我需要你的智囊团在做竞品分析时，帮我扒透核心的体验数据。我计划在主界面采用模块化的 Bento Box (便当盒) 布局来收纳高密度信息，配合带有未来感的深色模式。我需要明确：竞品在完整用户旅程（User Journey）中哪里存在断点？核心任务的交互层级最深到了哪一层？`,
-      `你打算怎么调度 Ethan（市场研究专家）、Claire（营销专家）和 Eric（商业策略专家）这三位，来为我的页面交互和视觉风格提供精准洞察？我需要听到具体的兵力部署。`,
+      `@项目研究专家 好，目标定得很准。那我们来看任务 2（提出更多体验侧诉求）。既然主打轻量化，这次我需要你的智囊团在做竞品分析时，帮我扒透核心的体验数据。我计划在主界面采用模块化的 Bento Box (便当盒) 布局来收纳高密度信息，配合带有未来感的深色模式。我需要明确：竞品在完整用户旅程（User Journey）中哪里存在断点？核心任务的交互层级最深到了哪一层？你打算怎么调度 Ethan（市场研究专家）、Claire（营销专家）和 Eric（商业策略专家）这三位，来为我的页面交互和视觉风格提供精准洞察？我需要听到具体的兵力部署。`,
     ],
   },
   {
@@ -133,6 +132,15 @@ export default function SwarmPanel(props) {
   useEffect(() => {
     if (onViewChange) onViewChange(tab === "debate");
   }, [tab, onViewChange]);
+
+  // 群聊新增内容时,滚动容器贴底(整体内容上移,露出新消息)
+  const bodyRef = useRef(null);
+  useEffect(() => {
+    if (tab !== "debate") return;
+    if (bodyRef.current) {
+      bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+    }
+  }, [extraChat.length, tab]);
 
   // 进度驱动:外部同步(左侧流式进度)优先;无外部进度时回退为内部自动动画
   // (2s 后启动,7s 内从 12.5% 匀速前进到 100%)
@@ -196,6 +204,7 @@ export default function SwarmPanel(props) {
               className={"sp-tab" + (tab === "debate" ? " is-active" : "")}
               onClick={() => setTab("debate")}
             >
+              <Icon name="user-round" size={16} />
               <span>竞品研究群聊辩论</span>
             </button>
           ) : null}
@@ -229,7 +238,7 @@ export default function SwarmPanel(props) {
       </header>
 
       {/* ---- 主内容区 ---- */}
-      <div className="sp-body">
+      <div className="sp-body" ref={bodyRef}>
         {tab === "debate" ? (
           /* ---- 群聊辩论视图:胶囊搜索框 + 聊天对话列表 ---- */
           <div className="sp-chat">
@@ -305,7 +314,11 @@ export default function SwarmPanel(props) {
               }
               alt=""
               aria-hidden="true"
-              style={{ left: progress * 100 + "%" }}
+              style={{
+                /* 两种状态共用同一钳制表达式:完成切换时 left 不变,
+                   小鸟原地替换图片,不产生横向滑动 */
+                left: "min(" + progress * 100 + "%, calc(100% - 36px))",
+              }}
             />
           </div>
         </div>

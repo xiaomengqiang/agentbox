@@ -4302,7 +4302,7 @@ img[data-component="Icon"] {
   min-height: 0;
   box-sizing: border-box;
   background-color: var(--surface-container-lowest);
-  border-left: 1px solid var(--divider);
+  border-left: 1px solid #e6e6e6;
 }
 
 /* 群聊辩论页签:面板加宽到 890 */
@@ -4318,7 +4318,7 @@ img[data-component="Icon"] {
   justify-content: space-between;
   gap: 12px;
   padding: 10px 16px;
-  border-bottom: 1px solid #e4e4e5;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .sp-tabs {
@@ -4334,7 +4334,7 @@ img[data-component="Icon"] {
   height: 32px;
   padding: 0 12px;
   border: none;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-container);
   background-color: transparent;
   color: var(--text-secondary);
   font: var(--font-caption-lg);
@@ -4344,9 +4344,11 @@ img[data-component="Icon"] {
     color var(--duration-fast) var(--ease-standard);
 }
 
+/* hover 效果与选中态一致 */
 .sp-tab:hover {
-  background-color: var(--color-interactive-hover);
+  background-color: #f1f3f5;
   color: var(--on-surface);
+  font-weight: var(--font-weight-bold);
 }
 
 /* 选中态:非胶囊,圆角 8 + 浅灰底 #f1f3f5,文字 #000 90% */
@@ -4395,7 +4397,7 @@ img[data-component="Icon"] {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
-  padding: 14px 16px;
+  padding: 16px 24px;
 }
 
 /* 进展标题:16px 加粗,三角图标紧随文字右侧(间距4) */
@@ -4413,11 +4415,12 @@ img[data-component="Icon"] {
   cursor: pointer;
 }
 
-/* ---- 浅灰信息栏:#f1f3f5 50% ---- */
+/* ---- 浅灰信息栏:#f1f3f5 50%;overflow hidden 防小鸟溢出 ---- */
 .sp-info {
   padding: 12px 14px;
   border-radius: var(--radius-container);
   background-color: rgba(241, 243, 245, 0.5);
+  overflow: hidden;
 }
 
 .sp-info-head {
@@ -4491,12 +4494,12 @@ img[data-component="Icon"] {
     linear-gradient(to right, rgba(100, 187, 92, 0.5), #64bb5c);
 }
 
-/* 进度小鸟:宽 108(高度自适应),前缘与激活进度条的边缘对齐(整体骑在填充段上) */
+/* 进度小鸟:宽 108(高度自适应),与进度条激活位置居中对齐 */
 .sp-progress-bird {
   position: absolute;
   top: 0;
   width: 108px;
-  margin-left: -95px;
+  margin-left: -54px;
   pointer-events: none;
   transition: left 0.4s linear;
 }
@@ -4505,7 +4508,7 @@ img[data-component="Icon"] {
 .sp-progress-bird--done {
   top: -7px;
   width: 72px;
-  margin-left: -72px;
+  margin-left: -38px;
 }
 
 /* ---- 任务列表(进度图下方,8 项,可展开) ---- */
@@ -4565,14 +4568,15 @@ img[data-component="Icon"] {
   transform: rotate(180deg);
 }
 
-/* 展开详情:圆角边框,高 72 垂直居中,左小鸟 + 右上下两行文本 */
+/* 展开详情:圆角边框,高 72 垂直居中,左小鸟 + 右上下两行文本;
+   上距=margin-top 4px,下距=margin-bottom 0 + 列表间隙 4px,上下间距相等 */
 .sp-task-detail {
   display: flex;
   align-items: center;
   box-sizing: border-box;
   gap: 10px;
   height: 72px;
-  margin: 4px 6px;
+  margin: 4px 6px 0;
   padding: 0 12px;
   border: 1px solid #e5e5ea;
   border-radius: 12px;
@@ -4873,11 +4877,11 @@ img[data-component="Icon"] {
   color: var(--primary);
 }
 
-/* 段落之间不设间距(内容连排) */
+/* 段落之间不设间距(内容连排),字号 14px */
 .sp-chat-item-p {
   margin: 0;
   color: var(--on-surface);
-  font: var(--font-body-sm);
+  font: var(--font-body-md);
   line-height: 1.7;
 }
 
@@ -8838,7 +8842,7 @@ Object.assign(__export, { buildSwarmBlocks, buildSwarmFlowBlocks, SWARM_FORM_PAG
 
 /* ===== views/SwarmPanel/index.jsx ===== */
 (function () {
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 const { Icon } = __export;
 /* 蜂群模式任务面板(固宽 650):标题栏(项目文件/任务摘要 + 放大/收缩) + 进展信息栏 */
 const TABS = [
@@ -8915,8 +8919,7 @@ const CHAT_MESSAGES = [
     avatar: "./assets/uploads/avatar-design.svg",
     time: "2026/06/20 12:56",
     paragraphs: [
-      `@项目研究专家 好，目标定得很准。那我们来看任务 2（提出更多体验侧诉求）。既然主打轻量化，这次我需要你的智囊团在做竞品分析时，帮我扒透核心的体验数据。我计划在主界面采用模块化的 Bento Box (便当盒) 布局来收纳高密度信息，配合带有未来感的深色模式。我需要明确：竞品在完整用户旅程（User Journey）中哪里存在断点？核心任务的交互层级最深到了哪一层？`,
-      `你打算怎么调度 Ethan（市场研究专家）、Claire（营销专家）和 Eric（商业策略专家）这三位，来为我的页面交互和视觉风格提供精准洞察？我需要听到具体的兵力部署。`,
+      `@项目研究专家 好，目标定得很准。那我们来看任务 2（提出更多体验侧诉求）。既然主打轻量化，这次我需要你的智囊团在做竞品分析时，帮我扒透核心的体验数据。我计划在主界面采用模块化的 Bento Box (便当盒) 布局来收纳高密度信息，配合带有未来感的深色模式。我需要明确：竞品在完整用户旅程（User Journey）中哪里存在断点？核心任务的交互层级最深到了哪一层？你打算怎么调度 Ethan（市场研究专家）、Claire（营销专家）和 Eric（商业策略专家）这三位，来为我的页面交互和视觉风格提供精准洞察？我需要听到具体的兵力部署。`,
     ],
   },
   {
@@ -8971,6 +8974,15 @@ function SwarmPanel(props) {
   useEffect(() => {
     if (onViewChange) onViewChange(tab === "debate");
   }, [tab, onViewChange]);
+
+  // 群聊新增内容时,滚动容器贴底(整体内容上移,露出新消息)
+  const bodyRef = useRef(null);
+  useEffect(() => {
+    if (tab !== "debate") return;
+    if (bodyRef.current) {
+      bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+    }
+  }, [extraChat.length, tab]);
 
   // 进度驱动:外部同步(左侧流式进度)优先;无外部进度时回退为内部自动动画
   // (2s 后启动,7s 内从 12.5% 匀速前进到 100%)
@@ -9034,6 +9046,7 @@ function SwarmPanel(props) {
               className={"sp-tab" + (tab === "debate" ? " is-active" : "")}
               onClick={() => setTab("debate")}
             >
+              <Icon name="user-round" size={16} />
               <span>竞品研究群聊辩论</span>
             </button>
           ) : null}
@@ -9067,7 +9080,7 @@ function SwarmPanel(props) {
       </header>
 
       {/* ---- 主内容区 ---- */}
-      <div className="sp-body">
+      <div className="sp-body" ref={bodyRef}>
         {tab === "debate" ? (
           /* ---- 群聊辩论视图:胶囊搜索框 + 聊天对话列表 ---- */
           <div className="sp-chat">
@@ -9143,7 +9156,11 @@ function SwarmPanel(props) {
               }
               alt=""
               aria-hidden="true"
-              style={{ left: progress * 100 + "%" }}
+              style={{
+                /* 两种状态共用同一钳制表达式:完成切换时 left 不变,
+                   小鸟原地替换图片,不产生横向滑动 */
+                left: "min(" + progress * 100 + "%, calc(100% - 36px))",
+              }}
             />
           </div>
         </div>
@@ -10655,6 +10672,11 @@ function ChatWorkspace() {
     { id: "test", label: "编写测试", icon: "check" },
   ] : CAPABILITIES;
   const inSession = messages.length > 0;
+  // 会话创建时的模式:传给会话页输入框,使其显示与会话一致的模式(蜂群会话 → 蜂群模式)
+  const sessionModeId =
+    inSession && messages[0].meta && messages[0].meta.modeId === "swarm"
+      ? "swarm"
+      : "single";
 
   // 生成中标记 + 停止信号（点击停止按钮时递增，AgentRun 感知后跳到结尾）
   const [generating, setGenerating] = useState(false);
@@ -10745,7 +10767,15 @@ function ChatWorkspace() {
             stopGen={stopGen}
             swarmExtraChat={swarmChat}
             onSwarmViewChange={setSwarmChatMode}
-            composer={<ChatComposer onSend={handleSend} chatMode isGenerating={generating} onStop={handleStop} />}
+            composer={
+              <ChatComposer
+                onSend={handleSend}
+                chatMode
+                isGenerating={generating}
+                onStop={handleStop}
+                modeId={sessionModeId}
+              />
+            }
           />
         ) : (
           /* ---- 欢迎页：Hero + 居中输入框 + 快捷能力胶囊 ---- */
