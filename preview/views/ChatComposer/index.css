@@ -48,6 +48,12 @@
   box-shadow: var(--shadow-md);
 }
 
+/* 对话页模式(单Agent/蜂群会话):输入卡片带 1px 边框,去掉默认阴影 */
+.cc-card--chat {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: none;
+}
+
 /* 输入框右上角外侧的吉祥鸟装饰插画(纯装饰,不拦截交互;整体悬于外框上方,不被卡片遮挡) */
 .cc-shell-mascot {
   position: absolute;

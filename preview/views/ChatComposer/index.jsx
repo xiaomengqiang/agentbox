@@ -771,7 +771,7 @@ export default function ChatComposer(props) {
       ) : null}
       {/* ============ 输入卡片(高度随已选文件行数自适应) ============ */}
       <div
-        className="cc-card"
+        className={"cc-card" + (chatMode ? " cc-card--chat" : "")}
         style={{ height: fileCardHeight, flexBasis: fileCardHeight }}
       >
         {/* 正文输入区 */}
