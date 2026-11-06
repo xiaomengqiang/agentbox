@@ -84,12 +84,7 @@
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard);
-}
-
-.sp-action:hover {
-  background-color: var(--color-interactive-hover);
-  color: var(--color-icon-primary);
-}
+}
 
 /* 展开图标选中态:与左侧选项卡同款(圆角8 + #f1f3f5) */
 .sp-action.is-active {
@@ -414,15 +409,7 @@
   width: 36px;
   height: 36px;
   border-radius: var(--radius-full);
-}
-
-.sp-agent-lines {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+}
 
 .sp-agent-line1 {
   overflow: hidden;

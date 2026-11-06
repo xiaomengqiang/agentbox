@@ -1,0 +1,46 @@
+/* ===================== 公共样式 =====================
+   跨视图重复的规则统一收纳:选择器保持原名,效果与提取前完全一致。
+   由 demo.jsx 引入,构建时内联。 */
+
+/* 图标按钮 hover:浅色底 + 图标主色 */
+.cc-ghost:hover,
+.cc-ghost.is-active,
+.cc-modal-close:hover,
+.sp-action:hover {
+  background-color: var(--color-interactive-hover);
+  color: var(--color-icon-primary);
+}
+
+/* 文本/操作 hover:浅色底 + 主文字色 */
+.cc-local:hover,
+.cc-local.is-active,
+.cw-cap:hover {
+  background-color: var(--color-interactive-hover);
+  color: var(--on-surface);
+}
+
+/* 信息双行容器(图标行右侧的标题+描述两行) */
+.cc-file-info,
+.cc-add-line-main,
+.sp-agent-lines {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* 幽灵操作 hover:浅色底 + 主文字色 */
+.cw-collapse:hover,
+.cw-settings:hover,
+.cs-form-close:hover,
+.cs-form-pager-btn:hover,
+.cs-fail-retry:hover,
+.cs-file-more:hover,
+.cs-preview-filetab-x:hover,
+.cs-preview-iconbtn:hover,
+.cs-w2m-ghost:hover,
+.cs-w2m-invite:hover {
+  background: var(--color-interactive-hover);
+  color: var(--on-surface);
+}

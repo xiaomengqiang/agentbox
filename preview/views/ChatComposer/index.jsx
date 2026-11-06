@@ -24,63 +24,6 @@ import {
 import { fileTypeOf, isImageFile, fileSrcOf, fmtSize } from "../../src/utils/file.js";
 import { useClickOutside } from "../../src/hook/useClickOutside.js";
 import "./index.css";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- {
-  const parts = name.split(".");
-  return parts.length > 1 ? parts.pop().toUpperCase() : "FILE";
-}
-
-
-
-
-
-
-
- {
-  return IMAGE_EXTS.includes(fileTypeOf(name));
-}
-
- {
-  const key = EXT_ICON_KEYS[fileTypeOf(name)];
-  return FILE_ICONS[key || "unknown"];
-}
-
- {
-  if (bytes < 1024) return bytes + " B";
-  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-  return (bytes / (1024 * 1024)).toFixed(1) + " MB";
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const asSkillChip = (it) => ({ ...it, mask: SKILL_CHIP_MASK, closable: false });
 
 

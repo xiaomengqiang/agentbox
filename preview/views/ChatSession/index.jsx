@@ -21,16 +21,6 @@ import { useClickOutside } from "../../src/hook/useClickOutside.js";
 import "./index.css";
 
 /* ================= 会话数据构造 ================= */
-
- {
-  const t = (text || "").trim();
-  return t.length > n ? t.slice(0, n) + "…" : t;
-}
-
-
-
-
-
 /* 会话标题前的显示器图标:与左侧对话项(ChatComposer 输入框联调)尾随的电脑图标一致,表示会话进行中 */
 const MONITOR_ICON = (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1.5" y="3" width="13" height="9" rx="1.5" stroke="black" strokeOpacity="0.4" strokeLinejoin="round"/><path d="M8 12v2.5" stroke="black" strokeOpacity="0.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M5.5 14.5h5" stroke="black" strokeOpacity="0.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -908,8 +898,7 @@ function w2mCellBg(c) {
 }
 
 /* ================= 蜂群产物:流式链接对应的预览页签内容 ================= */
-
-kind=w2m 为小程序界面预览,
+/* kind=w2m 为小程序界面预览 */
 
 
 /* markdown 类产物的文档页签渲染(复用单Agent文档页样式) */

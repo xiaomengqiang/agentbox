@@ -142,13 +142,7 @@
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard);
-}
-
-.cc-ghost:hover,
-.cc-ghost.is-active {
-  background-color: var(--color-interactive-hover);
-  color: var(--color-icon-primary);
-}
+}
 
 /* ---- 图标 + 文字的下拉按钮（chip）----
    默认无灰底，悬停/展开时才出现浅色底 */
@@ -407,13 +401,7 @@
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-.cc-local:hover,
-.cc-local.is-active {
-  background-color: var(--color-interactive-hover);
-  color: var(--on-surface);
-}
+}
 
 /* ---- 空间面板：搜索行 / 分割线 / 空态 ---- */
 .cc-space-menu {
@@ -554,12 +542,7 @@
   color: var(--color-icon-secondary);
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-.cc-modal-close:hover {
-  background-color: var(--color-interactive-hover);
-  color: var(--color-icon-primary);
-}
+}
 
 .cc-modal-body {
   display: flex;
@@ -788,15 +771,7 @@
   height: 34px;
   border-radius: var(--radius-sm);
   object-fit: cover;
-}
-
-.cc-file-info {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+}
 
 .cc-file-name {
   overflow: hidden;
@@ -1080,16 +1055,7 @@
   text-align: left;
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-/* 主列:标题在上、正文在下 */
-.cc-add-line-main {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+}
 
 .cc-add-line:hover {
   background-color: var(--color-interactive-hover);

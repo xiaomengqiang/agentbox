@@ -63,12 +63,7 @@
   background: transparent;
   color: var(--text-placeholder);
   cursor: pointer;
-}
-
-.cw-collapse:hover {
-  background: var(--color-interactive-hover);
-  color: var(--on-surface);
-}
+}
 
 .cw-collapse svg {
   width: 28px;
@@ -153,12 +148,7 @@
   background: transparent;
   color: var(--text-placeholder);
   cursor: pointer;
-}
-
-.cw-settings:hover {
-  background: var(--color-interactive-hover);
-  color: var(--on-surface);
-}
+}
 
 /* ---- 右侧工作区:欢迎区 + 输入框居中 ---- */
 .cw-main {
@@ -236,12 +226,7 @@
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard);
-}
-
-.cw-cap:hover {
-  background-color: var(--color-interactive-hover);
-  color: var(--on-surface);
-}
+}
 
 @media (max-width: 960px) {
   .cw-sidebar {
