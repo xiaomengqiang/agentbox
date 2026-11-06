@@ -412,6 +412,11 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
     setReadIdx(0);
   }, [cursor]);
 
+  /* 蜂群模式判定(打字节奏/状态栏阶段共用) */
+  const isSwarm = msg.meta && msg.meta.modeId === "swarm";
+  /* 流式打字节奏:单Agent模式放慢(70ms 输出 2 字,便于阅读),蜂群模式保持 35ms/2字 */
+  const typeInterval = isSwarm ? 35 : 70;
+
   /* 流式打字：逐字输出当前文本块，块间稍作停顿；暂停中冻结不推进。
      授权/表单等待块由下方挂起链路处理。
      读取文档块：先打标签文字，再逐条揭示文档相关内容，全部揭示后进入下一块。
@@ -431,7 +436,7 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
         const t = window.setTimeout(() => {
           setChars((c) => c + 2);
           if (onGrow) onGrow();
-        }, 35);
+        }, typeInterval);
         return () => window.clearTimeout(t);
       }
       if (readIdx < cur.reading.length) {
@@ -452,7 +457,7 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
       const t = window.setTimeout(() => {
         setChars((c) => c + 2);
         if (onGrow) onGrow();
-      }, 35);
+      }, typeInterval);
       return () => window.clearTimeout(t);
     }
     /* 失败注入点：冲刺文案打完后短暂等待 → 生成失败，任务中断 */
@@ -501,7 +506,6 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
   }, [permCmd, perm]);
 
   /* 状态栏阶段：蜂群模式直接显示生成中；单Agent按 思考→已思考→生成中 流转 */
-  const isSwarm = msg.meta && msg.meta.modeId === "swarm";
   const thinkingIdx = blocks.findIndex((b) => b.endsThinking);
   const readingIdx = blocks.findIndex((b) => b.endsReading);
   const thinkingDone = thinkingIdx !== -1 && cursor > thinkingIdx;
@@ -605,10 +609,8 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
             if (b.hideOnDone && !rejected && !failed && artifactsStarted) return null;
             if (b.noPerm && (rejected || failed)) return null;
 
-            /* ---- 问题澄清卡片 ---- */
+            /* ---- 问题澄清卡片:整卡以「宽高从小变大」的入场动画出现(替代逐条打印) ---- */
             if (b.type === "qa-card") {
-              const isCurQ = i === cursor;
-              const shown_ = isCurQ;
               return (
                 <div className={"cs-qa-card " + (b.cls || "")} key={i}>
                   <div className="cs-qa-head">
@@ -616,16 +618,12 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
                     <span>{b.title}</span>
                   </div>
                   <div className="cs-qa-body">
-                    {b.qa.map((item, k) => {
-                      const visible = !isCurQ || k < Math.floor(chars / 20);
-                      if (!visible) return null;
-                      return (
-                        <div className="cs-qa-item" key={k}>
-                          <p className="cs-qa-q">{item.q}</p>
-                          <p className="cs-qa-a">{item.a}</p>
-                        </div>
-                      );
-                    })}
+                    {b.qa.map((item, k) => (
+                      <div className="cs-qa-item" key={k}>
+                        <p className="cs-qa-q">{item.q}</p>
+                        <p className="cs-qa-a">{item.a}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               );
@@ -648,10 +646,8 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
               );
             }
 
-            /* ---- 任务卡片 ---- */
+            /* ---- 任务卡片:整卡以「宽高从小变大」的入场动画出现(同问题澄清卡片,速度稍慢) ---- */
             if (b.type === "task-card") {
-              const isCurT = i === cursor;
-              const taskCount = isCurT ? Math.min(b.tasks.length, Math.floor(chars / 8)) : b.tasks.length;
               return (
                 <div className={"cs-task-card " + (b.cls || "")} key={i}>
                   <div className="cs-task-head">
@@ -661,7 +657,7 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
                     <span className="cs-task-desc">{b.desc}</span>
                   </div>
                   <div className="cs-task-list">
-                    {b.tasks.slice(0, taskCount).map((t, k) => (
+                    {b.tasks.map((t, k) => (
                       <div className="cs-task-item" key={k}>
                         <span className="cs-task-text">{t.text}</span>
                         {t.assignee ? (
@@ -1061,6 +1057,8 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
   /* 蜂群配置表单弹框状态 */
   const [formPage, setFormPage] = useState(0);
   const [formAnswers, setFormAnswers] = useState({});
+  /* 蜂群配置点「确定」后隐藏头部日历图标(cs-new) */
+  const [csNewHidden, setCsNewHidden] = useState(false);
 
   /* 重置弹框时同步重置表单 */
   useEffect(() => {
@@ -1071,12 +1069,14 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
   }, [pendingMsgId]);
 
   /* 表单提交 → 关闭弹框并把决定回传给等待中的 AgentRun；
-     蜂群模式：确认后才打开右侧预览面板（选中任务摘要页签） */
-  const submitForm = () => {
+     蜂群模式：确认后才打开右侧预览面板（选中任务摘要页签）；
+     点「确定」时隐藏头部日历图标 cs-new（「跳过」不隐藏） */
+  const submitForm = (isConfirm) => {
     decide("allowed");
     if (isSwarmSession) {
       setPreviewOpen(true);
       setActiveTab("summary");
+      if (isConfirm) setCsNewHidden(true);
     }
   };
 
@@ -1096,7 +1096,9 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
             <span className="cs-header-icon" aria-hidden="true">{MONITOR_ICON}</span>
             <h1 className="cs-title">{first ? short(first.text, 24) : "新会话"}</h1>
           </div>
-          <img src="./assets/uploads/header-calendar.png" alt="" className="cs-new" />
+          {csNewHidden ? null : (
+            <img src="./assets/uploads/header-calendar.png" alt="" className="cs-new" />
+          )}
         </header>
 
         {/* 消息流 */}
@@ -1193,11 +1195,11 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
                 <button
                   type="button"
                   className="cs-form-btn"
-                  onClick={submitForm}
+                  onClick={() => submitForm(false)}
                 >
                   跳过
                 </button>
-                <button type="button" className="cs-form-btn is-primary" onClick={submitForm}>
+                <button type="button" className="cs-form-btn is-primary" onClick={() => submitForm(true)}>
                   确定
                 </button>
               </div>
@@ -1595,11 +1597,48 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
                         <h3>01 背景与目标</h3>
                         <p>会议时间协调长期依赖群内接龙，效率低且易遗漏。本章从用户调研数据出发，界定核心痛点与改进机会。</p>
                         <p>调研覆盖 500+ 活跃用户，发现平均创建一次多人会议需往返沟通 6.2 次、耗时 23 分钟，其中 78% 的用户期望系统自动推荐最优时段。</p>
+                        {/* 调研数据统计卡片 */}
+                        <div className="cs-doc-stats">
+                          <div className="cs-doc-stat">
+                            <span className="cs-doc-stat-num">500<i>+</i></span>
+                            <span className="cs-doc-stat-label">调研活跃用户</span>
+                          </div>
+                          <div className="cs-doc-stat">
+                            <span className="cs-doc-stat-num">6.2<i>次</i></span>
+                            <span className="cs-doc-stat-label">平均往返沟通</span>
+                          </div>
+                          <div className="cs-doc-stat">
+                            <span className="cs-doc-stat-num">23<i>分钟</i></span>
+                            <span className="cs-doc-stat-label">单次排会耗时</span>
+                          </div>
+                          <div className="cs-doc-stat">
+                            <span className="cs-doc-stat-num">78%</span>
+                            <span className="cs-doc-stat-label">期望智能推荐</span>
+                          </div>
+                        </div>
                       </div>
                       <div className="cs-preview-sec">
                         <h3>02 用户画像</h3>
                         <p>核心用户分为三类：行政协调者（占比 35%）、项目经理（占比 40%）和跨组织参与者（占比 25%）。每类用户的创建频率、参与人数与决策链路各不相同。</p>
                         <p>高频协调者日均创建 3.5 场会议，对批量操作和模板复用诉求强烈；跨组织用户更关注免注册参与和时区自适应。</p>
+                        {/* 用户构成占比条 */}
+                        <div className="cs-doc-bars">
+                          <div className="cs-doc-bar">
+                            <span className="cs-doc-bar-label">项目经理</span>
+                            <span className="cs-doc-bar-track"><span className="cs-doc-bar-fill" style={{ width: "40%" }} /></span>
+                            <span className="cs-doc-bar-pct">40%</span>
+                          </div>
+                          <div className="cs-doc-bar">
+                            <span className="cs-doc-bar-label">行政协调者</span>
+                            <span className="cs-doc-bar-track"><span className="cs-doc-bar-fill" style={{ width: "35%" }} /></span>
+                            <span className="cs-doc-bar-pct">35%</span>
+                          </div>
+                          <div className="cs-doc-bar">
+                            <span className="cs-doc-bar-label">跨组织参与者</span>
+                            <span className="cs-doc-bar-track"><span className="cs-doc-bar-fill" style={{ width: "25%" }} /></span>
+                            <span className="cs-doc-bar-pct">25%</span>
+                          </div>
+                        </div>
                       </div>
                       <div className="cs-preview-sec">
                         <h3>03 首页交互改版（重点）</h3>
@@ -1615,6 +1654,48 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
                         <h3>05 竞品分析</h3>
                         <p>对标 Doodle、Calendly、When2meet 原版三款产品，从功能完整度、交互体验、价格策略三个维度横向对比。</p>
                         <p>Doodle 优势在于品牌认知度但移动端体验弱；Calendly 深度绑定日历但跨组织场景受限；原版 When2meet 简洁但缺乏智能推荐。改版方案取长补短，定位"轻量 + 智能"。</p>
+                        {/* 竞品对比表:改版方案列高亮 */}
+                        <table className="cs-doc-table">
+                          <thead>
+                            <tr>
+                              <th>维度</th>
+                              <th>Doodle</th>
+                              <th>Calendly</th>
+                              <th>原版</th>
+                              <th className="is-hl">改版方案</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>注册门槛</td>
+                              <td>需注册</td>
+                              <td>强制账号</td>
+                              <td>免注册</td>
+                              <td className="is-hl">免注册免下载</td>
+                            </tr>
+                            <tr>
+                              <td>日历集成</td>
+                              <td>基础同步</td>
+                              <td>一键直连</td>
+                              <td>无</td>
+                              <td className="is-hl">轻量适配</td>
+                            </tr>
+                            <tr>
+                              <td>推荐能力</td>
+                              <td>无</td>
+                              <td>单向时段</td>
+                              <td>无</td>
+                              <td className="is-hl">共同空闲聚合推荐</td>
+                            </tr>
+                            <tr>
+                              <td>移动体验</td>
+                              <td>评分最低</td>
+                              <td>中等</td>
+                              <td>缺单日视图</td>
+                              <td className="is-hl">单日视图 · 深色模式</td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                       <div className="cs-preview-sec">
                         <h3>06 信息架构</h3>
@@ -1660,6 +1741,24 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
                         <h3>14 数据验证</h3>
                         <p>通过 A/B 实验对比改版前后核心指标：创建时长中位数从 23 分钟降至 8 分钟（-65%）、七日留存从 34% 提升至 48%（+14pp）、分享率从 12% 提升至 19%（+7pp）。</p>
                         <p>所有指标均达到统计显著（p &lt; 0.01）。</p>
+                        {/* 前后对比指标卡片 */}
+                        <div className="cs-doc-metrics">
+                          <div className="cs-doc-metric">
+                            <span className="cs-doc-metric-delta">-65%</span>
+                            <span className="cs-doc-metric-line">23 分钟 → 8 分钟</span>
+                            <span className="cs-doc-metric-label">排会时长中位数</span>
+                          </div>
+                          <div className="cs-doc-metric">
+                            <span className="cs-doc-metric-delta">+14pp</span>
+                            <span className="cs-doc-metric-line">34% → 48%</span>
+                            <span className="cs-doc-metric-label">七日留存</span>
+                          </div>
+                          <div className="cs-doc-metric">
+                            <span className="cs-doc-metric-delta">+7pp</span>
+                            <span className="cs-doc-metric-line">12% → 19%</span>
+                            <span className="cs-doc-metric-label">分享率</span>
+                          </div>
+                        </div>
                       </div>
                       <div className="cs-preview-sec">
                         <h3>15 风险与应对</h3>
@@ -1673,6 +1772,24 @@ export default function ChatSession({ messages, onReset, composer, stopGen, onGe
                         <h3>17 排期计划</h3>
                         <p>三期迭代：Alpha（第 1-4 周，核心流程）、Beta（第 5-8 周，推荐系统）、GA（第 9-12 周，数据看板 + 性能优化）。</p>
                         <p>每期结束进行灰度发布，按 5% → 20% → 100% 逐步放量。</p>
+                        {/* 里程碑阶段条 */}
+                        <div className="cs-doc-phases">
+                          <div className="cs-doc-phase">
+                            <span className="cs-doc-phase-tag">Alpha</span>
+                            <span className="cs-doc-phase-week">第 1-4 周</span>
+                            <span className="cs-doc-phase-scope">核心流程：创建 / 分享 / 填写 / 汇总</span>
+                          </div>
+                          <div className="cs-doc-phase">
+                            <span className="cs-doc-phase-tag">Beta</span>
+                            <span className="cs-doc-phase-week">第 5-8 周</span>
+                            <span className="cs-doc-phase-scope">推荐系统与日历深度集成</span>
+                          </div>
+                          <div className="cs-doc-phase">
+                            <span className="cs-doc-phase-tag">GA</span>
+                            <span className="cs-doc-phase-week">第 9-12 周</span>
+                            <span className="cs-doc-phase-scope">数据看板与性能优化</span>
+                          </div>
+                        </div>
                       </div>
                       <div className="cs-preview-sec">
                         <h3>18 路线图与 Q&amp;A</h3>

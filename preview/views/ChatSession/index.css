@@ -115,7 +115,8 @@
   /* 多个技能/指令标签与文本超宽时自动换行 */
   flex-wrap: wrap;
   padding: 0.75rem 1rem;
-  border-radius: 1rem;
+  /* 右上圆角 0,其余 1rem(顺序:左上 右上 右下 左下) */
+  border-radius: 1rem 0 1rem 1rem;
   /* #f1f3f5 — 等价 var(--color-background-secondary)，暗色模式自动翻转 */
   background: var(--color-background-secondary);
   color: var(--on-surface);
@@ -629,6 +630,33 @@
   color: transparent;
 }
 
+/* 读取文档/最终冲刺节点:文字流光动画 —— 高光带自左向右循环滑过 */
+.cs-node-reading .cs-stat-grad,
+.cs-node-sprint .cs-stat-linear {
+  background: linear-gradient(
+    100deg,
+    var(--text-placeholder) 20%,
+    var(--text-placeholder) 40%,
+    var(--on-surface) 50%,
+    var(--text-placeholder) 60%,
+    var(--text-placeholder) 80%
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: cs-stat-flow 2s linear infinite;
+}
+
+@keyframes cs-stat-flow {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0% 0;
+  }
+}
+
 /* 读取文档面板：随「正在读取文档」逐条输出文档相关内容 */
 .cs-read {
   display: flex;
@@ -680,6 +708,22 @@
   padding: 0 1rem;
   background: var(--white);
   margin-bottom: 0.75rem;
+  /* 打印方式:容器宽高自小变大的入场动画(整卡生长出现) */
+  animation: cs-card-grow 0.45s var(--ease-out) both;
+  transform-origin: left top;
+}
+
+/* 宽高从小变大(scale 等比生长,左上角为锚点贴合消息流向);
+   qa-card 0.45s / task-card 0.7s 共用本关键帧,速度由 animation 时长控制 */
+@keyframes cs-card-grow {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .cs-qa-head {
@@ -727,7 +771,7 @@
   color: var(--text-secondary);
 }
 
-/* ---- 任务卡片 ---- */
+/* ---- 任务卡片:同款宽高自小变大入场动画,速度稍慢(0.7s) ---- */
 .cs-task-card {
   padding: 0 1rem;
   margin-bottom: 0.75rem;
@@ -735,6 +779,8 @@
   border-radius: 1rem;
   /* #E5E5EA — 等价 var(--surface-container-high) */
   border: 1px solid var(--surface-container-high);
+  animation: cs-card-grow 0.7s var(--ease-out) both;
+  transform-origin: left top;
 }
 
 .cs-task-head {
@@ -1731,6 +1777,198 @@
   height: 5px;
   border-radius: 50%;
   background: var(--brand);
+}
+
+/* ================= 单Agent产物预览:文档内嵌组件 ================= */
+
+/* ---- 数据统计卡片 ---- */
+.cs-doc-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(6.5rem, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cs-doc-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 0.75rem;
+  background: var(--surface-container-low);
+}
+
+.cs-doc-stat-num {
+  font: var(--font-subtitle-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.cs-doc-stat-num i {
+  font-style: normal;
+  font-size: 0.75rem;
+  margin-left: 2px;
+  color: var(--text-placeholder);
+}
+
+.cs-doc-stat-label {
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* ---- 占比条形图 ---- */
+.cs-doc-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.cs-doc-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cs-doc-bar-label {
+  flex: 0 0 6.5rem;
+  font: var(--font-body-sm);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.cs-doc-bar-track {
+  flex: 1 1 auto;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--surface-container);
+  overflow: hidden;
+}
+
+.cs-doc-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-full);
+  /* #0A59F7 — 等价 var(--brand) */
+  background: var(--brand);
+}
+
+.cs-doc-bar-pct {
+  flex: 0 0 2.5rem;
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ---- 竞品对比表 ---- */
+.cs-doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font: var(--font-body-sm);
+}
+
+.cs-doc-table th,
+.cs-doc-table td {
+  padding: 8px 10px;
+  text-align: left;
+  /* #000 @ 10% — 等价 var(--divider) 浅分隔线 */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--text-secondary);
+}
+
+.cs-doc-table th {
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-placeholder);
+  white-space: nowrap;
+}
+
+.cs-doc-table td:first-child {
+  color: var(--on-surface);
+  font-weight: var(--font-weight-bold);
+  white-space: nowrap;
+}
+
+/* 改版方案列高亮(品牌蓝浅底) */
+.cs-doc-table .is-hl {
+  /* rgba(10,89,247,0.05) — 等价 var(--brand-05) */
+  background: var(--brand-05);
+  color: var(--primary);
+}
+
+/* ---- 前后对比指标卡片 ---- */
+.cs-doc-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(8rem, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cs-doc-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 0.75rem;
+  background: var(--surface-container-low);
+}
+
+.cs-doc-metric-delta {
+  font: var(--font-subtitle-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--success);
+}
+
+.cs-doc-metric-line {
+  font: var(--font-body-sm);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.cs-doc-metric-label {
+  font: var(--font-caption-lg);
+  color: var(--text-placeholder);
+}
+
+/* ---- 里程碑阶段条 ---- */
+.cs-doc-phases {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cs-doc-phase {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 0.75rem;
+  /* #E5E5EA — 等价 var(--surface-container-high) */
+  border: 1px solid var(--surface-container-high);
+}
+
+.cs-doc-phase-tag {
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary);
+}
+
+.cs-doc-phase-week {
+  font: var(--font-body-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.cs-doc-phase-scope {
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
 }
 
 /* ================= 蜂群产物预览：When2meet 小程序界面 ================= */
