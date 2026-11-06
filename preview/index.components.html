@@ -2698,12 +2698,12 @@ img[data-component="Icon"] {
   text-overflow: ellipsis;
 }
 
-/* 顶栏右侧图标（纯图片展示） */
+/* 顶栏右侧图标（纯图片展示，用户指定 2rem × 2rem） */
 .cs-new {
   display: block;
   flex: 0 0 auto;
-  width: 1rem;
-  height: 1rem;
+  width: 2rem;
+  height: 2rem;
 }
 
 /* ---- 消息流 ---- */
@@ -2760,7 +2760,8 @@ img[data-component="Icon"] {
   /* 多个技能/指令标签与文本超宽时自动换行 */
   flex-wrap: wrap;
   padding: 0.75rem 1rem;
-  border-radius: 1rem;
+  /* 右上圆角 0,其余 1rem(顺序:左上 右上 右下 左下) */
+  border-radius: 1rem 0 1rem 1rem;
   /* #f1f3f5 — 等价 var(--color-background-secondary)，暗色模式自动翻转 */
   background: var(--color-background-secondary);
   color: var(--on-surface);
@@ -3274,6 +3275,33 @@ img[data-component="Icon"] {
   color: transparent;
 }
 
+/* 读取文档/最终冲刺节点:文字流光动画 —— 高光带自左向右循环滑过 */
+.cs-node-reading .cs-stat-grad,
+.cs-node-sprint .cs-stat-linear {
+  background: linear-gradient(
+    100deg,
+    var(--text-placeholder) 20%,
+    var(--text-placeholder) 40%,
+    var(--on-surface) 50%,
+    var(--text-placeholder) 60%,
+    var(--text-placeholder) 80%
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: cs-stat-flow 2s linear infinite;
+}
+
+@keyframes cs-stat-flow {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0% 0;
+  }
+}
+
 /* 读取文档面板：随「正在读取文档」逐条输出文档相关内容 */
 .cs-read {
   display: flex;
@@ -3325,6 +3353,22 @@ img[data-component="Icon"] {
   padding: 0 1rem;
   background: var(--white);
   margin-bottom: 0.75rem;
+  /* 打印方式:容器宽高自小变大的入场动画(整卡生长出现) */
+  animation: cs-card-grow 0.45s var(--ease-out) both;
+  transform-origin: left top;
+}
+
+/* 宽高从小变大(scale 等比生长,左上角为锚点贴合消息流向);
+   qa-card 0.45s / task-card 0.7s 共用本关键帧,速度由 animation 时长控制 */
+@keyframes cs-card-grow {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .cs-qa-head {
@@ -3372,7 +3416,7 @@ img[data-component="Icon"] {
   color: var(--text-secondary);
 }
 
-/* ---- 任务卡片 ---- */
+/* ---- 任务卡片:同款宽高自小变大入场动画,速度稍慢(0.7s) ---- */
 .cs-task-card {
   padding: 0 1rem;
   margin-bottom: 0.75rem;
@@ -3380,6 +3424,8 @@ img[data-component="Icon"] {
   border-radius: 1rem;
   /* #E5E5EA — 等价 var(--surface-container-high) */
   border: 1px solid var(--surface-container-high);
+  animation: cs-card-grow 0.7s var(--ease-out) both;
+  transform-origin: left top;
 }
 
 .cs-task-head {
@@ -4376,6 +4422,198 @@ img[data-component="Icon"] {
   height: 5px;
   border-radius: 50%;
   background: var(--brand);
+}
+
+/* ================= 单Agent产物预览:文档内嵌组件 ================= */
+
+/* ---- 数据统计卡片 ---- */
+.cs-doc-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(6.5rem, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cs-doc-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 0.75rem;
+  background: var(--surface-container-low);
+}
+
+.cs-doc-stat-num {
+  font: var(--font-subtitle-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.cs-doc-stat-num i {
+  font-style: normal;
+  font-size: 0.75rem;
+  margin-left: 2px;
+  color: var(--text-placeholder);
+}
+
+.cs-doc-stat-label {
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* ---- 占比条形图 ---- */
+.cs-doc-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.cs-doc-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cs-doc-bar-label {
+  flex: 0 0 6.5rem;
+  font: var(--font-body-sm);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.cs-doc-bar-track {
+  flex: 1 1 auto;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--surface-container);
+  overflow: hidden;
+}
+
+.cs-doc-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-full);
+  /* #0A59F7 — 等价 var(--brand) */
+  background: var(--brand);
+}
+
+.cs-doc-bar-pct {
+  flex: 0 0 2.5rem;
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ---- 竞品对比表 ---- */
+.cs-doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font: var(--font-body-sm);
+}
+
+.cs-doc-table th,
+.cs-doc-table td {
+  padding: 8px 10px;
+  text-align: left;
+  /* #000 @ 10% — 等价 var(--divider) 浅分隔线 */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--text-secondary);
+}
+
+.cs-doc-table th {
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-placeholder);
+  white-space: nowrap;
+}
+
+.cs-doc-table td:first-child {
+  color: var(--on-surface);
+  font-weight: var(--font-weight-bold);
+  white-space: nowrap;
+}
+
+/* 改版方案列高亮(品牌蓝浅底) */
+.cs-doc-table .is-hl {
+  /* rgba(10,89,247,0.05) — 等价 var(--brand-05) */
+  background: var(--brand-05);
+  color: var(--primary);
+}
+
+/* ---- 前后对比指标卡片 ---- */
+.cs-doc-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(8rem, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cs-doc-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 0.75rem;
+  background: var(--surface-container-low);
+}
+
+.cs-doc-metric-delta {
+  font: var(--font-subtitle-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--success);
+}
+
+.cs-doc-metric-line {
+  font: var(--font-body-sm);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.cs-doc-metric-label {
+  font: var(--font-caption-lg);
+  color: var(--text-placeholder);
+}
+
+/* ---- 里程碑阶段条 ---- */
+.cs-doc-phases {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cs-doc-phase {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 0.75rem;
+  /* #E5E5EA — 等价 var(--surface-container-high) */
+  border: 1px solid var(--surface-container-high);
+}
+
+.cs-doc-phase-tag {
+  font: var(--font-caption-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary);
+}
+
+.cs-doc-phase-week {
+  font: var(--font-body-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.cs-doc-phase-scope {
+  font: var(--font-caption-lg);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
 }
 
 /* ================= 蜂群产物预览：When2meet 小程序界面 ================= */
@@ -5776,2784 +6014,6 @@ img[data-component="Icon"] {
   margin-right: 40px;
   border-radius: 16px 0 16px 16px;
 }
-
-/* ==== views/ChatSession/index.css ==== */
-/* ================= 会话页面骨架 ================= */
-.cs-wrap {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  min-width: 0;
-  height: 100%;
-}
-
-/* 左侧主区：顶栏 + 消息流 + 输入区（与右侧预览面板等宽） */
-.cs-main {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 0;
-  min-width: 0;
-  height: 100%;
-}
-
-/* ---- 顶栏 ---- */
-.cs-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex: 0 0 auto;
-  padding: 1.125rem 1.5rem;
-  font-size: 1rem;
-  /* #000 — 等价 var(--on-surface)，暗色模式自动翻转 */
-  color: var(--on-surface);
-}
-
-.cs-header-main {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
-}
-
-/* 标题前的显示器图标(会话进行中标记,与左侧对话项尾随图标一致) */
-.cs-header-icon {
-  display: inline-flex;
-  align-items: center;
-  flex: 0 0 auto;
-}
-
-.cs-title {
-  font-size: 1rem;
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* 顶栏右侧图标（纯图片展示） */
-.cs-new {
-  display: block;
-  flex: 0 0 auto;
-  width: 1rem;
-  height: 1rem;
-}
-
-/* ---- 消息流 ---- */
-.cs-list {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 28px 40px 20px;
-}
-
-.cs-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  width: 100%;
-  max-width: 820px;
-  margin: 0 auto;
-}
-
-/* ---- 用户消息 ---- */
-.cs-user-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  /* 用户指定 0.75rem */
-  gap: 0.75rem;
-  max-width: 78%;
-  margin-left: auto;
-}
-
-.cs-user-attach {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  /* 与输入框文件卡片列表(cc-file-list)同款间距 */
-  gap: 8px;
-}
-
-.cs-user-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 10px;
-  border-radius: var(--radius-full);
-  background: var(--primary-container);
-  color: var(--primary);
-  font: var(--font-caption-lg);
-}
-
-.cs-user-bubble {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  /* 多个技能/指令标签与文本超宽时自动换行 */
-  flex-wrap: wrap;
-  padding: 0.75rem 1rem;
-  border-radius: 1rem;
-  /* #f1f3f5 — 等价 var(--color-background-secondary)，暗色模式自动翻转 */
-  background: var(--color-background-secondary);
-  color: var(--on-surface);
-}
-
-/* 气泡内标签：图标 + 文档总结 */
-.cs-user-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  flex: 0 0 auto;
-  height: 1.5rem;
-  padding: 0 0.5rem;
-  box-sizing: border-box;
-  border-radius: 1rem;
-  /* rgba(10,89,247,0.1) — 等价 var(--brand-10) */
-  background: var(--brand-10);
-  /* #0A59F7 — 等价 var(--primary) */
-  color: var(--primary);
-  font: var(--font-caption-lg);
-}
-
-.cs-user-text {
-  font: var(--font-body-md);
-  line-height: var(--line-height-relaxed);
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-/* ---- Agent 消息 ---- */
-.cs-agent {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.375rem;
-  min-width: 0;
-}
-
-.cs-agent-avatar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  font-size: 0.75rem;
-  /* #000 — 等价 var(--on-surface)，暗色模式自动翻转 */
-  color: var(--on-surface);
-}
-
-.cs-agent-img {
-  display: block;
-  width: 2.375rem;
-  height: 2.375rem;
-  object-fit: cover;
-}
-
-.cs-agent-main {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.cs-agent-head {
-  display: flex;
-  align-items: center;
-  height: 2.5rem;
-  margin-bottom: 12px;
-  font-size: 0.75rem;
-  /* #000 @ 60% — 等价 var(--text-secondary)，暗色模式自动翻转 */
-  color: var(--text-secondary);
-  /* 用户指定 rgba(0,0,0,0.1)(#000 @ 10%,较 --divider 的 20% 更浅) */
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.cs-head-sep {
-  margin: 0 0.5rem;
-}
-
-.cs-head-status,
-.cs-head-tokens {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  white-space: nowrap;
-}
-
-/* 状态栏分隔图标：跟随文字颜色(currentColor)，垂直居中，左间距 0.25rem */
-.cs-head-toggle {
-  align-self: center;
-  margin-left: 0.25rem;
-  flex: 0 0 auto;
-}
-
-/* ---- 蜂群配置表单弹框（悬于输入框上方，上下布局） ---- */
-.cs-form-pop {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.25rem;
-  border-radius: 1rem;
-  background: var(--white);
-  box-shadow: var(--shadow-popover);
-  overflow: hidden;
-}
-
-/* 上部：表单内容（分页显示，关闭按钮固定右上角不随翻页移动） */
-.cs-form-body {
-  position: relative;
-  padding: 1rem 1rem 0.875rem;
-  /* 用户指定 rgba(0,0,0,0.1)(#000 @ 10%,较 --divider 的 20% 更浅) */
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-/* 右上角关闭按钮 */
-.cs-form-close {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-placeholder);
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
-}
-
-/* 表单内容右侧留出关闭按钮空间 */
-.cs-form-page {
-  padding-right: 2rem;
-}
-
-.cs-form-title {
-  font: var(--font-body-md);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  margin: 0 0 12px;
-  line-height: var(--line-height-relaxed);
-}
-
-.cs-form-options {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding-bottom: 4px;
-}
-
-.cs-form-radio {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font: var(--font-body-md);
-  color: var(--on-surface);
-}
-
-/* 自定义单选圆圈：选中时蓝底 + 白色对勾 */
-.cs-radio-circle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 1.5px solid var(--container-10);
-  background: transparent;
-  transition: background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-form-radio.is-checked .cs-radio-circle {
-  /* #0A59F7 — 品牌蓝 */
-  background: var(--primary);
-  border-color: var(--primary);
-}
-
-.cs-radio-check {
-  color: var(--white);
-}
-
-/* 下部：翻页器 + 操作按钮 */
-.cs-form-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-}
-
-.cs-form-pager {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.cs-form-pager-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: var(--surface-container);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-form-pager-text {
-  font: var(--font-body-sm);
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-.cs-form-btns {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.cs-form-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 9rem;
-  height: 2.5rem;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-full);
-  box-sizing: border-box;
-  font-size: 1rem;
-  /* #000 — 等价 var(--on-surface) */
-  color: var(--on-surface);
-  /* rgba(0,0,0,0.05) — 等价 var(--surface-container) */
-  background: var(--surface-container);
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-form-btn:hover {
-  background: var(--color-interactive-hover);
-}
-
-.cs-form-btn.is-primary {
-  /* rgba(0,0,0,0.9) — #000 @ 90% */
-  background: rgba(0, 0, 0, 0.9);
-  color: var(--white);
-}
-
-.cs-form-btn.is-primary:hover {
-  background: var(--black);
-}
-.cs-perm-pop {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 10px;
-  padding: 1rem;
-  border-radius: var(--radius-overlay);
-  background: var(--surface-container-lowest);
-  box-shadow: var(--shadow-popover);
-}
-
-.cs-perm-pop-title {
-  font: var(--font-subtitle-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  margin: 0;
-}
-
-.cs-perm-pop-desc {
-  font: var(--font-body-md);
-  color: var(--text-secondary);
-  line-height: var(--line-height-relaxed);
-  margin: 0;
-}
-
-.cs-perm-pop-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 4px;
-}
-
-/* 拒绝：幽灵按钮（#000 @ 5% 背景，圆角 1.5rem，min-width 9rem，高 2.5rem，字号 1rem，#000 文本） */
-.cs-perm-pop-deny {
-  min-width: 9rem;
-  height: 2.5rem;
-  padding: 0 20px;
-  border: 0;
-  border-radius: 1.5rem;
-  box-sizing: border-box;
-  /* #000 @ 0.05 — 等价 var(--surface-container)，暗色模式自动翻转 */
-  background: var(--surface-container);
-  /* #000 — 等价 var(--on-surface)，暗色模式自动翻转 */
-  color: var(--on-surface);
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.cs-perm-pop-deny:hover {
-  background: var(--color-interactive-hover);
-}
-
-/* 允许：下拉选择框（黑底白字，圆角 1.5rem，高 2.5rem，字号 1rem） */
-.cs-perm-pop-allow {
-  position: relative;
-}
-
-.cs-perm-pop-allow-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-width: 9.5rem;
-  height: 2.5rem;
-  padding: 0 20px;
-  border: 0;
-  border-radius: 1.5rem;
-  /* 用户指定 #000 / #fff */
-  background: var(--black);
-  color: var(--white);
-  font-size: 1rem;
-  cursor: pointer;
-  transition: opacity var(--duration-fast) var(--ease-standard);
-}
-
-.cs-perm-pop-allow-btn:hover {
-  opacity: 0.85;
-}
-
-/* 实心白色倒三角（triangle 旋转 180° 并填充，无动画） */
-.cs-perm-pop-caret {
-  transform: rotate(180deg);
-  /* #fff — 等价 var(--white) */
-  color: var(--white);
-  fill: currentColor;
-}
-
-.cs-perm-pop-menu {
-  position: absolute;
-  top: calc(100% + 6px);
-  right: 0;
-  min-width: 100%;
-  padding: 6px;
-  border-radius: var(--radius-lg);
-  box-sizing: border-box;
-  background: var(--surface-container-lowest);
-  box-shadow: var(--shadow-popover);
-  z-index: 100;
-}
-
-.cs-perm-pop-opt {
-  display: block;
-  width: 100%;
-  padding: 9px 14px;
-  border: 0;
-  border-radius: var(--radius-sm);
-  box-sizing: border-box;
-  background: transparent;
-  /* #000 — 等价 var(--on-surface)，暗色模式自动翻转 */
-  color: var(--on-surface);
-  font-size: 1rem;
-  text-align: left;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-perm-pop-opt:hover {
-  background: var(--color-interactive-hover);
-}
-
-/* 已处理的授权结果行（紧凑态） */
-.cs-perm-done {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  align-self: flex-start;
-  margin: 4px 0 12px;
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
-  background: var(--surface-container-low);
-  font: var(--font-caption-lg);
-  color: var(--text-secondary);
-}
-
-.cs-perm-done svg {
-  color: var(--success);
-}
-
-.cs-perm-done.is-rejected svg {
-  color: var(--alert);
-}
-
-/* ---- 回答正文 ---- */
-.cs-answer {
-  margin-top: 12px;
-}
-
-.cs-answer-p {
-  font: var(--font-body-md);
-  color: var(--on-surface);
-  line-height: var(--line-height-relaxed);
-  margin: 0 0 0.75rem;
-  word-break: break-word;
-}
-
-.cs-answer-muted {
-  color: var(--text-placeholder);
-}
-
-/* 开场段落节点：下间距 0.75rem */
-.cs-node-intro {
-  margin: 0 0 0.75rem;
-}
-
-/* 已探索状态节点：下间距 0.75rem */
-.cs-node-explore {
-  margin-bottom: 0.75rem;
-}
-
-/* ---- 生成失败 · 任务中断提示 ---- */
-.cs-fail {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 14px;
-  box-sizing: border-box;
-  border-radius: 1rem;
-  background: var(--white);
-  /* #E5E5EA — 等价 var(--surface-container-high) */
-  border: 1px solid var(--surface-container-high);
-}
-
-.cs-fail-main {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-  font: var(--font-body-md);
-  color: var(--error);
-}
-
-.cs-fail-main svg {
-  flex: 0 0 auto;
-}
-
-.cs-fail-retry {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  padding: 5px 14px;
-  box-sizing: border-box;
-  border-radius: 0.5rem;
-  background: var(--white);
-  /* #000 @ 10% — 等价 var(--container-10) */
-  border: 1px solid var(--container-10);
-  color: var(--text-secondary);
-  font: var(--font-body-sm);
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-answer-li {
-  display: flex;
-  align-items: flex-start;
-  gap: 9px;
-  font: var(--font-body-md);
-  color: var(--on-surface);
-  line-height: var(--line-height-relaxed);
-  margin: 0 0 8px;
-  word-break: break-word;
-}
-
-.cs-answer-dot {
-  flex: 0 0 auto;
-  width: 5px;
-  height: 5px;
-  margin-top: 8px;
-  border-radius: 50%;
-  background: var(--primary);
-}
-
-/* 图标状态行（已探索文件 / 思考中 等） */
-.cs-stat {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin: 0 0 10px;
-  font: var(--font-body-sm);
-  color: var(--text-secondary);
-}
-
-.cs-stat svg {
-  flex: 0 0 auto;
-  color: var(--text-placeholder);
-}
-
-/* 径向渐变文字（「正在读取文档」/ 生成冲刺文案）：中心白 78% 透明度 → 边缘黑 50% 透明度（用户指定） */
-.cs-stat-grad,
-.cs-stat-linear {
-  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.78), rgba(0, 0, 0, 0.5));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* 读取文档面板：随「正在读取文档」逐条输出文档相关内容 */
-.cs-read {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 8px 0 12px 21px;
-  padding: 10px 14px;
-  border-radius: var(--radius-container);
-  background: var(--surface-container-low);
-}
-
-.cs-read-item {
-  animation: cs-fade-in 0.25s var(--ease-out);
-}
-
-.cs-read-item:not(:last-child) {
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--divider);
-}
-
-.cs-read-line {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.cs-read-line svg {
-  flex: 0 0 auto;
-  color: var(--text-placeholder);
-}
-
-.cs-read-name {
-  font: var(--font-body-sm);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-secondary);
-}
-
-.cs-read-excerpt {
-  font: var(--font-body-sm);
-  color: var(--text-placeholder);
-  line-height: var(--line-height-relaxed);
-  margin: 3px 0 0 21px;
-}
-
-/* ---- 蜂群模式：问题澄清卡片 ---- */
-.cs-qa-card {
-  border: 1px solid var(--surface-container-high);
-  border-radius: 1rem;
-  padding: 0 1rem;
-  background: var(--white);
-  margin-bottom: 0.75rem;
-}
-
-.cs-qa-head {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--surface-container-high);
-  font-size: 0.875rem;
-  color: var(--text-placeholder);
-}
-
-.cs-qa-body {
-  padding: 0.75rem 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.cs-qa-q {
-  font-size: 0.875rem;
-  color: var(--on-surface);
-  margin: 0 0 0.75rem;
-}
-
-.cs-qa-a {
-  font-size: 0.875rem;
-  color: var(--text-placeholder);
-  margin: 0;
-}
-
-/* ---- 技能调取 ---- */
-.cs-skill {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 0.75rem;
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-}
-
-.cs-skill svg,
-.cs-skill img {
-  flex: 0 0 auto;
-  color: var(--text-secondary);
-}
-
-/* ---- 任务卡片 ---- */
-.cs-task-card {
-  padding: 0 1rem;
-  margin-bottom: 0.75rem;
-  background: var(--white);
-  border-radius: 1rem;
-  /* #E5E5EA — 等价 var(--surface-container-high) */
-  border: 1px solid var(--surface-container-high);
-}
-
-.cs-task-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--surface-container-high);
-}
-
-.cs-task-head svg {
-  flex: 0 0 auto;
-  color: var(--text-secondary);
-}
-
-.cs-task-team {
-  font-size: 0.875rem;
-  color: var(--on-surface);
-  white-space: nowrap;
-}
-
-.cs-task-sep {
-  color: var(--text-placeholder);
-}
-
-.cs-task-desc {
-  font-size: 0.875rem;
-  color: var(--text-placeholder);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cs-task-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 0.75rem 0;
-}
-
-.cs-task-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  height: 1.75rem;
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-}
-
-.cs-task-text {
-  flex: 1 1 auto;
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* 任务行右侧负责人（头像 + 名称，固定宽度使各行头像垂直对齐） */
-.cs-task-assignee {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex: 0 0 8.5rem;
-  padding-right: 0.5rem;
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  white-space: nowrap;
-}
-
-.cs-task-assignee-avatar {
-  display: block;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-/* ---- 专家/人员标签 ---- */
-.cs-agent-tag-row {
-  margin-bottom: 0.75rem;
-}
-
-.cs-agent-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 2.25rem;
-  padding: 0 0.75rem 0 0.5rem;
-  border-radius: 1.25rem;
-  /* #E5E5EA — 等价 var(--surface-container-high) */
-  border: 1px solid var(--surface-container-high);
-}
-
-.cs-agent-tag-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 1.75rem;
-  height: 1.75rem;
-  margin-top: -0.125rem;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.cs-agent-tag-icon img {
-  width: 100%;
-  height: 100%;
-}
-
-.cs-agent-tag-name {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-.cs-agent-tag-check {
-  flex: 0 0 auto;
-  color: var(--success);
-}
-
-/* ---- 列表块（标题 + 黑点列表项） ---- */
-.cs-list-block {
-  margin-bottom: 0.75rem;
-}
-
-.cs-list-block-title {
-  font-size: 1rem;
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  margin: 0 0 8px;
-}
-
-.cs-list-block-items {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.cs-list-block-item {
-  position: relative;
-  padding-left: 16px;
-  font-size: 0.875rem;
-  color: var(--on-surface);
-  line-height: var(--line-height-relaxed);
-}
-
-.cs-list-block-item::before {
-  content: "";
-  position: absolute;
-  left: 2px;
-  top: 8px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--black);
-}
-
-/* ---- 带链接的文本 ---- */
-.cs-text-link {
-  font-size: 0.875rem;
-  color: var(--on-surface);
-  margin: 0 0 0.75rem;
-  line-height: var(--line-height-relaxed);
-}
-
-.cs-doc-link {
-  color: var(--primary);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.cs-doc-link:hover {
-  text-decoration: underline;
-}
-
-/* ---- 核心结论/流程容器 ---- */
-.cs-conclusion {
-  margin-bottom: 0.75rem;
-}
-
-.cs-conclusion-title {
-  font-size: 1rem;
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  margin: 0 0 0.5rem;
-}
-
-.cs-conclusion-body {
-  font-size: 0.875rem;
-  color: var(--on-surface);
-  line-height: var(--line-height-relaxed);
-  margin: 0;
-}
-
-/* ---- 生成产物：文件内容预览（无背景色） ---- */
-.cs-fc {
-  margin: 0 0 12px;
-}
-
-.cs-fc-head {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin: 12px 0;
-  padding: 0;
-  font: var(--font-body-md);
-  font-weight: var(--font-weight-bold);
-  /* 文件代码块标题:蓝色文本 */
-  color: var(--primary);
-}
-
-.cs-fc-head img,
-.cs-fc-head svg {
-  flex: 0 0 auto;
-}
-
-.cs-fc-head svg {
-  flex: 0 0 auto;
-  color: var(--text-placeholder);
-}
-
-.cs-fc-body {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 0;
-}
-
-.cs-fc-line {
-  display: flex;
-  align-items: baseline;
-  font: var(--font-body-sm);
-  color: var(--on-surface);
-  line-height: var(--line-height-relaxed);
-  margin: 0;
-}
-
-/* 小黑点:固定 20px 宽度居中 */
-.cs-fc-bullet {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 20px;
-  width: 20px;
-  font-size: var(--font-body-sm);
-  color: var(--on-surface);
-}
-
-.cs-fc-text {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-/* ---- 编辑统计:在 cs-file 卡片容器内,两行信息 + 右侧操作 ---- */
-.cs-edit-stats-wrap {
-  margin-top: 8px;
-}
-
-.cs-edit-stats {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.cs-edit-stats .cs-file-info {
-  flex: 1 1 auto;
-}
-
-/* 胶囊行:与 cs-file-meta 同位置(第二行),与标题间距 4px */
-.cs-edit-stats-pills {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 4px;
-}
-
-/* 变更胶囊:绿色增加 / 红色删除,字号 12px */
-.cs-edit-pill {
-  display: inline-flex;
-  align-items: center;
-  height: 22px;
-  padding: 0 10px;
-  border-radius: var(--radius-full);
-  font: var(--font-caption-lg);
-  font-weight: var(--font-weight-medium);
-  white-space: nowrap;
-}
-
-.cs-edit-stats-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.cs-edit-stats-text {
-  margin: 0;
-  font: var(--font-body-sm);
-  color: var(--on-surface);
-  white-space: nowrap;
-}
-
-.cs-edit-stats-pills {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* 变更胶囊:绿色增加 / 红色删除 */
-.cs-edit-pill {
-  display: inline-flex;
-  align-items: center;
-  height: 22px;
-  padding: 0 10px;
-  border-radius: var(--radius-full);
-  font: var(--font-caption-md);
-  font-weight: var(--font-weight-medium);
-  white-space: nowrap;
-}
-
-.cs-edit-pill--add {
-  background-color: #d5f2dc;
-  color: #01802b;
-}
-
-.cs-edit-pill--del {
-  background-color: #fce3e0;
-  color: #bf0a1c;
-}
-
-.cs-edit-stats-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-/* 撤销:无边框,黑色文字 */
-.cs-edit-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: auto;
-  padding: 4px 10px;
-  border-radius: 0.5rem;
-  font: var(--font-body-sm);
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-edit-btn--ghost {
-  border: none;
-  background-color: transparent;
-  color: var(--on-surface);
-}
-
-.cs-edit-btn--ghost:hover {
-  background-color: var(--color-interactive-hover);
-}
-
-/* 审核:边框样式与 cs-file-more 一致 */
-.cs-edit-btn--outline {
-  box-sizing: border-box;
-  border: 1px solid var(--surface-container-high);
-  background-color: transparent;
-  color: var(--on-surface);
-  white-space: nowrap;
-  transition: background-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-edit-btn--outline:hover {
-  background-color: var(--color-interactive-hover);
-}
-
-/* ---- 生成产物：产物汇总标题（无卡片背景，1rem，#000 @ 90%，不加粗） ---- */
-.cs-sum-title {
-  font-size: 1rem;
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  margin: 0 0 0.5rem;
-}
-
-/* ---- 生成产物：产物文件卡片（边框线替代阴影） ---- */
-.cs-files {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.cs-file {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 1rem;
-  box-sizing: border-box;
-  border-radius: 1rem;
-  background: var(--surface-container-lowest);
-  /* #E5E5EA — 等价 var(--surface-container-high) */
-  border: 1px solid var(--surface-container-high);
-  transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-file:hover {
-  /* rgba(0,0,0,0.05) — 等价 var(--surface-container) */
-  background: var(--surface-container);
-}
-
-.cs-file-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 0.75rem;
-  /* #f1f3f5 — 等价 var(--color-background-secondary)，暗色模式自动翻转 */
-  background: var(--color-background-secondary);
-}
-
-.cs-file-info {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.cs-file-name {
-  font: var(--font-body-md);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cs-file-meta {
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* 打开方式下拉（触发按钮 + 面板） */
-.cs-file-drop {
-  position: relative;
-  flex: 0 0 auto;
-}
-
-.cs-file-more {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 4px 10px;
-  box-sizing: border-box;
-  /* #E5E5EA — 等价 var(--surface-container-high) */
-  border: 1px solid var(--surface-container-high);
-  border-radius: 0.5rem;
-  background: transparent;
-  color: var(--text-secondary);
-  font: var(--font-body-sm);
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
-}
-
-/* 实心黑色倒三角（triangle 旋转 180° 并填充；展开时回正朝上） */
-.cs-file-caret {
-  transform: rotate(180deg);
-  /* #000 — 等价 var(--on-surface)，暗色模式自动翻转 */
-  color: var(--on-surface);
-  fill: currentColor;
-  transition: transform var(--duration-fast) var(--ease-standard);
-}
-
-.cs-file-caret.is-open {
-  transform: rotate(0deg);
-}
-
-/* 打开方式下拉面板：样式对齐 ChatComposer 的 cc-menu（绝对定位，脱离文档流） */
-.cs-file-menu {
-  position: absolute;
-  z-index: 50;
-  top: calc(100% + 8px);
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  width: max-content;
-  padding: 6px;
-  background-color: var(--surface-container-lowest);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-dropdown);
-}
-
-/* fixed 定位变体:脱离消息列表滚动容器的裁切,可覆盖下方输入框 */
-.cs-file-menu--fixed {
-  position: fixed;
-  z-index: 300;
-}
-
-.cs-file-opt {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 7px 8px;
-  border: none;
-  border-radius: var(--radius-sm);
-  background-color: transparent;
-  color: var(--color-font-primary);
-  font: var(--font-body-md);
-  text-align: left;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-file-opt:hover {
-  background-color: var(--color-interactive-hover);
-}
-
-/* 打字机光标 */
-.cs-caret {
-  display: inline-block;
-  width: 2px;
-  height: 1em;
-  margin-left: 2px;
-  vertical-align: text-bottom;
-  background: var(--primary);
-  animation: cs-blink 1s step-end infinite;
-}
-
-/* ---- 底部输入区 ---- */
-.cs-composer {
-  flex: 0 0 auto;
-  width: 100%;
-  max-width: 872px;
-  margin: 0 auto;
-  padding: 4px 36px 24px;
-  box-sizing: border-box;
-}
-
-.cs-footnote {
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-  margin: 8px 0 0;
-  text-align: center;
-}
-
-/* 会话页输入框贴底：加号菜单与“/”指令面板默认向下弹出会超出视口底部 —— 强制向上；
-   cc-chip 下拉（cc-menu）已由 DropMenu 自适应方向（底部不足时自动翻到上方） */
-.cs-composer .cc-addmenu,
-.cs-composer .cc-slash {
-  top: auto;
-  bottom: calc(100% + 8px);
-}
-
-/* 会话页：输入框卡片宽度自适应（覆盖 ChatComposer 固定 800px） */
-.cw-main--session .cc-shell {
-  width: auto;
-}
-
-/* ---- 右侧预览面板：点击产物「在线预览」打开（与左侧主区等宽） ---- */
-.cs-preview {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 0;
-  min-width: 0;
-  border-left: 1px solid var(--container-10);
-  background: var(--white);
-}
-
-/* ---- 头部 ---- */
-.cs-preview-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  flex: 0 0 auto;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--container-10);
-}
-
-.cs-preview-head-left {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-width: 0;
-  /* 多个产物页签并存时换行,避免溢出 */
-  flex-wrap: wrap;
-}
-
-.cs-preview-tab {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex: 0 0 auto;
-  padding: 0.5rem;
-  border: 0;
-  /* 用户指定 0.375rem(6px),与 --radius-sm(4px) 不同 */
-  border-radius: 0.375rem;
-  /* 默认态无背景,仅选中态有背景色 */
-  background: transparent;
-  color: var(--text-secondary);
-  font: var(--font-body-sm);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-preview-tab:hover {
-  color: var(--on-surface);
-}
-
-.cs-preview-tab.is-active {
-  /* #F1F3F5 — 等价 var(--color-background-secondary) */
-  background: var(--color-background-secondary);
-}
-
-.cs-preview-vline {
-  width: 1px;
-  height: 14px;
-  flex: 0 0 auto;
-  background: var(--divider);
-}
-
-.cs-preview-filetab {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  flex: 0 0 auto;
-  height: 2rem;
-  padding: 0 0.5rem;
-  box-sizing: border-box;
-  /* 用户指定 0.375rem(6px),与 --radius-sm(4px) 不同 */
-  border-radius: 0.375rem;
-  /* 默认态无背景,仅选中态有背景色(与 cs-preview-tab 规范一致) */
-  background: transparent;
-  font: var(--font-body-sm);
-  color: var(--on-surface);
-  white-space: nowrap;
-  /* 页签可点击:手型光标 */
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-preview-filetab-x {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-placeholder);
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-preview-head-right {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex: 0 0 auto;
-}
-
-/* 通用图标按钮 */
-.cs-preview-iconbtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 2rem;
-  height: 1.75rem;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-placeholder);
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-preview-iconbtn img {
-  width: 100%;
-  height: 100%;
-}
-
-/* 会话按钮：正方形 1.75rem */
-.cs-preview-toolbar .cs-preview-iconbtn[title="会话"] {
-  width: 1.75rem;
-}
-
-/* 工具栏「打开方式」按钮：覆盖固定尺寸以容纳文本 */
-.cs-toolbar-openwith {
-  width: auto;
-  gap: 0.25rem;
-  padding: 0 0.5rem;
-  /* rgba(0,0,0,0.1) — 等价 var(--container-10) */
-  border: 1px solid var(--container-10);
-  border-radius: 0.5rem;
-  font: var(--font-body-sm);
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-.cs-toolbar-openwith:hover {
-  color: var(--on-surface);
-}
-
-/* 头部「添加」图标按钮 */
-.cs-preview-add {
-  width: 1.75rem;
-}
-
-.cs-preview-add img {
-  width: 1rem;
-  height: 1rem;
-}
-
-/* 图标容器（非按钮，纯展示） */
-.cs-preview-iconbox {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 2rem;
-  height: 2rem;
-}
-
-.cs-preview-iconbox img {
-  width: 100%;
-  height: 100%;
-}
-
-/* ---- 操作栏 ---- */
-.cs-preview-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  flex: 0 0 auto;
-  padding: 0.5rem 1rem;
-  border-bottom: 1px solid var(--container-10);
-}
-
-.cs-preview-toolbar-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
-
-/* Segmented 组件 */
-.cs-segmented {
-  display: inline-flex;
-  align-items: center;
-  height: 2rem;
-  flex: 0 0 auto;
-  padding: 2px;
-  border-radius: 0.5rem;
-  background: var(--surface-container);
-}
-
-.cs-seg-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 1.75rem;
-  padding: 0;
-  border: 0;
-  border-radius: calc(0.5rem - 2px);
-  background: transparent;
-  color: var(--text-secondary);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-seg-item.is-active {
-  background: var(--surface-container-lowest);
-  color: var(--on-surface);
-}
-
-/* 地址栏 */
-.cs-address {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  min-width: 0;
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cs-preview-toolbar-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 0 0 auto;
-}
-
-/* 缩放下拉 */
-.cs-zoom {
-  position: relative;
-  flex: 0 0 auto;
-}
-
-.cs-zoom-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-secondary);
-  font: var(--font-body-sm);
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.cs-zoom-btn:hover {
-  color: var(--on-surface);
-}
-
-.cs-zoom-menu {
-  position: absolute;
-  top: calc(100% + 4px);
-  right: 0;
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  width: max-content;
-  padding: 6px;
-  border-radius: var(--radius-lg);
-  background-color: var(--surface-container-lowest);
-  box-shadow: var(--shadow-dropdown);
-}
-
-.cs-zoom-opt {
-  display: block;
-  width: 100%;
-  padding: 6px 12px;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background-color: transparent;
-  color: var(--color-font-primary);
-  font: var(--font-body-sm);
-  text-align: left;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-zoom-opt:hover {
-  background-color: var(--color-interactive-hover);
-}
-
-.cs-zoom-opt.is-active {
-  font-weight: var(--font-weight-bold);
-  color: var(--primary);
-}
-
-/* 更多操作下拉 */
-.cs-more {
-  position: relative;
-  flex: 0 0 auto;
-}
-
-.cs-more-menu {
-  position: absolute;
-  top: calc(100% + 4px);
-  right: 0;
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  width: max-content;
-  padding: 6px;
-  border-radius: var(--radius-lg);
-  background-color: var(--surface-container-lowest);
-  box-shadow: var(--shadow-dropdown);
-}
-
-.cs-more-opt {
-  display: block;
-  width: 100%;
-  padding: 7px 12px;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background-color: transparent;
-  color: var(--color-font-primary);
-  font: var(--font-body-md);
-  text-align: left;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-more-opt:hover {
-  background-color: var(--color-interactive-hover);
-}
-
-/* ---- 预览容器 ---- */
-.cs-preview-body {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-}
-
-.cs-preview-container {
-  margin: 1.5rem 2rem;
-  /* #E5E5EA — 等价 var(--surface-container-high) */
-  border: 1px solid var(--surface-container-high);
-  border-radius: 1.5rem;
-  overflow: hidden;
-}
-
-/* 模拟文档页面 */
-.cs-preview-page {
-  padding: 28px;
-  background: var(--surface-container-lowest);
-}
-
-.cs-preview-name {
-  font: var(--font-title-sm);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  margin: 0;
-}
-
-.cs-preview-eyebrow {
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-  margin: 4px 0 0;
-}
-
-.cs-preview-sec {
-  margin-top: 20px;
-}
-
-.cs-preview-sec h3 {
-  font: var(--font-subtitle-md);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  margin: 0 0 6px;
-}
-
-.cs-preview-sec p {
-  font: var(--font-body-sm);
-  color: var(--text-secondary);
-  line-height: var(--line-height-relaxed);
-  margin: 0;
-}
-
-/* markdown 产物页签:带品牌圆点的列表 */
-.cs-md-list {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 6px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.cs-md-list li {
-  position: relative;
-  padding-left: 16px;
-  font: var(--font-body-sm);
-  color: var(--text-secondary);
-  line-height: var(--line-height-relaxed);
-}
-
-.cs-md-list li::before {
-  content: "";
-  position: absolute;
-  left: 2px;
-  top: 8px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--brand);
-}
-
-/* ================= 蜂群产物预览：When2meet 小程序界面 ================= */
-
-/* 蜂群面板插槽:文件预览期间隐藏 SwarmPanel(不卸载,保留任务展开/群聊页签状态) */
-.cs-swarm-slot {
-  display: contents;
-}
-
-.cs-swarm-slot--hidden {
-  display: none;
-}
-
-/* 应用骨架 */
-.cs-w2m {
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem 2rem 1.25rem;
-  background: var(--surface-container-lowest);
-}
-
-/* 顶栏：品牌 + 操作按钮 */
-.cs-w2m-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--divider);
-}
-
-.cs-w2m-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-
-.cs-w2m-logo {
-  flex: 0 0 auto;
-  width: 1.75rem;
-  height: 1.75rem;
-  object-fit: contain;
-}
-
-.cs-w2m-brand-name {
-  font: var(--font-title-sm);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  white-space: nowrap;
-}
-
-.cs-w2m-brand-tag {
-  padding: 2px 10px;
-  border-radius: var(--radius-full);
-  /* rgba(10,89,247,0.1) — 等价 var(--brand-10) */
-  background: var(--brand-10);
-  color: var(--primary);
-  font: var(--font-caption-lg);
-  white-space: nowrap;
-}
-
-.cs-w2m-topbar-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* 幽灵/实心按钮(实心为生成应用的产品蓝) */
-.cs-w2m-ghost,
-.cs-w2m-solid {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  height: 2rem;
-  padding: 0 14px;
-  border-radius: var(--radius-full);
-  box-sizing: border-box;
-  font: var(--font-body-sm);
-  white-space: nowrap;
-  cursor: pointer;
-  transition: opacity var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
-}
-
-.cs-w2m-ghost {
-  /* rgba(0,0,0,0.1) — 等价 var(--container-10) */
-  border: 1px solid var(--container-10);
-  background: transparent;
-  color: var(--text-secondary);
-}
-
-.cs-w2m-solid {
-  border: 0;
-  /* #0A59F7 — 等价 var(--brand) */
-  background: var(--brand);
-  color: var(--white);
-}
-
-.cs-w2m-solid:hover {
-  opacity: 0.85;
-}
-
-.cs-w2m-ghost svg,
-.cs-w2m-solid svg {
-  flex: 0 0 auto;
-}
-
-/* 活动信息 */
-.cs-w2m-hero {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 1.25rem 0;
-}
-
-.cs-w2m-kicker {
-  margin: 0;
-  font: var(--font-caption-lg);
-  color: var(--brand);
-}
-
-.cs-w2m-title {
-  margin: 4px 0 0;
-  font: var(--font-title-sm);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-}
-
-.cs-w2m-sub {
-  margin: 4px 0 0;
-  font: var(--font-body-sm);
-  color: var(--text-secondary);
-  line-height: var(--line-height-relaxed);
-}
-
-.cs-w2m-hero-side {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  flex: 0 0 auto;
-}
-
-.cs-w2m-side-num {
-  font: var(--font-title-sm);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-}
-
-.cs-w2m-side-num i {
-  font-style: normal;
-  font-size: 0.875rem;
-  color: var(--text-placeholder);
-}
-
-.cs-w2m-side-label {
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-}
-
-.cs-w2m-side-bar {
-  width: 7.5rem;
-  height: 4px;
-  border-radius: var(--radius-full);
-  background: var(--surface-container);
-  overflow: hidden;
-}
-
-.cs-w2m-side-bar span {
-  display: block;
-  height: 100%;
-  border-radius: var(--radius-full);
-  background: var(--brand);
-}
-
-/* 截止倒计时 */
-.cs-w2m-side-deadline {
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-  white-space: nowrap;
-}
-
-/* 区块(标题行 + 内容) */
-.cs-w2m-block {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 1rem 0 0.25rem;
-  border-top: 1px solid var(--divider);
-}
-
-.cs-w2m-block-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.cs-w2m-block-title {
-  font: var(--font-subtitle-md);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-}
-
-.cs-w2m-block-extra {
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-}
-
-/* ---- 参与统计卡片 ---- */
-.cs-w2m-statcards {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(6.5rem, 1fr));
-  gap: 8px;
-}
-
-.cs-w2m-statcard {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 10px 12px;
-  border-radius: 0.75rem;
-  box-sizing: border-box;
-  background: var(--surface-container-low);
-}
-
-.cs-w2m-statcard-num {
-  font: var(--font-subtitle-md);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  white-space: nowrap;
-}
-
-.cs-w2m-statcard-num i {
-  font-style: normal;
-  font-size: 0.75rem;
-  margin-left: 2px;
-  color: var(--text-placeholder);
-}
-
-.cs-w2m-statcard-label {
-  font: var(--font-caption-lg);
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-/* ---- 最近动态(时间线) ---- */
-.cs-w2m-feed {
-  display: flex;
-  flex-direction: column;
-}
-
-.cs-w2m-feed-item {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 0 7px 16px;
-}
-
-/* 左侧时间线:圆点 + 竖向连线 */
-.cs-w2m-feed-item::before {
-  content: "";
-  position: absolute;
-  left: 2px;
-  top: 50%;
-  width: 6px;
-  height: 6px;
-  margin-top: -3px;
-  border-radius: 50%;
-  background: var(--brand);
-}
-
-.cs-w2m-feed-item::after {
-  content: "";
-  position: absolute;
-  left: 4.5px;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: var(--divider);
-}
-
-.cs-w2m-feed-item:first-child::after {
-  top: 50%;
-}
-
-.cs-w2m-feed-item:last-child::after {
-  bottom: auto;
-  height: 50%;
-}
-
-.cs-w2m-feed-avatar {
-  flex: 0 0 auto;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.cs-w2m-feed-text {
-  flex: 1 1 auto;
-  min-width: 0;
-  font: var(--font-body-sm);
-  color: var(--text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cs-w2m-feed-text b {
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-}
-
-.cs-w2m-feed-time {
-  flex: 0 0 auto;
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-  white-space: nowrap;
-}
-
-/* 参与者 */
-.cs-w2m-members {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.cs-w2m-member {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 2.25rem;
-  padding: 0 10px 0 4px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-full);
-  box-sizing: border-box;
-  background: var(--surface-container-low);
-}
-
-.cs-w2m-member-avatar {
-  flex: 0 0 auto;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.cs-w2m-member-name {
-  font: var(--font-body-sm);
-  color: var(--on-surface);
-  white-space: nowrap;
-}
-
-.cs-w2m-member-state {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  font: var(--font-caption-lg);
-  color: var(--success);
-  white-space: nowrap;
-}
-
-.cs-w2m-member.is-pending {
-  background: transparent;
-  /* #E5E5EA — 等价 var(--surface-container-high) */
-  border: 1px dashed var(--surface-container-high);
-}
-
-.cs-w2m-member.is-pending .cs-w2m-member-state {
-  color: var(--text-placeholder);
-}
-
-/* 待填成员占位头像:中性图标 + 浅灰底 */
-.cs-w2m-member-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: var(--surface-container);
-  color: var(--text-placeholder);
-}
-
-.cs-w2m-invite {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  height: 2.25rem;
-  padding: 0 14px;
-  border: 1px dashed var(--surface-container-high);
-  border-radius: var(--radius-full);
-  box-sizing: border-box;
-  background: transparent;
-  color: var(--text-secondary);
-  font: var(--font-body-sm);
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
-}
-
-/* 共同空闲热力图 */
-.cs-w2m-legend {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.cs-w2m-legend-label {
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-  white-space: nowrap;
-}
-
-.cs-w2m-legend-cell {
-  flex: 0 0 auto;
-  width: 14px;
-  height: 10px;
-  border-radius: 3px;
-}
-
-.cs-w2m-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  overflow-x: auto;
-  padding-bottom: 2px;
-}
-
-.cs-w2m-grid-row {
-  display: grid;
-  grid-template-columns: 3.5rem repeat(6, minmax(3.5rem, 1fr));
-  gap: 3px;
-}
-
-.cs-w2m-grid-day {
-  padding: 2px 0;
-  font: var(--font-caption-lg);
-  color: var(--text-secondary);
-  text-align: center;
-  white-space: nowrap;
-}
-
-.cs-w2m-grid-time {
-  display: flex;
-  align-items: center;
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-  white-space: nowrap;
-}
-
-.cs-w2m-grid-cell {
-  position: relative;
-  height: 1.5rem;
-  border-radius: 4px;
-  background: var(--surface-container-low);
-  cursor: default;
-  transition: box-shadow var(--duration-fast) var(--ease-standard);
-}
-
-/* 悬停高亮(交互反馈) */
-.cs-w2m-grid-cell:hover {
-  box-shadow: inset 0 0 0 2px rgba(10, 89, 247, 0.45);
-}
-
-/* 最优格:品牌蓝描边 + 格内「推荐」浮标 */
-.cs-w2m-grid-cell.is-best {
-  box-shadow: inset 0 0 0 2px var(--brand);
-}
-
-.cs-w2m-grid-cell.is-best::after {
-  content: "推荐";
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: var(--font-weight-bold);
-  /* #fff — 等价 var(--white) */
-  color: var(--white);
-}
-
-/* 推荐时段 */
-.cs-w2m-recos {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.cs-w2m-reco {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 0.75rem;
-  box-sizing: border-box;
-  background: var(--surface-container-low);
-  border: 1px solid transparent;
-}
-
-.cs-w2m-reco.is-top {
-  /* rgba(10,89,247,0.05/0.2) — 等价 var(--brand-05)/var(--brand-20) */
-  background: var(--brand-05);
-  border-color: var(--brand-20);
-}
-
-.cs-w2m-reco-main {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 4px 10px;
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.cs-w2m-reco-when {
-  font: var(--font-body-md);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  white-space: nowrap;
-}
-
-.cs-w2m-reco-note {
-  font: var(--font-caption-lg);
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-.cs-w2m-reco-score {
-  flex: 0 0 auto;
-  font: var(--font-subtitle-md);
-  font-weight: var(--font-weight-bold);
-  color: var(--success);
-  white-space: nowrap;
-}
-
-/* ---- 移动端单日视图:手机框 + 说明 ---- */
-.cs-w2m-mobile {
-  display: flex;
-  align-items: stretch;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.cs-w2m-phone {
-  flex: 0 0 14.5rem;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  box-sizing: border-box;
-  /* #E5E5EA — 等价 var(--surface-container-high) */
-  border: 1px solid var(--surface-container-high);
-  border-radius: 1.25rem;
-  background: var(--surface-container-lowest);
-}
-
-.cs-w2m-phone-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 2px 4px 8px;
-}
-
-.cs-w2m-phone-day {
-  font: var(--font-body-md);
-  font-weight: var(--font-weight-bold);
-  color: var(--on-surface);
-  white-space: nowrap;
-}
-
-.cs-w2m-phone-sub {
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-  white-space: nowrap;
-}
-
-.cs-w2m-phone-body {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.cs-w2m-phone-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  height: 1.625rem;
-  padding: 0 6px;
-  border-radius: 0.375rem;
-  box-sizing: border-box;
-  background: var(--surface-container-low);
-}
-
-.cs-w2m-phone-row.is-best {
-  /* rgba(10,89,247,0.05/0.2) — 等价 var(--brand-05)/var(--brand-20) */
-  background: var(--brand-05);
-  box-shadow: inset 0 0 0 1px var(--brand-20);
-}
-
-.cs-w2m-phone-time {
-  flex: 0 0 2.5rem;
-  font: var(--font-caption-lg);
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-.cs-w2m-phone-avatars {
-  display: inline-flex;
-  align-items: center;
-  min-width: 0;
-}
-
-.cs-w2m-phone-avatars img {
-  flex: 0 0 auto;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  object-fit: cover;
-  /* #fff — 等价 var(--white) */
-  border: 1px solid var(--white);
-  background: var(--white);
-}
-
-.cs-w2m-phone-avatars img + img {
-  margin-left: -5px;
-}
-
-.cs-w2m-phone-badge {
-  margin-left: auto;
-  font: var(--font-caption-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--brand);
-  white-space: nowrap;
-}
-
-.cs-w2m-phone-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 2rem;
-  margin-top: 10px;
-  padding: 0;
-  border: 0;
-  border-radius: 0.75rem;
-  /* #0A59F7 — 等价 var(--brand) */
-  background: var(--brand);
-  color: var(--white);
-  font: var(--font-body-sm);
-  cursor: pointer;
-  transition: opacity var(--duration-fast) var(--ease-standard);
-}
-
-.cs-w2m-phone-btn:hover {
-  opacity: 0.85;
-}
-
-/* 移动端特性说明列表 */
-.cs-w2m-mobile-notes {
-  flex: 1 1 12rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.cs-w2m-mobile-notes li {
-  position: relative;
-  padding-left: 16px;
-  font: var(--font-body-sm);
-  color: var(--text-secondary);
-  line-height: var(--line-height-relaxed);
-}
-
-.cs-w2m-mobile-notes li::before {
-  content: "";
-  position: absolute;
-  left: 2px;
-  top: 8px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--brand);
-}
-
-/* 特性胶囊 + 页脚 */
-.cs-w2m-feats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 1rem 0 0;
-  border-top: 1px solid var(--divider);
-}
-
-.cs-w2m-feat {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  background: var(--surface-container-low);
-  font: var(--font-caption-lg);
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-.cs-w2m-feat svg {
-  flex: 0 0 auto;
-  color: var(--brand);
-}
-
-.cs-w2m-foot {
-  padding: 12px 0 0;
-  border-top: 1px solid var(--divider);
-  font: var(--font-caption-lg);
-  color: var(--text-placeholder);
-}
-
-/* 任务摘要页签：空白内容区 */
-.cs-preview-blank {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cs-preview-blank-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cs-preview-blank-text {
-  font: var(--font-body-md);
-  color: var(--text-placeholder);
-  margin: 0;
-}
-
-/* 文件页签选中态:仅展示对应内容时选中,以背景色标记(与 cs-preview-tab 选中样式一致) */
-.cs-preview-filetab.is-active {
-  /* #F1F3F5 — 等价 var(--color-background-secondary) */
-  background: var(--color-background-secondary);
-}
-
-/* ================= 动画 ================= */
-@keyframes cs-rotate {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes cs-blink {
-  50% {
-    opacity: 0;
-  }
-}
-
-@keyframes cs-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(2px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@media (max-width: 960px) {
-  .cs-list {
-    padding: 20px 16px;
-  }
-
-  .cs-composer {
-    padding: 4px 16px 12px;
-  }
-
-  .cs-user-wrap {
-    max-width: 92%;
-  }
-
-  .cs-preview {
-    flex: 1 1 auto;
-    flex-basis: 100%;
-    border-left: 0;
-    border-top: 1px solid var(--divider);
-  }
-}
-
-/* ==== views/ChatWorkspace/index.css ==== */
-.cw-page {
-  display: flex;
-  height: 100vh;
-  background: var(--color-background-primary);
-}
-
-/* ---- 左侧 AI 工具菜单 ---- */
-.cw-sidebar {
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: column;
-  width: 316px;
-  box-sizing: border-box;
-  padding: 16px 12px 12px;
-  background: var(--surface-container-low);
-  overflow-y: auto;
-}
-
-.cw-brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 0 14px;
-}
-
-.cw-brand-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-container);
-  overflow: hidden;
-  flex: 0 0 auto;
-}
-
-.cw-brand-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.cw-brand-name {
-  font: var(--font-subtitle-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--on-surface);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cw-collapse {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-placeholder);
-  cursor: pointer;
-}
-
-.cw-collapse svg {
-  width: 28px;
-  height: 28px;
-}
-
-.cw-brand-actions {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-.cw-mode {
-  margin: 0 0 12px;
-}
-
-.cw-menu {
-  margin: 0 0 20px;
-}
-
-.cw-section {
-  margin-bottom: 20px;
-}
-
-.cw-section-title {
-  font: var(--font-caption-lg);
-  font-weight: var(--font-weight-regular);
-  color: var(--text-placeholder);
-  padding: 0 10px;
-  margin: 0 0 6px;
-}
-
-.cw-conversations {
-  flex: 1 1 auto;
-  min-height: 0;
-}
-
-.cw-sidebar-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 12px;
-  padding-top: 10px;
-}
-
-.cw-user {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-
-.cw-avatar {
-  display: block;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex: 0 0 auto;
-}
-
-.cw-user-name {
-  font: var(--font-body-md);
-  color: var(--on-surface);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cw-settings {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-placeholder);
-  cursor: pointer;
-}
-
-/* ---- 右侧工作区:欢迎区 + 输入框居中 ---- */
-.cw-main {
-  display: flex;
-  flex: 1 1 auto;
-  min-width: 0;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 36px;
-  padding: 48px 40px;
-  background-color: #fafafc;
-}
-
-/* 暗色模式回退到语义背景色 */
-.dark .cw-main {
-  background-color: var(--color-background-primary);
-}
-
-/* 会话页恢复纯白背景(仅首页态使用 #fafafc) */
-.cw-main--session {
-  background-color: var(--surface-container-lowest);
-}
-
-/* 会话模式：占满整列，内部由 ChatSession 自行布局 */
-.cw-main--session {
-  align-items: stretch;
-  justify-content: stretch;
-  gap: 0;
-  padding: 0;
-}
-
-.cw-hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  text-align: center;
-}
-
-/* 欢迎区 slogan 图片(源资源 421x68) */
-.cw-hero-slogan {
-  display: block;
-  width: 421px;
-  max-width: 100%;
-  height: auto;
-}
-
-.cw-composer {
-  width: 100%;
-  max-width: 820px;
-}
-
-/* 底部快捷能力胶囊 */
-.cw-capabilities {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
-
-.cw-cap {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 32px;
-  padding: 0 20px;
-  border: none;
-  border-radius: var(--radius-full);
-  background-color: var(--surface-container-lowest);
-  color: var(--text-secondary);
-  font: var(--font-caption-lg);
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
-}
-
-@media (max-width: 960px) {
-  .cw-sidebar {
-    display: none;
-  }
-
-  .cw-main {
-    padding: 32px 20px;
-  }
-}
-
-.cw-code-title { margin: 0; color: var(--on-surface); font: var(--font-title-lg); font-weight: var(--font-weight-medium); }
-.cw-code-subtitle { margin: 0; color: var(--text-secondary); font: var(--font-body-md); }
-.cw-brand-actions { color: var(--text-secondary); }
-.cw-collapse { color: var(--text-secondary); }
 
 </style>
 </head>
@@ -11853,6 +9313,11 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
     setReadIdx(0);
   }, [cursor]);
 
+  /* 蜂群模式判定(打字节奏/状态栏阶段共用) */
+  const isSwarm = msg.meta && msg.meta.modeId === "swarm";
+  /* 流式打字节奏:单Agent模式放慢(70ms 输出 2 字,便于阅读),蜂群模式保持 35ms/2字 */
+  const typeInterval = isSwarm ? 35 : 70;
+
   /* 流式打字：逐字输出当前文本块，块间稍作停顿；暂停中冻结不推进。
      授权/表单等待块由下方挂起链路处理。
      读取文档块：先打标签文字，再逐条揭示文档相关内容，全部揭示后进入下一块。
@@ -11860,6 +9325,23 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
   useEffect(() => {
     if (paused) return; // 暂停中：不推进流式
     if (!cur || cur.type === "perm-wait" || cur.type === "form-wait") return;
+    /* 文件内容块:按文本打印方式逐字流式输出(跨行累计字符),打完短暂停留后推进 */
+    if (cur.type === "filecontent") {
+      const fcLen = cur.lines.reduce((s, l) => s + l.replace(/^\u2022\s*/, "").length, 0);
+      if (chars < fcLen) {
+        const t = window.setTimeout(() => {
+          setChars((c) => c + 2);
+          if (onGrow) onGrow();
+        }, typeInterval);
+        return () => window.clearTimeout(t);
+      }
+      const t = window.setTimeout(() => {
+        setCursor((c) => c + 1);
+        setChars(0);
+        if (onGrow) onGrow();
+      }, 700);
+      return () => window.clearTimeout(t);
+    }
     if (!cur.text) {
       const t = window.setTimeout(() => {
         setCursor((c) => c + 1);
@@ -11872,7 +9354,7 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
         const t = window.setTimeout(() => {
           setChars((c) => c + 2);
           if (onGrow) onGrow();
-        }, 35);
+        }, typeInterval);
         return () => window.clearTimeout(t);
       }
       if (readIdx < cur.reading.length) {
@@ -11893,7 +9375,7 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
       const t = window.setTimeout(() => {
         setChars((c) => c + 2);
         if (onGrow) onGrow();
-      }, 35);
+      }, typeInterval);
       return () => window.clearTimeout(t);
     }
     /* 失败注入点：冲刺文案打完后短暂等待 → 生成失败，任务中断 */
@@ -11942,7 +9424,6 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
   }, [permCmd, perm]);
 
   /* 状态栏阶段：蜂群模式直接显示生成中；单Agent按 思考→已思考→生成中 流转 */
-  const isSwarm = msg.meta && msg.meta.modeId === "swarm";
   const thinkingIdx = blocks.findIndex((b) => b.endsThinking);
   const readingIdx = blocks.findIndex((b) => b.endsReading);
   const thinkingDone = thinkingIdx !== -1 && cursor > thinkingIdx;
@@ -12046,10 +9527,8 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
             if (b.hideOnDone && !rejected && !failed && artifactsStarted) return null;
             if (b.noPerm && (rejected || failed)) return null;
 
-            /* ---- 问题澄清卡片 ---- */
+            /* ---- 问题澄清卡片:整卡以「宽高从小变大」的入场动画出现(替代逐条打印) ---- */
             if (b.type === "qa-card") {
-              const isCurQ = i === cursor;
-              const shown_ = isCurQ;
               return (
                 <div className={"cs-qa-card " + (b.cls || "")} key={i}>
                   <div className="cs-qa-head">
@@ -12057,16 +9536,12 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
                     <span>{b.title}</span>
                   </div>
                   <div className="cs-qa-body">
-                    {b.qa.map((item, k) => {
-                      const visible = !isCurQ || k < Math.floor(chars / 20);
-                      if (!visible) return null;
-                      return (
-                        <div className="cs-qa-item" key={k}>
-                          <p className="cs-qa-q">{item.q}</p>
-                          <p className="cs-qa-a">{item.a}</p>
-                        </div>
-                      );
-                    })}
+                    {b.qa.map((item, k) => (
+                      <div className="cs-qa-item" key={k}>
+                        <p className="cs-qa-q">{item.q}</p>
+                        <p className="cs-qa-a">{item.a}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               );
@@ -12089,10 +9564,8 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
               );
             }
 
-            /* ---- 任务卡片 ---- */
+            /* ---- 任务卡片:整卡以「宽高从小变大」的入场动画出现(同问题澄清卡片,速度稍慢) ---- */
             if (b.type === "task-card") {
-              const isCurT = i === cursor;
-              const taskCount = isCurT ? Math.min(b.tasks.length, Math.floor(chars / 8)) : b.tasks.length;
               return (
                 <div className={"cs-task-card " + (b.cls || "")} key={i}>
                   <div className="cs-task-head">
@@ -12102,7 +9575,7 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
                     <span className="cs-task-desc">{b.desc}</span>
                   </div>
                   <div className="cs-task-list">
-                    {b.tasks.slice(0, taskCount).map((t, k) => (
+                    {b.tasks.map((t, k) => (
                       <div className="cs-task-item" key={k}>
                         <span className="cs-task-text">{t.text}</span>
                         {t.assignee ? (
@@ -12191,8 +9664,10 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
               );
             }
 
-            /* ---- 生成产物：文件内容预览 ---- */
+            /* ---- 生成产物：文件内容 —— 按文本打印方式逐字流式输出(跨行累计偏移) ---- */
             if (b.type === "filecontent") {
+              const isCurF = i === cursor;
+              let offset = 0;
               return (
                 <div className={"cs-fc " + (b.cls || "")} key={i}>
                   <div className="cs-fc-head">
@@ -12206,12 +9681,32 @@ function AgentRun({ msg, onGrow, onNeedPerm, permCmd, onPreview, stopGen, onGene
                   </div>
                   <p className="cs-sum-title">文件内容</p>
                   <div className="cs-fc-body">
-                    {b.lines.map((ln, k) => (
-                      <p className="cs-fc-line" key={k}>
-                        <span className="cs-fc-bullet">•</span>
-                        <span className="cs-fc-text">{ln.replace(/^\u2022\s*/, "")}</span>
-                      </p>
-                    ))}
+                    {b.lines.map((ln, k) => {
+                      const line = ln.replace(/^\u2022\s*/, "");
+                      const start = offset;
+                      offset += line.length;
+                      if (!isCurF) {
+                        return (
+                          <p className="cs-fc-line" key={k}>
+                            <span className="cs-fc-bullet">•</span>
+                            <span className="cs-fc-text">{line}</span>
+                          </p>
+                        );
+                      }
+                      /* 当前行按累计字符切片逐字揭示,行尾跟随打字光标 */
+                      const shown = Math.max(0, Math.min(line.length, chars - start));
+                      if (shown <= 0) return null;
+                      const typing = shown < line.length || chars === offset;
+                      return (
+                        <p className="cs-fc-line" key={k}>
+                          <span className="cs-fc-bullet">•</span>
+                          <span className="cs-fc-text">
+                            {line.slice(0, shown)}
+                            {typing ? <span className="cs-caret" /> : null}
+                          </span>
+                        </p>
+                      );
+                    })}
                   </div>
                 </div>
               );
@@ -12502,6 +9997,8 @@ function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange,
   /* 蜂群配置表单弹框状态 */
   const [formPage, setFormPage] = useState(0);
   const [formAnswers, setFormAnswers] = useState({});
+  /* 蜂群配置点「确定」后隐藏头部日历图标(cs-new) */
+  const [csNewHidden, setCsNewHidden] = useState(false);
 
   /* 重置弹框时同步重置表单 */
   useEffect(() => {
@@ -12512,12 +10009,14 @@ function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange,
   }, [pendingMsgId]);
 
   /* 表单提交 → 关闭弹框并把决定回传给等待中的 AgentRun；
-     蜂群模式：确认后才打开右侧预览面板（选中任务摘要页签） */
-  const submitForm = () => {
+     蜂群模式：确认后才打开右侧预览面板（选中任务摘要页签）；
+     点「确定」时隐藏头部日历图标 cs-new（「跳过」不隐藏） */
+  const submitForm = (isConfirm) => {
     decide("allowed");
     if (isSwarmSession) {
       setPreviewOpen(true);
       setActiveTab("summary");
+      if (isConfirm) setCsNewHidden(true);
     }
   };
 
@@ -12537,7 +10036,9 @@ function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange,
             <span className="cs-header-icon" aria-hidden="true">{MONITOR_ICON}</span>
             <h1 className="cs-title">{first ? short(first.text, 24) : "新会话"}</h1>
           </div>
-          <img src="./assets/uploads/header-calendar.png" alt="" className="cs-new" />
+          {csNewHidden ? null : (
+            <img src="./assets/uploads/header-calendar.png" alt="" className="cs-new" />
+          )}
         </header>
 
         {/* 消息流 */}
@@ -12634,11 +10135,11 @@ function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange,
                 <button
                   type="button"
                   className="cs-form-btn"
-                  onClick={submitForm}
+                  onClick={() => submitForm(false)}
                 >
                   跳过
                 </button>
-                <button type="button" className="cs-form-btn is-primary" onClick={submitForm}>
+                <button type="button" className="cs-form-btn is-primary" onClick={() => submitForm(true)}>
                   确定
                 </button>
               </div>
@@ -13036,11 +10537,48 @@ function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange,
                         <h3>01 背景与目标</h3>
                         <p>会议时间协调长期依赖群内接龙，效率低且易遗漏。本章从用户调研数据出发，界定核心痛点与改进机会。</p>
                         <p>调研覆盖 500+ 活跃用户，发现平均创建一次多人会议需往返沟通 6.2 次、耗时 23 分钟，其中 78% 的用户期望系统自动推荐最优时段。</p>
+                        {/* 调研数据统计卡片 */}
+                        <div className="cs-doc-stats">
+                          <div className="cs-doc-stat">
+                            <span className="cs-doc-stat-num">500<i>+</i></span>
+                            <span className="cs-doc-stat-label">调研活跃用户</span>
+                          </div>
+                          <div className="cs-doc-stat">
+                            <span className="cs-doc-stat-num">6.2<i>次</i></span>
+                            <span className="cs-doc-stat-label">平均往返沟通</span>
+                          </div>
+                          <div className="cs-doc-stat">
+                            <span className="cs-doc-stat-num">23<i>分钟</i></span>
+                            <span className="cs-doc-stat-label">单次排会耗时</span>
+                          </div>
+                          <div className="cs-doc-stat">
+                            <span className="cs-doc-stat-num">78%</span>
+                            <span className="cs-doc-stat-label">期望智能推荐</span>
+                          </div>
+                        </div>
                       </div>
                       <div className="cs-preview-sec">
                         <h3>02 用户画像</h3>
                         <p>核心用户分为三类：行政协调者（占比 35%）、项目经理（占比 40%）和跨组织参与者（占比 25%）。每类用户的创建频率、参与人数与决策链路各不相同。</p>
                         <p>高频协调者日均创建 3.5 场会议，对批量操作和模板复用诉求强烈；跨组织用户更关注免注册参与和时区自适应。</p>
+                        {/* 用户构成占比条 */}
+                        <div className="cs-doc-bars">
+                          <div className="cs-doc-bar">
+                            <span className="cs-doc-bar-label">项目经理</span>
+                            <span className="cs-doc-bar-track"><span className="cs-doc-bar-fill" style={{ width: "40%" }} /></span>
+                            <span className="cs-doc-bar-pct">40%</span>
+                          </div>
+                          <div className="cs-doc-bar">
+                            <span className="cs-doc-bar-label">行政协调者</span>
+                            <span className="cs-doc-bar-track"><span className="cs-doc-bar-fill" style={{ width: "35%" }} /></span>
+                            <span className="cs-doc-bar-pct">35%</span>
+                          </div>
+                          <div className="cs-doc-bar">
+                            <span className="cs-doc-bar-label">跨组织参与者</span>
+                            <span className="cs-doc-bar-track"><span className="cs-doc-bar-fill" style={{ width: "25%" }} /></span>
+                            <span className="cs-doc-bar-pct">25%</span>
+                          </div>
+                        </div>
                       </div>
                       <div className="cs-preview-sec">
                         <h3>03 首页交互改版（重点）</h3>
@@ -13056,6 +10594,48 @@ function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange,
                         <h3>05 竞品分析</h3>
                         <p>对标 Doodle、Calendly、When2meet 原版三款产品，从功能完整度、交互体验、价格策略三个维度横向对比。</p>
                         <p>Doodle 优势在于品牌认知度但移动端体验弱；Calendly 深度绑定日历但跨组织场景受限；原版 When2meet 简洁但缺乏智能推荐。改版方案取长补短，定位"轻量 + 智能"。</p>
+                        {/* 竞品对比表:改版方案列高亮 */}
+                        <table className="cs-doc-table">
+                          <thead>
+                            <tr>
+                              <th>维度</th>
+                              <th>Doodle</th>
+                              <th>Calendly</th>
+                              <th>原版</th>
+                              <th className="is-hl">改版方案</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>注册门槛</td>
+                              <td>需注册</td>
+                              <td>强制账号</td>
+                              <td>免注册</td>
+                              <td className="is-hl">免注册免下载</td>
+                            </tr>
+                            <tr>
+                              <td>日历集成</td>
+                              <td>基础同步</td>
+                              <td>一键直连</td>
+                              <td>无</td>
+                              <td className="is-hl">轻量适配</td>
+                            </tr>
+                            <tr>
+                              <td>推荐能力</td>
+                              <td>无</td>
+                              <td>单向时段</td>
+                              <td>无</td>
+                              <td className="is-hl">共同空闲聚合推荐</td>
+                            </tr>
+                            <tr>
+                              <td>移动体验</td>
+                              <td>评分最低</td>
+                              <td>中等</td>
+                              <td>缺单日视图</td>
+                              <td className="is-hl">单日视图 · 深色模式</td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                       <div className="cs-preview-sec">
                         <h3>06 信息架构</h3>
@@ -13101,6 +10681,24 @@ function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange,
                         <h3>14 数据验证</h3>
                         <p>通过 A/B 实验对比改版前后核心指标：创建时长中位数从 23 分钟降至 8 分钟（-65%）、七日留存从 34% 提升至 48%（+14pp）、分享率从 12% 提升至 19%（+7pp）。</p>
                         <p>所有指标均达到统计显著（p &lt; 0.01）。</p>
+                        {/* 前后对比指标卡片 */}
+                        <div className="cs-doc-metrics">
+                          <div className="cs-doc-metric">
+                            <span className="cs-doc-metric-delta">-65%</span>
+                            <span className="cs-doc-metric-line">23 分钟 → 8 分钟</span>
+                            <span className="cs-doc-metric-label">排会时长中位数</span>
+                          </div>
+                          <div className="cs-doc-metric">
+                            <span className="cs-doc-metric-delta">+14pp</span>
+                            <span className="cs-doc-metric-line">34% → 48%</span>
+                            <span className="cs-doc-metric-label">七日留存</span>
+                          </div>
+                          <div className="cs-doc-metric">
+                            <span className="cs-doc-metric-delta">+7pp</span>
+                            <span className="cs-doc-metric-line">12% → 19%</span>
+                            <span className="cs-doc-metric-label">分享率</span>
+                          </div>
+                        </div>
                       </div>
                       <div className="cs-preview-sec">
                         <h3>15 风险与应对</h3>
@@ -13114,6 +10712,24 @@ function ChatSession({ messages, onReset, composer, stopGen, onGeneratingChange,
                         <h3>17 排期计划</h3>
                         <p>三期迭代：Alpha（第 1-4 周，核心流程）、Beta（第 5-8 周，推荐系统）、GA（第 9-12 周，数据看板 + 性能优化）。</p>
                         <p>每期结束进行灰度发布，按 5% → 20% → 100% 逐步放量。</p>
+                        {/* 里程碑阶段条 */}
+                        <div className="cs-doc-phases">
+                          <div className="cs-doc-phase">
+                            <span className="cs-doc-phase-tag">Alpha</span>
+                            <span className="cs-doc-phase-week">第 1-4 周</span>
+                            <span className="cs-doc-phase-scope">核心流程：创建 / 分享 / 填写 / 汇总</span>
+                          </div>
+                          <div className="cs-doc-phase">
+                            <span className="cs-doc-phase-tag">Beta</span>
+                            <span className="cs-doc-phase-week">第 5-8 周</span>
+                            <span className="cs-doc-phase-scope">推荐系统与日历深度集成</span>
+                          </div>
+                          <div className="cs-doc-phase">
+                            <span className="cs-doc-phase-tag">GA</span>
+                            <span className="cs-doc-phase-week">第 9-12 周</span>
+                            <span className="cs-doc-phase-scope">数据看板与性能优化</span>
+                          </div>
+                        </div>
                       </div>
                       <div className="cs-preview-sec">
                         <h3>18 路线图与 Q&amp;A</h3>
